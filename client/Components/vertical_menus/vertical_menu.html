@@ -1,0 +1,42 @@
+<template name="vertical_menu_card">
+<div class=" row page_container">
+{{#each menu}}
+  <div class="col s3">
+    <div class="card">
+      <div class="card-image z-depth-2">
+        <div class="image-container">
+          <img class="z-depth-2" style="border-radius:50%" src="http://licpost.com/wp-content/uploads/2017/10/FullSizeRender-5.jpg">
+        </div>
+        <div class="dropdown_element">
+           <a class='dropdown-button icon' href='#' data-activates='dropdown1'>
+            <i class="material-icons icon">more_vert</i>
+           </a>
+           <ul id='dropdown1' class='dropdown-content'>
+             <li><a href="#!">Edit</a></li>
+             <li><a href="#!">Delete</a></li>
+           </ul>
+        </div>
+      </div>
+      <img class="profile-picture size z-depth-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMyhfXyHoMVxzqSCIdway7ry3u_41iZb4sO5y2eEiBlBR0iBkD">
+      <div class="content">
+      <p class="menu-name">{{menu_name}} </p>
+      {{#each dishes_id}}
+      {{#with dishes_retreival}}
+            <li>{{dish_name}}</li>
+
+            {{#each find_ingredient}}
+                {{ingredient_name}}
+            {{/each}}
+
+      {{/with}}
+      {{/each}}
+      </div>
+      <div class="closing">
+        <a class="more-set button">MORE SET MENU</a>
+        <a class="waves-effect waves-light btn order-button">ORDER</a>
+      </div>
+    </div>
+</div>
+         {{/each}}
+  </div>
+</template>

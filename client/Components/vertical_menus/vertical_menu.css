@@ -1,0 +1,104 @@
+.page_container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+
+}
+
+.card-image{
+  height: 290px;
+  width: 290px;
+  background-color: #ffebee;
+
+}
+.image-container{
+  height: 250px;
+  width: 250px;
+  position: relative;
+  top:18px;
+  left:12px;
+  background-color: #ffebee;
+
+}
+
+.icon{
+  color:#757575  ;
+  position: absolute;
+  top: 20px;
+  right:10px;
+}
+
+.dropdown-element{
+  position: absolute;
+  top: 20px;
+  right:10px;
+}
+
+.size{
+  height: 50px;
+  width: 50px;
+  top:20px;
+  right:20px;
+}
+
+.profile-picture{
+  position:absolute;
+  top: 265px;
+  left:215px;
+  border-radius: 50%;
+  shadow:2px;
+
+}
+.card{
+  height: auto;
+  width:  290px;
+}
+
+.menu{
+  position: absolute;
+  top:315px;
+  left:26px;
+  font-size: 20px;
+  font-family: Helvetica;
+}
+.order-button{
+  position: absolute;
+  left: 174px;
+  bottom: 20px;
+  background-color: #e57373;
+
+}
+
+.button {
+    background-color:none;
+    border: none;
+    color: #e57373;
+    padding: 6px 15px;
+    text-align: center;
+    font-size: 16px;
+    margin: auto;
+    cursor: pointer;
+    position: absolute;
+    left: 16px;
+    bottom: 20px;
+
+
+  }
+
+  .menu-name{
+   position:relative;
+   left: 26px;
+   font-size: 20px;
+   text-transform: capitalize;
+   font-family: Helvetica;
+   font-weight:normal;
+   color: black;
+   height: 5px;
+
+  }
+.ingredient{
+  font-size:12px;
+  color: grey;
+  position: relative;
+  left:26px;
+}
