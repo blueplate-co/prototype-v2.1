@@ -1,0 +1,4 @@
+Template.hkid.helpers({
+
+
+});
