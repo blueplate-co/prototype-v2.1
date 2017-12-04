@@ -1,0 +1,20 @@
+<template name="iu_login">
+  <div class="container">
+    <div class="row">
+      <form class="iu_login_form">
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="email" type="email" class="validate" data-error="wrong" data-success="right">
+          <label for="email">User Email</label>
+        </div>
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="password" type="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+        <div class="col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <a class="col l6 m6 s6 waves-effect waves-teal btn-forgot-pass left-align">forgot password</a>
+          <button class="col l6 m6 s6 waves-effect waves-teal btn-flat btn-login right-align">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
