@@ -1,0 +1,102 @@
+.feature {
+  height: 350px;
+  position: relative;
+  background-size: cover!important;
+  background-repeat: no-repeat!important;
+  background-position: center center!important;
+}
+
+.title h2 {
+  color: #000;
+  float: left;
+  text-align: left;
+  margin: 10px 0px 0px 0px;
+}
+
+.control {
+  text-align: right;
+  float: right;
+}
+
+.control ul {
+  display: inline-flex;
+}
+
+.control ul li a {
+  position: relative!important;
+}
+
+.control ul li a i {
+  color: #000!important;
+  font-size: 2.5em;
+  margin: 10px 10px;
+}
+
+.control ul li a span {
+  color: #000;
+  font-size: 15px;
+  font-weight: bold;
+  position: absolute!important;
+  right: 0px;
+  bottom: 5px;
+}
+
+
+.btn {
+  background-color: #4f75e2!important;
+}
+
+.light-btn {
+  background-color: #fff!important;
+  color: #000!important;
+}
+
+.clear-icon {
+  position: absolute!important;
+  right: 30px;
+  top: 10px;
+  color: #808080;
+}
+
+.clear-icon i {
+  font-size: 35px!important;
+}
+
+.inspection-list li {
+  border-top: 2px solid #ccc;
+  height: 60px;
+  padding: 0px 20px 0px 20px;
+  position: relative!important;
+}
+
+.inspection-list li:last-child {
+  border-bottom: 2px solid #ccc;
+  height: 60px;
+  padding: 0px 20px 0px 20px;
+  position: relative!important;
+}
+
+.heart-rating {
+  position: absolute;
+  right: 0px;
+  color: #5a3dae;
+  font-size: 18px;
+  display: inline-flex;
+}
+
+.byAuthor {
+  color: #ccc;
+  font-size: 15px;
+  margin-left: 20px;
+}
+
+.collection .collection-item.avatar .title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+}
+
+.add-comment-btn {
+  float: right;
+  background-color: #5a3dae!important;
+}
