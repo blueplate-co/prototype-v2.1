@@ -6,14 +6,14 @@ import { Blaze } from 'meteor/blaze';
 
 
 Template.screen.onRendered(function(){
-  // if(Meteor.userId()){
-  //   FlowRouter.go('/main');
-  //   // ** Use this to remove modal overlay that left behind
-  //   $(".modal-overlay").remove();
-  //   // ** //
-  // } else {
-  //   FlowRouter.go('/');
-  // }
+  if(Meteor.userId()){
+    FlowRouter.go('/main');
+    // ** Use this to remove modal overlay that left behind
+    $(".modal-overlay").remove();
+    // ** //
+  } else {
+    FlowRouter.go('/');
+  }
 });
 
 Template.msgDialog_content.onRendered(function () {
