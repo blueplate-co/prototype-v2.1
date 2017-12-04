@@ -1,12 +1,40 @@
 .ui_navbar_menu li{
-  color: #000;
-  padding-right: 30px;
   display: -webkit-inline-box;
   vertical-align: middle;
   line-height: 24px;
+}
+.ui_navbar_menu li a{
+  color: grey;
+  padding: 12px 15px;
+}
+.ui_navbar_menu li.active,
+.ui_navbar_menu li.active a,
+.ui_navbar_menu li.active a i{
+  background-color: #fff;
+  color: #5347B1;
+}
+.ui_navbar_menu li a:hover{
+  background-color: #fff;
+  color: #5347B1;
 }
 .ui_navbar_menu li i{
   line-height: 14px;
   height: inherit;
   margin-right: 5px;
+  display: -webkit-inline-box;
+  vertical-align: top;
+}
+.box-avatar{
+  width: 36px;
+  border: 1px solid grey;
+  border-radius: 50%;
+  height: 34px;
+}
+.box-avatar img.responsive-img{
+  height: 32px;
+  display: block;
+}
+.height40{
+  min-height: 40px;
+  max-height: 40px;
 }
