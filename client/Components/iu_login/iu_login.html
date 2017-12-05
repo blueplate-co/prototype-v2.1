@@ -1,13 +1,34 @@
-<!-- <template name="iu_login">
+<template name="iu_register">
   <div class="container">
     <div class="row">
-      <form class="iu_login_form">
+      <form class="iu_register_form">
         <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
-          <input id="email" type="email" class="validate" name="loginEmail" data-error="wrong" data-success="right">
+          <input id="register-email" type="email" class="validate" name="loginEmail" data-error="wrong" data-success="right">
           <label for="email">User Email</label>
         </div>
         <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
-          <input id="password" type="password" name="loginPassword" class="validate">
+          <input id="register-password" type="password" name="loginPassword" class="validate">
+          <label for="password">Password</label>
+        </div>
+        <div class="col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <!-- <a class="col l6 m6 s6 waves-effect waves-teal btn-forgot-pass left-align">forgot password</a> -->
+          <button class="col l6 m6 s6 waves-effect waves-teal btn-flat btn-login right-align" value="Register">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<template name="iu_login">
+  <div class="container">
+    <div class="row">
+      <form class="iu_login_form" style="margin-top:100px;">
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="login-email" type="email" class="validate" name="loginEmail" data-error="wrong" data-success="right">
+          <label for="email">User Email</label>
+        </div>
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="login-password" type="password" name="loginPassword" class="validate">
           <label for="password">Password</label>
         </div>
         <div class="col l9 m9 s9 offset-l2 offset-m2 offset-s2">
@@ -17,18 +38,4 @@
       </form>
     </div>
   </div>
-</template> -->
-
-<template name="Login">
-    <form id="login">
-        <label for="login-username">User Name</label>
-        <input type="text" id="login-username">
-
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password">
-
-        <input type="submit" value="Login">
-
-        <p id="form-messages"></p>
-    </form>
-</template>  
+</template>
