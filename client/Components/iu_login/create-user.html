@@ -1,0 +1,33 @@
+<template name="CreateUser">
+  <form id="create-user">
+
+    <fieldset>
+      <legend>Credentials</legend>
+      <label for="create-user-username">User Name</label>
+      <input type="text" id="create-user-username" placeholder="SteamDonkey2014">
+
+      <label for="create-user-email">Email</label>
+      <input type="text" id="create-user-email" placeholder="you@domain.tld">
+
+      <label for="create-user-password">Password</label>
+      <input type="password" id="create-user-password" placeholder="Password">
+
+      <label for="create-user-password-confirm">Confirm Password</label>
+      <input type="password" id="create-user-password-confirm" placeholder="Confirm Password">
+    </fieldset>
+
+    <fieldset>
+      <legend>Profile (Optional)</legend>
+      <label for="create-user-name">Name</label>
+      <input type="text" id="create-user-name">
+
+      <label for="create-user-astro">Astrological Symbol</label>
+      <input type="text" id="create-user-astro">
+
+      <label for="create-user-newsletter">Subscribe to Newsletter</label>
+      <input type="checkbox" id="create-user-newsletter">
+    </fieldset>
+
+    <input type="submit" value="Sign Up!">
+  </form>
+</template>  
