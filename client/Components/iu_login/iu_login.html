@@ -1,0 +1,41 @@
+<template name="iu_register">
+  <div class="container">
+    <div class="row">
+      <form class="iu_register_form">
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="register-email" type="email" class="validate" name="loginEmail" data-error="wrong" data-success="right">
+          <label for="email">User Email</label>
+        </div>
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="register-password" type="password" name="loginPassword" class="validate">
+          <label for="password">Password</label>
+        </div>
+        <div class="col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <!-- <a class="col l6 m6 s6 waves-effect waves-teal btn-forgot-pass left-align">forgot password</a> -->
+          <button class="col l6 m6 s6 waves-effect waves-teal btn-flat btn-login right-align" value="Register">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<template name="iu_login">
+  <div class="container">
+    <div class="row">
+      <form class="iu_login_form" style="margin-top:100px;">
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="login-email" type="email" class="validate" name="loginEmail" data-error="wrong" data-success="right">
+          <label for="email">User Email</label>
+        </div>
+        <div class="input-field col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <input id="login-password" type="password" name="loginPassword" class="validate">
+          <label for="password">Password</label>
+        </div>
+        <div class="col l9 m9 s9 offset-l2 offset-m2 offset-s2">
+          <a class="col l6 m6 s6 waves-effect waves-teal btn-forgot-pass left-align">forgot password</a>
+          <button class="col l6 m6 s6 waves-effect waves-teal btn-flat btn-login right-align" value="Login">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

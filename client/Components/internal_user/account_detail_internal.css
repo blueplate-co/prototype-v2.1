@@ -1,0 +1,7 @@
+.row .col.m12.fsearchuser{
+  position: fixed;
+  top: 50%;
+  bottom: auto;
+  left: 0;
+  right: auto;
+}

@@ -1,3 +1,6 @@
+.nav-wrapper{
+  height: 42px;
+}
 .ui_navbar_menu li{
   display: -webkit-inline-box;
   vertical-align: middle;

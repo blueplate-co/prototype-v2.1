@@ -1,0 +1,17 @@
+.iu_login_form{
+  position: fixed;
+  top: 25%;
+  bottom: auto;
+  left: 25%;
+  right: auto;
+}
+.iu_login_form .col .btn-forgot-pass{
+  color: #ececec;
+  text-transform: lowercase;
+  padding-left: 0;
+  padding-top: 7px;
+}
+.iu_login_form .btn-login{
+  color: #5347B1;
+  padding-right: 0;
+}
