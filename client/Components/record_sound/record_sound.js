@@ -54,10 +54,19 @@ Template.record_sound.events({
       button = event.target;
       var result = UserAudios.findOne({ user_id: Meteor.userId() });
       if (result) {
-        var blob = new Blob([result.audio], {type : 'audio/wav'});
+        var blob = base64toBlob(result.audio, 'audio/wav');
         var url = URL.createObjectURL(blob);
-        var srcElement = document.getElementsByTagName("source")[0];
-        srcElement.src = url;
+        var li = document.createElement('li');
+        var au = document.createElement('audio');
+        var hf = document.createElement('a');
+        au.controls = true;
+        au.src = url;
+        hf.href = url;
+        hf.download = new Date().toISOString() + '.wav';
+        hf.innerHTML = hf.download;
+        li.appendChild(au);
+        li.appendChild(hf);
+        recordingslist.appendChild(li);
       } else {
         console.log('Cannot find audio files');
       }
@@ -88,6 +97,7 @@ function createDownloadLink() {
 var BinaryFileReader = {
     read: function (file, callback) {
         var reader = new FileReader;
+        reader.readAsDataURL(file);
 
         var fileInfo = {
             name: file.name,
@@ -96,14 +106,34 @@ var BinaryFileReader = {
             file: null
         }
 
-        reader.onload = function () {
-            fileInfo.file = new Uint8Array(reader.result);
-            callback(null, fileInfo);
+        reader.onloadend = function () {
+            base64data = reader.result.split(',')[1]; // split to remove content/type of base64
+            callback(null, base64data);
         }
+
         reader.onerror = function () {
             callback(reader.error);
         }
-
-        reader.readAsArrayBuffer(file);
     }
+}
+
+function base64toBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        var begin = sliceIndex * sliceSize;
+        var end = Math.min(begin + sliceSize, bytesLength);
+
+        var bytes = new Array(end - begin);
+        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
 }
