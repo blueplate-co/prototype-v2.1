@@ -8,6 +8,7 @@ Transaction = new Mongo.Collection('transaction');
 Profile_details = new Mongo.Collection('profile_details');
 Kitchen_details = new Mongo.Collection('kitchen_details');
 Markers = new Mongo.Collection('markers');
+UserAudios = new Mongo.Collection('user_audio');
 
 Images = new FilesCollection({
   collectionName: 'Images',
