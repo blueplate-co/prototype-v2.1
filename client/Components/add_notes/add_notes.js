@@ -2,41 +2,41 @@ import { Meteor } from 'meteor/meteor';
 var audio_context;
 var recorder;
 
-// generate log displayed on log frame
-function __log(e, data) {
-    log.innerHTML += "\n" + e + " " + (data || '');
-}
-
 if (navigator.getUserMedia) {
   audio_context = new AudioContext;
   navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
-    __log('No live audio input: ' + e);
+    console.log('No live audio input: ' + e);
   });
 } else {
-  __log("Your browser is not support this feature");
+    console.log("Your browser is not support this feature");
 }
 
 
 // init audio context
 function startUserMedia(stream) {
   var input = audio_context.createMediaStreamSource(stream);
-  __log('Media stream created.');
+  console.log('Media stream created.');
   // Uncomment if you want the audio to feedback directly
   //input.connect(audio_context.destination);
   //__log('Input connected to audio context destination.');
 
   recorder = new Recorder(input);
-  __log('Recorder initialised.');
+  console.log('Recorder initialised.');
 }
 
-Template.record_sound.events({
+Template.add_notes.onRendered( function(){
+  $('#current_datetime').text(getCurrentDateTime());
+});
+
+
+Template.add_notes.events({
   // when click start record
   'click #startRecording': function(event) {
       button = event.target;
       recorder && recorder.record();
       button.disabled = true;
       button.nextElementSibling.disabled = false;
-      __log('Recording...');
+      console.log('Recording...');
   },
   //when click stop record
   'click #stopRecording': function(event) {
@@ -44,7 +44,7 @@ Template.record_sound.events({
       recorder && recorder.stop();
       button.disabled = true;
       button.previousElementSibling.disabled = false;
-      __log('Stopped recording.');
+      console.log('Stopped recording.');
 
       // create WAV download link using audio data blob
       createDownloadLink();
@@ -75,19 +75,6 @@ Template.record_sound.events({
 
 function createDownloadLink() {
   recorder && recorder.exportWAV(function(blob) {
-      // var url = URL.createObjectURL(blob);
-      // var li = document.createElement('li');
-      // var au = document.createElement('audio');
-      // var hf = document.createElement('a');
-      //
-      // au.controls = true;
-      // au.src = url;
-      // hf.href = url;
-      // hf.download = new Date().toISOString() + '.wav';
-      // hf.innerHTML = hf.download;
-      // li.appendChild(au);
-      // li.appendChild(hf);
-      // recordingslist.appendChild(li);
       BinaryFileReader.read(blob, function (err, fileInfo) {
           Meteor.call('user_audio.insert', Meteor.userId() , Meteor.userId() + new Date().toISOString() + '.wav', fileInfo , Date.now());
       });
@@ -136,4 +123,11 @@ function base64toBlob(base64Data, contentType) {
         byteArrays[sliceIndex] = new Uint8Array(bytes);
     }
     return new Blob(byteArrays, { type: contentType });
+}
+
+function getCurrentDateTime() {
+    var result = "Current date time goes here";
+    var d = new Date();
+    result = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear() + " | " + d.getHours() + ":" + d.getMinutes();
+    return result;
 }

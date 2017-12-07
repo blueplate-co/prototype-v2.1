@@ -1,0 +1,39 @@
+.round-border-icon {
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  padding: 15px;
+  display: block;
+}
+
+.current_datetime_block {
+  text-align: center;
+  padding: 15px!important;
+}
+
+#title-input {
+  border: none;
+  font-size: 30px;
+  outline: none;
+}
+
+#note-content {
+  border: none;
+  font-size: 18px;
+  outline: none;
+  min-height: 10rem;
+}
+
+.add-media-float-btn {
+  position: absolute!important;
+  top: 40px;
+  right: 0px!important;
+}
+
+.add-media-float-btn > a {
+  background-color: #5839b5;
+}
+
+.add-media-float-btn ul {
+  top: 90px;
+  min-height: 150px;
+}
