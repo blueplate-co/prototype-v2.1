@@ -18,7 +18,7 @@
         <i class="fa fa-plus" aria-hidden="true"></i>
       </a>
       <ul>
-        <li>
+        <li id="audio_record">
           <i class="fa fa-microphone fa-lg" aria-hidden="true"></i>
         </li>
         <li>
@@ -54,11 +54,25 @@
         <textarea id="note-content" placeholder="Types your notes"></textarea>
       </div>
     </div><!-- notes content wrapper -->
+    {{> audio_record}}
     <div class="row">
       <div class="col l12" style="text-align: right">
           <a class="waves-effect waves-dark btn light-btn">Edit</a>
-          <a class="waves-effect waves-light btn">Save</a>
+          <a id="save-record" class="waves-effect waves-light btn">Save</a>
       </div>
     </div><!-- end control button -->
   </div><!-- end wrapper container wrap all elements in this -->
+</template>
+
+<template name="audio_record">
+    <div class="row col l12 record_wrapper">
+      <div id="record">
+          <i class="fa fa-microphone fa-4x" id="start-record" aria-hidden="true"></i>
+          <i class="fa fa-stop fa-4x" id="stop-record" aria-hidden="true" style="display: none"></i>
+          <i class="fa fa-play fa-4x" id="play-record" aria-hidden="true" style="display: none"></i>
+      </div>
+      <div id="status_record" style="visibility: hidden;">
+          <span>Recording...</span>
+      </div>
+    </div>
 </template>

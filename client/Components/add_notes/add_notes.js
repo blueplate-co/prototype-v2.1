@@ -30,54 +30,90 @@ Template.add_notes.onRendered( function(){
 
 
 Template.add_notes.events({
+  //click to show panel recorder
+  'click #audio_record': function(event) {
+
+  },
   // when click start record
-  'click #startRecording': function(event) {
+  'click #start-record': function(event) {
       button = event.target;
       recorder && recorder.record();
-      button.disabled = true;
-      button.nextElementSibling.disabled = false;
-      console.log('Recording...');
+      // button.disabled = true;
+      // button.nextElementSibling.disabled = false;
+      $('#status_record').removeAttr('style');
+      $('#start-record').hide();
+      $('#stop-record').show();
   },
   //when click stop record
-  'click #stopRecording': function(event) {
+  'click #stop-record': function(event) {
       button = event.target;
       recorder && recorder.stop();
-      button.disabled = true;
-      button.previousElementSibling.disabled = false;
       console.log('Stopped recording.');
-
+      $('#stop-record').hide();
+      $('#play-record').show();
+      $('#status_record span').text('Stopped');
       // create WAV download link using audio data blob
       createDownloadLink();
   },
-  //when click play recorder
-  'click #play': function(event) {
+  //when click play record
+  'click #play-record': function(event) {
       button = event.target;
-      var result = UserAudios.findOne({ user_id: Meteor.userId() });
-      if (result) {
-        var blob = base64toBlob(result.audio, 'audio/wav');
-        var url = URL.createObjectURL(blob);
-        var li = document.createElement('li');
-        var au = document.createElement('audio');
-        var hf = document.createElement('a');
-        au.controls = true;
-        au.src = url;
-        hf.href = url;
-        hf.download = new Date().toISOString() + '.wav';
-        hf.innerHTML = hf.download;
-        li.appendChild(au);
-        li.appendChild(hf);
-        recordingslist.appendChild(li);
-      } else {
-        console.log('Cannot find audio files');
-      }
+      $('#record').hide();
+      $('#status_record').hide();
+      $('.record_wrapper li audio')[0].play();
   },
+  'click #save-record': function(event) {
+      button = event.target;
+      BinaryFileReader.read(window.blob, function (err, fileInfo) {
+        Meteor.call('user_audio.insert', Meteor.userId() , Meteor.userId() + new Date().toISOString() + '.wav', fileInfo , Date.now(), function(error, result){
+            if (error) {
+                Materialize.toast('Error when saved!', 4000)
+            } else {
+                Materialize.toast('Audio has been saved!', 4000)
+            }
+        });
+      });
+
+  }
+  //when click play recorder NO NEED NOW
+  // 'click #play': function(event) {
+  //     button = event.target;
+  //     var result = UserAudios.findOne({ user_id: Meteor.userId() });
+  //     if (result) {
+  //       var blob = base64toBlob(result.audio, 'audio/wav');
+  //       var url = URL.createObjectURL(blob);
+  //       var li = document.createElement('li');
+  //       var au = document.createElement('audio');
+  //       var hf = document.createElement('a');
+  //       au.controls = true;
+  //       au.src = url;
+  //       hf.href = url;
+  //       hf.download = new Date().toISOString() + '.wav';
+  //       hf.innerHTML = hf.download;
+  //       li.appendChild(au);
+  //       li.appendChild(hf);
+  //     } else {
+  //       console.log('Cannot find audio files');
+  //     }
+  // },
 });
 
 function createDownloadLink() {
   recorder && recorder.exportWAV(function(blob) {
-      BinaryFileReader.read(blob, function (err, fileInfo) {
-          Meteor.call('user_audio.insert', Meteor.userId() , Meteor.userId() + new Date().toISOString() + '.wav', fileInfo , Date.now());
-      });
+      //create audio element
+      var url = URL.createObjectURL(blob);
+      window.blob = blob;
+      var li = document.createElement('li');
+      var au = document.createElement('audio');
+      var hf = document.createElement('a');
+      au.controls = true;
+      au.src = url;
+      hf.href = url;
+      hf.download = new Date().toISOString() + '.wav';
+      hf.innerHTML = hf.download;
+      li.appendChild(au);
+      li.appendChild(hf);
+      $('.record_wrapper').prepend(li);
   });
 };
 
@@ -130,4 +166,9 @@ function getCurrentDateTime() {
     var d = new Date();
     result = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear() + " | " + d.getHours() + ":" + d.getMinutes();
     return result;
+}
+
+function updateTime() {
+    console.log(this.duration);
+    console.log(this.currentTime);
 }
