@@ -1,0 +1,78 @@
+<!-- <template name = "add_notes">
+  <button id="startRecording">record</button>
+  <button id="stopRecording" disabled>stop</button>
+
+  <h2>Recordings</h2>
+  <ul id="recordingslist"></ul>
+
+  <h2>Log</h2>
+  <pre id="log"></pre>
+  <button id="play">Play last audio</button>
+</template> -->
+
+<template name="add_notes">
+  <div class="container" style="position: relative">
+
+    <div class="fixed-action-btn add-media-float-btn">
+      <a class="btn-floating btn-medium">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </a>
+      <ul>
+        <li id="audio_record">
+          <i class="fa fa-microphone fa-lg" aria-hidden="true"></i>
+        </li>
+        <li>
+          <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+        </li>
+        <li>
+          <i class="fa fa-camera fa-lg" aria-hidden="true"></i>
+        </li>
+        <li>
+          <i class="fa fa-video-camera fa-lg" aria-hidden="true"></i>
+        </li>
+        <li>
+          <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col l12 current_datetime_block">
+        <span id="current_datetime"></span>
+      </div>
+    </div> <!-- current datatime row -->
+    <div class="row" style="margin-bottom: 0px;">
+      <div class="col l1">
+        <span class="round-border-icon"><i  style="transform: scale(2.1);" class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+      </div>
+      <div class="col l10">
+        <input id="title-input" type="text" placeholder="Title"/>
+      </div>
+    </div><!-- heading title -->
+    <div class="row">
+      <div class="col l10 offset-l1">
+        <textarea id="note-content" placeholder="Types your notes"></textarea>
+      </div>
+    </div><!-- notes content wrapper -->
+    {{> audio_record}}
+    <div class="row">
+      <div class="col l12" style="text-align: right">
+          <a class="waves-effect waves-dark btn light-btn">Edit</a>
+          <a id="save-record" class="waves-effect waves-light btn">Save</a>
+      </div>
+    </div><!-- end control button -->
+  </div><!-- end wrapper container wrap all elements in this -->
+</template>
+
+<template name="audio_record">
+    <div class="row col l12 record_wrapper">
+      <div id="record">
+          <i class="fa fa-microphone fa-4x" id="start-record" aria-hidden="true"></i>
+          <i class="fa fa-stop fa-4x" id="stop-record" aria-hidden="true" style="display: none"></i>
+          <i class="fa fa-play fa-4x" id="play-record" aria-hidden="true" style="display: none"></i>
+      </div>
+      <div id="status_record" style="visibility: hidden;">
+          <span>Recording...</span>
+      </div>
+    </div>
+</template>
