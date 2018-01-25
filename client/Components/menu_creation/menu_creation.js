@@ -118,7 +118,7 @@ Template.menu_creation_content.events({
     }
 
     //remove 'on' problem
-    if (typeof dishes_id !== "undefined"){
+    if (typeof dishes_id !== "undefined" && typeof selected_dishes !== "string"){
       dishes_id = dishes_id.filter(function(a){return a !== "on"})
     }
 

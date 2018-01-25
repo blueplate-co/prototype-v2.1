@@ -82,7 +82,7 @@ Meteor.methods({
   ) {
 
     check(order_id, String);
-    check(quantity, Number);
+    check(quantity, String);
     check(total_price_per_dish, Match.Any);
 
     Shopping_cart.update({

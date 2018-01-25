@@ -20,7 +20,7 @@ Template.dishes_summary.onRendered(function(){
 });
 
 Template.dishes_summary.events({
-  'click #btn_add_dish': function() {
+  'click #btn_add_dish': function(event) {
     event.preventDefault();
     Session.set('image_id',null);
     Meteor.call('getUserProfileByID', function (err, result) {
@@ -58,8 +58,14 @@ Template.dishes_summary.events({
     });
   },
 
+  'click #close_create_dish_modal': function(event) {
+    // clear all selected dishes in session
+    event.preventDefault();
+    Session.set('selected_dishes_id', []);
+  },
+
   'click .btn_edit_dish': function(event,template) {
-    event.preventDefault()
+    event.preventDefault();
     // Check if a create dish form existed in the modal
     if (Blaze.getView($("#edit_dish_modal_content")[0])._templateInstance.lastNode.children.length > 1) {
       $('.create_dishes_form_container').remove();
@@ -68,7 +74,7 @@ Template.dishes_summary.events({
     var selected_dishes = Session.get('selected_dishes_id');
     // remove all "on" element in value
 
-    if (typeof selected_dishes !== "undefined"){
+    if (typeof selected_dishes !== "undefined" && typeof selected_dishes !== "string"){
       selected_dishes = selected_dishes.filter(function(a){return a !== "on"})
     }
 
@@ -136,7 +142,7 @@ Template.dishes_summary.events({
 
   'click #btn_delete_dish': function(event) {
     var selected_dishes = Session.get('selected_dishes_id');
-    if (selected_dishes !== undefined && typeof selected_dishes !== null){
+    if (selected_dishes !== undefined && typeof selected_dishes !== null && typeof selected_dishes !== "string"){
       selected_dishes = selected_dishes.filter(function(a){return a !== "on"})
     }
     if (!selected_dishes || selected_dishes.length === 0) {
@@ -149,16 +155,20 @@ Template.dishes_summary.events({
           inDuration: 300, // Transition in duration
           outDuration: 200, // Transition out duration
           startingTop: '4%', // Starting top style attribute
-          endingTop: '10%' // Ending top style attribute
+          endingTop: '10%', // Ending top style attribute
         }
       );
       $('#confirm_multi_delete').modal('open');
     }
   },
 
+  'click #cancel_multi': function(event) {
+    Session.set('selected_dishes_id', []); // clear all selected dishes
+  },
+
   'click #confirm_multi': function(event) {
     var selected_dishes = Session.get('selected_dishes_id');
-    if (typeof selected_dishes !== "undefined"){
+    if (typeof selected_dishes !== "undefined" && typeof selected_dishes !== "string"){
       selected_dishes = selected_dishes.filter(function(a){return a !== "on"})
     }
     if (!selected_dishes || selected_dishes.length === 0) {

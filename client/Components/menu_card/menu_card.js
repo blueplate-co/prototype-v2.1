@@ -18,6 +18,13 @@ import {
 } from '/imports/functions/checkboxes_recall.js'
 
 Template.menu_card.onRendered(function(){
+
+  // menu card for manage menus screen
+  // if (FlowRouter.getRouteName() !== 'Main') {
+  //   this.$('.switch_wrapper').unwrap();
+  //   this.$('.card-action').remove();
+  // }
+
   $('div.modal').scrollTop(0);
   this.$('.dropdown-button').dropdown({
     inDuration: 300,
@@ -37,9 +44,11 @@ Template.menu_card.onRendered(function(){
     remove_dropdown = $('.dropdown_element').detach();
     remove_status_switch = $('.online_status').detach();
   }
-  if (this.view.parentView.parentView.parentView.name == "Template.view_menu") {
+  if (this.view.parentView.parentView.parentView.parentView.name == "Template.view_menu") {
     this.$('.carousel.carousel-slider').carousel({fullWidth: true});
     remove_order = $('#menu_card .card-action').detach();
+    this.$('.switch_wrapper').unwrap();
+    this.$('.card-action').remove();
   }
 });
 
@@ -83,6 +92,10 @@ Template.menu_card.events({
     var menu_details = Menu.findOne({"_id":this._id});
     var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
     var foodie_id = Meteor.userId();
+
+    if (typeof foodie_details == 'undefined' || foodie_details.foodie_name == '') {
+      Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded red lighten-2');
+    }
 
     var homecook_id = menu_details.user_id;
     var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});

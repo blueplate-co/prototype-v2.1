@@ -64,7 +64,7 @@ Template.dishes_thumbnails.events({
   
   'click #place_order': function () {
     var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-    if ((typeof foodie_details == 'undefined')) {
+    if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
       $('#confirm_foodie').modal({
           dismissible: true, // Modal can be dismissed by clicking outside of the modal
           opacity: .5, // Opacity of modal background
@@ -79,6 +79,7 @@ Template.dishes_thumbnails.events({
         }
       );
       $('#confirm_foodie').modal('open');
+      Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded red lighten-2');
     } else {
       var dish_details = Dishes.findOne({"_id":this._id});
       var foodie_id = Meteor.userId();
