@@ -18,9 +18,9 @@ Meteor.methods({
   'order_record.rating.insert'(rating, order_id) {
     Order_record.update({_id: order_id},{$set: {rating: rating}})
   },
-  'average_rating.update'(total_count, new_rating, previous_avg_rating, product_id, seller_id, order_id) {
+  'average_rating.update'(total_count, new_rating, previous_avg_rating, product_id, seller_id, order_id, quantities) {
     if (total_count > 0) {
-      var new_avg_rating = (previous_avg_rating * (total_count - 1) + new_rating) / total_count;
+      var new_avg_rating = (previous_avg_rating * (total_count - quantities) + new_rating * quantities) / total_count;
       //console.log(new_avg_rating);
       if (Dishes.findOne({_id: product_id})) {
         Dishes.update({
@@ -42,7 +42,7 @@ Meteor.methods({
       var kitchen_details = Kitchen_details.findOne({user_id: seller_id});
       var kitchen_order_count = kitchen_details.order_count;
       var kitchen_previous_rating = kitchen_details.average_rating;
-      var kitchen_new_avg_rating = (kitchen_previous_rating * (kitchen_order_count -1) + new_avg_rating) /kitchen_order_count;
+      var kitchen_new_avg_rating = (kitchen_previous_rating * (kitchen_order_count - quantities) + new_avg_rating * quantities) /kitchen_order_count;
       //console.log(kitchen_new_avg_rating);
       Kitchen_details.update({
         user_id: seller_id

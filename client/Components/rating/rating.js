@@ -29,11 +29,12 @@ Template.input_rating.events({
           dishes_details.average_rating,
           this.product_id,
           this.seller_id,
-          this._id
+          this._id,
+          this.quantity
       )
-    } else {
+    } else if (Menu.findOne({'_id': this.product_id})) {
       var menu_details = Menu.findOne({'_id': this.product_id})
-      //console.log(menu_details.order_count);
+      //console.log(this.quantity);
       //console.log(rating);
       //console.log(menu_details.average_rating);
       //console.log(this.product_id);
@@ -45,7 +46,8 @@ Template.input_rating.events({
           menu_details.average_rating,
           this.product_id,
           this.seller_id,
-          this._id
+          this._id,
+          this.quantity
       )
     }
   }

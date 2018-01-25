@@ -78,7 +78,68 @@ Template.menu_card.events({
     Session.set('menu_id', this._id);
     Session.set('dishes_id', this.dishes_id);
   },
+
   'click #menu_order': function () {
+    var menu_details = Menu.findOne({"_id":this._id});
+    var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+    var foodie_id = Meteor.userId();
+
+    var homecook_id = menu_details.user_id;
+    var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
+    var foodie_name = foodie_details.foodie_name;
+    var homecook_name =  homecook_details.chef_name;
+    var menu_id = menu_details._id;
+    var menu_price = menu_details.menu_selling_price;
+    var menu_name = menu_details.menu_name;
+    var ready_time = parseInt(menu_details.lead_days) * 24 * 60 + parseInt(menu_details.lead_hours) * 60;
+    var quantity = menu_details.min_order;
+
+
+    var serving_option = Session.get('method')
+    var address = Session.get('address')
+    //check if the dish has been put in shopping check_shopping_cart
+    var order = Shopping_cart.findOne({"product_id":this._id, 'buyer_id':foodie_id});
+    var total_price_per_dish = 0;
+
+    if (order)
+    {
+      var order_id = order._id;
+      quantity = parseInt(order.quantity) + 1;
+      total_price_per_dish = parseInt(menu_price) * quantity
+      Meteor.call('shopping_cart.update',
+      order_id,
+      quantity,
+      total_price_per_dish,
+      function(err) {
+        if (err) Materialize.toast('Oops! Error when update your shopping cart. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+      }
+    )
+    }
+    else{
+      Meteor.call('shopping_cart.insert',
+      foodie_id,
+      homecook_id,
+      foodie_name,
+      homecook_name,
+      address,
+      serving_option,
+      ready_time,
+      menu_id,
+      menu_name,
+      quantity,
+      menu_price,
+      function(err) {
+        if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded red lighten-2");
+      }
+      );
+    }
+    Materialize.toast(menu_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded red lighten-2")
+    $('.modal').modal();
+    $('.modal').modal('close');
+
+  },
+
+  'click .card-image': function () {
     if ($('#dish_card_large')){
       $('#dish_card_large').remove();
     }

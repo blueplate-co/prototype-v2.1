@@ -513,9 +513,9 @@ Template.order_card.events({
   'click #ready': function() {
     var order_id = String(this)
     Meteor.call('order_record.ready', order_id)
-    console.log("Order_record Ready")
+    //console.log(order_id)
     var transactions = Transactions.findOne({'order': order_id}).order
-    console.log(transactions);
+    //console.log(transactions);
 
     Session.set('transaction_ready', 0)
 

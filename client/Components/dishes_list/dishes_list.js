@@ -60,7 +60,82 @@ Template.dishes_thumbnails.events({
     }
     dish_card = Blaze.render(Template.dishes_card, $('#large_dish_display')[0]);
     $('#info_tabs').tabs();
-  }
+  },
+  
+  'click #place_order': function () {
+    var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+    if ((typeof foodie_details == 'undefined')) {
+      $('#confirm_foodie').modal({
+          dismissible: true, // Modal can be dismissed by clicking outside of the modal
+          opacity: .5, // Opacity of modal background
+          inDuration: 300, // Transition in duration
+          outDuration: 200, // Transition out duration
+          startingTop: '4%', // Starting top style attribute
+          endingTop: '10%', // Ending top style attribute
+          ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            $('.modal-overlay').last().remove();
+          },
+          complete: function() { FlowRouter.go('/profile') } // Callback for Modal close
+        }
+      );
+      $('#confirm_foodie').modal('open');
+    } else {
+      var dish_details = Dishes.findOne({"_id":this._id});
+      var foodie_id = Meteor.userId();
+      var homecook_id = dish_details.user_id;
+      var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
+      var foodie_name = foodie_details.foodie_name;
+      var homecook_name =  homecook_details.chef_name;
+      var dish_id = dish_details._id;
+      var dish_price = dish_details.dish_selling_price;
+      var dish_name = dish_details.dish_name;
+      var ready_time = dish_details.cooking_time;
+      var quantity = 1;
+
+
+      var serving_option = Session.get('method')
+      var address = Session.get('address')
+      //check if the dish has been put in shopping check_shopping_cart
+      var order = Shopping_cart.findOne({"product_id":this._id, 'buyer_id':foodie_id});
+      var total_price_per_dish = 0;
+
+      if (order)
+      {
+        var order_id = order._id;
+        quantity = parseInt(order.quantity) + 1;
+        total_price_per_dish = parseInt(dish_price) * quantity
+        Meteor.call('shopping_cart.update',
+          order_id,
+          quantity,
+          total_price_per_dish,
+          function(err) {
+            if (err) Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+          }
+        )
+      }
+      else{
+          Meteor.call('shopping_cart.insert',
+            foodie_id,
+            homecook_id,
+            foodie_name,
+            homecook_name,
+            address,
+            serving_option,
+            ready_time,
+            dish_id,
+            dish_name,
+            quantity,
+            dish_price,
+            function(err) {
+              if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+            }
+          );
+        }
+        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded red lighten-2")
+        $('.modal').modal();
+        $('.modal').modal('close')
+      }
+    }
 });
 
 Template.ingredients_loop.helpers ({

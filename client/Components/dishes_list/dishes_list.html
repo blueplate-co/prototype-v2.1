@@ -5,8 +5,10 @@
 <template name = "dishes_thumbnails">
   <div class = "card dish_thumbnail_card card_on_display">
     <div class = "card-image">
+      <a class='dish_thumbnail' href="#large_dish_display">
       <div id="thumbnail_img_wrapper">{{> get_dish_image}}</div>
       <a class="btn-floating halfway-fab homecook_image grey lighten-1" style="background-image: url({{get_homecook_image}})"></a>
+      </a>
     </div>
     <div class = "card-content">
       <h6 class = "black-text">{{dish_name}}</h6>
@@ -15,7 +17,7 @@
     </div>
     <div class = "card-action">
       <div class = "center">
-        <a class="waves-effect waves-light btn red lighten-2 dish_thumbnail modal-trigger" id="{{_id}}" href="#large_dish_display" style="width:65%;">Order</a>
+        <a class="waves-effect waves-light btn red lighten-2" id="place_order"  style="width:65%;">Order</a>
       </div>
     </div>
   </div>

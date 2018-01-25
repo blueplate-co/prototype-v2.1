@@ -102,6 +102,10 @@ Template.navbar.events({
   'click .navbar_profile_logo': function() {
     FlowRouter.go('/profile');
   },
+  'click #home_link': function () {
+    FlowRouter.go('/main');
+   $(".nav_brand_logo").sideNav('hide');
+  },
  'click #food_search': function () {
    FlowRouter.go('/main');
   $(".nav_brand_logo").sideNav('hide');
