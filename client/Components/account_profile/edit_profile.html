@@ -130,9 +130,9 @@
           <div class="input-field col l2 m2 s2 valign">
             <select class="material_select" id="card_exp_year">
               <option value="{{get_foodie_profile.card_exp_year}}" selected>{{get_foodie_profile.card_exp_year}}</option>
-              {{#each year_list}}
-              <option value="{{option}}">{{year}}</option>
-              {{/each}}
+                {{#each get_year_list}}
+                <option value="{{year}}">{{year}}</option>
+                {{/each}}
               </select>
             </div>
         </div>

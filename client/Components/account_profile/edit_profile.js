@@ -137,6 +137,21 @@ Template.edit_foodie_profile.helpers({
 
   ],
 
+  //- check current year to display
+  'get_year_list': function() {
+    var year_list = []
+    var current_year = (new Date()).getFullYear()
+    for(var i=1; i<30;i++)
+    {
+      year_list.push({
+        'year': current_year + i
+      });
+    }
+    
+    return year_list;
+  },
+
+
 })
 
 Template.edit_foodie_profile.onRendered(function() {
