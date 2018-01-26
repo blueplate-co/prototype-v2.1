@@ -68,7 +68,7 @@
 <template name = 'pending_confirmation'>
   <div class ='card sticky-action request_card'>
     <div class = 'card-image'>
-      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url(/profile_upload/{{kitchen_profile_picture}})"></a>
+      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
       <div class = 'divider'></div>
       <!-- #: {{get_transaction_no}} -->
@@ -123,7 +123,7 @@
   {{set_timer}}
   <div class ='card request_card'>
     <div class = 'card-image'>
-      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url(/profile_upload/{{kitchen_profile_picture}})"></a>
+      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{foodie_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
       <!--<span id = 'transaction_no' style='line-height: 12px;'><small><strong>Transaction no.:</strong> {{get_transaction_no}}</small></span>-->
       <div class = 'divider'></div>
@@ -133,7 +133,7 @@
         <div class = 'row'>
           <table>
             <tbody>
-              <td><a class ='cooking_card_profile_picture' style="background-image: url(/dishes_upload/{{get_dish_image}})"></a></td>
+              <td><a class ='cooking_card_profile_picture dasdas' style="background-image: url({{get_dish_image}})"></a></td>
               <td><strong>{{get_dish_name}}</strong></td>
               <td><strong>x{{get_dish_qty}}</strong></td>
             </tbody>
@@ -147,7 +147,7 @@
             <div class = 'row'>
               <table>
                 <tbody>
-                  <td><a class ='cooking_card_profile_picture' style="background-image: url(/dishes_upload/{{get_menu_dish_image}})"></a></td>
+                  <td><a class ='cooking_card_profile_picture dasdastttt' style="background-image: url({{get_menu_dish_image}})"></a></td>
                   <td><strong>{{get_menu_dish_name}}</strong></td>
                   <td><strong>x{{get_menu_qty}}</strong></td>
                 </tbody>
@@ -180,7 +180,7 @@
   {{check_transaction_closed}}
   <div class ='card sticky-action request_card'>
     <div class = 'card-image'>
-      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url(/profile_upload/{{kitchen_profile_picture}})"></a>
+      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
       <div class = 'divider'></div>
       <!-- #: {{get_transaction_no}} -->

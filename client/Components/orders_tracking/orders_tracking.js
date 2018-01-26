@@ -38,7 +38,7 @@ Template.orders_tracking.helpers({
 Template.pending_confirmation.helpers({
   'kitchen_profile_picture': function(){
     var foodie = profile_images.findOne({'userId': String(this), "meta.purpose": "homecook_profile_picture"})
-    return foodie._id + foodie.extensionWithDot
+    return foodie.meta.base64;
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': String(this)})
@@ -124,7 +124,7 @@ Template.foodies_confirmed_order.helpers({
     var order = Order_record.findOne({'_id': String(this)})
     var buyer_id = order.buyer_id
     var foodie = profile_images.findOne({'userId': buyer_id, "meta.purpose": "profile_picture"})
-    return foodie._id + foodie.extensionWithDot
+    return foodie.meta.base64;
   },
   'product_is_dish': function() {
     var order = Order_record.findOne({'_id': String(this)})
@@ -142,8 +142,20 @@ Template.foodies_confirmed_order.helpers({
   'get_menu_dish_name': function() {
     return Dishes.findOne({'_id': String(this)}).dish_name;
   },
+  'get_dish_image': function() {
+    var dish_image = Dishes.findOne({
+      '_id': String(this)
+    });
+    var imageId = dish_image_id.image_id;
+    var base64 = Images.findOne({
+      '_id': imageId
+    }).meta.base64
+
+    return base64;
+  },
+
   'get_menu_dish_image': function() {
-    var dish_image_id = Dishes.findOne({
+    var dish_image_id = Menus.findOne({
       '_id': String(this)
     }).image_id
     var base64 = Images.findOne({
@@ -152,6 +164,7 @@ Template.foodies_confirmed_order.helpers({
 
     return base64;
   },
+
   'get_menu_qty': function() {
     return dish_qty;
   },
@@ -286,7 +299,7 @@ Template.ready_card.helpers({
   },
   'kitchen_profile_picture': function(){
     var foodie = profile_images.findOne({'userId': this.seller_id, "meta.purpose": "homecook_profile_picture"})
-    return foodie._id + foodie.extensionWithDot
+    return foodie.meta.base64;
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})

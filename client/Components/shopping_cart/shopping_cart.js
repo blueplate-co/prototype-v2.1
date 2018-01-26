@@ -425,6 +425,7 @@ function order_record_insert(array_value) {
               Meteor.call('shopping_cart.remove', cart_id)
               Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
               Session.clear
+              Materialize.toast('Place order successful!', 4000, 'rounded red lighten-2');
             }
           });
         } else {
