@@ -424,13 +424,8 @@ function order_record_insert(array_value) {
             } else {
               Meteor.call('shopping_cart.remove', cart_id)
               Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
-              Session.clear;
-              if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
-                $('#confirm_order_modal').modal();
-                $('#confirm_order_modal').modal('open');
-              } else {
-                Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
-              }
+              Session.clear
+              Materialize.toast('Place order successful!', 4000, 'rounded red lighten-2');
             }
           });
         } else {
@@ -444,7 +439,7 @@ function order_record_insert(array_value) {
           } else {
             Meteor.call('shopping_cart.remove', cart_id)
             Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
-            Session.clear;
+            Session.clear
             if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
               $('#confirm_order_modal').modal();
               $('#confirm_order_modal').modal('open');

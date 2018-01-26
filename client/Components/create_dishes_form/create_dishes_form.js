@@ -1036,13 +1036,13 @@ Template.create_dishes_form.events({
       Session.get('serving_temperature_tags'),
       new Date(),
       function(err) {
-        if (err) {
-          Materialize.toast('Oops! Error update dish. Please try again. ' + err.message, 4000, "rounded red lighten-2");
-        } else {
-          Materialize.toast('Update successful.' , 4000, "rounded red lighten-2");
-        }
+        if (err) Materialize.toast('Oops! Error update dish. Please try again. ' + err.message, 4000, "rounded red lighten-2");
       }
     );
+
+    // Ingredients_temporary.find({}).forEach(function(doc) {
+    //   Ingredients.insert(doc);
+    // });
 
     var list_ingredients = Session.get('ingredient_temp');
     list_ingredients.forEach(function(doc){
