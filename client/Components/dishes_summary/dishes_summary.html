@@ -2,7 +2,7 @@
   {{> check_kitchen_profile}}
   <div class = "container">
     <div class = "section">
-      <div class = "row">
+
         <h5>Available Dishes</h5>
         <a class = "btn-floating waves-effect waves-red red lighten-2 z-depth-0 left transparent modal-trigger tooltipped" data-position="bottom" data-delay="50" data-tooltip="Create new dish" href="#add_dish_modal" id="btn_add_dish">
           <i class="material-icons black-text text-lighten-1">add</i>
@@ -16,8 +16,11 @@
   <!-- <a class = "btn-floating grey lighten-1 waves-effect waves-red grey lighten-3 z-depth-0 right transparent" href="#" id="search_dish">
           <i class="material-icons red-text text-lighten-1">search</i>
         </a> -->
-      </div>
+
     </div>
+    <br>
+    <br>
+    <br>
     <div class = "divider"></div>
     <div class = "section">
       {{> dishes_selection}}
@@ -25,7 +28,9 @@
   </div>
   <div class ="modal modal-fixed-footer" id="add_dish_modal">
     <div class = "modal-content" id="add_dish_modal_content">
+      <div class = "container">
       <!-- called create_dishes_form template using Blaze.render in js -->
+      </div>
     </div>
     <div class="modal-footer">
       <a href="" class="modal-action waves-effect waves-green btn-flat" id="modal_add_btn">Save</a>
@@ -34,7 +39,9 @@
   </div>
   <div class ="modal modal-fixed-footer edit_dish_modal" id="edit_dish_modal">
     <div class = "modal-content" id="edit_dish_modal_content">
+      <div class = "container">
       <!-- called create_dishes_form template using Blaze.render in js -->
+      </div>
     </div>
     <div class="modal-footer">
       <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" id="modal_update_btn">Save</a>

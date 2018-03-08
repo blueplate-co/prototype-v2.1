@@ -6,7 +6,10 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import './signup.html';
 
 Template.signup_modal.onRendered(function(){
-  $('#signup_modal').modal();
+  $('#signup_modal').modal({
+    startingTop: '0%',
+    endingTop: '0%',
+  });
 });
 
 Template.signup_modal.events({

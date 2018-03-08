@@ -21,7 +21,7 @@ Template.menu_creation.onRendered(function(){
   //Check if menu has data instance
   Meteor.call('checkAlreadyMenu', function(err, result){
     if (err) {
-      console.log('error when get available menu from user');
+      console.log('error when getting available menus. Please try again.');
     } else {
       if (result) {
         Blaze.render(Template.view_menu, document.getElementById('card_container'));
@@ -36,8 +36,8 @@ Template.menu_creation.onRendered(function(){
 Template.menu_initiation.events({
   'click #add_menu': function(template) {
     Meteor.call('getUserProfileByID', function (err, result) {
-        if (err) { 
-          console.log('Error when get user ID: ' + err.message);
+        if (err) {
+          console.log('Error when getting user ID: ' + err.message);
         } else {
           if (result) {
             if (typeof result.kitchen_name !== 'undefined' && typeof result.chef_name !== 'undefined' && result.kitchen_name !== null && result.chef_name !== null) {
@@ -68,8 +68,23 @@ Template.menu_creation_content.onRendered(function(template){
   console.log(Template.instance().view._templateInstance.firstNode.parentElement)
 });
 
+Template.menu_creation_content.helpers({
+  'first_visit': function() {
+    Meteor.call('checkAlreadyMenu', function(err, result){
+      if (err) {
+        console.log('error when getting available menus. Please try again.');
+      } else {
+        if (result) {
+          return false;
+        }
+      }
+    })
+  }
+})
+
 Template.menu_creation_content.events({
   'click #cancel': function(template) {
+    Blaze.remove(Template.instance().view);
     // this template is reused in a modal setting, the followig is the check
     // whether this template render location is on a modal or not.
     // if it is on a modal, view shoudln't be removed and view menu template
@@ -77,6 +92,7 @@ Template.menu_creation_content.events({
     console.log(Template.instance().view._templateInstance.firstNode.parentElement)
     var current_instance = Template.instance().view._templateInstance.firstNode.parentElement
     if (!current_instance) {
+      console.log(Template.instance().view);
       Blaze.remove(Template.instance().view);
     }
     // reset the form after submission
@@ -109,12 +125,10 @@ Template.menu_creation_content.events({
     var image_id = [];
     if (typeof dishes_id !== 'undefined') {
       if (dishes_id.length == 0) {
-          Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded red lighten-2');
-          return;
+        Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded red lighten-2');
       }
     } else {
       Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded red lighten-2');
-      return;
     }
 
     //remove 'on' problem
@@ -197,6 +211,27 @@ Template.view_menu.helpers({
 Template.view_menu.events({
   'click #add_menu': function() {
     Blaze.render(Template.menu_creation_content,$('#modal_content')[0]);
+    console.log($('.modal_footer'));
+    $('#modal_footer').hide();
+  }
+})
+
+Template.modal.events({
+  'click #modal_menu_update_btn': function() {
+    if ($('#create_menu')) {
+      $('#create_menu').click();
+    }
+    if ($('#update_menu')) {
+      $('#update_menu').click();
+    }
+  },
+  'click #close_create_menu_modal': function() {
+    if ($('#cancel')) {
+      $('#cancel').click();
+    }
+    if ($('#edit_cancel')) {
+      $('#edit_cancel').click();
+    }
   }
 })
 
@@ -260,9 +295,11 @@ Template.edit_content.events({
     };
     //reinstate back the original status before editing
     var dishes_id = Session.get('dishes_id');
-    for (var i = 0; i < dishes_id.length; i++) {
-      document.getElementById(dishes_id[i]).checked = "checked";
-    };
+    if (dishes_id) {
+      for (var i = 0; i < dishes_id.length; i++) {
+        document.getElementById(dishes_id[i]).checked = "checked";
+      };
+    }
     Session.set('menu_id', this._id);
   },
   'click #update_menu': function() {

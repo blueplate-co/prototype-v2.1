@@ -1,6 +1,6 @@
 <template name = "menu_card">
   {{> delete_confirmation_popup}}
-  <div id="menu_card" class = "card card_on_display">
+  <div id="menu_card" class = "card z-depth-0 card_on_display">
     <div class= "card-image">
       <a class='modal-trigger' href="#menu_card_display">
       <div class="carousel carousel-slider center" id="carousel_wrapper" data-indicators="true">
@@ -13,7 +13,7 @@
           {{/with}}
         {{/each}}
       </div>
-      <div class ='switch_wrapper' style='margin-left: 24px;'>
+      <div class ='switch_wrapper' style='margin-left: 24px; margin-top: 8px;'>
         {{> online_switch}}
       </div>
       <a class="btn-floating halfway-fab grey lighten-1 homecook_image" style="background-image: url({{get_homecook_image}})"></a>

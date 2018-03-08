@@ -3,30 +3,32 @@
     {{#if check_shopping_cart}}
       <div class = "card order_summary_card">
         <div class = "card-content">
-          <div class="col l12 valign">
-            <div class="text-field col l3 m6 s6 valign">
-              <h6>Order summary</h6>
+          <div class="col l3 m12 s12 valign">
+            <div class="text-field col l3 m6 s12 valign">
+              <h5>Order summary</h5>
             </div>
           </div>
+          <br>
+          <br>
           {{#each shopping_cart}}
-          <div class="row col l12 valign">
-            <div class="col l4 m2 s2 offset-l3 valign">
-            <h6>{{product_name}}</h6>
-              By {{seller_name}}
-          </div>
-          <div class="text-field col l1 m1 s1 valign">
-               <input class="quantity center" id="{{_id}}_quantity" name="quantity" type="text" value='{{quantity}}' min='{{quantity}}'>
-            </div>
-            <div class="text-field col l2 m1 s2 valign center" style="padding-top:12px;">
+            <div class="row col l9 m12 s12 valign">
+              <div class="col l4 m4 s4 offset-l3 valign">
+                <h6>{{product_name}}</h6>
+                  By {{seller_name}}
+              </div>
+              <div class="text-field col l1 m1 s3 valign">
+                 <input class="quantity center" id="{{_id}}_quantity" name="quantity" type="text" value='{{quantity}}' min='{{quantity}}'>
+              </div>
+              <div class="text-field col l1 m2 s3 valign center" style="padding-top:12px;">
                 ${{product_price}}
               </div>
-          <div class="text-field col l1 m1 s2 valign center" style="padding-top:12px;">
-                ${{total_price_per_dish}}
-          </div>
-          <div class="text-field col l1 m1 s1 valign">
-            <i class="remove_button material-icons right" id="{{_id}}_removal" style="padding-top:12px;">delete</i>
+              <div class="text-field col l2 m3 s3 valign center hide-on-small-only" style="padding-top:12px;">
+                  ${{total_price_per_dish}}
+              </div>
+              <div class="text-field col l1 m1 s2 valign">
+                <i class="remove_button material-icons right" id="{{_id}}_removal">delete</i>
+              </div>
             </div>
-          </div>
           {{/each}}
           <li class="divider"></li>
           <br>
@@ -52,45 +54,45 @@
 
 <template name='sc_cost_summary'>
   <div class="row col l12 valign">
-    <div class="text-field col l2 m1 s2 offset-l8 valign center">Subtotal</div>
-    <div class="text-field col l2 m1 s2 valign right">${{total_food_price}}</div>
+    <div class="text-field col l2 m2 s2 offset-l8 offset-m8 valign center">Subtotal</div>
+    <div class="text-field col l2 m2 s2 valign right">${{total_food_price}}</div>
   </div>
   <div class="row col l12 valign">
-    <div class="text-field col l2 m1 s2 offset-l8 valign center">Delivery</div>
-    <div class="text-field col l2 m1 s2 valign right">${{total_delivery_cost}}</div>
+    <div class="text-field col l2 m2 s2 offset-l8 offset-m8 valign center">Delivery</div>
+    <div class="text-field col l2 m2 s2 valign right">${{total_delivery_cost}}</div>
   </div>
   <div class="row col l12 valign">
-    <div class="text-field col l2 m1 s2 offset-l8 valign center">Total</div>
-    <div class="text-field col l2 m1 s2 valign right">${{total_price}}</div>
+    <div class="text-field col l2 m2 s2 offset-l8 offset-m8 valign center">Total</div>
+    <div class="text-field col l2 m2 s2 valign right">${{total_price}}</div>
   </div>
 </template>
 
 
 <template name = 'sc_serving_details'>
-    {{#if check_shopping_cart}}
-    <div class="row col l12 valign">
-      <div class='row col l3 m3 s3 offset-l3 valign'>
+  {{#if check_shopping_cart}}
+    <div class="row">
+      <div class='row col l3 m12 s12 offset-l3 valign'>
         <h6>Address:</h6>
       </div>
-      <div class='text-field row col l4 m3 s3 valign' id="serving_address">{{get_serving_address}}</div>
-        <div class='row col l2 m1 s1 valign'>
+      <div class='text-field row col l4 m12 s12 valign' id="serving_address">{{get_serving_address}}</div>
+        <div class='row col l2 m4 s12 valign'>
           <select class='material_select' id="serving_address_select">
             <option value='' disabled selected>Serving</option>
               <option value='home_address'>Home</option>
               <option value='office_address'>Office</option>
               <option value='current_address'>Current Address</option>
           </select>
-          </div>
+        </div>
     </div>
     {{#each single_address}}
     <div class="row col l12 valign">
       <div class='row col l3 m3 s3 offset-l3 valign'>
         <h6>{{#each single_dish}}{{product_name}} {{/each}}</h6>{{get_chef_name}}
       </div>
-      <div class='row col l4 m3 s3 valign' style="padding-top:12px;">
+      <div class='row col l4 m12 s12 valign' style="padding-top:12px;">
       {{get_kitchen_address}}
     </div>
-    <div class='row col l2 m3 s3 valign'>
+    <div class='row col l2 m3 s12 valign'>
       <select class='material_select option_select' id="{{this}}_option_select">
         <option value='' disabled selected>Serving</option>
         {{#each service_option_list}}
@@ -100,56 +102,57 @@
     </div>
   </div>
   {{/each}}
-  <div class="row col l12 valign">
-    <div class ='row col l3 offset-l3 valign'>
-      <h6>Earliest Ready Time:</h6>
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-        {{get_ready_date}}
-        {{get_ready_time}}
+    <div class="col l12 m12 s12 valign">
+      <div class = "row">
+        <div class ='col l3 offset-l3 m6 s12'>
+          <p>This is the earliest ready time of your current order:</p>
+        </div>
+        <div class="text-field col l3 m6 s12">
+          {{get_ready_date}}
+          {{get_ready_time}}
+        </div>
       </div>
-  </div>
-  <div class="row col l12 valign">
-    <div class ='row col l3 offset-l3 valign'>
-      <h6>Prefered Ready Time:</h6>
-    </div>
-    <div class = 'col l6'  id="pefered_time">
-    <div class="text-field col l3 m3 s6 valign">
-        <input class ="datepicker" id="serve_date" name="serve_date" type="text" style='format: dd/mm/yyyy; text-align: center;'>
-      </div>
-      <div class="text-field col l3 m3 s6 valign">
+      <div class = "row">
+        <div class ='col l3 offset-l3 m3 s12 valign'>
+          <h6>Prefered Ready Time:</h6>
+        </div>
+        <div class="text-field col l3 m3 s6 valign">
+          <input class ="datepicker" id="serve_date" name="serve_date" type="text" style='format: dd/mm/yyyy; text-align: center;'>
+        </div>
+        <div class="text-field col l3 m3 s6 valign">
           <input class ="timepicker" id="serve_time" name="serve_time" type="text" style='format: 24hh:mm; text-align: center;'>
         </div>
       </div>
-  </div>
-
-    {{else}}
-    <div class="row col l12 valign">
     </div>
-    {{/if}}
+  {{else}}
+    <div class="col l12 m12 s12 valign">
+    </div>
+  {{/if}}
 </template>
 
 <template name='sc_payment'>
   <form class="row col l12 valign" action="/charge" method="post" id="payment-form">
-    <div class="input-field col l3 m6 s6 offset-l3 valign ">
+    <div class="input-field col l3 m3 s6 offset-l3 valign ">
       Pay with <i class="payment_card_logo" src=""></i>
       </div>
-      <div class="input-field col l2 m6 s6 valign">
+      <div class="input-field col l6 m2 s12 valign">
         <input id="card_no" name="card_no" type="text" placeholder="Credit Card Number" value='{{get_credit_card_no}}'>
       </div>
-      <div class='input-field col l1 m4 s6 valign'>
+      <div class='input-field col l2 m1 s4 offset-l6 valign'>
         <input id="exp_month" name="exp_month" type="text" placeholder="Exp MM" value='{{get_exp_month}}'>
       </div>
-      <div class='input-field col l1 m4 s6 valign'>
+      <div class='input-field col l2 m1 s4 valign'>
       <input id="exp_year" name="exp_year" type="text" placeholder="Exp YY" value='{{get_exp_year}}'>
       </div>
-      <div class="input-field col l2 m2 s3 valign">
+      <div class="input-field col l2 m2 s4 valign">
         <input id="cvc_no" name="cvc_no" type="text" placeholder="CVC/CVV Number">
       </div>
 
       <br>
       <br>
-      <div class="row col l12 valign">
+      <li class="divider"></li>
+      <br>
+      <div class="row col l12 m12 s12 valign">
         <a class="btn waves-effect waves-red red lighten-2 right" id="place_order">Place order</a>
         <a class="btn-flat waves-effect waves-red right" id = "more_dish">More dish</a>
       </div>

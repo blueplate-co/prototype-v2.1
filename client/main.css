@@ -11,7 +11,7 @@ body {
   color: rgba(0,0,0,0.54);
   margin:0;
   padding:0;
-  background-color: #fafafa;
+  background-color: #ffffff;
 }
 
 .card {
@@ -24,6 +24,27 @@ body {
   border-radius: 0px 0px 20px 20px !important;
 }
 
+/* modal responsive settings */
+/* desktop and above */
+@media (min-width:1024px) {
+  .modal {
+    top: 15% !important;
+    width: 70%;
+  }
+}
+/* iPad and below */
+@media (max-width: 1023px) {
+  .modal {
+    border-radius: 0px !important;
+    top: 0% !important;
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+
+/* Showroom grid settings */
 @media (max-width: 869px) {
   .card_container {
     -webkit-column-count: 1;

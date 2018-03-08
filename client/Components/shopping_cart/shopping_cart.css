@@ -17,4 +17,9 @@
 
 i.remove_button {
   cursor: pointer;
+  padding-top: 8px;
+}
+
+#place_order {
+  width
 }

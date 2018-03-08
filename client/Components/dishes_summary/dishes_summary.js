@@ -8,9 +8,9 @@ Template.dishes_summary.onRendered(function(){
     opacity: .5, // Opacity of modal background
     inDuration: 300, // Transition in duration
     outDuration: 200, // Transition out duration
-    startingTop: '4%', // Starting top style attribute
-    endingTop: '10%', // Ending top style attribute
-    ready: function() {}, // Callback for Modal open. Modal and trigger parameters available
+    ready: function() {
+       $(".overlay").remove();
+    }, // Callback for Modal open. Modal and trigger parameters available
     complete: function() {
     $(".overlay").remove();
     } // Callback for Modal close

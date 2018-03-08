@@ -11,7 +11,7 @@ nav {
 }
 
 .navbar_logo {
-  margin: 0px 44px 0px 12px;
+  margin-right: 44px;
 }
 
 .nav-wrapper{
@@ -66,8 +66,8 @@ nav {
   width: 40px;
   display: inline-block;
   position: absolute;
-  top: 12px;
-  right: 24px;
+  top: 11px;
+  right: 12px;
 }
 
 .cart_no{
