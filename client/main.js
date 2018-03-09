@@ -1,4 +1,7 @@
 import { Accounts } from 'meteor/accounts-base'
+import {
+  stepper
+} from 'materialize-stepper'
 
 Meteor.startup(function() {
   Notification.requestPermission()

@@ -46,7 +46,6 @@ oaf:html5-desktop-notifications  #HTML5 notification package
 u2622:persistent-session
 check
 jmsalash:chartjs
-momentjs:moment
 meteortoys:allthings
 barbatus:stars-rating
 force-ssl

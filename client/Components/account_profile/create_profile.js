@@ -18,9 +18,10 @@ import {
 } from '/imports/functions/address_geocode.js';
 import {
   Tracker
-} from 'meteor/tracker'
-
+} from 'meteor/tracker';
 import './create_profile.html';
+
+
 
 profile_images = new FilesCollection({
   collectionName: 'profile_images',
@@ -245,7 +246,17 @@ Template.upload_profile.events({
   }
 });
 
-Template.profile_personal_details.events({
+Template.create_profile_template.onRendered(function(){
+     this.$('#create_stepper').activateStepper({
+      linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+      autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+      autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+      showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+   });
+
+})
+
+Template.create_profile_your_details.events({
   'blur #create_home_address': function() {
     address_geocode('home_address_conversion', $('#create_home_address').val(), 'home address');
   },
@@ -951,7 +962,7 @@ Template.profile_payment_details.helpers({
   ],
 });
 
-Template.profile_personal_details.helpers({
+Template.create_profile_your_details.helpers({
   'get_foodie_email': function() {
     // to get user email always we enter profile page
     return Accounts.users.find().fetch()[0].emails[0].address;

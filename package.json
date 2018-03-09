@@ -10,8 +10,11 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "chart.js": "^2.7.1",
+    "install": "^0.10.4",
     "materialize-css": "^0.99.0",
+    "materialize-stepper": "^2.1.4",
     "meteor-node-stubs": "~0.2.4",
+    "npm": "^5.7.1",
     "react-chartjs-2": "^2.6.4"
   }
 }

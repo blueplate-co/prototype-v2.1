@@ -6,12 +6,17 @@
 <!--Template of the profile banner-->
 <template name = "profile_banner">
     <div class = "profile_banner_area valign-wrapper">
-      <div class = "container valign">
-        {{> upload_profile}}
-       <div class="col l12 m4 s4 valign">
-         <h5 class = "white-text center-align">
-           {{check_foodie_name}}
-          </h5>
+      <div class="col l12 m6 s6">
+        <div class="col l3 m2 s2">
+          <div class = "center-align">
+            {{> upload_profile}}
+          </div>
+        </div>
+         <div class="col l9 m4 s4">
+           <h5 class = "white-text center-align">
+             {{check_foodie_name}}
+           </h5>
+        </div>
       </div>
       <div class="input-field col l6 m4 s4 valign">
         <input id="profile_keywords" name="profile_keywords" type="text" style="text-align:center" placeholder="Write keywords about you" value={{check_foodie_keywords}}>
@@ -50,7 +55,7 @@
           {{/if}}
         {{/with}}
       </div>
-    </div>
+
   </div>
 </template>
 
@@ -81,84 +86,142 @@
 <template name = "create_foodie_profile">
     <form class ="create_foodie_profile col l12 m6 s6" id="create_foodie_profile">
       {{>profile_banner}}
-      <br>
-      <br>
-      <div class = "container">
-      {{>profile_personal_details}}
-      <br>
-      {{>profile_payment_details}}
-      <br>
-      {{>profile_food_allergies}}
-      <br>
-      {{>profile_dietary_perferences}}
-      <br>
-      <button id="create_foodie_button" class="waves-effect waves-teal btn-flat right" type="submit" value="Submit">Save</button>
+      <div class='container'>
+      {{>create_profile_template}}
+    </div>
 
-      <br>
-      <br>
-      </div>
-      <br>
-      <br>
+
     </form>
 </template>
 
 
 <!--Template for the personal details-->
-<template name="profile_personal_details">
-  <!--Row 1-->
-  <div class="row col l12 valign">
-    <div class="text-field col l3 m6 s6 valign">
-      <h6>Your details</h6>
+<template name="create_profile_template">
+  <!--steppers-->
+
+  <ul id='create_stepper' class="stepper horizontal" style="min-height:600px">
+     <li class="step active">
+        <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
+        <div class="step-content">
+          {{>create_profile_your_details}}
+           <div class="step-actions">
+              <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+           </div>
+        </div>
+     </li>
+     <li class="step">
+        <div class="step-title waves-effect">Your Story</div>
+        <div class="step-content">
+            <div class="input-field col l12 m12 s12  valign">
+              <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
+              <label for="about_myself">Write a paragraph about yourself</label>
+              </div>
+           <div class="step-actions">
+              <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+              <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+           </div>
+        </div>
+     </li>
+     <li class="step">
+        <div class="step-title waves-effect">Allergies</div>
+        <div class="step-content">
+          {{>profile_food_allergies}}
+           <div class="step-actions">
+             <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+             <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+           </div>
+        </div>
+     </li>
+     <li class="step">
+        <div class="step-title waves-effect">Perferences</div>
+        <div class="step-content">
+          {{>profile_dietary_perferences}}
+           <div class="step-actions">
+             <button class="waves-effect waves-dark btn" type="submit">SUBMIT</button>
+           </div>
+        </div>
+     </li>
+  </ul>
+</template>
+
+
+
+<template name="create_profile_your_details">
+<div class="row col l12 m6 s6 valign">
+  <div class="text-field col l3 m12 s12 valign">
+    <h6>Your details</h6>
+  </div>
+  <div class="text-field col l3 m4 s12 valign">
+    <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name">
+  </div>
+  <div class="text-field col l3 m4 s6 valign">
+    <input id="first_name" name="first_name" type="text" placeholder="First Name">
+  </div>
+  <div class="text-field col l3 m4 s6 valign">
+    <input id="last_name" name="last_name" type="text" placeholder="Last Name">
+  </div>
+</div>
+
+<div class="row col l12 m12 s12 valign">
+  <div class="text-field col l4 m5 s12 offset-l3 valign">
+    <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address" disabled>
+  </div>
+  <div class="text-field col l2 m3 s12 valign">
+      <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
+   </div>
+   <div class="text-field col l3 m4 s12 valign">
+     <div class="col l6 m6 s6 valign">
+       <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+       <label for="male">Male </label></p>
+     </div>
+       <div class="col l6 m6 s6 valign">
+       <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
+       <label for="female">Female </label></p>
+     </div>
+     </div>
+   </div>
+   <div class="row col l12 m12 s12 valign">
+  <div class="text-field col l2 m4 s6 offset-l3 valign">
+    <select class="material_select" id="mobile_country">
+      <option value="" disabled selected>Country</option>
+         {{#each country_list}}
+       <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
+         {{/each}}
+     </select>
+   </div>
+   <div class="text-field col l3 m4 s6 valign">
+     <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
+   </div>
+   </div>
+
+<div class="row col l12 m6 s6 valign">
+  <div class="text-field col l3 m6 s6 valign">
+    <h6>Delivery Address</h6>
+  </div>
+
+  <div class="input-field col l7 m10 s12 valign">
+    <input id="create_home_address" name="create_home_address" type="text">
+    <label for="create_home_address">Home Address</label>
+
     </div>
-    <div class="text-field col l3 m3 s6 valign">
-      <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name">
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-      <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address">
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-        <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
+    <div class="input-field col l2 m2 s6 valign">
+      <select class="material_select" id="home_address_country">
+        <option value="" disabled selected>Country</option>
+        {{#each country_list}}
+        <option value={{name}}>{{name}}</option>
+        {{/each}}
+        </select>
       </div>
   </div>
-        <div class="row col l12 valign">
-          <div class="text-field col l3 m6 s6 valign">
-            </div>
-            <div class="text-field col l3 m2 s2 valign">
-              <select class="material_select" id="mobile_country">
-                <option value="" disabled selected>Country</option>
-                {{#each country_list}}
-                <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                {{/each}}
-                </select>
-              </div>
-          <div class="text-field col l3 m3 s6 valign">
-              <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
-            </div>
-            <div class="text-field col l3 m3 s3 valign">
-              <div class="col l6 m3 s3 valign">
-                <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
-                <label for="male">Male </label></p>
-              </div>
-                <div class="col l6 m3 s3 valign">
-                <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
-                <label for="female">Female </label></p>
-              </div>
-              </div>
-          </div>
 
-    <!--Row 2-->
+
   <div class="row col l12 m6 s6 valign">
-    <div class="text-field col l3 m6 s6 valign">
-      <h6>Home Address</h6>
+    <div class="input-field col l7 m10 s12 offset-l3 valign">
+      <input id="create_office_address" name="create_office_address" type="text">
+      <label for="create_office_address">Office Address</label>
     </div>
-
-    <div class="input-field col l6 m6 s6 valign">
-      <input id="create_home_address" name="create_home_address" type="text">
-      <label for="create_home_address">Home Address</label>
-
-      </div>
-      <div class="input-field col l3 m2 s2 valign">
-        <select class="material_select" id="home_address_country">
+      <div class="input-field col l2 m2 s6 valign">
+        <select class="material_select" id="office_address_country">
           <option value="" disabled selected>Country</option>
           {{#each country_list}}
           <option value={{name}}>{{name}}</option>
@@ -166,35 +229,8 @@
           </select>
         </div>
     </div>
+  </template>
 
-    <!--Row 3-->
-    <div class="row col l12 m6 s6 valign">
-      <div class="text-field col l3 m6 s6 valign">
-        <h6>Office Address</h6>
-      </div>
-
-      <div class="input-field col l6 m6 s6 valign">
-        <input id="create_office_address" name="create_office_address" type="text">
-        <label for="create_office_address">Office Address</label>
-      </div>
-        <div class="input-field col l3 m2 s2 valign">
-          <select class="material_select" id="office_address_country">
-            <option value="" disabled selected>Country</option>
-            {{#each country_list}}
-            <option value={{name}}>{{name}}</option>
-            {{/each}}
-            </select>
-          </div>
-      </div>
-
-      <!--Row 4-->
-      <div class="row col l12 m6 s6 valign">
-        <div class="input-field col l9 m6 s6 offset-l3 valign">
-          <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
-          <label for="about_myself">Write a paragraph about yourself</label>
-          </div>
-        </div>
-</template>
 
 <!-- Credit Card Details for Payment -->
 <template name="profile_payment_details">
@@ -229,10 +265,10 @@
 <!-- Template for calling food allergies -->
 <template name="profile_food_allergies">
   <div class ="row l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
+    <div class="text-field col l3 m3 s6 valign">
       <h6>Major food allergies</h6>
       </div>
-    <div class="col l9 valign">
+      <div class="col l9 m9 s12 valign">
       {{> food_allergies}}
       </div>
     </div>
@@ -240,11 +276,11 @@
 
 <!--Template to call dietary Perference-->
 <template name="profile_dietary_perferences">
-  <div class ="row l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
+  <div class ="row l12 m6 s6 valign">
+    <div class="text-field col l3 m3 s6 valign">
       <h6>Dietary preferences</h6>
       </div>
-    <div class="col l9 valign">
+    <div class="col l9 m9 s12 valign">
       {{> dietary_preferences}}
       </div>
     </div>
