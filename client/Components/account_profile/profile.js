@@ -3,7 +3,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import './create_profile.html';
-
+/**
 
 Template.profile.onRendered(function(){
   //Check if user created profile
@@ -17,9 +17,7 @@ Template.profile.onRendered(function(){
         Blaze.render(Template.create_profile, document.getElementById('profile'));
       }
     }
-    this.$(document).ready(function(){
-      $('ul.tabs').tabs();
+
     });
   });
-
-});
+**/

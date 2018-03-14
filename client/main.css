@@ -3,7 +3,7 @@
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Roboto Slab', serif;
-    color: #E57373;
+    color: #56AACD;
 }
 
 body {
@@ -80,7 +80,7 @@ body {
 }
 
 ul.stepper .step.active::before, ul.stepper  .step.done::before, ul.stepper.horizontal .step.active .step-title::before, ul.stepper.horizontal .step.done .step-title::before {
-   background-color: #E57373 !important;
+   background-color: #56AACD !important;
 }
 
 ul.stepper  .step-actions, ul.stepper.horizontal .step-actions{
@@ -88,5 +88,5 @@ ul.stepper  .step-actions, ul.stepper.horizontal .step-actions{
 }
 
 .btn {
-    background-color: #E57373 !important;
+    background-color: #56AACD !important;
 }

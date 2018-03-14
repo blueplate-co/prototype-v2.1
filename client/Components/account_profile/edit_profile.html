@@ -1,4 +1,4 @@
-<template name = "edit_foodie_profile">
+<!--<template name = "edit_foodie_profile">
   {{#with get_foodie_profile}}
     <form class ="edit_foodie_profile col l12 m6 s6" id="edit_foodie_profile">
       {{>profile_banner}}
@@ -9,63 +9,9 @@
           <div class="text-field col l3 m6 s6 valign">
             <h6>Your details</h6>
             </div>
-            <div class="input-field col l3 m3 s6 valign">
-                <input id="foodie_name" name="foodie_name" type="text" value="{{get_foodie_profile.foodie_name}}">
-                    <label class="active" for="foodie_name">Foodie name</label>
-              </div>
-              <div class="input-field col l3 m3 s6 valign">
-                <input id="email" name="email" type="text" value="{{get_foodie_email}}">
-                    <label class="active" for="email">Email Address</label>
-              </div>
-              <div class="input-field col l3 m3 s6 valign">
-                  <input disabled id="date_of_birth" name="date_of_birth" type="text" value="{{get_foodie_profile.date_of_birth}}">
-                  <label class="active" for="foodie_name">Date of Birth</label>
-                </div>
-            </div>
-                  <div class="row col l12 m6 s6 valign">
-                    <div class="input-field col l3 m6 s6 valign">
-                    </div>
-                    <div class="input-field col l3 m2 s2 valign">
-                      <select class="material_select" id="mobile_country">
-                        <option value="{{get_foodie_profile.mobile_dial_code}}" selected>{{get_foodie_profile.mobile_dial_code}}</option>
-                        {{#each country_list}}
-                        <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                        {{/each}}
-                        </select>
-                      </div>
-                  <div class="input-field col l3 m3 s6 valign">
-                      <input id="mobile" name="mobile" type="text" value="{{get_foodie_profile.mobile}}">
-                      <label class="active" for="mobile">Mobile</label>
-                    </div>
-
-                    {{#if check_gender}}
-                  <div class="text-field col l3 m3 s3 valign">
-                    <div class="col l6 m3 s3 valign">
-                        <p><input class ="with-gap right" type="radio" id="male" name="gender" value="male" checked/>
-                        <label for="male">Male </label></p>
-                      </div>
-                  <div class="col l6 m3 s3 valign">
-                      <p><input class ="with-gap right" type="radio" id="female" name="gender" value="female" />
-                      <label for="female">Female </label></p>
-                    </div>
-                  </div>
-                  {{else}}
-                  <div class="text-field col l3 m3 s3 valign">
-                    <div class="col l6 m3 s3 valign">
-                        <p><input class ="with-gap right" type="radio" id="male" name="gender" value="male"/>
-                        <label for="male">Male </label></p>
-                      </div>
-                  <div class="col l6 m3 s3 valign">
-                      <p><input class ="with-gap right" type="radio" id="female" name="gender" value="female" checked/>
-                      <label for="female">Female </label></p>
-                    </div>
-                  </div>
-
-                  {{/if}}
-                  </div>
 
 
-            <!--Row 2-->
+
           <div class="row col l12 m6 s6 valign">
             <div class="text-field col l3 m6 s6 valign">
               <h6>Home Address</h6>
@@ -84,7 +30,7 @@
                 </div>
             </div>
 
-            <!--Row 3-->
+
             <div class="row col l12 m6 s6 valign">
               <div class="text-field col l3 m6 s6 valign">
                 <h6>Office Address</h6>
@@ -103,7 +49,7 @@
                   </div>
               </div>
 
-              <!--Row 4-->
+
               <div class="row col l12 m6 s6 valign">
                 <div class="input-field col l9 m6 s6 offset-l3 valign">
                   <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500" value="{{get_foodie_profile.about_myself}}"></textarea>
@@ -149,7 +95,194 @@
     </div>
     </form>
     {{/with}}
+</template>-->
+
+
+<template name = "edit_foodie_profile">
+  {{#with get_foodie_profile}}
+  <form class ="edit_foodie_profile col l12 m6 s6" id="create_foodie_profile">
+    {{>profile_banner}}
+    <div class='container'>
+      <ul id='edit_foodie_stepper' class="stepper horizontal" style="min-height:600px">
+         <li class="step active">
+            <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
+            <div class="step-content">
+              <div class="row col l12 m6 s6 valign">
+                <div class="text-field col l3 m12 s12 valign">
+                  <h6>Your details</h6>
+                </div>
+
+                <div class="text-field col l3 m4 s12 valign">
+                  <input id="foodie_name" name="foodie_name" type="text" value="{{get_foodie_profile.foodie_name}}" class="mandatory" required />
+                  <label class="active" for="foodie_name">foodie name</label>
+                </div>
+                <div class="text-field col l3 m4 s6 valign">
+                  <input id="first_name" name="first_name" type="text" value="{{get_foodie_profile.first_name}}">
+                  <label class="active" for="first_name">first name</label>
+                </div>
+                <div class="text-field col l3 m4 s6 valign">
+                  <input id="last_name" name="last_name" type="text" value="{{get_foodie_profile.last_name}}">
+                  <label class="active" for="first_name">last name</label>
+                </div>
+              </div>
+
+              <div class="row col l12 m12 s12 valign">
+                <div class="text-field col l4 m5 s12 offset-l3 valign">
+                  <input id="email" name="email" type="text" value={{get_foodie_profile.email}} disabled>
+                  <label class="active" for="email">email Address</label>
+                </div>
+                <div class="text-field col l2 m3 s12 valign">
+                    <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" value={{get_foodie_profile.date_of_birth}}>
+                    <label class="active" for="date_of_birth">date of birth</label>
+                 </div>
+                 </div>
+                 {{#if check_male}}
+                 <div class="text-field col l3 m4 s12 valign">
+                   <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male" checked/>
+                     <label for="male">Male </label></p>
+                   </div>
+                     <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
+                     <label for="female">Female </label></p>
+                   </div>
+                  </div>
+               {{elseif check_female}}
+
+               <div class="text-field col l3 m4 s12 valign">
+                 <div class="col l6 m6 s6 valign">
+                   <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+                   <label for="male">Male </label></p>
+                 </div>
+                   <div class="col l6 m6 s6 valign">
+                   <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female" chceked/>
+                   <label for="female">Female </label></p>
+                 </div>
+                 </div>
+               {{else}}
+               <div class="text-field col l3 m4 s12 valign">
+                 <div class="col l6 m6 s6 valign">
+                   <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+                   <label for="male">Male </label></p>
+                 </div>
+                   <div class="col l6 m6 s6 valign">
+                   <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
+                   <label for="female">Female </label></p>
+                 </div>
+                 </div>
+               {{/if}}
+
+                 <div class="row col l12 m12 s12 valign">
+                <div class="text-field col l2 m4 s6 offset-l3 valign">
+                  <select class="material_select" id="mobile_country">
+                    <option value="{{get_foodie_profile.mobile_dial_code}}" selected>{{get_foodie_profile.mobile_dial_code}}</option>
+                    {{#each country_list}}
+                    <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
+                       {{/each}}
+                   </select>
+                 </div>
+                 <div class="text-field col l3 m4 s6 valign">
+                   <input id="mobile" name="mobile" type="text" value={{get_foodie_profile.mobile}}>
+                   <label class="active" for="mobile">mobile</label>
+                 </div>
+                 </div>
+
+              <div class="row col l12 m6 s6 valign">
+                <div class="text-field col l3 m6 s6 valign">
+                  <h6>Delivery Address</h6>
+                </div>
+
+                <div class="input-field col l7 m10 s12 valign">
+                  <input id="edit_home_address" name="edit_home_address" type="text" value={{get_foodie_profile.home_address}}>
+                  <label for="edit_home_address" class="active">Home Address</label>
+
+                  </div>
+                  <div class="input-field col l2 m2 s6 valign">
+                    <select class="material_select" id="home_address_country">
+                      <option value={{get_foodie_profile.home_address_country}} selected>{{get_foodie_profile.home_address_country}}</option>
+                      {{#each country_list}}
+                      <option value={{name}}>{{name}}</option>
+                      {{/each}}
+                      </select>
+                    </div>
+                </div>
+
+
+                <div class="row col l12 m6 s6 valign">
+                  <div class="input-field col l7 m10 s12 offset-l3 valign">
+                    <input id="edit_office_address" name="edit_office_address" type="text" value="{{get_foodie_profile.office_address}}">
+                    <label for="edit_office_address" class="active">Office Address</label>
+                  </div>
+                    <div class="input-field col l2 m2 s6 valign">
+                      <select class="material_select" id="office_address_country">
+                        <option value={{get_foodie_profile.office_address_country}} selected>{{get_foodie_profile.office_address_country}}</option>
+                        {{#each country_list}}
+                        <option value={{name}}>{{name}}</option>
+                        {{/each}}
+                        </select>
+                      </div>
+                  </div>
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+               </div>
+            </div>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Your Story</div>
+            <div class="step-content">
+                <div class="input-field col l12 m12 s12  valign">
+                  <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500" value="{{get_foodie_profile.about_myself}}"></textarea>
+                  <label for="about_myself" class="active">Write a paragraph about yourself</label>
+                  </div>
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+               </div>
+            </div>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Allergies</div>
+            <div class="step-content">
+            <!--  <div class ="row l12 valign">
+                <div class="text-field col l3 m3 s6 valign">
+                  <h6>Major food allergies</h6>
+                  </div>
+                  <div class="col l9 m9 s12 valign">
+                  {{> food_allergies}}
+                  </div>
+                </div>-->
+              <!--  {{>profile_food_allergies}}-->
+               <div class="step-actions">
+                 <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                 <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+               </div>
+            </div>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Perferences</div>
+            <div class="step-content">
+            <!--  <div class ="row l12 m6 s6 valign">
+                <div class="text-field col l3 m3 s6 valign">
+                  <h6>Dietary preferences</h6>
+                  </div>
+                <div class="col l9 m9 s12 valign">
+                  {{> dietary_preferences}}
+                  </div>
+                </div>-->
+              <!--  {{>profile_dietary_perferences}}-->
+               <div class="step-actions">
+                 <button id="edit_foodie_profile_button" class="waves-effect waves-dark btn" type=submit>SUBMIT</button>
+               </div>
+            </div>
+         </li>
+      </ul>
+    </div>
+  </form>
+  {{/with}}
 </template>
+
+
+
 
 
 <template name = "edit_homecook_profile">

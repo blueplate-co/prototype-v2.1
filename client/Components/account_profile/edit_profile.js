@@ -29,12 +29,20 @@ Template.edit_foodie_profile.helpers({
   'get_foodie_email': function() {
     return Accounts.users.find().fetch()[0].emails[0].address;
   },
-  'check_gender': function() {
+  'check_male': function() {
     var gender = this.gender
     if (gender === "male") {
       return true
-    }
-  },
+    }else{
+      return false
+    }},
+    'check_female': function() {
+      var gender = this.gender
+      if (gender === "female") {
+        return true
+      }else{
+        return false
+      }},
 
   month_list: [{
       month: '01',
@@ -137,13 +145,22 @@ Template.edit_foodie_profile.helpers({
 
   ],
 
-})
+});
 
 Template.edit_foodie_profile.onRendered(function() {
 
   var get_profile = Profile_details.findOne({
     'user_id': Meteor.userId()
   });
+
+  //activate steppers
+  this.$('#edit_foodie_stepper').activateStepper({
+   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+   showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+});
+
 
   //activate dropdown
   this.$('select').material_select();
@@ -157,12 +174,12 @@ Template.edit_foodie_profile.onRendered(function() {
   });
 
   //activate checkboxes_recall
-  checkboxes_recall(get_profile.allergy_tags)
+/*  checkboxes_recall(get_profile.allergy_tags)
   checkboxes_recall(get_profile.dietary_tags)
   checkboxes_recall(get_profile.serving_option_tags)
   address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
   address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
-  address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');
+  /*address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');*/
 });
 
 
