@@ -1,6 +1,3 @@
-import { Accounts } from 'meteor/accounts-base';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
 import { address_geocode } from '/imports/functions/address_geocode.js';
 
 export function navbar_find_by(collection){

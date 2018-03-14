@@ -1,4 +1,4 @@
-import {
+/**import {
   Accounts
 } from 'meteor/accounts-base';
 import {
@@ -9,14 +9,14 @@ import {
 } from 'meteor/templating';
 import {
   Blaze
-} from 'meteor/blaze';
+} from 'meteor/blaze';**/
 import {
   checkboxes_recall
 } from '/imports/functions/checkboxes_recall.js'
 import {
   address_geocode
 } from '/imports/functions/address_geocode.js'
-import './edit_profile.html';
+
 
 
 
@@ -158,8 +158,9 @@ Template.edit_foodie_profile.onRendered(function() {
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
    autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
    autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
-   showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+   showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
 });
+
 
 
   //activate dropdown
@@ -169,15 +170,15 @@ Template.edit_foodie_profile.onRendered(function() {
   this.$('input#input_text, textarea#about_myself').characterCounter();
 
   //activate the selection tabs
-  this.$(document).ready(function() {
+/*  this.$(document).ready(function() {
     $('ul.tabs').tabs();
-  });
+  });*/
 
   //activate checkboxes_recall
-/*  checkboxes_recall(get_profile.allergy_tags)
+  checkboxes_recall(get_profile.allergy_tags)
   checkboxes_recall(get_profile.dietary_tags)
   checkboxes_recall(get_profile.serving_option_tags)
-  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
+/*  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
   address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
   /*address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');*/
 });
@@ -302,10 +303,6 @@ Template.edit_homecook_profile.onRendered(function() {
   //activate characterCounter
   this.$('input#input_text, textarea#about_myself').characterCounter();
 
-  //activate the selection tabs
-  this.$(document).ready(function() {
-    $('ul.tabs').tabs();
-  });
 });
 
 

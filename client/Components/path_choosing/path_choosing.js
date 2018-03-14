@@ -50,12 +50,13 @@ Template.path_choosing.events({
 Template.path_choosing.helpers({
 
   'check_homecook_profile': function(){
-    var check = kitchen_details.find({user_id: this._id}).length
-    if(check===0){
+    var check = String(Kitchen_details.findOne({'user_id': Meteor.userId()}))
+    if(check === 'undefined'){
       return true;
-    }else{
+    } else {
       return false;
-  }
+    }
+
 },
 
 /*  'check_first_dish': function(){

@@ -24,7 +24,6 @@ session                       # Meteor session variables
 ostrio:files                  # Upload images
 ostrio:flow-router-extra
 kadira:blaze-layout
-jquery
 dburles:google-maps
 aldeed:geocoder
 accounts-base

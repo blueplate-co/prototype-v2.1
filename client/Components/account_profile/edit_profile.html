@@ -1,6 +1,7 @@
-<!--<template name = "edit_foodie_profile">
-  {{#with get_foodie_profile}}
+<template name = "edit_foodie_profile12">
+
     <form class ="edit_foodie_profile col l12 m6 s6" id="edit_foodie_profile">
+      {{#with get_foodie_profile}}
       {{>profile_banner}}
       <br>
       <br>
@@ -93,9 +94,11 @@
 
       <br>
     </div>
-    </form>
+    </div>
     {{/with}}
-</template>-->
+    </form>
+
+</template>
 
 
 <template name = "edit_foodie_profile">
@@ -103,7 +106,7 @@
   <form class ="edit_foodie_profile col l12 m6 s6" id="create_foodie_profile">
     {{>profile_banner}}
     <div class='container'>
-      <ul id='edit_foodie_stepper' class="stepper horizontal" style="min-height:600px">
+      <ul id='edit_foodie_stepper' class="stepper horizontal" style="min-height:640px">
          <li class="step active">
             <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
             <div class="step-content">
@@ -126,18 +129,18 @@
                 </div>
               </div>
 
-              <div class="row col l12 m12 s12 valign">
+              <div class="row col l12 m4 s6 valign">
                 <div class="text-field col l4 m5 s12 offset-l3 valign">
                   <input id="email" name="email" type="text" value={{get_foodie_profile.email}} disabled>
                   <label class="active" for="email">email Address</label>
                 </div>
-                <div class="text-field col l2 m3 s12 valign">
+                <div class="text-field col l2 m3 s6 valign">
                     <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" value={{get_foodie_profile.date_of_birth}}>
                     <label class="active" for="date_of_birth">date of birth</label>
                  </div>
-                 </div>
+
+                 <div class="text-field col l3 m4 s6 valign">
                  {{#if check_male}}
-                 <div class="text-field col l3 m4 s12 valign">
                    <div class="col l6 m6 s6 valign">
                      <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male" checked/>
                      <label for="male">Male </label></p>
@@ -146,32 +149,28 @@
                      <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
                      <label for="female">Female </label></p>
                    </div>
+                   {{/if}}
+                   {{#if check_female}}
+                   <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+                     <label for="male">Male </label></p>
+                   </div>
+                    <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female" chceked/>
+                     <label for="female">Female </label></p>
+                   </div>
+                   {{else}}
+                   <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+                     <label for="male">Male </label></p>
+                   </div>
+                     <div class="col l6 m6 s6 valign">
+                     <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
+                     <label for="female">Female </label></p>
+                   </div>
+                   {{/if}}
                   </div>
-               {{elseif check_female}}
-
-               <div class="text-field col l3 m4 s12 valign">
-                 <div class="col l6 m6 s6 valign">
-                   <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
-                   <label for="male">Male </label></p>
-                 </div>
-                   <div class="col l6 m6 s6 valign">
-                   <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female" chceked/>
-                   <label for="female">Female </label></p>
-                 </div>
-                 </div>
-               {{else}}
-               <div class="text-field col l3 m4 s12 valign">
-                 <div class="col l6 m6 s6 valign">
-                   <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
-                   <label for="male">Male </label></p>
-                 </div>
-                   <div class="col l6 m6 s6 valign">
-                   <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
-                   <label for="female">Female </label></p>
-                 </div>
-                 </div>
-               {{/if}}
-
+                  </div>
                  <div class="row col l12 m12 s12 valign">
                 <div class="text-field col l2 m4 s6 offset-l3 valign">
                   <select class="material_select" id="mobile_country">
@@ -243,15 +242,15 @@
          <li class="step">
             <div class="step-title waves-effect">Allergies</div>
             <div class="step-content">
-            <!--  <div class ="row l12 valign">
+              <div class ="row l12 valign">
                 <div class="text-field col l3 m3 s6 valign">
-                  <h6>Major food allergies</h6>
-                  </div>
-                  <div class="col l9 m9 s12 valign">
-                  {{> food_allergies}}
-                  </div>
-                </div>-->
-              <!--  {{>profile_food_allergies}}-->
+              <h6>Major food allergies</h6>
+              </div>
+              <div class="col l9 m9 s12 valign">
+              {{> food_allergies}}
+              </div>
+            </div>
+
                <div class="step-actions">
                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
@@ -261,15 +260,15 @@
          <li class="step">
             <div class="step-title waves-effect">Perferences</div>
             <div class="step-content">
-            <!--  <div class ="row l12 m6 s6 valign">
+              <div class ="row l12 m6 s6 valign">
                 <div class="text-field col l3 m3 s6 valign">
                   <h6>Dietary preferences</h6>
                   </div>
                 <div class="col l9 m9 s12 valign">
                   {{> dietary_preferences}}
                   </div>
-                </div>-->
-              <!--  {{>profile_dietary_perferences}}-->
+                </div>
+
                <div class="step-actions">
                  <button id="edit_foodie_profile_button" class="waves-effect waves-dark btn" type=submit>SUBMIT</button>
                </div>

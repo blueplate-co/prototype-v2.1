@@ -151,7 +151,7 @@ Template.navbar.events({
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #profile_link': function () {
-   FlowRouter.go('/profile');
+   FlowRouter.go('/profile/show_foodie_profile');
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #logout_link': function () {
