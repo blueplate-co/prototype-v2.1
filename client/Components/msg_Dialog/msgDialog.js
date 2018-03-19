@@ -14,7 +14,7 @@ Template.screen.onRendered(function(){
   } else {
     FlowRouter.go('/');
     localStorage.setItem("loggedIn", false);
-    Materialize.toast('Please login before access.', 4000, 'rounded red lighten-2');
+    Materialize.toast('Please login before access.', 4000, 'rounded bp-green');
   }
 });
 
@@ -60,7 +60,7 @@ Template.chips.events({
     const chips_input = target.value;
 
     Meteor.call('messages.insert', chips_input, Meteor.userId(), Meteor.userId(), function(err) {
-      if (err) Materialize.toast('Oops! Error when send message. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+      if (err) Materialize.toast('Oops! Error when send message. Please try again. ' + err.message, 4000, 'rounded bp-green');
     });
     var message_window = $("#messages_wrap").height();
     $(".conversation-screen").animate({scrollTop:message_window},500);
@@ -82,7 +82,7 @@ Template.add.events({
     $(".conversation-screen").animate({scrollTop:message_window},500);
 
     Meteor.call('messages.insert', text,Meteor.userId(), Meteor.userId(), function(err) {
-      if (err) Materialize.toast('Oops! Error when send message. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+      if (err) Materialize.toast('Oops! Error when send message. Please try again. ' + err.message, 4000, 'rounded bp-green');
     });
     // Clear form
     target.new_message.value = '';

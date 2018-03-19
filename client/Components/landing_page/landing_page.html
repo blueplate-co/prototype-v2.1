@@ -1,10 +1,11 @@
-<template name="landing_page">
+<template name="landing_page_old">
   <div class="background">
     {{> top_wrapper}}
     {{> title_wrapper}}
     {{> login_modal}}
     {{> signup_modal}}
   </div>
+  {{> footer}}
 </template>
 
 <template name = "top_wrapper">
@@ -33,7 +34,7 @@
     <div class = "col l8 offset-l3 center valign">
       <h2 class = "white-text left-align" style="text-shadow: 2px 2px #ff0000;">Goodbye junk food.</h2>
       <h2 class = "white-text left-align" style="text-shadow: 2px 2px #ff0000;">Hello home cooked food.</h2>
-      <a class="waves-effect waves-red red lighten-2 btn modal-trigger left" href="#signup_modal" id="foodie_signup" style = "margin-right: 12px; width: 180px;">Join us</a>
+      <a class="waves-effect waves-red bp-green btn modal-trigger left" href="#signup_modal" id="foodie_signup" style = "margin-right: 12px; width: 180px;">Join us</a>
     </div>
   </div>
 </template>

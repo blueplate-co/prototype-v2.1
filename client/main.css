@@ -1,22 +1,57 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&subset=vietnamese');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700');
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto Slab', serif;
-    color: #56AACD;
+
+    font-family: 'Montserrat', sans-serif;
+    color: #000000;
+    font-weight: 600;
+    opacity: 0.87;
+
 }
 
-body {
-  font-family: 'Quicksand', sans-serif;
+.btn {
+  text-transform: lowercase;
+  font-weight: 600;
+  border-radius: 30px;
+}
+
+.bp-blue {
+  background-color: #56AACD;
+  color: #000000;
+}
+
+.bp-blue:hover {
+  background-color: #407E97;
+}
+
+.bp-green {
+  background-color: #B1DBBE;
+  opacity: 0.87;
+  color: #000000;
+}
+
+.bp-green:hover {
+  background-color: #B1DBBE;
+}
+
+html {
+  height: 70vh;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body p {
+  font-family: 'Montserrat', sans-serif;
   color: rgba(0,0,0,0.54);
+  opacity: 0.87;
   margin:0;
   padding:0;
-  background-color: #fafafa;
 }
 
 .card {
   border-radius: 20px   !important;
   display: inline-block;
+  border-color: #B1DBBE;
+  border-width: medium;
   overflow: visible !important;
 }
 
@@ -24,6 +59,27 @@ body {
   border-radius: 0px 0px 20px 20px !important;
 }
 
+/* modal responsive settings */
+/* desktop and above */
+@media (min-width:1024px) {
+  .modal {
+    top: 15% !important;
+    width: 70%;
+  }
+}
+/* iPad and below */
+@media (max-width: 1023px) {
+  .modal {
+    border-radius: 0px !important;
+    top: 0% !important;
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+
+/* Showroom grid settings */
 @media (max-width: 869px) {
   .card_container {
     -webkit-column-count: 1;

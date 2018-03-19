@@ -8,13 +8,22 @@
   margin-top:24px;
 }
 
-
+/*
 .button{
 float:right;
 }
-
+*/
 .left{
 float: left;
 margin-left: 0px;
 padding: 0px;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    border-radius: 0px !important;
+    top: 0% !important;
+    height: 100% !important;
+    width: 100% !important;
+  }
 }

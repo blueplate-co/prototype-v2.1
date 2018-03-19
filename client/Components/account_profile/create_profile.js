@@ -139,6 +139,9 @@ Template.profile_banner.events({
               $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
             }, 3000);
             /** below is the line that prevents meteor from reloading **/
+
+            saveToKraken(profile_images.name, profile_images.path, 'bannerProfileImg');
+
           }
           Meteor._reload.onMigrate(function() {
             return [false];
@@ -216,6 +219,11 @@ Template.upload_profile.events({
               $(".profile_icon_img_upload").hide();
             }, 3000);
             /** above is the line that prevents meteor from reloading **/
+
+            //- kraken
+            saveToKraken(profile_images.name, profile_images.path, 'profileImg');
+
+
           }
           Meteor._reload.onMigrate(function() {
             return [false];
@@ -394,6 +402,10 @@ Template.homecook_profile_banner.events({
               $(".homecook_profile_banner_area").css("background-color", "");
               $(".homecook_profile_banner_area").css("background-image", "url(" + banner_url + ")");
             }, 100);
+
+            //- save to kraken
+            saveToKraken(profile_images.name, profile_images.path, 'bannerKitchenImg');
+            //- end save to kraken
           }
           Meteor._reload.onMigrate(function() {
             return [false];
@@ -466,6 +478,11 @@ Template.upload_homecook_profile.events({
               var profile_url = profile_images.meta.base64;
               $(".profile_upload_wrapper").css("background-image", "url(" + profile_url + ")");
             }, 3000);
+
+            //- upload image for kitchen
+            saveToKraken(profile_images.name, profile_images.path, 'kitchenImg');
+            //- end kraken
+
           }
           /** above is the line that prevents meteor from reloading **/
 /**          Meteor._reload.onMigrate(function() {
@@ -478,6 +495,32 @@ Template.upload_homecook_profile.events({
     }
   }
 });**/
+
+var saveToKraken = function(imgName, imgPath, sessionName)
+{
+  //- meteor call
+  Meteor.call('saveToKraken', imgName, imgPath, (error, result)=>{
+    if(error) console.log('kraken errors', error);
+    console.log(result);
+  });
+
+  //- declare some sizes
+  var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + imgName;
+  var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + imgName;
+  var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + imgName;
+  var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + imgName;
+
+  //- add to sizes object
+  var sizes    = {};
+  sizes.origin = original;
+  sizes.large  = large;
+  sizes.medium = medium;
+  sizes.small  = small;
+
+  //- set to session
+  Session.set(sessionName, sizes);
+  console.log('kitchen name: ', Session.get(sessionName));
+}
 
 
 Template.create_foodie_profile.events({
@@ -530,8 +573,13 @@ Template.create_foodie_profile.events({
     allergy_tags,
     dietary_tags,
 
+
+    //- save images to kraken
+    Session.get('profileImg'),
+    Session.get('bannerProfileImg'),
+
     function(err) {
-      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded bp-green');
          else {
           Materialize.toast('Profile created!', 4000);
           //divert to the profile page
@@ -573,10 +621,8 @@ Template.create_homecook_profile.events({
     var tags = $('#kitchen_tags').material_chip('data');
     const kitchen_tags = tags;
 
-
     //Step 4
     const house_rule = $('#house_rule').val();
-
 
 
     Meteor.call('kitchen_details.insert',
@@ -592,6 +638,9 @@ Template.create_homecook_profile.events({
     kitchen_speciality,
     kitchen_tags,
     house_rule,
+    //- insert new images object of different size
+    Session.get('kitchenImg'),
+    Session.get('bannerKitchenImg'),
 
     function(err) {
       if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');

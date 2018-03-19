@@ -152,13 +152,32 @@ Template.navbar.events({
  },
  'click #logout_link': function () {
    Meteor.call('messages.clear', Meteor.userId(), function(err) {
-     if (err) Materialize.toast('Oops! Error when clearing message. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
+     if (err) Materialize.toast('Oops! Error when clearing message. Please try again. ' + err.message, 4000, 'rounded bp-green');
    });
+   
    Session.keys = {}
    localStorage.setItem("loggedIn", false);
-   Meteor.logout();
-   FlowRouter.go('/');
-   $('#sidenav-overlay').remove();
+
+  //- old
+  //  Meteor.logout();
+  //  $('#sidenav-overlay').remove();
+  //  FlowRouter.go('/');
+   
+  //- new
+  Meteor.logout(function(err){
+    if (err) {
+      Bert.alert(err.reason, "danger", "growl-top-right");
+      return false;
+    } 
+    //- logout success
+    Bert.alert('Logout successfully !', "success", "fixed-top");
+
+    $('#sidenav-overlay').remove();
+    FlowRouter.go("/");
+
+  });
+
+  
  },
 });
 

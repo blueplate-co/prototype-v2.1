@@ -21,7 +21,7 @@ properties of the selected card */
     var location_id = this.address;
     var selected_location = Session.get('selected_location');
     if (location_id == selected_location) {
-    return "red lighten-2"
+    return "bp-green"
   }
 },
   'selection_text': function() {

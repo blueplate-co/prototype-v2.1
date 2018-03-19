@@ -71,7 +71,11 @@ Meteor.methods({
     office_address_conversion,
     about_myself,
     allergy_tags,
-    dietary_tags
+    dietary_tags,
+
+    //- image sizes metadata
+    profileImg,
+    bannerProfileImg,
   ) {
 
 /**    // check format of these fields (Not necessary at this stage)
@@ -120,8 +124,9 @@ Meteor.methods({
       allergy_tags: allergy_tags,
       dietary_tags: dietary_tags,
       createdAt: new Date(),
-      updatedAt: new Date()
-
+      updatedAt: new Date(),
+      profileImg: profileImg,
+      bannerProfileImg: bannerProfileImg
     });
   },
 
@@ -138,8 +143,10 @@ Meteor.methods({
     kitchen_speciality,
     kitchen_tags,
     house_rule,
+  
+    kitchenImg,
+    bannerKitchenImg,
   ) {
-
 
 /** Not necessary to check at this stage
     check(user_id, String);
@@ -175,7 +182,9 @@ Meteor.methods({
       order_count: 0,
       average_rating: 0,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      kitchenImg: kitchenImg,
+      bannerKitchenImg: bannerKitchenImg
     });
   }
 });
@@ -187,3 +196,10 @@ Meteor.methods({
       return data.count();
   }
 });
+
+var isEmpty = function(obj) {
+  for ( var p in obj ) {
+      if ( obj.hasOwnProperty( p ) ) { return false; }
+  }
+  return true;
+}

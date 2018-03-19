@@ -8,13 +8,13 @@ Template.online_switch.events({
     with (parent_template === 'Template.dishes_selection') {
       Meteor.call('dish.online', this._id, switch_status, function(error){
         if (error) {
-          Materialize.toast('Oops! Error when change status. Please try again.', 4000, "rounded red lighten-2");
+          Materialize.toast('Oops! Error when change status. Please try again.', 4000, "rounded bp-green");
         }
       });
     }
     with (parent_template === 'Template.menu_card') {
       Meteor.call('menu.online', this._id, switch_status, function(err){
-        if (err) Materialize.toast('Oops! Error when changing status. Please try again. ' + err.message, 4000, "rounded red lighten-2");
+        if (err) Materialize.toast('Oops! Error when changing status. Please try again. ' + err.message, 4000, "rounded bp-green");
       });
     }
   }

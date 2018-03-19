@@ -18,17 +18,22 @@
 }
 
 #rating .current-rating {
-  color: #E57373;
+  color: #56AACD;
+}
+
+.stars-rating .stars {
+  border-color: #56AACD !important;
+  background-color: #ffffff !important;
 }
 
 #rating .active {
-  color: #E57373;
+  color: #56AACD;
 }
 
 #show_rating .current-rating {
-  color: #E57373;
+  color: #56AACD;
 }
 
 .show_rating .current-rating {
-  color: #E57373;
+  color: #56AACD;
 }

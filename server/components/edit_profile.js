@@ -40,6 +40,9 @@ Meteor.methods({
     about_myself,
     allergy_tags,
     dietary_tags,
+
+    // profileImg,
+    bannerProfileImg
   ) {
 /**
     check(foodie_profile_id, String);
@@ -64,30 +67,64 @@ Meteor.methods({
     check(card_exp_year, Match.Any);
 **/
 
-    Profile_details.update({
-      user_id: Meteor.userId()
-    }, {
-      $set: {
-        foodie_name: foodie_name,
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        date_of_birth: date_of_birth,
-        gender: gender,
-        mobile_dial_code: mobile_dial_code,
-        mobile: mobile,
-        home_address_country: home_address_country,
-        home_address: home_address,
-        home_address_conversion: home_address_conversion,
-        office_address_country: office_address_country,
-        office_address: office_address,
-        office_address_conversion: office_address_conversion,
-        about_myself: about_myself,
-        allergy_tags: allergy_tags,
-        dietary_tags: dietary_tags,
-        updatedAt: new Date()
-      }
-    })
+
+    if(!_.isEmpty(bannerProfileImg))
+    {
+      Profile_details.update({
+        user_id: Meteor.userId()
+      }, {
+        $set: {
+          foodie_name: foodie_name,
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          date_of_birth: date_of_birth,
+          gender: gender,
+          mobile_dial_code: mobile_dial_code,
+          mobile: mobile,
+          home_address_country: home_address_country,
+          home_address: home_address,
+          home_address_conversion: home_address_conversion,
+          office_address_country: office_address_country,
+          office_address: office_address,
+          office_address_conversion: office_address_conversion,
+          about_myself: about_myself,
+          allergy_tags: allergy_tags,
+          dietary_tags: dietary_tags,
+          updatedAt: new Date()
+          // profileImg: profileImg,
+          bannerProfileImg: bannerProfileImg
+        }
+      })
+    }else{
+      Profile_details.update({
+        user_id: Meteor.userId()
+      }, {
+        $set: {
+          foodie_name: foodie_name,
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          date_of_birth: date_of_birth,
+          gender: gender,
+          mobile_dial_code: mobile_dial_code,
+          mobile: mobile,
+          home_address_country: home_address_country,
+          home_address: home_address,
+          home_address_conversion: home_address_conversion,
+          office_address_country: office_address_country,
+          office_address: office_address,
+          office_address_conversion: office_address_conversion,
+          about_myself: about_myself,
+          allergy_tags: allergy_tags,
+          dietary_tags: dietary_tags,
+          updatedAt: new Date()
+
+        }
+        }
+      })
+    }
+
   },
 
   'kitchen_details.update' (
@@ -102,9 +139,10 @@ Meteor.methods({
     cooking_story,
     kitchen_speciality,
     kitchen_tags,
-    house_rule
+    house_rule,
+    // kitchenImg,
+    bannerKitchenImg
   ) {
-
 /**
     check(kitchen_profile_id, String);
     check(kitchen_name, String);
@@ -121,6 +159,54 @@ Meteor.methods({
     check(bank_address_country, Match.Any);
     check(bank_address, Match.Any);
 **/
+    console.log('is banner empty? ', _.isEmpty(bannerKitchenImg));
+    if(!_.isEmpty(bannerKitchenImg)) //- if chef change banner's images
+    {
+      Kitchen_details.update({
+        user_id: Meteor.userId()
+      }, {
+        $set: {
+        kitchen_name:kitchen_name,
+        chef_name:chef_name,
+        kitchen_address_country:kitchen_address_country,
+        kitchen_address:kitchen_address,
+        kitchen_address_conversion:kitchen_address_conversion,
+        kitchen_contact_country:kitchen_contact_country,
+        serving_option:serving_option,
+        cooking_exp:cooking_exp,
+        cooking_story:cooking_story,
+        kitchen_speciality:kitchen_speciality,
+        kitchen_tags:kitchen_tags,
+        house_rule:house_rule,
+        updatedAt: new Date(),
+        // kitchenImg: kitchenImg,
+        bannerKitchenImg: bannerKitchenImg
+        }
+      })
+    }else{
+      Kitchen_details.update({
+        user_id: Meteor.userId()
+      }, {
+        $set: {
+        kitchen_name:kitchen_name,
+        chef_name:chef_name,
+        kitchen_address_country:kitchen_address_country,
+        kitchen_address:kitchen_address,
+        kitchen_address_conversion:kitchen_address_conversion,
+        kitchen_contact_country:kitchen_contact_country,
+        serving_option:serving_option,
+        cooking_exp:cooking_exp,
+        cooking_story:cooking_story,
+        kitchen_speciality:kitchen_speciality,
+        kitchen_tags:kitchen_tags,
+        house_rule:house_rule,
+        updatedAt: new Date()
+        }
+      })
+    }
+
+
+
 
     Kitchen_details.update({
       user_id: Meteor.userId()
@@ -143,3 +229,10 @@ Meteor.methods({
     })
   }
 });
+
+var isEmpty = function(obj) {
+  for ( var p in obj ) {
+      if ( obj.hasOwnProperty( p ) ) { return false; }
+  }
+  return true;
+}

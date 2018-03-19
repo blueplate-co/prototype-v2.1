@@ -73,22 +73,25 @@
   padding-top: 48px;
 }
 .render_component {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   overflow-x: hidden;
+  min-height: 100vh;
   width: 100vw;
-  height: 90vh;
 }
+/*
 ::-webkit-scrollbar {
     width: 10px;
 }
 
 /* Handle */
+/*
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     background: rgba(160,160,160,0.4)
 }
 
+*/
 .message_wrapper {
   border-radius: 14px;
   background: #c7c7c7;

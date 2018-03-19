@@ -4,7 +4,7 @@ import { navbar_find_by } from '/imports/functions/find_by.js'
 Template.show_room.onRendered(function(){
   $('.map_wrapper').pushpin({
     top: 0,
-    bottom: 2000,
+    bottom: 1500,
     offset: 65
   });
   $('#large_dish_display').modal({

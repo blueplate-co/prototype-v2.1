@@ -1,0 +1,20 @@
+.page-footer {
+  background-color: #56AACD;
+}
+
+.footer_logo {
+  width: 150px;
+}
+
+.logo_wrapper {
+  height: 80px;
+  width: 120px;
+}
+
+.social_icons {
+  margin: 6px;
+}
+
+#instagram_icon {
+  margin-top: 7px;
+}

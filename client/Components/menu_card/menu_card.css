@@ -19,12 +19,13 @@
 
 #carousel_wrapper {
   width: 290px !important;
-  height: 290px !important;
+  height: 180px !important;
   border-radius: 20px 20px 0px 0px;
 }
 .menu_image_display {
-  height: 290px;
+  height: 180px;
   width: 100%;
+  border-radius: 10px;
   background-size: cover;
 }
 

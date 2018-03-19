@@ -6,7 +6,10 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import './signup.html';
 
 Template.signup_modal.onRendered(function(){
-  $('#signup_modal').modal();
+  $('#signup_modal').modal({
+    startingTop: '0%',
+    endingTop: '0%',
+  });
 });
 
 Template.signup_modal.events({
@@ -37,6 +40,7 @@ Template.signup_modal.events({
       var email = trimInput($('#signup_email').val());
       var password = trimInput($('#signup_password').val());
       var cpassword = trimInput($('#signup_cpassword').val());
+      var chef_signup = Session.get('chef_signup');
     //  var last_name = trimInput(event.target.last_name.value);
     //  var first_name = trimInput(event.target.first_name.value);
       if( isNotEmpty(email)      &&
@@ -48,6 +52,9 @@ Template.signup_modal.events({
             Accounts.createUser({
               email: email,
               password: password,
+              profile: {
+                chef_signup: chef_signup,
+              }
             }, function(err){
               if(err){
                 Bert.alert(err.reason,"danger", "growl-top-right");
@@ -78,7 +85,7 @@ var isNotEmpty = function(value){
   if (value && value !== ''){
     return true;
   }
-  Bert.alert("Please fill in all fields", "danger", "growl-top-right");
+  Bert.alert("Email or password fields cannot be blank", "danger", "growl-top-right");
   return false;
 }
 //Email Validation
@@ -92,8 +99,8 @@ isEmail = function(value){
 }
 //Check Password fields
 isValidPassword=function(password){
-  if(password.length <8){
-  Bert.alert("Password must be a least 8 charaters", "danger","growl-top-right");
+  if(password.length < 8){
+  Bert.alert("Password must be greater than 8 charaters", "danger","growl-top-right");
     return false;
   }
     return true;
@@ -104,8 +111,14 @@ areValidPassword = function(password, cpassword){
     return false;
   }
   if(password !== cpassword){
-    Bert.alert("Password do not match","danger","growl-top-right");
+    Bert.alert("Password and confirm password mismatch. Please try again !","danger","growl-top-right");
     return false;
   }
     return true;
+}
+
+//- validating email
+var validateEmail = function(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }
