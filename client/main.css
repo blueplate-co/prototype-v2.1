@@ -64,7 +64,7 @@ body p {
 @media (min-width:1024px) {
   .modal {
     top: 15% !important;
-    width: 70%;
+    width: 100%;
   }
 }
 /* iPad and below */

@@ -109,6 +109,7 @@ Template.menu_creation_content.events({
   'click #create_menu': function(event, template) {
     event.preventDefault;
     var menu_name = $('#menu_name').val();
+    var menu_description = $('#menu_description').val();
     var user_id = Meteor.userId();
     var kitchen = Kitchen_details.findOne({'user_id': user_id});
     var kitchen_id = kitchen._id;
@@ -141,6 +142,7 @@ Template.menu_creation_content.events({
     if (menu_name && menu_selling_price && dishes_id) {
       Meteor.call('menu.insert',
         menu_name,
+        menu_description,
         user_id,
         kitchen_id,
         menu_selling_price,
@@ -303,6 +305,7 @@ Template.edit_content.events({
     event.preventDefault;
     var menu_id = Session.get('menu_id');
     var menu_name = $('#edit_menu_name').val();
+    var menu_description = $('#edit_menu_description').val();
     var menu_selling_price = $('#edit_menu_selling_price').val();
     var min_order = $('#edit_min_order_range').val();
     var lead_hours = $('#edit_lead_time_hours_range').val();
@@ -319,7 +322,7 @@ Template.edit_content.events({
     };
 
     if (menu_name && menu_selling_price && dishes_id) {
-      Meteor.call('menu.update',menu_id, menu_name, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, function(err){
+      Meteor.call('menu.update',menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, function(err){
           if (err) {
             Materialize.toast('Oops! Error when update your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
           } else {
