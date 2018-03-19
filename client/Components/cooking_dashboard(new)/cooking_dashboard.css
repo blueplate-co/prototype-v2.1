@@ -21,13 +21,13 @@
   background-position: center center;
 }
 
-#balance{
-  height:300px;
+.balance{
+  height:325px;
   background-color:#56AACD;
   border: 2px solid #979797;
 }
-#views-count{
-  height:300px;
+.view{
+  height:325px;
   background-color:#EA6055;
 
 }
@@ -40,9 +40,74 @@
   }
 }
 
-.col.xcol {
-    float: left;
-    box-sizing: border-box;
-    padding: 0 0.9rem!important;
-    min-height: 1px;
+/*standard*/
+.row{
+  margin-bottom:0px;
+}
+.card-panel{
+  border:solid;
+  border-radius:15px;
+}
+.col{
+  padding-left: 0px !important;
+}
+
+/*end standard*/
+
+.top-selling-menu{
+  height:360px;
+
+}
+.total-sales{
+  height:360px;
+}
+@media only screen and (min-width: 1024px) {
+  .top-selling-menu{
+  height:460px;
+}
+  .total-sales{
+  height:460px;
+}
+}
+
+.conversion{
+  height:320px;
+
+}
+.order{
+  height:320px;
+
+}
+@media only screen and (min-width: 1024px) {
+  .conversion{
+    height:400px;
+    }
+    .order{
+      height:400px;
+    }
+}
+.demographics{
+  height:320px;
+}
+.help{
+  height:320px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .demographics{
+    height:420px;
+  }
+  .help{
+    height:420px;
+  }
+}
+
+.table{
+  height:360px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .table{
+    height:450px;
+  }
 }
