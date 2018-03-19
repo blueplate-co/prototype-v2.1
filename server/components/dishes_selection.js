@@ -1,4 +1,4 @@
-import {
+/*import {
   Mongo
 } from 'meteor/mongo';
 import {
@@ -9,7 +9,7 @@ import {
 } from 'meteor/check';
 import {
   Match
-} from 'meteor/check'
+} from 'meteor/check'*/
 import { log } from 'util';
 
 Meteor.methods({
@@ -31,7 +31,7 @@ Meteor.methods({
       _id: image_id
     });
   },
-  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, days, hours, mins, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, cuisines_tags, proteins_tags, categories_tags, cooking_methods_tags, tastes_tags, textures_tags, vegetables_tags, condiments_tags, serving_temperature_tags) {
+  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, cuisines_tags, proteins_tags, categories_tags, cooking_methods_tags, tastes_tags, textures_tags, vegetables_tags, condiments_tags, serving_temperature_tags) {
     check(dish_id, String);
     check(image_id, String);
     check(user_id, String);
@@ -66,9 +66,6 @@ Meteor.methods({
         dish_description: dish_description,
         serving_option: serving_option,
         cooking_time: cooking_time,
-        days: days,
-        hours: hours,
-        mins: mins,
         dish_cost: dish_cost,
         dish_selling_price: dish_selling_price,
         dish_profit: dish_profit,

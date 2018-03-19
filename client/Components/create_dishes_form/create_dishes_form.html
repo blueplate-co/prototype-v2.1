@@ -1,6 +1,6 @@
 <template name = "create_dishes_form">
 
-    <div class = "create_dishes_form_container container">
+    <div class = "create_dishes_form_container">
         <form class="dish_descriptions" id="dish_descriptions">
           <br>
           <br>
@@ -8,122 +8,73 @@
           <br>
           <br>
           <div class="row">
-            <div class = "col l3 m12 s12 valign">
+            <div class = "col l3 m3 s3 valign">
               <h6>Dish descriptions</h6>
             </div>
-            <div class = "input-field col l9 m12 s12">
+            <div class = "input-field col l9 m9 s9">
                 <input placeholder="Type your dish name" name="dish_name" id="dish_name" type="text" value = "{{dish_name}}">
             </div>
           </div>
           <div class ="row">
-            <div class = "col l3 m12 s12"></div>
-            <div class = "input-field col l9 m12 s12">
+            <div class = "col l3 m3 s3"></div>
+            <div class = "input-field col l9 m9 s9">
                 <input placeholder="Type something about your dish - description" name="dish_description" id="dish_description" type="text" value="{{dish_description}}">
             </div>
           </div>
           <div class="row">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Serving Options</h6>
             </div>
-            <div class="col l9 m12 s12">
+            <div class="col l9 m9 s9">
               {{> serving_option_display}}
             </div>
           </div>
           <div class="row">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Cooking Time <small>(mins)</small></h6>
             </div>
-
             <div class="input-field col l9 m9 s9">
-              <div class="row">
-                  <!-- <i class="material-icons prefix">av_timer</i> -->
-                  <div class="input-field no-margin col s4">
-                    <span>Days</span>
-                    <select id="days" name="days" class="browser-default">
-                      <option value="0" disabled selected>Choose your days</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  </div>
-                  <div class="input-field no-margin col s4">
-                      <span>Hours</span>
-                      <select id="hours" name="hours" class="browser-default">
-                        <option value="0" disabled selected>Choose your hours</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                      </select>
-                    </div>
-                    <div class="input-field no-margin col s4">
-                        <span>Mins</span>
-                        <select id="mins" name="mins" class="browser-default">
-                          <option value="0" disabled selected>Choose your mins</option>
-                          <option value="0">0</option>
-                          <option value="5">5</option>
-                          <option value="10">10</option>
-                          <option value="15">15</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                          <option value="30">30</option>
-                          <option value="35">35</option>
-                          <option value="40">40</option>
-                          <option value="45">45</option>
-                          <option value="50">50</option>
-                          <option value="55">55</option>
-                        </select>
-                      </div>
-              </div>
-              <!-- <input id="cooking_time" name="cooking_time" type="number" min="0" value="{{cooking_time}}"> -->
-
+              <i class="material-icons prefix">av_timer</i>
+              <input id="cooking_time" name="cooking_time" type="number" min="0" value="{{cooking_time}}">
             </div>
           </div>
           <div class="row add_ingredient">
-            <div class="col l3 m12 s12">
+            <div class="col l3 m3 s3">
               <h6>Ingredients</h6>
             </div>
-            <div class = "col l9 m12 s12">
+            <div class = "col l9 m9 s9">
               {{> ingredient_input}}
             </div>
           </div>
           <div class="row add_price">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Price</h6>
             </div>
-            <div class = "col l9 m12 s12">
+            <div class = "col l9 m9 s9">
               {{> price}}
             </div>
           </div>
           <div class="row food_allergies">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Major food allergies</h6>
             </div>
-            <div class = "col l9 m12 s12">
+            <div class = "col l9 m9 s9">
               {{> food_allergies}}
             </div>
           </div>
           <div class="row dietary_preferences">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Dietary preferences</h6>
             </div>
-            <div class = "col l9 m12 s12">
+            <div class = "col l9 m9 s9">
               {{> dietary_preferences}}
             </div>
           </div>
           <div class="row food_tags">
-            <div class = "col l3 m12 s12">
+            <div class = "col l3 m3 s3">
               <h6>Tags</h6>
             </div>
-            <div class = "col l9 m12 s12">
+            <div class = "col l9 m9 s9">
               {{> food_tags}}
             </div>
           </div>
@@ -247,7 +198,6 @@
 </template>
 
 <template name="food_allergies">
-    <br>
     <div class="row">
       {{#each allergy_list}}
         <div class="card z-depth-0" id="checkbox">
@@ -256,11 +206,9 @@
         </div>
       {{/each}}
     </div>
-    <br>
 </template>
 
 <template name="dietary_preferences">
-    <br>
     <div class="row">
       {{#each dietary_list}}
         <div class="card z-depth-0" id="checkbox">
@@ -269,11 +217,9 @@
         </div>
       {{/each}}
     </div>
-    <br>
 </template>
 
 <template name="food_tags">
-  <br>
   <ul class="collapsible" data-collapsible="expandable">
     <li>
       <div class="collapsible-header">By cuisine:</div>
@@ -352,7 +298,7 @@
 
 <Template name= "cuisines_list">
   {{# each cuisines_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -361,7 +307,7 @@
 
 <Template name="proteins_list">
   {{# each proteins_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -370,7 +316,7 @@
 
 <Template name="categories_list">
   {{# each categories_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -379,7 +325,7 @@
 
 <Template name="cooking_methods_list">
   {{# each cooking_methods_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -388,7 +334,7 @@
 
 <Template name = "tastes_list">
   {{# each tastes_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -397,7 +343,7 @@
 
 <Template name = "textures_list">
   {{# each textures_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -406,7 +352,7 @@
 
 <Template name = "vegetables_list">
   {{# each vegetables_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -415,7 +361,7 @@
 
 <Template name = "condiments_list">
   {{# each condiments_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>
@@ -424,7 +370,7 @@
 
 <Template name = "serving_temperature_list">
   {{# each serving_temperature_list}}
-      <div class="col l4 m4 s6 food_tags_list">
+      <div class="col l4 m4 s4 food_tags_list">
           <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
           <label for={{id}}>{{name}}</label>
       </div>

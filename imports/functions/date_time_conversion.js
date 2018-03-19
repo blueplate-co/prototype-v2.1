@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 export function date_time_conversion (date_time_in_ms, current_date_time) {
 
   if (!current_date_time) {

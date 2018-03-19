@@ -29,7 +29,7 @@ Template.dishes_selection.events({
     Meteor.call('dish.remove', sessionStorage.getItem("deletedDishID"));
     Meteor.call('dish_image.remove', sessionStorage.getItem("deletedDishImagesID"), function(err) {
       if (err) {
-        Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded bp-green");
+        Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded red lighten-2");
       }
     });
     Meteor.call('menu.checkDish', sessionStorage.getItem("deletedDishID"), function(err, result) {
@@ -37,7 +37,7 @@ Template.dishes_selection.events({
           var $toastContent = $('<span>This dish is already in menu. Please update your menu.</span>');
           Materialize.toast($toastContent, 12000);
       } else {
-          Materialize.toast('The dish has been deleted', 4000, "rounded bp-green");
+          Materialize.toast('The dish has been deleted', 4000, "rounded red lighten-2");
       }
     });
     sessionStorage.clear(); //clear all things to make sure everything is clean before use it again

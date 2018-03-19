@@ -72,7 +72,7 @@ Template.display_menu_details.events({
       quantity,
       total_price_per_dish,
       function(err) {
-        if (err) Materialize.toast('Oops! Error when update your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+        if (err) Materialize.toast('Oops! Error when update your shopping cart. Please try again. ' + err.message, 4000, 'rounded red lighten-2');
       }
     )
     }
@@ -90,11 +90,11 @@ Template.display_menu_details.events({
       quantity,
       menu_price,
       function(err) {
-        if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded bp-green");
+        if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded red lighten-2");
       }
       );
     }
-    Materialize.toast(menu_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green")
+    Materialize.toast(menu_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded red lighten-2")
     $('.modal').modal();
     $('.modal').modal('close');
   }

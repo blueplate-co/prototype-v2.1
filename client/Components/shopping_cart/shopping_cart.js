@@ -1,7 +1,5 @@
-import { Accounts } from 'meteor/accounts-base';
+
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
-import { Blaze } from 'meteor/blaze';
 import { FilesCollection } from 'meteor/ostrio:files';
 import { search_distinct_in_shopping_cart } from '/imports/functions/shopping_cart.js'
 import { search_distinct_for_delivery_in_shopping_cart } from '/imports/functions/shopping_cart.js'

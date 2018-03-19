@@ -1,0 +1,54 @@
+<template name='show_foodie_profile'>
+  {{#with get_foodie_profile}}
+  <div class='container'>
+    <div class='row l12 m12 s12'>
+      <div class='col l3 m12 m12'>
+        <h6>profile picture</h6>
+      </div>
+      <div class='col l6 m12 s12'>
+        <h6>{{get_foodie_profile.foodie_name}}</h6>
+      </div>
+       <div class='col l3 m12 s12'>
+         <div class='col l3 m4 s4 offset-l1 center'>
+           100 Tried
+         </div>
+
+         <div class='col l3 m4 s4 center'>
+           15 Followings
+         </div>
+
+         <div class='col l3 m4 s4 center'>
+           100 Likes
+         </div>
+       </div>
+       </div>
+       <div class='row l12 m12 s12'>
+         <div class='col l9 offset-l3'>
+         <h6>{{get_foodie_profile.about_myself}}</h6>
+       </div>
+     </div>
+     <div class='row l12 m12 s12'>
+      Like
+     </div>
+     <div class='row l12 m12 s12'>
+
+     </div>
+     <div class='row l12 m12 s12'>
+      Ordered
+     </div>
+     <div class='row l12 m12 s12'>
+
+     </div>
+     <div class='col l12 m12 s12'>
+     <div class='row l6 m12 s12'>
+         Major food allergies
+         {{> food_allergies}}
+        </div>
+     <div class='row l6 m12 s12'>
+         Dietary preferences
+       {{> dietary_preferences}}
+     </div>
+   </div>
+   </div>
+   {{/with}}
+</template>
