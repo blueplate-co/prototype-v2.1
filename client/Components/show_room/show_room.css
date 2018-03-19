@@ -577,3 +577,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+#show_room_container {
+  margin-top: 60px;
+}
