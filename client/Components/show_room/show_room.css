@@ -98,3 +98,482 @@
     display: inline-block;
   }
 }
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+.images-thumbnail {
+  width: 100%;
+  height: 115px;
+  background-color: #ccc;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kitchen-images-thumbnail {
+  width: 100%;
+  height: 200px;
+  background-color: #ccc;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chef-avatar-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: #ccc;
+  background-size: cover;
+}
+
+.dish-title {
+  font-size: 15px;
+  margin: 10px 0px;
+  padding-right: 35%;
+}
+
+.dish-price {
+  color: #56AACD;
+  font-size: 18px;
+}
+
+.fa-star.checked {
+  color: #56AACD;
+}
+
+.fa-star.empty {
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #56AACD;
+}
+
+.order-count {
+  color: #56AACD;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.placeholder {
+  background-color: #f6f6f6;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: table;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.placeholder .blur {
+  filter: blur(50px);
+  transform: scale(1);
+}
+
+.placeholder .background {
+  opacity: 1;
+  top: 0;
+  left: 0;
+  display: table-cell;
+  transition: 0.5s linear;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: auto;
+}
+
+#dish-modal {
+  width: 100%!important;
+  height: 100%!important;
+  min-height: 100%!important;
+  top: 0%!important;
+}
+
+#menu-modal {
+  width: 100%!important;
+  height: 100%!important;
+  min-height: 100%!important;
+  top: 0%!important;
+}
+
+.dish-preview-information {
+  overflow-y: auto;
+  min-height: 35vh;
+  max-height: 40vh;
+}
+
+.dish-preview-banner {
+  height: 100vh;
+}
+
+.dish-preview-content {
+  min-height: 100vh!important;
+  padding: 30px 50px!important;
+}
+
+.dish-preview-navigation .title {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.dish-preview-navigation .price {
+  font-size: 28px;
+  color: #56AACD;
+}
+
+.dish-preview-navigation .qty {
+  font-size: 25px;
+  color: #56AACD;
+  margin-left: 100px;
+}
+
+.dish-preview-navigation .qty .decreaseQty {
+  font-size: 25px;
+  color: #56AACD;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.dish-preview-navigation .qty .increaseQty {
+  font-size: 25px;
+  color: #56AACD;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.dish-preview-navigation .qty .number {
+  font-size: 25px;
+  color: #56AACD;
+  margin: 0px 10px;
+}
+
+.dish-preview-navigation .rating-container {
+  margin-left: 40px;
+}
+
+.dish-preview-navigation .rating-container .fa-star {
+  font-size: 25px;
+}
+
+.dish-preview-navigation .order-count {
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.dish-preview-navigation .descrition {
+  font-size: 17px;
+  font-weight: 300;
+}
+
+.close-modal {
+  font-size: 30px;
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.btn {
+  background-color: #56AACD;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  width: 100%;
+  font-weight: 300;
+}
+
+.dish-preview-information h5 {
+  margin: 0px;
+  padding: 0px;
+  font-size: 20px;
+}
+
+.dish-preview-list-ingredient {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  font-size: 18px;
+  margin: 10px 0px;
+}
+
+.dish-preview-list-ingredient li {
+  margin: 10px 0px;
+  width: 100%;
+}
+
+.dish-preview-list-ingredient .name {
+  float: left;
+  display: inline;
+}
+
+.dish-preview-list-ingredient .qty {
+  float: right;
+}
+
+.dish-preview-list-ingredient .unit {
+  float: right;
+}
+
+.dish-preview-list-allergies {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  margin-top: 20px;
+}
+
+.dish-preview-list-allergies li {
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  width: auto;
+  padding: 2px 15px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  float: left;
+}
+
+.dish-preview-list-tags {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  margin-top: 20px;
+}
+
+.dish-preview-list-tags li {
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  width: auto;
+  padding: 2px 15px;
+  margin-right: 10px;
+  float: left;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.slider {
+  width: 100%;
+  height: 100%;
+}
+
+.slider-item {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+
+.slick-track {
+  height: 100%;
+}
+
+.slick-list {
+  height: 100%;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: -10px!important;
+  list-style: none;
+  display: block;
+  text-align: center;
+  padding: 0;
+  width: 100%;
+}
+
+.dish_name {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.banner {
+  height: 215px;
+  background-color: #ccc;
+  border-radius: 15px;
+  color: white;
+  overflow: hidden;
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/food3.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 25px;
+  padding: 0 0.75rem;
+  display: inline-block;
+}
+
+.banner h1 {
+  font-size: 2.5rem;
+  color: #fff;
+  vertical-align: middle;
+  margin-top: 65px; 
+  margin-left: 3%;
+}
+
+.categories_navigation {
+  text-align: center;
+}
+
+.categories_navigation ul {
+  list-style: none;
+  display: inline-block;
+  text-align: initial;
+  cursor: pointer;
+}
+
+.categories_navigation ul li {
+  float: left;
+  height: 30px;
+  width: 180px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  margin: 0px 20px;
+}
+
+.categories_navigation span {
+  background-color: #fff;
+  width: 50%;
+  display: block;
+  height: 100%;
+  text-align: center;
+  padding: 4px;
+}
+
+.categories_navigation ul li#dish_list_all {
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/food2.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.categories_navigation ul li#menu_list_all {
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/food3.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.categories_navigation ul li#kitchen_list_all {
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/furniture-shops-perth-kitchen-furniture-store-outdoor-furniture-canberra-cheap-furniture-stores-melbourne-furniture-stores-canberra-1024x410.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.dish-preview-navigation .title {
+  font-size: 3em;
+  font-weight: bold;
+  text-align: left;
+  color: black;
+}
+
+.dish-preview-banner {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+@media only screen and (max-width: 600px) {
+  .categories_navigation {
+    display: none;
+  }
+  .dish-preview-content {
+    min-height: 100vh!important;
+    padding: 10px 20px!important;
+  }
+  .dish-preview-banner {
+    height: 40vh;
+  }
+  .dish-preview-navigation .title {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: left;
+    color: black;
+  }
+  .m-hidden {
+    display: none!important;
+  }
+  .m-visible {
+    display: block!important;
+  }
+  .dish-preview-navigation .price {
+    font-size: 22px;
+    color: #56AACD;
+  }
+  .dish-preview-navigation .qty {
+    font-size: 20px;
+    color: #56AACD;
+    margin-left: 20px;
+  }
+  .dish-preview-navigation .qty .number {
+    font-size: 20px;
+    color: #56AACD;
+    margin: 0px 10px;
+  }
+  .dish-preview-navigation .qty .decreaseQty {
+    font-size: 20px;
+    color: #56AACD;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .dish-preview-navigation .qty .increaseQty {
+    font-size: 20px;
+    color: #56AACD;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .dish-preview-navigation .rating-container {
+    margin-left: 20px;
+  }
+  .dish-preview-navigation .rating-container .fa-star {
+    font-size: 20px;
+  }
+  .dish-preview-navigation .order-count {
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+.slick-slider {
+  margin-bottom: 0px!important;
+}
+
+.m-hidden {
+  display: block;
+}
+.m-visible {
+  display: none;
+}
+
+.slick-dots li.slick-active button:before {
+  color: white!important;
+  opacity: 1;
+}
+
+.slick-dots li button:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "\2022";
+  width: 30px;
+  height: 30px;
+  font-family: "slick";
+  font-size: 6px;
+  line-height: 30px;
+  text-align: center;
+  color: white!important;
+  opacity: 0.25;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

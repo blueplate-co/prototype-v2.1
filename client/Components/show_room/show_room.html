@@ -1,40 +1,12 @@
 <template name='show_room'>
-  <div class = "show_room_wrapper">
+  <div class="show_room_wrapper">
     <br>
-    <div class = "row">
-      <div class = "col l8 m12 s12">
-        <div class = 'section'>
-          <h5>Dishes</h5>
-          <div class="card_container" id="show_room">
-            {{> show_room_dish}}
-          </div>
-        </div>
-        <br>
-        <div class = 'section'>
-          <h5>Menus</h5>
-          <div class="card_container" id="show_room">
-            {{> show_room_menu}}
-          </div>
-        </div>
-        <br>
-        <div class = 'section'>
-          <h5>Kitchens</h5>
-          <div class="card_container" id="show_room">
-            {{> show_room_chef}}
-          </div>
-        </div>
-      </div>
-      <div class = "col l4 hide-on-med-and-down">
-        <div class = "map_wrapper hide-on-med-and-down">
-          {{> mapcard}}
-        </div>
+    <div class="row" id="show_room_container">
+
+      <!-- REACTJS COMPONENT RENDER AT HERE -->
+      
     </div>
   </div>
-  <div class = "modal large_dish_display" id="large_dish_display">
-  </div>
-  <div class = "modal display_menu_details" id="menu_card_display">
-  </div>
-</div>
 </template>
 
 <template name='show_room_dish'>
@@ -51,7 +23,6 @@
 
 <template name='show_room_chef'>
   {{#each find_kitchen_by}}
-    {{> kitchen_card}}
-    {{check_count}}
+    {{> kitchen_card}} {{check_count}}
   {{/each}}
 </template>
