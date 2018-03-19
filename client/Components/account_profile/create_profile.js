@@ -1,24 +1,6 @@
 import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
-  FlowRouter
-} from 'meteor/ostrio:flow-router-extra';
-import {
-  Template
-} from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';
-import {
-  FilesCollection
-} from 'meteor/ostrio:files';
-import {
   address_geocode
 } from '/imports/functions/address_geocode.js';
-import {
-  Tracker
-} from 'meteor/tracker';
 import './create_profile.html';
 
 
@@ -499,7 +481,7 @@ Template.upload_homecook_profile.events({
 
 
 Template.create_foodie_profile.events({
-  'submit': function(event, template) {
+  'click#create_foodie_profile_button': function(event, template) {
     event.preventDefault();
 
     //Step 1
@@ -567,7 +549,7 @@ Template.create_foodie_profile.events({
 
 
 Template.create_homecook_profile.events({
-  'submit': function(event, template) {
+  'click#create_homecook_button': function(event, template) {
     event.preventDefault();
 
     //Step 1
@@ -911,7 +893,11 @@ Template.profile_payment_details.helpers({
 Template.create_foodie_profile.helpers({
   'get_foodie_email': function() {
     // to get user email always we enter profile page
-    return Accounts.users.find().fetch()[0].emails[0].address;
+
+    var user =  Meteor.users.findOne({"_id":Meteor.userId()})
+    var email = user.emails[0].address;
+
+    return email
   },
 
   country_list: [{

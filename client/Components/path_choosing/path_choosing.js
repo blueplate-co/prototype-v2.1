@@ -5,9 +5,6 @@ import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import {
-  Template
-} from 'meteor/templating';
-import {
   Blaze
 } from 'meteor/blaze';
 import {
@@ -16,9 +13,6 @@ import {
 import {
   address_geocode
 } from '/imports/functions/address_geocode.js';
-import {
-  Tracker
-} from 'meteor/tracker';
 
 Template.path_choosing.events({
   'click #create_homecook_profile': function(){

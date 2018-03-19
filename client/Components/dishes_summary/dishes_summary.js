@@ -1,5 +1,4 @@
 import { Blaze } from 'meteor/blaze'
-import { Tracker } from 'meteor/tracker'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
 
 Template.dishes_summary.onRendered(function(){

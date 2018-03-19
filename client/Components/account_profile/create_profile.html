@@ -213,7 +213,7 @@
                     </div>
                   </div>
                  <div class="step-actions">
-                   <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=submit>SUBMIT</button>
+                   <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=butoon>SUBMIT</button>
                  </div>
               </div>
            </li>
@@ -233,7 +233,7 @@
 <!-- HOMECOOK PROFILE-->
 <!-- Template for homecook Profile-->
 <template name = "create_homecook_profile">
-  <form class ="create_homecook_profile col l12 m6 s6" id="create_homecook_profile">
+  <form class ="create_homecook_profile col l12 m12 s12" id="create_homecook_profile">
     {{>profile_banner}}
     <div class = "container">
       <ul id='create_homecook_stepper' class="stepper horizontal" style="min-height:600px">
@@ -241,8 +241,8 @@
             <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
             <div class="step-content">
 
-              <div class="row col l12 valign">
-                <div class="text-field col l3 m3 s3 valign">
+              <div class="row col l12 m12 s6 valign">
+                <div class="text-field col l3 m12 s12 valign">
                   <h6>Kitchen Details</h6>
                 </div>
                 <div class="input-field col l5 m6 s6 valign">
@@ -256,15 +256,15 @@
                     </div>
                 </div>
               <div class="row col l12 valign">
-                <div class="text-field col l3 m3 s3 valign">
+                <div class="text-field col l3 m12 s6 valign">
                   <h6>Kitchen Address</h6>
                 </div>
 
-                <div class="input-field col l6 m3 s3 valign">
+                <div class="input-field col l6 m9 s12 valign">
                   <input id="kitchen_address" name="kitchen_address" type="text">
                   <label for="kitchen_address">Kitchen Address</label>
                   </div>
-                  <div class="input-field col l3 m2 s2 valign">
+                  <div class="input-field col l3 m3 s6 valign">
                     <select class="material_select" id="kitchen_address_country">
                       <option value="" disabled selected>Country</option>
                       {{#each country_list}}
@@ -275,10 +275,10 @@
                 </div>
 
                 <div class="row col l12 m12 s12 valign">
-                  <div class='text-field col l3 m6 s6 valign'>
+                  <div class='text-field col l3 m3 s12 valign'>
                     <h6>Kitchen Contact</h6>
                   </div>
-               <div class="text-field col l2 m4 s6 valign">
+               <div class="text-field col l2 m3 s6 valign">
                  <select class="material_select" id="kitchen_contact_country">
                    <option value="" disabled selected>Country</option>
                       {{#each country_list}}
@@ -286,16 +286,16 @@
                       {{/each}}
                   </select>
                 </div>
-                <div class="text-field col l3 m4 s6 valign">
+                <div class="text-field col l3 m6 s6 valign">
                   <input id="kitchen_contact" name="kitchen_contact" type="text" placeholder="Kitchen Contact No.">
                 </div>
                 </div>
 
                 <div class="row col l12 m12 s12 valign">
-                  <div class='text-field col l3 m6 s6 valign'>
+                  <div class='text-field col l3 m3 s6 valign'>
                     <h6>Serving Options</h6>
                   </div>
-                  <div class = "col l9 m9 s9">
+                  <div class = "col l9 m3 s9">
                     {{> serving_option}}
                   </div>
                 </div>
@@ -357,7 +357,7 @@
                   </div>
 
                <div class="step-actions">
-                 <button id="create_homecook_button" class="waves-effect waves-dark btn" type="submit">SUBMIT</button>
+                 <button id="create_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
                </div>
             </div>
          </li>
@@ -365,15 +365,6 @@
     </div>
   </form>
 </template>
-
-
-<!--Template for the personal details-->
-<template name="create_homecook_profile_template">
-  <!--steppers-->
-
-
-</template>
-
 
 
 

@@ -1,4 +1,4 @@
-import {
+/*import {
   Mongo
 } from 'meteor/mongo';
 import {
@@ -9,7 +9,7 @@ import {
 } from 'meteor/check';
 import {
   Match
-} from 'meteor/check'
+} from 'meteor/check'*/
 import { log } from 'util';
 
 Meteor.methods({

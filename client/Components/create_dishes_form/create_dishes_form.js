@@ -1,4 +1,4 @@
-import {
+/*import {
   Mongo
 } from 'meteor/mongo';
 import {
@@ -11,11 +11,8 @@ import {
   FilesCollection
 } from 'meteor/ostrio:files';
 import {
-  Tracker
-} from 'meteor/tracker'
-import {
   ReactiveVar
-} from 'meteor/reactive-var'
+} from 'meteor/reactive-var'*/
 import {
   get_checkboxes_value
 } from '/imports/functions/get_checkboxes_value.js';

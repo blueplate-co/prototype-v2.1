@@ -8,9 +8,6 @@ import {
   Blaze
 } from 'meteor/blaze';
 import {
-  Tracker
-} from 'meteor/tracker';
-import {
   checkboxes_recall
 } from '/imports/functions/checkboxes_recall.js'
 
@@ -36,7 +33,7 @@ Template.menu_creation.onRendered(function(){
 Template.menu_initiation.events({
   'click #add_menu': function(template) {
     Meteor.call('getUserProfileByID', function (err, result) {
-        if (err) { 
+        if (err) {
           console.log('Error when get user ID: ' + err.message);
         } else {
           if (result) {

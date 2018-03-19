@@ -2,7 +2,6 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session'
 import { FilesCollection } from 'meteor/ostrio:files';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Tracker } from 'meteor/tracker';
 import { Meteor } from 'meteor/meteor';
 import { Blaze } from 'meteor/blaze';
 
@@ -61,7 +60,7 @@ Template.dishes_thumbnails.events({
     dish_card = Blaze.render(Template.dishes_card, $('#large_dish_display')[0]);
     $('#info_tabs').tabs();
   },
-  
+
   'click #place_order': function () {
     var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
     if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {

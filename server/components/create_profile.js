@@ -1,4 +1,4 @@
-import {
+/*import {
   Meteor
 } from 'meteor/meteor';
 import {
@@ -6,7 +6,7 @@ import {
 } from 'meteor/check';
 import {
   check
-} from 'meteor/check';
+} from 'meteor/check';*/
 
 Profile_details = new Mongo.Collection('profile_details');
 Kitchen_details = new Mongo.Collection('kitchen_details');

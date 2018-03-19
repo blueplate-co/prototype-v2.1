@@ -1,9 +1,5 @@
-import { Accounts } from 'meteor/accounts-base';
+
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
-import { Blaze } from 'meteor/blaze';
-import { FilesCollection } from 'meteor/ostrio:files';
-import { Tracker } from 'meteor/tracker';
 import { get_current_location } from '/imports/functions/get_current_location.js';
 
 Template.navbar.onRendered(function(){
@@ -151,7 +147,7 @@ Template.navbar.events({
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #profile_link': function () {
-   FlowRouter.go('/profile/show_foodie_profile');
+   FlowRouter.go('/profile/edit_foodie_profile');
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #logout_link': function () {

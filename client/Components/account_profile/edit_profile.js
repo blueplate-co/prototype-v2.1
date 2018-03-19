@@ -1,22 +1,15 @@
-/**import {
-  Accounts
-} from 'meteor/accounts-base';
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
-import {
-  Template
-} from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';**/
 import {
   checkboxes_recall
 } from '/imports/functions/checkboxes_recall.js'
 import {
   address_geocode
 } from '/imports/functions/address_geocode.js'
-
+import {
+  get_checkboxes_value
+} from '/imports/functions/get_checkboxes_value.js'
 
 
 
@@ -152,7 +145,6 @@ Template.edit_foodie_profile.onRendered(function() {
   var get_profile = Profile_details.findOne({
     'user_id': Meteor.userId()
   });
-
   //activate steppers
   this.$('#edit_foodie_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
@@ -177,8 +169,11 @@ Template.edit_foodie_profile.onRendered(function() {
   //activate checkboxes_recall
   checkboxes_recall(get_profile.allergy_tags)
   checkboxes_recall(get_profile.dietary_tags)
-  checkboxes_recall(get_profile.serving_option_tags)
-/*  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
+
+  Session.set("allergy_tags",get_profile.allergy_tags)
+  Session.set("dietary_tags",get_profile.dietary_tags)
+  /*checkboxes_recall(get_profile.serving_option_tags)*/
+  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
   address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
   /*address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');*/
 });
@@ -191,9 +186,79 @@ Template.edit_foodie_profile.events({
   'blur #edit_office_address': function() {
     address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
   },
-  'click #edit_foodie_button': function(event, template) {
-    event.preventDefault();
-    $('#edit_homecook_button').click();
+  'click #edit_foodie_profile_button': function(){
+
+
+    const foodie_name = $('#foodie_name').val();
+    const first_name = $('#first_name').val();
+    const last_name = $('#last_name').val();
+    const email = $('#email').val();
+    const date_of_birth = $('#date_of_birth').val();
+    const gender = $("input[name='gender']:checked").val();
+    const mobile_dial_code = $('#mobile_country').val();
+    const mobile = $('#mobile').val();
+    const home_address_country = $('#home_address_country').val();
+    const home_address = $('#edit_home_address').val();
+    const home_address_conversion = Session.get('home_address_conversion');
+    const office_address_country = $('#office_address_country').val();
+    const office_address = $('#edit_office_address').val();
+    const office_address_conversion = Session.get('office_address_conversion');
+
+
+    //Step 2
+    const about_myself = $('#about_myself').val();
+
+    //Step 3
+    const allergy_tags = Session.get('allergy_tags');
+
+    //Step 4
+    const dietary_tags = Session.get('dietary_tags');
+
+
+            Meteor.call('profile_details.update',
+            foodie_name,
+            first_name,
+            last_name,
+            email,
+            date_of_birth,
+            gender,
+            mobile_dial_code,
+            mobile,
+            home_address_country,
+            home_address,
+            home_address_conversion,
+            office_address_country,
+            office_address,
+            office_address_conversion,
+            about_myself,
+            allergy_tags,
+            dietary_tags,
+              function(err, result) {
+
+                if (err) {
+                  Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded red lighten-2');
+
+                } else {
+                  Materialize.toast('Profile updated!', 4000, "rounded red lighten-2")
+
+                    //divert to the profile page
+                    // BlazeLayout.render('screen', {
+                    //   navbar: "bp_navbar",
+                    //   render_component: "show_room"
+                    // });
+                    FlowRouter.go('/main');
+                }
+
+              }
+            );
+
+
+
+
+var trimInput = function(value) {
+return value.replace(/^\s*|\s*$/g, "");
+    }
+
   }
 });
 
@@ -295,7 +360,7 @@ Template.edit_homecook_profile.onRendered(function() {
     'user_id': Meteor.userId()
   });
 
-  checkboxes_recall(get_homecook_profile.serving_option);
+
 
   //activate dropdown
   this.$('select').material_select();
@@ -303,118 +368,88 @@ Template.edit_homecook_profile.onRendered(function() {
   //activate characterCounter
   this.$('input#input_text, textarea#about_myself').characterCounter();
 
+  this.$('#edit_homecook_stepper').activateStepper({
+   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+   showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
+  });
+
+  checkboxes_recall(get_homecook_profile.serving_option);
+  $('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+  $('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
+
+
 });
 
 
-  //Kitchen Database
-    Template.edit_homecook_profile.events({
-      'blur #edit_kitchen_address': function() {
+Template.edit_homecook_profile.events({
+
+  'click #edit_homecook_button':function(){
+    //Step 1
+    const kitchen_name = $('#kitchen_name').val();
+    const chef_name = $('#chef_name').val();
+    const kitchen_address_country = $('#kitchen_address_country').val();
+    const kitchen_address = $('#kitchen_address').val();
+    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    const kitchen_contact_country = $('#kitchen_contact_country').val();
+    const kitchen_contact = $('kitchen_contact').val();
+    const serving_option = Session.get('serving_option_tags');
+
+    //Step 2
+    const cooking_exp = $('#cooking_exp').val();
+    const cooking_story = $('#cooking_story').val();
+
+    //Step 3
+    var speciality = $('#kitchen_speciality').material_chip('data');
+    const kitchen_speciality = speciality;
+
+    var tags = $('#kitchen_tags').material_chip('data');
+    const kitchen_tags = tags;
+
+
+    //Step 4
+    const house_rule = $('#house_rule').val();
+
+
+
+    Meteor.call('kitchen_details.update',
+    kitchen_name,
+    chef_name,
+    kitchen_address_country,
+    kitchen_address,
+    kitchen_address_conversion,
+    kitchen_contact_country,
+    serving_option,
+    cooking_exp,
+    cooking_story,
+    kitchen_speciality,
+    kitchen_tags,
+    house_rule,
+
+    function(err) {
+      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+         else {
+          Materialize.toast('Profile updated!', 4000);
+          //divert to the profile page
+          // BlazeLayout.render('screen', {
+          //   navbar: "bp_navbar",
+          //   render_component: "show_room"
+          // });
+          FlowRouter.go('/path_choosing');
+        }
+      }
+    );
+
+  }
+
+})
+
+/*    'blur #edit_kitchen_address': function() {
         address_geocode('kitchen_address_conversion',$('#edit_kitchen_address').val(), 'kitchen address');
-      },
-
-      'click #edit_homecook_button': function(event, template){
-        event.preventDefault();
-
-        const foodie_profile_id = Profile_details.findOne({'user_id': Meteor.userId()})._id;
-        const foodie_name = $('#foodie_name').val();
-        const email = $('#email').val();
-        const date_of_birth = $('#date_of_birth').val();
-        const mobile_dial_code = $('#mobile_country').val();
-        const mobile = $('#mobile').val();
-        const profile_keywords = $('#profile_keywords').val();
-        const gender =  $("input[name='gender']:checked"). val();
-        const about_myself = $('#about_myself').val();
-        const home_address_country = $('#home_address_country').val();
-        const home_address = $('#edit_home_address').val();
-        const home_address_conversion = Session.get('home_address_conversion');
-        const office_address = $('#edit_office_address').val();
-        const office_address_country = $('#office_address_country').val();
-        const office_address_conversion = Session.get('office_address_conversion');
-        const allergy_tags = Session.get('allergy_tags');
-        const dietary_tags = Session.get('dietary_tags');
-        const card_number = $('#card_number').val();
-        const card_exp_month = $('#card_exp_month').val();
-        const card_exp_year = $('#card_exp_year').val();
-
-        const kitchen_profile_id = Kitchen_details.findOne({'user_id': Meteor.userId()})._id
-        const kitchen_name = $('#edit_kitchen_name').val();
-        const chef_name = $('#chef_name').val();
-        const homecook_profile_keywords = $('#homecook_profile_keywords').val();
-        const kitchen_address_country = $('#kitchen_address_country').val();
-        const kitchen_address = $('#edit_kitchen_address').val();
-        const kitchen_address_conversion = Session.get('kitchen_address_conversion');
-        const about_homecook_myself = $('#about_homecook_myself').val();
-        const serving_option = Session.get('serving_option_tags');
-        const bank_fullname = $('#bank_fullname').val();
-        const bank_name = $('#bank_name').val();
-        const bank_account_no = $('#bank_account_no').val();
-        const bank_address_country = $('#bank_address_country').val();
-        const bank_address = $('#bank_address').val();
-
-        const user_id = Meteor.userId()
+      },*/
 
 
-                Meteor.call('profile_details.update',
-                  foodie_profile_id,
-                  foodie_name,
-                  email,
-                  date_of_birth,
-                  mobile_dial_code,
-                  mobile,
-                  profile_keywords,
-                  gender,
-                  about_myself,
-                  home_address_country,
-                  home_address,
-                  home_address_conversion,
-                  office_address_country,
-                  office_address,
-                  office_address_conversion,
-                  allergy_tags,
-                  dietary_tags,
-                  card_number,
-                  card_exp_month,
-                  card_exp_year,
-                  function(err) {
-                    if (err) Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded red lighten-2');
-                  }
-                );
-
-                Meteor.call('kitchen_details.update',
-                  kitchen_profile_id,
-                  kitchen_name,
-                  chef_name,
-                  homecook_profile_keywords,
-                  kitchen_address_country,
-                  kitchen_address,
-                  kitchen_address_conversion,
-                  about_homecook_myself,
-                  serving_option,
-                  bank_fullname,
-                  bank_name,
-                  bank_account_no,
-                  bank_address_country,
-                  bank_address,
-                  function(err) {
-                    if (err) Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded red lighten-2');
-                  }
-                );
-
-      Materialize.toast('Profile updated!', 4000, "rounded red lighten-2")
-
-      //divert to the profile page
-      // BlazeLayout.render('screen', {
-      //   navbar: "bp_navbar",
-      //   render_component: "show_room"
-      // });
-      FlowRouter.go('/main');
-    }
-
-});
-
-var trimInput = function(value) {
-  return value.replace(/^\s*|\s*$/g, "");
-}
 
 
 Template.edit_foodie_profile.helpers({

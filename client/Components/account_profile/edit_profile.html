@@ -1,4 +1,4 @@
-<template name = "edit_foodie_profile12">
+<!--<template name = "edit_foodie_profile">
 
     <form class ="edit_foodie_profile col l12 m6 s6" id="edit_foodie_profile">
       {{#with get_foodie_profile}}
@@ -98,12 +98,12 @@
     {{/with}}
     </form>
 
-</template>
+</template>-->
 
 
 <template name = "edit_foodie_profile">
   {{#with get_foodie_profile}}
-  <form class ="edit_foodie_profile col l12 m6 s6" id="create_foodie_profile">
+  <form class ="edit_foodie_profile col l12 m6 s6" id="edit_foodie_profile">
     {{>profile_banner}}
     <div class='container'>
       <ul id='edit_foodie_stepper' class="stepper horizontal" style="min-height:640px">
@@ -149,7 +149,7 @@
                      <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
                      <label for="female">Female </label></p>
                    </div>
-                   {{/if}}
+                   {{else}}
                    {{#if check_female}}
                    <div class="col l6 m6 s6 valign">
                      <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
@@ -168,6 +168,7 @@
                      <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
                      <label for="female">Female </label></p>
                    </div>
+                   {{/if}}
                    {{/if}}
                   </div>
                   </div>
@@ -270,7 +271,7 @@
                 </div>
 
                <div class="step-actions">
-                 <button id="edit_foodie_profile_button" class="waves-effect waves-dark btn" type=submit>SUBMIT</button>
+                 <button id="edit_foodie_profile_button" class="waves-effect waves-dark btn" type=button>SUBMIT</button>
                </div>
             </div>
          </li>
@@ -286,94 +287,139 @@
 
 <template name = "edit_homecook_profile">
 {{#with get_homecook_profile}}
-  <form class ="edit_homecook_profile col l12 m6 s6" id="edit_homecook_profile">
-    {{>homecook_profile_banner}}
-    <br>
-    <br>
+  <form class ="edit_homecook_profile col l12 m12 s12" id="edit_homecook_profile">
+    {{>profile_banner}}
     <div class = "container">
-      <div class="row col l12 valign">
-        <div class="text-field col l3 m3 s3 valign">
-          <h6>Kitchen Details</h6>
-        </div>
-        <div class="input-field col l4 m3 s3 valign">
-          <input id="edit_kitchen_name" name="edit_kitchen_name" type="text" value="{{get_homecook_profile.kitchen_name}}">
-          <label class="active" for="edit_kitchen_name">Kitchen Name</label>
-          </div>
-          <div class="input-field col l3 m3 s3 valign">
-            <input id="chef_name" name="chef_name" type="text" value="{{get_homecook_profile.chef_name}}">
-            <label class="active" for="chef_name">Chef Name</label>
+      <ul id='edit_homecook_stepper' class="stepper horizontal" style="min-height:600px">
+         <li class="step active">
+            <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
+            <div class="step-content">
+
+              <div class="row col l12 m12 s6 valign">
+                <div class="text-field col l3 m12 s12 valign">
+                  <h6>Kitchen Details</h6>
+                </div>
+                <div class="text-field col l5 m6 s12 valign">
+                  <input id="kitchen_name" name="kitchen_name" type="text" value="{{get_homecook_profile.kitchen_name}}">
+                    <label class="active" for="kitchen_name">kitchen name</label>
+                  </div>
+
+                  <div class="text-field col l4 m6 s12 valign">
+                    <input id="chef_name" name="chef_name" type="text" value="{{get_homecook_profile.chef_name}}">
+                    <label class="active" for="chef_name">chef name</label>
+                  </div>
+
+
+                </div>
+              <div class="row col l12 valign">
+                <div class="text-field col l3 m12 s6 valign">
+                  <h6>Kitchen Address</h6>
+                </div>
+
+                <div class="text-field col l6 m9 s12 valign">
+                  <input id="kitchen_address" name="kitchen_address" type="text" value="{{get_homecook_profile.kitchen_address}}">
+                  <label class="active" for="kitchen_address">kitchen address</label>
+                  </div>
+                  <div class="text-field col l3 m3 s6 valign">
+                    <select class="material_select" id="kitchen_address_country">
+                      <option value="" disabled selected>Country</option>
+                      {{#each country_list}}
+                      <option value="{{name}}">{{name}}</option>
+                      {{/each}}
+                      </select>
+                    </div>
+                </div>
+
+                <div class="row col l12 m12 s12 valign">
+                  <div class='text-field col l3 m3 s12 valign'>
+                    <h6>Kitchen Contact</h6>
+                  </div>
+               <div class="text-field col l2 m3 s12 valign">
+                 <select class="material_select" id="kitchen_contact_country">
+                   <option value="" disabled selected>Country</option>
+                      {{#each country_list}}
+                    <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
+                      {{/each}}
+                  </select>
+                </div>
+                <div class="text-field col l4 m6 s12 valign">
+                  <input id="kitchen_contact" name="kitchen_contact" type="text">
+                  <label class="active" for="kitchen_contact">kitchen contact</label>
+                </div>
+                </div>
+
+                <div class="row col l12 m12 s12 valign">
+                  <div class='text-field col l3 m3 s12 valign'>
+                    <h6>Serving Options</h6>
+                  </div>
+                  <div class = "col l9 m12 s12">
+                    {{> serving_option}}
+                  </div>
+                </div>
+
+
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+               </div>
             </div>
-        </div>
-      <div class="row col l12 valign">
-        <div class="text-field col l3 m3 s3 valign">
-          <h6>Kitchen Address</h6>
-        </div>
-        <div class="input-field col l6 m3 s3 valign">
-          <input id="edit_kitchen_address" name="edit_kitchen_address" type="text" value="{{get_homecook_profile.kitchen_address}}">
-          <label class="active" for="edit_kitchen_address">Kitchen Address</label>
-          </div>
-          <div class="input-field col l3 m2 s2 valign">
-            <select class="material_select" id="kitchen_address_country">
-              <option value={{get_homecook_profile.kitchen_address_country}} selected>{{get_homecook_profile.kitchen_address_country}}</option>
-              {{#each country_list}}
-              <option value={{name}}>{{name}}</option>
-              {{/each}}
-              </select>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Cooking Journey</div>
+            <div class="step-content">
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Chef Cooking Experience</h6>
+              </div>
+              <div class="input-field col l12 m12 s12 valign">
+                <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500" value='{{get_homecook_profile.cooking_exp}}'></textarea>
+                <label class="active" for="cooking_exp">Let us know your cooking experience! (Optional)</label>
+                </div>
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Chef Cooking Story</h6>
+                </div>
+                <div class="input-field col l12 m12 s12 valign">
+                  <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500" value='{{get_homecook_profile.cooking_story}}'></textarea>
+                  <label class="active" for="cooking_story">Let us know your story about cooking! (Optional)</label>
+                  </div>
+
+
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+               </div>
             </div>
-        </div>
-        <div class="row col l12 valign">
-          <div class="input-field col l9 m2 s4 offset-l3 valign">
-            <textarea id="about_homecook_myself" class="materialize-textarea" name="about_homecook_myself" type="text" data-length="500" value="{{get_homecook_profile.about_homecook_myself}}"></textarea>
-            <label class="active" for="about_homecook_myself">Write a paragraph about your food and the story about you</label>
+         </li>
+
+         <li class="step">
+            <div class="step-title waves-effect">Your Kitchen</div>
+            <div class="step-content">
+
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Speciality</h6>
+              </div>
+              <div id='kitchen_speciality' class="chips chips-placeholder"></div>
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Tags about your place</h6>
+                </div>
+                <div id='kitchen_tags' class="chips chips-placeholder"></div>
+
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>House rules</h6>
+                </div>
+                <div class="input-field col l12 m12 s12 valign">
+                  <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500" value='{{get_homecook_profile.house_rule}}'></textarea>
+                  <label class='active' for="house_rule">Any House rules?</label>
+                  </div>
+
+               <div class="step-actions">
+                 <button id="edit_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
+               </div>
             </div>
-          </div>
-          <div class = "row col l12 valign">
-            <div class = "col l3 m3 s3 valign">
-              <h6> Serving Options</h6>
-            </div>
-            <div class = "col l9 m9 s9">
-              {{> serving_option}}
-            </div>
-          </div>
-    <br>
-    <div class="row col l12 m6 s6 valign">
-      <div class="text-field col l3 m3 s6 valign">
-        <h6>Bank details</h6>
-        </div>
-        <div class="input-field col l3 m3 s6 valign">
-          <input id="bank_fullname" name="bank_fullname" type="text" value="{{get_homecook_profile.bank_fullname}}">
-          <label class="active" for="bank_fullname">Account Name</label>
-        </div>
-        <div class="input-field col l3 m3 s6 valign">
-          <input id="bank_name" name="bank_name" type="text" value="{{get_homecook_profile.bank_name}}">
-          <label class="active" for="bank_name">Name of the Bank</label>
-        </div>
-        <div class="input-field col l3 m2 s6 valign">
-          <input id="bank_account_no" name="bank_account_no" type="text" value="{{get_homecook_profile.bank_account_no}}">
-          <label class="active" for="bank_account_no">Account Number</label>
-        </div>
-      </div>
-      <div class="row col l12 m6 s6 valign">
-        <div class="input-field col l6 m6 s6 offset-l3 valign">
-          <input id="bank_address" name="bank_address" type="text" value="{{get_homecook_profile.bank_address}}">
-          <label class="active" for="bank_address">Address of the Bank</label>
-          </div>
-        <div class="input-field col l3 m2 s2 valign">
-          <select class="material_select" id="bank_address_country">
-            <option value="{{get_homecook_profile.bank_address_country}}"  selected>{{get_homecook_profile.bank_address_country}}</option>
-            {{#each country_list}}
-            <option value="{{name}}">{{name}}</option>
-            {{/each}}
-            </select>
-          </div>
-        </div>
-    <br>
-    <br>
-    <button id="edit_homecook_button" class="waves-effect waves-teal btn-flat right" type="submit" value="Submit">Update</button>
-    <br>
-    <br>
+         </li>
+      </ul>
     </div>
-    <br>
   </form>
   {{/with}}
 </template>
