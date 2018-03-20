@@ -257,7 +257,9 @@ Meteor.methods({
     createdAt,
     updatedAt,
     online_status,
-    deleted
+    deleted,
+    //- S3 link
+    imgMeta
   ) {
     // check it before insert
     check(image_id, Match.Any);
@@ -283,6 +285,7 @@ Meteor.methods({
     check(serving_temperature_tags, Match.Any);
     check(createdAt, Date);
     check(updatedAt, Date);
+    check(imgMeta, Object);
 
     Dishes.insert({
       image_id: image_id,
@@ -311,7 +314,9 @@ Meteor.methods({
       online_status: false,
       order_count: 0,
       average_rating: 0,
-      deleted: false
+      deleted: false,
+      //- S3 link
+      meta: imgMeta
     });
   }
 });
