@@ -524,7 +524,7 @@ var saveToKraken = function(imgName, imgPath, sessionName)
 
 
 Template.create_foodie_profile.events({
-  'click#create_foodie_profile_button': function(event, template) {
+  'click #create_foodie_profile_button': function(event, template) {
     event.preventDefault();
 
     //Step 1
