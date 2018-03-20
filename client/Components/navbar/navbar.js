@@ -1,9 +1,5 @@
-import { Accounts } from 'meteor/accounts-base';
+
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
-import { Blaze } from 'meteor/blaze';
-import { FilesCollection } from 'meteor/ostrio:files';
-import { Tracker } from 'meteor/tracker';
 import { get_current_location } from '/imports/functions/get_current_location.js';
 
 Template.navbar.onRendered(function(){
@@ -151,18 +147,37 @@ Template.navbar.events({
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #profile_link': function () {
-   FlowRouter.go('/profile');
+   FlowRouter.go('/profile/edit_foodie_profile');
    $(".nav_brand_logo").sideNav('hide');
  },
  'click #logout_link': function () {
    Meteor.call('messages.clear', Meteor.userId(), function(err) {
      if (err) Materialize.toast('Oops! Error when clearing message. Please try again. ' + err.message, 4000, 'rounded bp-green');
    });
+   
    Session.keys = {}
    localStorage.setItem("loggedIn", false);
-   Meteor.logout();
-   FlowRouter.go('/');
-   $('#sidenav-overlay').remove();
+
+  //- old
+  //  Meteor.logout();
+  //  $('#sidenav-overlay').remove();
+  //  FlowRouter.go('/');
+   
+  //- new
+  Meteor.logout(function(err){
+    if (err) {
+      Bert.alert(err.reason, "danger", "growl-top-right");
+      return false;
+    } 
+    //- logout success
+    Bert.alert('Logout successfully !', "success", "fixed-top");
+
+    $('#sidenav-overlay').remove();
+    FlowRouter.go("/");
+
+  });
+
+  
  },
 });
 
