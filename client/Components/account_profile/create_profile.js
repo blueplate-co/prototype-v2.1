@@ -2,7 +2,7 @@ import {
   address_geocode
 } from '/imports/functions/address_geocode.js';
 import './create_profile.html';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
 profile_images = new FilesCollection({
@@ -597,7 +597,7 @@ Template.create_foodie_profile.events({
 
 
 Template.create_homecook_profile.events({
-  'click#create_homecook_button': function(event, template) {
+  'click #create_homecook_button': function(event, template) {
     event.preventDefault();
 
     //Step 1
