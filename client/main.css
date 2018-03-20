@@ -20,6 +20,10 @@ h1, h2, h3, h4, h5, h6 {
   color: #000000;
 }
 
+.bp-blue-text {
+  color: #56AACD;
+}
+
 .bp-blue:hover {
   background-color: #407E97;
 }
