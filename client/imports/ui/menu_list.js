@@ -48,18 +48,33 @@ class MenuList extends Component {
     
     if (listImages.length > 1) {
       return listImages.map((item, index) => {
-        return (
-          <div key={index} className="slider-item" style={{backgroundImage: "url(" + item.origin + ")"}}></div>
-        )
+        if (item) {
+          return (
+            <div key={index} className="slider-item" style={{backgroundImage: "url(" + item.origin + ")"}}></div>
+          )
+        } else {
+          return (
+            <div key={index} className="slider-item" style={{backgroundImage: "#ccc"}}></div>
+          )
+        }
       })
     } else {
-      return (
-        <div key={index} className="slider-item" style={{backgroundImage: "url(" + listImages[0].origin + ")"}}></div>
-      )
+      if (listImages.length > 0) {
+        return (
+          <div key={index} className="slider-item" style={{backgroundImage: "url(" + listImages[0].origin + ")"}}></div>
+        )
+      } else {
+        return (
+          <div key={index} className="slider-item" style={{backgroundImage: "#ccc"}}></div>
+        )
+      }
     }
   }
 
   renderList = () => {
+    if (this.props.menus.length == 0) {
+      return <p>Has no dishes to displayed</p>
+    }
     return this.props.menus.map((item, index) => {
       return (
         <div key={index} className="col xl3 l3 m4 s6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>

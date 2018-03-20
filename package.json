@@ -15,9 +15,13 @@
     "materialize-css": "^0.99.0",
     "materialize-stepper": "^2.1.4",
     "meteor-node-stubs": "~0.2.4",
+<<<<<<< HEAD
     "npm": "^5.7.1",
     "react": "^16.2.0",
+=======
+    "react": "^15.6.2",
+>>>>>>> react-showroom
     "react-chartjs-2": "^2.6.4",
-    "react-dom": "^16.2.0"
+    "react-dom": "^15.6.2"
   }
 }

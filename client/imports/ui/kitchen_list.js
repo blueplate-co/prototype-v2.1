@@ -25,14 +25,27 @@ class KitchenList extends Component {
   }
 
   renderList = () => {
+    if (this.props.kitchen.length == 0) {
+      return <p>Has no kitchen to displayed</p>
+    }
+    let hasBanner;
     return this.props.kitchen.map((item, index) => {
+      if (item.bannerKitchenImg) {
+        hasBanner = true;
+      } else {
+        hasBanner = false;
+      }
       return (
         <div key={index} className="col xl4 l4 m6 s12 modal-trigger" onClick={ () => this.handleClick(item) }>
-          <div className="kitchen-images-thumbnail">
-            <ProgressiveImages
-              large={ item.bannerKitchenImg.origin }
-              small={ item.bannerKitchenImg.small }
-            />
+          <div className="kitchen-images-thumbnail" style =  {{ background: '#ccc' }}>
+            {
+              (hasBanner) ?
+                <ProgressiveImages
+                  large={ item.bannerKitchenImg.origin }
+                  small={ item.bannerKitchenImg.small }
+                />
+              : ""
+            }
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.kitchen_name }</h5>
@@ -55,10 +68,10 @@ class KitchenList extends Component {
       <div className='col s12 m12 l12 no-padding'>
         {/* title */}
         <div className="row">
-          <div className="col s6 m6 l6">
+          <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right">
+          <div className="col s6 m6 l6 text-right no-padding">
             <a>{ this.props.seemore }</a>
           </div>
         </div>
