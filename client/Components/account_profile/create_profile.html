@@ -1,22 +1,20 @@
 <!-- Create Profile Templates-->
-<!-- Foodies templates starts at line 10-->
-<!-- Homecook templates starts at line 260-->
 
-<!-- Foodie Profile-->
+
 <!--Template of the profile banner-->
 <template name = "profile_banner">
     <div class = "profile_banner_area valign-wrapper">
-      <div class = "container valign">
-        {{> upload_profile}}
-       <div class="col l12 m4 s4 valign">
-         <h5 class = "white-text center-align">
-           {{check_foodie_name}}
-          </h5>
+      <div class="container col l12 m3 s3">
+        <div class = "center-align">
+
+            {{> upload_profile}}
+             <h5 class="white-text">{{check_foodie_name}}</h5>
+
+        </div>
       </div>
-      <div class="input-field col l6 m4 s4 valign">
-        <input id="profile_keywords" name="profile_keywords" type="text" style="text-align:center" placeholder="Write keywords about you" value={{check_foodie_keywords}}>
-      </div>
-      <div class="row upload_banner_image">
+      <br>
+
+      <div class="row l12 upload_banner_image">
         {{#with currentUpload}}
           <div class = "profile_banner_upload">
             <div class="progress">
@@ -28,7 +26,7 @@
             {{load_banner}}
             <div class="profile_banner_upload">
               <label for="banner_file_input">
-                <h6 class = "white-text center-align" id="banner_upload_button">Change Banner Image</h6>
+                <h6 class = "white-text bottom" id="banner_upload_button">Change Banner Image</h6>
               </label>
               <div class="file-field input-field">
                 <input id="banner_file_input" type="file">
@@ -50,7 +48,7 @@
           {{/if}}
         {{/with}}
       </div>
-    </div>
+
   </div>
 </template>
 
@@ -81,174 +79,149 @@
 <template name = "create_foodie_profile">
     <form class ="create_foodie_profile col l12 m6 s6" id="create_foodie_profile">
       {{>profile_banner}}
-      <br>
-      <br>
-      <div class = "container">
-      {{>profile_personal_details}}
-      <br>
-      {{>profile_payment_details}}
-      <br>
-      {{>profile_food_allergies}}
-      <br>
-      {{>profile_dietary_perferences}}
-      <br>
-      <button id="create_foodie_button" class="waves-effect waves-teal btn-flat right" type="submit" value="Submit">Save</button>
+      <div class='container'>
+        <ul id='create_foodie_stepper' class="stepper horizontal" style="min-height:600px">
+           <li class="step active">
+              <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
+              <div class="step-content">
+                <div class="row col l12 m6 s6 valign">
+                  <div class="text-field col l3 m12 s12 valign">
+                    <h6>Your details</h6>
+                  </div>
+                  <div class="text-field col l3 m4 s12 valign">
+                    <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name" class="mandatory" required />
+                  </div>
+                  <div class="text-field col l3 m4 s6 valign">
+                    <input id="first_name" name="first_name" type="text" placeholder="First Name">
+                  </div>
+                  <div class="text-field col l3 m4 s6 valign">
+                    <input id="last_name" name="last_name" type="text" placeholder="Last Name">
+                  </div>
+                </div>
 
-      <br>
-      <br>
+                <div class="row col l12 m12 s12 valign">
+                  <div class="text-field col l4 m5 s12 offset-l3 valign">
+                    <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address" disabled>
+                  </div>
+                  <div class="text-field col l2 m3 s12 valign">
+                      <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
+                   </div>
+                   <div class="text-field col l3 m4 s12 valign">
+                     <div class="col l6 m6 s6 valign">
+                       <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
+                       <label for="male">Male </label></p>
+                     </div>
+                       <div class="col l6 m6 s6 valign">
+                       <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
+                       <label for="female">Female </label></p>
+                     </div>
+                     </div>
+                   </div>
+                   <div class="row col l12 m12 s12 valign">
+                  <div class="text-field col l2 m4 s6 offset-l3 valign">
+                    <select class="material_select" id="mobile_country">
+                      <option value="" disabled selected>Country</option>
+                         {{#each country_list}}
+                       <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
+                         {{/each}}
+                     </select>
+                   </div>
+                   <div class="text-field col l3 m4 s6 valign">
+                     <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
+                   </div>
+                   </div>
+
+                <div class="row col l12 m6 s6 valign">
+                  <div class="text-field col l3 m6 s6 valign">
+                    <h6>Delivery Address</h6>
+                  </div>
+
+                  <div class="input-field col l7 m10 s12 valign">
+                    <input id="create_home_address" name="create_home_address" type="text">
+                    <label for="create_home_address">Home Address</label>
+
+                    </div>
+                    <div class="input-field col l2 m2 s6 valign">
+                      <select class="material_select" id="home_address_country">
+                        <option value="" disabled selected>Country</option>
+                        {{#each country_list}}
+                        <option value={{name}}>{{name}}</option>
+                        {{/each}}
+                        </select>
+                      </div>
+                  </div>
+
+
+                  <div class="row col l12 m6 s6 valign">
+                    <div class="input-field col l7 m10 s12 offset-l3 valign">
+                      <input id="create_office_address" name="create_office_address" type="text">
+                      <label for="create_office_address">Office Address</label>
+                    </div>
+                      <div class="input-field col l2 m2 s6 valign">
+                        <select class="material_select" id="office_address_country">
+                          <option value="" disabled selected>Country</option>
+                          {{#each country_list}}
+                          <option value={{name}}>{{name}}</option>
+                          {{/each}}
+                          </select>
+                        </div>
+                    </div>
+                 <div class="step-actions">
+                    <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                 </div>
+              </div>
+           </li>
+           <li class="step">
+              <div class="step-title waves-effect">Your Story</div>
+              <div class="step-content">
+                  <div class="input-field col l12 m12 s12  valign">
+                    <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
+                    <label for="about_myself">Write a paragraph about yourself</label>
+                    </div>
+                 <div class="step-actions">
+                    <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                    <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+                 </div>
+              </div>
+           </li>
+           <li class="step">
+              <div class="step-title waves-effect">Allergies</div>
+              <div class="step-content">
+                <div class ="row l12 valign">
+                  <div class="text-field col l3 m3 s6 valign">
+                    <h6>Major food allergies</h6>
+                    </div>
+                    <div class="col l9 m9 s12 valign">
+                    {{> food_allergies}}
+                    </div>
+                  </div>
+                 <div class="step-actions">
+                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                   <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+                 </div>
+              </div>
+           </li>
+           <li class="step">
+              <div class="step-title waves-effect">Perferences</div>
+              <div class="step-content">
+                <div class ="row l12 m6 s6 valign">
+                  <div class="text-field col l3 m3 s6 valign">
+                    <h6>Dietary preferences</h6>
+                    </div>
+                  <div class="col l9 m9 s12 valign">
+                    {{> dietary_preferences}}
+                    </div>
+                  </div>
+                 <div class="step-actions">
+                   <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=butoon>SUBMIT</button>
+                 </div>
+              </div>
+           </li>
+        </ul>
       </div>
-      <br>
-      <br>
     </form>
 </template>
 
-
-<!--Template for the personal details-->
-<template name="profile_personal_details">
-  <!--Row 1-->
-  <div class="row col l12 valign">
-    <div class="text-field col l3 m6 s6 valign">
-      <h6>Your details</h6>
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-      <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name">
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-      <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address">
-    </div>
-    <div class="text-field col l3 m3 s6 valign">
-        <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
-      </div>
-  </div>
-        <div class="row col l12 valign">
-          <div class="text-field col l3 m6 s6 valign">
-            </div>
-            <div class="text-field col l3 m2 s2 valign">
-              <select class="material_select" id="mobile_country">
-                <option value="" disabled selected>Country</option>
-                {{#each country_list}}
-                <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                {{/each}}
-                </select>
-              </div>
-          <div class="text-field col l3 m3 s6 valign">
-              <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
-            </div>
-            <div class="text-field col l3 m3 s3 valign">
-              <div class="col l6 m3 s3 valign">
-                <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
-                <label for="male">Male </label></p>
-              </div>
-                <div class="col l6 m3 s3 valign">
-                <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
-                <label for="female">Female </label></p>
-              </div>
-              </div>
-          </div>
-
-    <!--Row 2-->
-  <div class="row col l12 m6 s6 valign">
-    <div class="text-field col l3 m6 s6 valign">
-      <h6>Home Address</h6>
-    </div>
-
-    <div class="input-field col l6 m6 s6 valign">
-      <input id="create_home_address" name="create_home_address" type="text">
-      <label for="create_home_address">Home Address</label>
-
-      </div>
-      <div class="input-field col l3 m2 s2 valign">
-        <select class="material_select" id="home_address_country">
-          <option value="" disabled selected>Country</option>
-          {{#each country_list}}
-          <option value={{name}}>{{name}}</option>
-          {{/each}}
-          </select>
-        </div>
-    </div>
-
-    <!--Row 3-->
-    <div class="row col l12 m6 s6 valign">
-      <div class="text-field col l3 m6 s6 valign">
-        <h6>Office Address</h6>
-      </div>
-
-      <div class="input-field col l6 m6 s6 valign">
-        <input id="create_office_address" name="create_office_address" type="text">
-        <label for="create_office_address">Office Address</label>
-      </div>
-        <div class="input-field col l3 m2 s2 valign">
-          <select class="material_select" id="office_address_country">
-            <option value="" disabled selected>Country</option>
-            {{#each country_list}}
-            <option value={{name}}>{{name}}</option>
-            {{/each}}
-            </select>
-          </div>
-      </div>
-
-      <!--Row 4-->
-      <div class="row col l12 m6 s6 valign">
-        <div class="input-field col l9 m6 s6 offset-l3 valign">
-          <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
-          <label for="about_myself">Write a paragraph about yourself</label>
-          </div>
-        </div>
-</template>
-
-<!-- Credit Card Details for Payment -->
-<template name="profile_payment_details">
-  <div class="row col l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
-      <h6>Payment details</h6>
-      </div>
-    <div class="input-field col l5 m3 s3 valign">
-      <input id="card_number" name="card_number" type="text" >
-      <label for="card_number">Card Number</label>
-      </div>
-      <div class="input-field col l1 m2 s2 valign">
-        <select class="material_select" id="card_exp_month">
-          <option value="" disabled selected>MM</option>
-          {{#each month_list}}
-          <option value="{{option}}">{{month}}</option>
-          {{/each}}
-          </select>
-        </div>
-      <div class="input-field col l1 m2 s2 valign">
-        <select class="material_select" id="card_exp_year">
-          <option value="" disabled selected>YYYY</option>
-          {{#each year_list}}
-          <option value="{{option}}">{{year}}</option>
-          {{/each}}
-          </select>
-        </div>
-    </div>
-
-</template>
-
-<!-- Template for calling food allergies -->
-<template name="profile_food_allergies">
-  <div class ="row l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
-      <h6>Major food allergies</h6>
-      </div>
-    <div class="col l9 valign">
-      {{> food_allergies}}
-      </div>
-    </div>
-</template>
-
-<!--Template to call dietary Perference-->
-<template name="profile_dietary_perferences">
-  <div class ="row l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
-      <h6>Dietary preferences</h6>
-      </div>
-    <div class="col l9 valign">
-      {{> dietary_preferences}}
-      </div>
-    </div>
-</template>
 
 
 
@@ -260,26 +233,159 @@
 <!-- HOMECOOK PROFILE-->
 <!-- Template for homecook Profile-->
 <template name = "create_homecook_profile">
-  <form class ="create_homecook_profile col l12 m6 s6" id="create_homecook_profile">
-    {{>homecook_profile_banner}}
-    <br>
-    <br>
+  <form class ="create_homecook_profile col l12 m12 s12" id="create_homecook_profile">
+    {{>profile_banner}}
     <div class = "container">
-    {{>homecook_profile_details}}
-    <br>
-    {{>profile_bank_details}}
-    <br>
-    <br>
-    <button id='create_homecook_button' class="waves-effect waves-teal btn-flat right" type="submit" value="Submit">Save</button>
-    <br>
-    <br>
+      <ul id='create_homecook_stepper' class="stepper horizontal" style="min-height:600px">
+         <li class="step active">
+            <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
+            <div class="step-content">
+
+              <div class="row col l12 m12 s6 valign">
+                <div class="text-field col l3 m12 s12 valign">
+                  <h6>Kitchen Details</h6>
+                </div>
+                <div class="input-field col l5 m6 s6 valign">
+                  <input id="kitchen_name" name="kitchen_name" type="text">
+                  <label for="kitchen_name">Kitchen Name</label>
+                  </div>
+
+                  <div class="input-field col l4 m6 s6 valign">
+                    <input id="chef_name" name="chef_name" type="text">
+                    <label for="chef_name">Chef Name</label>
+                    </div>
+                </div>
+              <div class="row col l12 valign">
+                <div class="text-field col l3 m12 s6 valign">
+                  <h6>Kitchen Address</h6>
+                </div>
+
+                <div class="input-field col l6 m9 s12 valign">
+                  <input id="kitchen_address" name="kitchen_address" type="text">
+                  <label for="kitchen_address">Kitchen Address</label>
+                  </div>
+                  <div class="input-field col l3 m3 s6 valign">
+                    <select class="material_select" id="kitchen_address_country">
+                      <option value="" disabled selected>Country</option>
+                      {{#each country_list}}
+                      <option value="{{name}}">{{name}}</option>
+                      {{/each}}
+                      </select>
+                    </div>
+                </div>
+
+                <div class="row col l12 m12 s12 valign">
+                  <div class='text-field col l3 m3 s12 valign'>
+                    <h6>Kitchen Contact</h6>
+                  </div>
+               <div class="text-field col l2 m3 s6 valign">
+                 <select class="material_select" id="kitchen_contact_country">
+                   <option value="" disabled selected>Country</option>
+                      {{#each country_list}}
+                    <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
+                      {{/each}}
+                  </select>
+                </div>
+                <div class="text-field col l3 m6 s6 valign">
+                  <input id="kitchen_contact" name="kitchen_contact" type="text" placeholder="Kitchen Contact No.">
+                </div>
+                </div>
+
+                <div class="row col l12 m12 s12 valign">
+                  <div class='text-field col l3 m3 s6 valign'>
+                    <h6>Serving Options</h6>
+                  </div>
+                  <div class = "col l9 m3 s9">
+                    {{> serving_option}}
+                  </div>
+                </div>
+
+
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+               </div>
+            </div>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Cooking Journey</div>
+            <div class="step-content">
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Chef Cooking Experience</h6>
+              </div>
+              <div class="input-field col l12 m12 s12 valign">
+                <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500"></textarea>
+                <label for="cooking_exp">Let us know your cooking experience! (Optional)</label>
+                </div>
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Chef Cooking Story</h6>
+                </div>
+                <div class="input-field col l12 m12 s12 valign">
+                  <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500"></textarea>
+                  <label for="cooking_story">Let us know your story about cooking! (Optional)</label>
+                  </div>
+
+
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+               </div>
+            </div>
+         </li>
+
+         <li class="step">
+            <div class="step-title waves-effect">Your Kitchen</div>
+            <div class="step-content">
+
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Speciality</h6>
+              </div>
+              <div id='kitchen_speciality' class="chips chips-placeholder"></div>
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Tags about your place</h6>
+                </div>
+                <div id='kitchen_tags' class="chips chips-placeholder"></div>
+
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>House rules</h6>
+                </div>
+                <div class="input-field col l12 m12 s12 valign">
+                  <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500"></textarea>
+                  <label for="house_rule">Any House rules?</label>
+                  </div>
+
+               <div class="step-actions">
+                 <button id="create_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
+               </div>
+            </div>
+         </li>
+      </ul>
     </div>
-    <br>
-    <br>
   </form>
 </template>
 
-<!--Template of the homecook profile banner-->
+
+
+<!--
+    <div class="row col l12 valign">
+      <div class="input-field col l9 m2 s4 offset-l3 valign">
+        <textarea id="about_homecook_myself" class="materialize-textarea" name="about_homecook_myself" type="text" data-length="500"></textarea>
+        <label for="about_homecook_myself">Write a paragraph about your food and the story about you</label>
+        </div>
+      </div>
+      <div class = "row col l12 valign">
+        <div class = "col l3 m3 s3 valign">
+          <h6> Serving Options</h6>
+        </div>
+        <div class = "col l9 m9 s9">
+          {{> serving_option}}
+        </div>
+      </div>
+-->
+
+<!--Template of the homecook profile banner
 <template name="homecook_profile_banner">
   <div class = "homecook_profile_banner_area valign-wrapper">
     <div class = "container valign">
@@ -328,9 +434,9 @@
     </div>
   </div>
 </div>
-</template>
+</template>-->
 
-<template name="upload_homecook_profile">
+<!--<template name="upload_homecook_profile">
   <div class = "homecook_profile_upload_wrapper">
     {{#with currentUpload}}
      {{> spinner}}
@@ -351,57 +457,9 @@
       {{/with}}
     {{/with}}
   </div>
-</template>
+</template>-->
 
-<!--Template of the kitchen details-->
-<template name="homecook_profile_details">
-  <div class="row col l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
-      <h6>Kitchen Details</h6>
-    </div>
-    <div class="input-field col l3 m3 s3 valign">
-      <input id="kitchen_name" name="kitchen_name" type="text">
-      <label for="kitchen_name">Kitchen Name</label>
-      </div>
 
-      <div class="input-field col l3 m3 s3 valign">
-        <input id="chef_name" name="chef_name" type="text">
-        <label for="chef_name">Chef Name</label>
-        </div>
-    </div>
-  <div class="row col l12 valign">
-    <div class="text-field col l3 m3 s3 valign">
-      <h6>Kitchen Address</h6>
-    </div>
-
-    <div class="input-field col l6 m3 s3 valign">
-      <input id="create_kitchen_address" name="create_kitchen_address" type="text">
-      <label for="create_kitchen_address">Kitchen Address</label>
-      </div>
-      <div class="input-field col l3 m2 s2 valign">
-        <select class="material_select" id="kitchen_address_country">
-          <option value="" disabled selected>Country</option>
-          {{#each country_list}}
-          <option value="{{name}}">{{name}}</option>
-          {{/each}}
-          </select>
-        </div>
-    </div>
-    <div class="row col l12 valign">
-      <div class="input-field col l9 m2 s4 offset-l3 valign">
-        <textarea id="about_homecook_myself" class="materialize-textarea" name="about_homecook_myself" type="text" data-length="500"></textarea>
-        <label for="about_homecook_myself">Write a paragraph about your food and the story about you</label>
-        </div>
-      </div>
-      <div class = "row col l12 valign">
-        <div class = "col l3 m3 s3 valign">
-          <h6> Serving Options</h6>
-        </div>
-        <div class = "col l9 m9 s9">
-          {{> serving_option}}
-        </div>
-      </div>
-  </template>
 
 
 <!-- Template to call bank payable details -->
@@ -439,4 +497,34 @@
         </div>
 
 </div>
+</template>
+
+<!-- Credit Card Details for Payment -->
+<template name="profile_payment_details">
+  <div class="row col l12 valign">
+    <div class="text-field col l3 m3 s3 valign">
+      <h6>Payment details</h6>
+      </div>
+    <div class="input-field col l5 m3 s3 valign">
+      <input id="card_number" name="card_number" type="text" >
+      <label for="card_number">Card Number</label>
+      </div>
+      <div class="input-field col l1 m2 s2 valign">
+        <select class="material_select" id="card_exp_month">
+          <option value="" disabled selected>MM</option>
+          {{#each month_list}}
+          <option value="{{option}}">{{month}}</option>
+          {{/each}}
+          </select>
+        </div>
+      <div class="input-field col l1 m2 s2 valign">
+        <select class="material_select" id="card_exp_year">
+          <option value="" disabled selected>YYYY</option>
+          {{#each year_list}}
+          <option value="{{option}}">{{year}}</option>
+          {{/each}}
+          </select>
+        </div>
+    </div>
+
 </template>
