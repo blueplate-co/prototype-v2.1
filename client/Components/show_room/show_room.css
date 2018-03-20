@@ -468,7 +468,6 @@
 .categories_navigation ul li#kitchen_list_all {
   background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/furniture-shops-perth-kitchen-furniture-store-outdoor-furniture-canberra-cheap-furniture-stores-melbourne-furniture-stores-canberra-1024x410.jpg') no-repeat center center;
   background-size: cover;
-<<<<<<< HEAD
 }
 
 .dish-preview-navigation .title {
@@ -580,6 +579,4 @@
 
 #show_room_container {
   margin-top: 60px;
-=======
->>>>>>> parent of a3ddb04... complete check order number when click order button on popup modal
 }
