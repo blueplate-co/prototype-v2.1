@@ -31,7 +31,7 @@ export default class ShowRoom extends Component {
 
   render() {
     return (
-      <div className="col xl12 l12 m12 s12">
+      <div className="col xl12 l12 m12 s12 no-padding">
         <div className="row">
           <div className="col xl12 l12 m12 s12 categories_navigation">
             <ul>
@@ -49,7 +49,7 @@ export default class ShowRoom extends Component {
         </div>
         <DishList title="Explore dish of today" seemore="see more available dish" popup={ this.handleDishPopup }/>
         <div className="row">
-          <div className="col l12 m12 s12 banner">
+          <div className="col xl12 l12 m12 s12 banner">
             <h1>everyone's home chef</h1>
           </div>
         </div>

@@ -86,7 +86,7 @@ export default class DishModal extends Component {
         if (allergies) {
             return allergies.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -96,7 +96,7 @@ export default class DishModal extends Component {
         if (dietary) {
             return dietary.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -106,7 +106,7 @@ export default class DishModal extends Component {
         if (cuisines) {
             return cuisines.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -116,7 +116,7 @@ export default class DishModal extends Component {
         if (proteins) {
             return proteins.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -126,7 +126,7 @@ export default class DishModal extends Component {
         if (categories) {
             return categories.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -136,7 +136,7 @@ export default class DishModal extends Component {
         if (cooking_methods) {
             return cooking_methods.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -146,7 +146,7 @@ export default class DishModal extends Component {
         if (tastes) {
             return tastes.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -156,7 +156,7 @@ export default class DishModal extends Component {
         if (textures) {
             return textures.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -166,7 +166,7 @@ export default class DishModal extends Component {
         if (vegetables) {
             return vegetables.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -176,7 +176,7 @@ export default class DishModal extends Component {
         if (condiments) {
             return condiments.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
         }
@@ -186,145 +186,9 @@ export default class DishModal extends Component {
         if (serving_temperature) {
             return serving_temperature.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li index={index}>{ item }</li>
                 )
             })
-        }
-    }
-
-    setQty = (qty) => {
-        this.setState({
-            qty: qty
-        })
-    }
-
-    // when click order button
-    order = () => {
-        if (Session.get('selectedItem') == 'dish') {
-            var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-            if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
-                Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-            } else {
-                var dish_details = Dishes.findOne({"_id": this.state.item._id});
-                var foodie_id = Meteor.userId();
-                var homecook_id = dish_details.user_id;
-                var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
-                var foodie_name = foodie_details.foodie_name;
-                var homecook_name =  homecook_details.chef_name;
-                var dish_id = dish_details._id;
-                var dish_price = dish_details.dish_selling_price;
-                var dish_name = dish_details.dish_name;
-                var ready_time = dish_details.cooking_time;
-                var quantity = this.state.qty;
-
-
-                var serving_option = Session.get('method');
-                var address = Session.get('address');
-                //check if the dish has been put in shopping check_shopping_cart
-                var order = Shopping_cart.findOne({"product_id": this.state._id, 'buyer_id': foodie_id});
-                var total_price_per_dish = 0;
-                if (order) {
-                    var order_id = order._id;
-                    quantity = parseInt(order.quantity) + this.state.qty;
-                    total_price_per_dish = parseInt(dish_price) * quantity
-                    Meteor.call('shopping_cart.update',
-                        order_id,
-                        quantity,
-                        total_price_per_dish,
-                        function(err) {
-                            if (err) Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-                        }
-                    )
-                } else{
-                    Meteor.call('shopping_cart.insert',
-                        foodie_id,
-                        homecook_id,
-                        foodie_name,
-                        homecook_name,
-                        address,
-                        serving_option,
-                        ready_time,
-                        dish_id,
-                        dish_name,
-                        quantity,
-                        dish_price,
-                        function(err) {
-                            if (err) {
-                                Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-                            } else {
-                                Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                                $('#dish-modal').modal('close');
-                            }
-                        }
-                    );
-                }
-            }
-        } else if (Session.get('selectedItem') == 'menu') {
-            var menu_details = Menu.findOne({"_id":this.state.item._id});
-            var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-            var foodie_id = Meteor.userId();
-        
-            if (typeof foodie_details == 'undefined' || foodie_details.foodie_name == '') {
-              Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-            }
-        
-            var homecook_id = menu_details.user_id;
-            var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
-            var foodie_name = foodie_details.foodie_name;
-            var homecook_name =  homecook_details.chef_name;
-            var menu_id = menu_details._id;
-            var menu_price = menu_details.menu_selling_price;
-            var menu_name = menu_details.menu_name;
-            var ready_time = parseInt(menu_details.lead_days) * 24 * 60 + parseInt(menu_details.lead_hours) * 60;
-            var quantity = menu_details.min_order;
-
-            if (this.state.qty < quantity) {
-                Materialize.toast('Oops! Your quantities must not less than minium order of this menu. Please set at least ' + quantity + ' item.', 'rounded bp-green');
-                return true;
-            }
-        
-        
-            var serving_option = Session.get('method')
-            var address = Session.get('address')
-            //check if the dish has been put in shopping check_shopping_cart
-            var order = Shopping_cart.findOne({"product_id":this._id, 'buyer_id':foodie_id});
-            var total_price_per_dish = 0;
-        
-            if (order) {
-                var order_id = order._id;
-                quantity = parseInt(order.quantity) + this.state.quantity;
-                total_price_per_dish = parseInt(menu_price) * quantity
-                Meteor.call('shopping_cart.update',
-                    order_id,
-                    quantity,
-                    total_price_per_dish,
-                    function(err) {
-                        if (err) Materialize.toast('Oops! Error when update your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-                    }
-                )
-            } else {
-                Meteor.call('shopping_cart.insert',
-                    foodie_id,
-                    homecook_id,
-                    foodie_name,
-                    homecook_name,
-                    address,
-                    serving_option,
-                    ready_time,
-                    menu_id,
-                    menu_name,
-                    quantity,
-                    menu_price,
-                    function(err) {
-                        if (err) {
-                            Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded bp-green");
-                        } else {
-                            Materialize.toast(menu_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                            $('#dish-modal').modal('close');
-                        }
-                    }
-                );
-            }
         }
     }
 
@@ -337,16 +201,11 @@ export default class DishModal extends Component {
                 <div className="col l8 m8 s12 dish-preview-content">
                     <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                     <div className="row dish-preview-navigation">
-                        <div className="row">
-                            <div className="col l12 s12 m12">
-                                <h1 className="title">{ this.state.item.dish_name }</h1>
-                            </div>
-                            <div className="col l4 s12 m4 m-visible">
-                                <button className="btn" onClick={ this.order } >Order</button>
-                            </div>
+                        <div className="col l12 s12 m12">
+                            <h1 className="title">{ this.state.item.dish_name }</h1>
                         </div>
                         <div className="row">
-                            <div className="col l8 s12 m8">
+                            <div className="col l8 s8 m8">
                                 <span className="price">$ { this.state.item.dish_selling_price }</span>
                                 <span className="qty">
                                     <span className="decreaseQty" onClick={ this.decreaseQty } >-</span>
@@ -356,8 +215,8 @@ export default class DishModal extends Component {
                                 <Rating rating={ this.state.item.average_rating } />
                                 <span className="order-count">{ this.state.item.order_count }</span>
                             </div>
-                            <div className="col l4 s12 m4 m-hidden">
-                                <button className="btn" onClick={ this.order } >Order</button>
+                            <div className="col l4 s4 m4">
+                                <button className="btn">Order</button>
                             </div>
                         </div>
                         <div className="row">
@@ -367,7 +226,7 @@ export default class DishModal extends Component {
                         </div>
                     </div>
                     <div className="row dish-preview-information no-padding">
-                        <div className="col l6 m6 s12">
+                        <div className="col l6 m6 s6">
                             <div className="row dish-preview-ingredients no-padding">
                                 <div className="col l12 m12 s12 no-padding">
                                     <h5>Ingredients</h5>
@@ -383,7 +242,7 @@ export default class DishModal extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col l6 m6 s12">
+                        <div className="col l6 m6 s6">
                             <div className="row dish-preview-ingredients no-padding">
                                 <div className="col l12 m12 s12 no-padding">
                                     <h5>Allergies &amp; Dietary preference </h5>
@@ -436,7 +295,7 @@ export default class DishModal extends Component {
                     ?
                         this.renderDish()
                     :
-                        <DishCarousel order={ this.order } qty={ this.setQty }/>
+                        <DishCarousel />
                 }
             </div>
         );

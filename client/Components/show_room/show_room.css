@@ -407,6 +407,7 @@
 .banner {
   height: 215px;
   background-color: #ccc;
+  padding: 0px!important;
   border-radius: 15px;
   color: white;
   overflow: hidden;
@@ -415,15 +416,13 @@
   background-position: center center;
   background-repeat: no-repeat;
   padding: 25px;
-  padding: 0 0.75rem;
-  display: inline-block;
 }
 
 .banner h1 {
   font-size: 2.5rem;
   color: #fff;
   vertical-align: middle;
-  margin-top: 65px; 
+  line-height: 150px; 
   margin-left: 3%;
 }
 
@@ -469,6 +468,7 @@
 .categories_navigation ul li#kitchen_list_all {
   background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/furniture-shops-perth-kitchen-furniture-store-outdoor-furniture-canberra-cheap-furniture-stores-melbourne-furniture-stores-canberra-1024x410.jpg') no-repeat center center;
   background-size: cover;
+<<<<<<< HEAD
 }
 
 .dish-preview-navigation .title {
@@ -580,4 +580,6 @@
 
 #show_room_container {
   margin-top: 60px;
+=======
+>>>>>>> parent of a3ddb04... complete check order number when click order button on popup modal
 }
