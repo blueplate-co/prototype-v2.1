@@ -91,7 +91,7 @@ Meteor.methods({
           about_myself: about_myself,
           allergy_tags: allergy_tags,
           dietary_tags: dietary_tags,
-          updatedAt: new Date()
+          updatedAt: new Date(),
           // profileImg: profileImg,
           bannerProfileImg: bannerProfileImg
         }
@@ -120,9 +120,8 @@ Meteor.methods({
           dietary_tags: dietary_tags,
           updatedAt: new Date()
 
-        }
-        }
-      })
+          }
+        })
     }
 
   },
