@@ -2,10 +2,14 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&amp;subset=vietnamese" rel="stylesheet">
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--Import materialize.css
+>>>>>>> origin/react-showroom
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css"  media="screen,projection"/>
-  -->
+    <!--Import Materialize-Stepper CSS (after importing materialize.css) -->
+    <link type="text/css" rel="stylesheet" href="/materialize-stepper/materialize-stepper.min.css">
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Google Tag Manager -->
@@ -18,12 +22,19 @@
   </head>
 
   <body>
-    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script> -->
+
+  <!--  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+  <!--  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>-->
+    <!-- jQueryValidation Plugin -->
+  <!--<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>-->
+    <!--Import Materialize-Stepper JavaScript (after the jquery.validate.js and materialize.js) -->
+    <script type="text/javascript" src="/materialize-stepper/materialize-stepper.min.js"></script>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59ZQ9NL"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
+
     {{> Template.dynamic template = main}}
     {{> notifications}}
   </body>

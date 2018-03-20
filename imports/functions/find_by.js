@@ -1,6 +1,3 @@
-import { Accounts } from 'meteor/accounts-base';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
 import { address_geocode } from '/imports/functions/address_geocode.js';
 
 export function navbar_find_by(collection){
@@ -11,9 +8,9 @@ export function navbar_find_by(collection){
   if (collection) {
     if (location) {
       address_geocode('location', location);
-      Meteor.call('mapping.check_radius', Session.get('location'), 1, function(error, result){
+      Meteor.call('mapping.check_radius', Session.get('location'), 5, function(error, result){
         if (error) {
-          Materialise.toast(error, 4000, "rounded bp-green");
+          Materialise.toast(error, 4000, "rounded red lighten-2");
         }
         if (method) {
           //location: T, method: T

@@ -16,7 +16,7 @@ export function address_geocode(name, address, string) {
         };
         Session.set(name, latlng);
       } else {
-        Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green")
+        Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded red lighten-2")
       }
     });
   }

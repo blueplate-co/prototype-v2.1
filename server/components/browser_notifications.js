@@ -1,4 +1,4 @@
-import {
+/*import {
   Meteor
 } from 'meteor/meteor';
 import {
@@ -6,7 +6,7 @@ import {
 } from 'meteor/check';
 import {
   Match
-} from 'meteor/check';
+} from 'meteor/check';*/
 
 Notifications = new Mongo.Collection('notifications');
 

@@ -1,4 +1,4 @@
-import {
+/*import {
   Meteor
 } from 'meteor/meteor';
 import {
@@ -6,7 +6,7 @@ import {
 } from 'meteor/check';
 import {
   check
-} from 'meteor/check';
+} from 'meteor/check';*/
 
 Shopping_cart = new Mongo.Collection('shopping_cart');
 Dishes = new Mongo.Collection('dishes');
@@ -32,80 +32,6 @@ Meteor.publish('files.images.all', function() {
 });
 
 Meteor.methods({
-  'saveToKraken'(imgName, imgPath){
-    check(imgName, String);
-    check(imgPath, String);
-    var sizes = {};
-    //- declare some key
-    var Kraken = require('kraken');
-    var kraken = new Kraken({
-      "api_key": "7f26da7198b9f421fc6dd7df3ee256e9",
-      "api_secret": "88b424bc8e85febe7c18bec79d4ea31e6bc71546"
-    });
-
-    console.log('here in saveToKraken function');
-    // console.log('image path', imgPath);
-    // console.log('image name', imgName);
-
-    //- some sizes definition
-    var params2 = {
-        file: imgPath,
-        wait: true,
-        lossy: true, //- switch to lossless
-        s3_store: {
-            key: "AKIAJLVB7Y7XKMLK7AVQ",
-            secret: "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",
-            bucket: "blueplate-images/images",
-            region: "ap-southeast-1"
-        },
-        resize: [
-            {
-                id: 'original',
-                strategy: 'none',
-                quality: 90,
-                lossy: false,
-                storage_path: "original/" + imgName
-            },
-            {
-                id: "small",
-                strategy: "fit",
-                // size: 100,
-                width: 100,
-                height: 100,
-                scale: 40,
-                enhance: true,
-                storage_path: "small/" + imgName
-            },
-            {
-                id: "medium",
-                strategy: "square",
-                size: 300,
-                storage_path: "medium/" + imgName
-            },
-            {
-                id: "large",
-                strategy: "square",
-                size: 400,
-                storage_path: "large/" + imgName
-            }
-        ]
-    };
-
-    // console.log('param', params2);
-    var returned_data = null;
-    kraken.upload(params2, function (status) {
-      console.log(status);
-      if (status.success) {
-          
-        console.log("Success. Optimized image URL: %s", status);
-        // console.log('return data: ', sizes);
-
-      } else {
-        console.log("Fail. Error message: %s", status.message);
-      }
-    });
-
-  },
   'shopping_cart.insert' (
     foodie_id,
     homecook_id,
@@ -240,9 +166,6 @@ Meteor.methods({
     dish_description,
     serving_option,
     cooking_time,
-    days,
-    hours,
-    mins,
     dish_cost,
     dish_selling_price,
     dish_profit,
@@ -260,11 +183,8 @@ Meteor.methods({
     createdAt,
     updatedAt,
     online_status,
-    deleted,
-    //- insert the image different sizes
-    imgMeta
+    deleted
   ) {
-    console.log('image meta data', imgMeta);
     // check it before insert
     check(image_id, Match.Any);
     check(user_id, String); //unessesary, check per-per args but not ever exist
@@ -289,8 +209,6 @@ Meteor.methods({
     check(serving_temperature_tags, Match.Any);
     check(createdAt, Date);
     check(updatedAt, Date);
-    //- checking meta data for image sizes
-    check(imgMeta, Object);
 
     Dishes.insert({
       image_id: image_id,
@@ -300,9 +218,6 @@ Meteor.methods({
       dish_description: dish_description,
       serving_option: serving_option,
       cooking_time: cooking_time,
-      days: days,
-      hours: hours,
-      mins: mins,
       dish_cost: dish_cost,
       dish_selling_price: dish_selling_price,
       dish_profit: dish_profit,
@@ -322,9 +237,7 @@ Meteor.methods({
       online_status: false,
       order_count: 0,
       average_rating: 0,
-      deleted: false,
-      //- insert meta data for image sizes
-      meta: imgMeta,
+      deleted: false
     });
   }
 });

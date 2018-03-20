@@ -17,7 +17,7 @@ Template.show_room.onRendered(function(){
 
   // render show room container from REACT
   render(<ShowRoom />, document.getElementById('show_room_container'));
-  
+
   $('.map_wrapper').pushpin({
     top: 0,
     bottom: 1500,
@@ -110,4 +110,3 @@ Meteor.subscribe('theNotificationsSender');
 Meteor.subscribe('theNotificationsReceiver');
 Meteor.subscribe('theImages');
 Meteor.subscribe('theOrderRatings');
-

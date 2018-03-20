@@ -8,9 +8,6 @@ import {
   Blaze
 } from 'meteor/blaze';
 import {
-  Tracker
-} from 'meteor/tracker';
-import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import {
