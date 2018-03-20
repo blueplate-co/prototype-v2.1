@@ -1,18 +1,11 @@
-import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
-  FlowRouter
-} from 'meteor/ostrio:flow-router-extra';
-import {
-  Blaze
-} from 'meteor/blaze';
-import {
-  FilesCollection
-} from 'meteor/ostrio:files';
-import {
-  address_geocode
-} from '/imports/functions/address_geocode.js';
+import React from 'react';
+import { render}  from 'react-dom';
+
+import PathOption from '../../imports/ui/path_choosing.js';
+
+Template.path_choosing.onRendered(function() {
+    render(<PathOption />, document.getElementById('pathOption_container'));
+})
 
 Template.path_choosing.events({
   'click #create_homecook_profile': function(){
