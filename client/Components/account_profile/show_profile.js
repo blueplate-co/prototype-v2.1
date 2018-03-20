@@ -12,10 +12,18 @@ import {
 } from '/imports/functions/get_checkboxes_value.js'
 
 
-
 Template.show_foodie_profile.helpers({
   'get_foodie_profile': function() {
     return Profile_details.findOne({
+      'user_id': Meteor.userId()
+    });
+  },
+
+})
+
+Template.show_homecook_profile.helpers({
+  'get_homecook_profile': function() {
+    return Kitchen_details.findOne({
       'user_id': Meteor.userId()
     });
   },
