@@ -36,7 +36,7 @@ export default class ShowRoom extends Component {
           <div className="col xl12 l12 m12 s12 categories_navigation">
             <ul>
               <li id="dish_list_all">
-                <span>Dish</span>
+                <span>Dish</span>{DishList}
               </li>
               <li id="menu_list_all">
                 <span>Menu</span>

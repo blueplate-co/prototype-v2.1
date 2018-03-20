@@ -42,6 +42,7 @@ export default class ProgressiveImages extends Component {
     }
 
     render() {
+        console.log('props data', this.props)
         return (
             <div className="placeholder" data-large={this.props.large}>
                 <div className={(this.state.loaded) ? 'background' : 'background blur'} style={{backgroundImage: "url(" + this.state.background + ")"}}></div>
