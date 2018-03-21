@@ -27,14 +27,27 @@ class DishList extends Component {
   }
 
   renderList = () => {
+    if (this.props.dishes.length == 0) {
+      return <p>Has no dishes to displayed</p>
+    }
+    let hasThumbnail;
     return this.props.dishes.map((item, index) => {
+      if (item.meta) {
+        hasThumbnail = true;
+      } else {
+        hasThumbnail = false;
+      }
       return (
         <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
-          <div className="images-thumbnail">
-            <ProgressiveImages
-              large={ item.meta.origin }
-              small={ item.meta.small }
-            />
+          <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
+            {
+              (hasThumbnail) ?
+                <ProgressiveImages
+                  large={ item.meta.origin }
+                  small={ item.meta.small }
+                />
+              : ""
+            }
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.dish_name }</h5>
