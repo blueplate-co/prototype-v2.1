@@ -12,6 +12,7 @@ import {
 } from '/imports/functions/get_checkboxes_value.js'
 
 
+
 Template.show_foodie_profile.helpers({
   'get_foodie_profile': function() {
     return Profile_details.findOne({
@@ -27,5 +28,9 @@ Template.show_homecook_profile.helpers({
       'user_id': Meteor.userId()
     });
   },
-
+  'speciality_tag':function(){
+    return Kitchen_details.find({
+      'user_id': Meteor.userId()
+    }).kitchen_speciality.tag.fetch();
+  }
 })

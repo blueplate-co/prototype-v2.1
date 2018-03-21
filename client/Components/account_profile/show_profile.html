@@ -99,14 +99,19 @@
      <div class='col l12 m12 s12'>
      <div class='row l6 m12 s12'>
        Speciality
-        <h6>{{get_homecook_profile.kitchen_speciality}}</h6>
+       {{#each speciality_tag}}
+        <div class='chip'>
+          {{this}}
+          </div>
+          {{/each}}
         </div>
      <div class='row l6 m12 s12'>
        Tags
-        <h6>{{get_homecook_profile.kitchen_tags}}</h6>
+       <div class='chips'>
+       </div>
      </div>
    </div>
-   <div class='col l12 m12 s12'>
+   <div class='row l12 m12 s12'>
      House rules
      <h6>{{get_homecook_profile.house_rule}}</h6>
      </div>
