@@ -1,0 +1,12 @@
+.path_container {
+  height: 100vh !important;
+  justify-content: center;
+}
+
+.path_card {
+  width: 100%;
+}
+
+.path_icons {
+  width: 100%;
+}
