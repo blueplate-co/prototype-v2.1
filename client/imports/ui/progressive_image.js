@@ -37,7 +37,7 @@ export default class ProgressiveImages extends Component {
                     })
                     // loaded
                 })
-            }, 2000);
+            }, 1000);
         };
     }
 
