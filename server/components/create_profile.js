@@ -72,7 +72,10 @@ Meteor.methods({
     about_myself,
     allergy_tags,
     dietary_tags,
+<<<<<<< HEAD
 
+=======
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     //- image sizes metadata
     profileImg,
     bannerProfileImg,
@@ -106,6 +109,7 @@ Meteor.methods({
 **/
     Profile_details.insert({
       user_id: Meteor.userId(),
+<<<<<<< HEAD
       foodie_name: foodie_name,
       first_name: first_name,
       last_name: last_name,
@@ -123,6 +127,25 @@ Meteor.methods({
       about_myself: about_myself,
       allergy_tags: allergy_tags,
       dietary_tags: dietary_tags,
+=======
+      foodie_name:foodie_name,
+      first_name:first_name,
+      last_name:last_name,
+      email:email,
+      date_of_birth:date_of_birth,
+      gender:gender,
+      mobile_dial_code:mobile_dial_code,
+      mobile:mobile,
+      home_address_country:home_address_country,
+      home_address:home_address,
+      home_address_conversion:home_address_conversion,
+      office_address_country:office_address_country,
+      office_address:office_address,
+      office_address_conversion:office_address_conversion,
+      about_myself:about_myself,
+      allergy_tags:allergy_tags,
+      dietary_tags:dietary_tags,
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
       createdAt: new Date(),
       updatedAt: new Date(),
       profileImg: profileImg,
@@ -137,13 +160,20 @@ Meteor.methods({
     kitchen_address,
     kitchen_address_conversion,
     kitchen_contact_country,
+<<<<<<< HEAD
+=======
+    kitchen_contact,
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     serving_option,
     cooking_exp,
     cooking_story,
     kitchen_speciality,
     kitchen_tags,
     house_rule,
+<<<<<<< HEAD
   
+=======
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     kitchenImg,
     bannerKitchenImg,
   ) {
@@ -167,6 +197,7 @@ Meteor.methods({
 
     Kitchen_details.insert({
       user_id: Meteor.userId(),
+<<<<<<< HEAD
       kitchen_name: kitchen_name,
       chef_name: chef_name,
       kitchen_address_country: kitchen_address_country,
@@ -179,6 +210,21 @@ Meteor.methods({
       kitchen_speciality: kitchen_speciality,
       kitchen_tags: kitchen_tags,
       house_rule: house_rule,
+=======
+      kitchen_name:kitchen_name,
+      chef_name:chef_name,
+      kitchen_address_country:kitchen_address_country,
+      kitchen_address:kitchen_address,
+      kitchen_address_conversion:kitchen_address_conversion,
+      kitchen_contact_country:kitchen_contact_country,
+      kitchen_contact:kitchen_contact,
+      serving_option:serving_option,
+      cooking_exp:cooking_exp,
+      cooking_story:cooking_story,
+      kitchen_speciality:kitchen_speciality,
+      kitchen_tags:kitchen_tags,
+      house_rule:house_rule,
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
       order_count: 0,
       average_rating: 0,
       createdAt: new Date(),

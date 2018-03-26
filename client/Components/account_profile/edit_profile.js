@@ -37,106 +37,6 @@ Template.edit_foodie_profile.helpers({
         return false
       }},
 
-  month_list: [{
-      month: '01',
-      option: '01'
-    },
-    {
-      month: '02',
-      option: '02'
-    },
-    {
-      month: '03',
-      option: '03'
-    },
-    {
-      month: '04',
-      option: '04'
-    },
-    {
-      month: '05',
-      option: '05'
-    },
-    {
-      month: '06',
-      option: '06'
-    },
-    {
-      month: '07',
-      option: '07'
-    },
-    {
-      month: '08',
-      option: '08'
-    },
-    {
-      month: '09',
-      option: '09'
-    },
-    {
-      month: '10',
-      option: '10'
-    },
-    {
-      month: '11',
-      option: '11'
-    },
-    {
-      month: '12',
-      option: '12'
-    },
-  ],
-
-  year_list: [{
-      year: '2017',
-      option: '2017'
-    },
-    {
-      year: '2018',
-      option: '2018'
-    },
-    {
-      year: '2019',
-      option: '2019'
-    },
-    {
-      year: '2020',
-      option: '2020'
-    },
-    {
-      year: '2021',
-      option: '2021'
-    },
-    {
-      year: '2022',
-      option: '2022'
-    },
-    {
-      year: '2023',
-      option: '2023'
-    },
-    {
-      year: '2024',
-      option: '2024'
-    },
-    {
-      year: '2025',
-      option: '2025'
-    },
-    {
-      year: '2026',
-      option: '2026'
-    },
-    {
-      year: '2027',
-      option: '2027'
-    },
-    {
-      year: '2028',
-      option: '2028'
-    },
-
-  ],
 
 });
 
@@ -146,12 +46,12 @@ Template.edit_foodie_profile.onRendered(function() {
     'user_id': Meteor.userId()
   });
   //activate steppers
-  this.$('#edit_foodie_stepper').activateStepper({
+/**  this.$('# edit_foodie_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
    autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
    autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
    showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
-});
+});**/
 
 
 
@@ -170,12 +70,13 @@ Template.edit_foodie_profile.onRendered(function() {
   checkboxes_recall(get_profile.allergy_tags)
   checkboxes_recall(get_profile.dietary_tags)
 
-  Session.set("allergy_tags",get_profile.allergy_tags)
-  Session.set("dietary_tags",get_profile.dietary_tags)
+  Session.set("allergy_tags", get_profile.allergy_tags)
+  Session.set("dietary_tags", get_profile.dietary_tags)
+  Session.set('home_address_conversion', get_profile.home_address_conversion)
+  Session.set('office_address_conversion', get_profile.office_address_conversion)
   /*checkboxes_recall(get_profile.serving_option_tags)*/
-  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
-  address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
-  /*address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');*/
+
+
 });
 
 
@@ -268,119 +169,114 @@ Template.edit_homecook_profile.helpers({
       'user_id': Meteor.userId()
     });
   },
-  bank_list: [{
-      name: '003 - Standard Chartered Bank (Hong Kong)',
-      option: '003 - Standard Chartered Bank (Hong Kong)'
-    },
-    {
-      name: '004 - Hongkong and Shanghai Banking Corporation',
-      option: '004 - Hongkong and Shanghai Banking Corporation'
-    },
-    {
-      name: '009 - China Construction Bank (Asia)',
-      option: '009 - China Construction Bank (Asia)'
-    },
-    {
-      name: '012 - Bank of China (Hong Kong)',
-      option: '012 - Bank of China (Hong Kong)'
-    },
-    {
-      name: '015 - Bank of East Asia',
-      option: '015 - Bank of East Asia'
-    },
-    {
-      name: '018 - China CITIC Bank International',
-      option: '018 - China CITIC Bank International'
-    },
-    {
-      name: '020 - Wing Lung Bank',
-      option: '020 - Wing Lung Bank'
-    },
-    {
-      name: '022 - OCBC Wing Hang Bank',
-      option: '022 - OCBC Wing Hang Bank'
-    },
-    {
-      name: '024 - Hang Seng Bank',
-      option: '024 - Hang Seng Bank'
-    },
-    {
-      name: '025 - Shanghai Commercial Bank',
-      option: '025 - Shanghai Commercial Bank'
-    },
-    {
-      name: '027 - Bank of Communications',
-      option: '027 - Bank of Communications'
-    },
-    {
-      name: '028 - Public Bank (Hong Kong)',
-      option: '028 - Public Bank (Hong Kong)'
-    },
-    {
-      name: '038 - Tai Yau Bank',
-      option: '038 - Tai Yau Bank'
-    },
-    {
-      name: '039 - Chiyu Banking Corporation',
-      option: '039 - Chiyu Banking Corporation'
-    },
-    {
-      name: '040 - Dah Sing Bank',
-      option: '040 - Dah Sing Bank'
-    },
-    {
-      name: '041 - Chong Hing Bank',
-      option: '041 - Chong Hing Bank'
-    },
-    {
-      name: '043 - Nanyang Commercial Bank',
-      option: '043 - Nanyang Commercial Bank'
-    },
-    {
-      name: '061 - Tai Sang Bank',
-      option: '061 - Tai Sang Bank'
-    },
-    {
-      name: '072 - Industrial and Commercial Bank of China (Asia)',
-      option: '072 - Industrial and Commercial Bank of China (Asia)'
-    },
-    {
-      name: '128 - Fubon Bank (Hong Kong)',
-      option: '128 - Fubon Bank (Hong Kong)'
-    },
-    {
-      name: '250 - CitiBank (Hong Kong)',
-      option: '250 - CitiBank (Hong Kong)'
-    },
-  ]
+
 })
 
 Template.edit_homecook_profile.onRendered(function() {
+
   var get_homecook_profile = Kitchen_details.findOne({
     'user_id': Meteor.userId()
   });
-
+  console.log(get_homecook_profile.serving_option)
 
 
   //activate dropdown
   this.$('select').material_select();
 
   //activate characterCounter
-  this.$('input#input_text, textarea#about_myself').characterCounter();
+  this.$('input#input_text, textarea#cooking_exp').characterCounter();
+  this.$('input#input_text, textarea#cooking_story').characterCounter();
+  this.$('input#input_text, textarea#house_rule').characterCounter();
 
-  this.$('#edit_homecook_stepper').activateStepper({
+  /**this.$('# edit_homecook_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
    autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
    autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
    showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
-  });
-
+ });**/
+  alert(get_homecook_profile.serving_option)
   checkboxes_recall(get_homecook_profile.serving_option);
-  $('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
-  $('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
+
+  Session.set("serving_option_tags", get_homecook_profile.serving_option)
+  Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
+
+
+  this.$('#kitchen_speciality').material_chip({data: get_homecook_profile.kitchen_speciality});
+  this.$('#kitchen_tags').material_chip({data: get_homecook_profile.kitchen_tags});
 
 
 });
+
+
+Template.edit_homecook_profile.events({
+  'blur #kitchen_address': function() {
+    address_geocode('kitchen_address_conversion',$('#kitchen_address').val(), 'kitchen address');
+
+  },
+
+  'click #edit_homecook_button':function(){
+    //Step 1
+    const kitchen_name = $('#kitchen_name').val();
+    const chef_name = $('#chef_name').val();
+    const kitchen_address_country = $('#kitchen_address_country').val();
+    const kitchen_address = $('#kitchen_address').val();
+    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    const kitchen_contact_country = $('#kitchen_contact_country').val();
+    const kitchen_contact = $('#kitchen_contact').val();
+    const serving_option = Session.get('serving_option_tags');
+
+    //Step 2
+    const cooking_exp = $('#cooking_exp').val();
+    const cooking_story = $('#cooking_story').val();
+
+    //Step 3
+    var speciality = $('#kitchen_speciality').material_chip('data');
+    const kitchen_speciality = speciality;
+
+    var tags = $('#kitchen_tags').material_chip('data');
+    const kitchen_tags = tags;
+
+
+    //Step 4
+    const house_rule = $('#house_rule').val();
+
+
+
+    Meteor.call('kitchen_details.update',
+    kitchen_name,
+    chef_name,
+    kitchen_address_country,
+    kitchen_address,
+    kitchen_address_conversion,
+    kitchen_contact_country,
+    kitchen_contact,
+    serving_option,
+    cooking_exp,
+    cooking_story,
+    kitchen_speciality,
+    kitchen_tags,
+    house_rule,
+    Session.get('bannerKitchenImg'),
+
+    function(err) {
+      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+         else {
+          Materialize.toast('Profile updated!', 4000);
+          //divert to the profile page
+          // BlazeLayout.render('screen', {
+          //   navbar: "bp_navbar",
+          //   render_component: "show_room"
+          // });
+          FlowRouter.go('/path_choosing');
+        }
+      }
+    );
+
+  }
+
+}),
+
+
 
 
 Template.edit_homecook_profile.events({

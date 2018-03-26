@@ -80,33 +80,38 @@
     <form class ="create_foodie_profile col l12 m6 s6" id="create_foodie_profile">
       {{>profile_banner}}
       <div class='container'>
-        <ul id='create_foodie_stepper' class="stepper horizontal" style="min-height:600px">
+      <!--  <ul id='create_foodie_stepper' class="stepper horizontal" style="min-height:600px">
            <li class="step active">
               <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
-              <div class="step-content">
+              <div class="step-content"> -->
                 <div class="row col l12 m6 s6 valign">
-                  <div class="text-field col l3 m12 s12 valign">
+                  <br>
+                  1 - Personal details (Only for internal)
+                  <br>
+                </div>
+                <div class="row col l12 m6 s6 valign">
+                  <div class="input-field col l3 m12 s12 valign">
                     <h6>Your details</h6>
                   </div>
-                  <div class="text-field col l3 m4 s12 valign">
+                  <div class="input-field col l3 m4 s12 valign">
                     <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name" class="mandatory" required />
                   </div>
-                  <div class="text-field col l3 m4 s6 valign">
+                  <div class="input-field col l3 m4 s6 valign">
                     <input id="first_name" name="first_name" type="text" placeholder="First Name">
                   </div>
-                  <div class="text-field col l3 m4 s6 valign">
+                  <div class="input-field col l3 m4 s6 valign">
                     <input id="last_name" name="last_name" type="text" placeholder="Last Name">
                   </div>
                 </div>
 
                 <div class="row col l12 m12 s12 valign">
-                  <div class="text-field col l4 m5 s12 offset-l3 valign">
+                  <div class="input-field col l4 m5 s12 offset-l3 valign">
                     <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address" disabled>
                   </div>
-                  <div class="text-field col l2 m3 s12 valign">
+                  <div class="input-field col l2 m3 s12 valign">
                       <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
                    </div>
-                   <div class="text-field col l3 m4 s12 valign">
+                   <div class="input-field col l3 m4 s12 valign">
                      <div class="col l6 m6 s6 valign">
                        <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
                        <label for="male">Male </label></p>
@@ -118,7 +123,7 @@
                      </div>
                    </div>
                    <div class="row col l12 m12 s12 valign">
-                  <div class="text-field col l2 m4 s6 offset-l3 valign">
+                  <div class="input-field col l2 m4 s6 offset-l3 valign">
                     <select class="material_select" id="mobile_country">
                       <option value="" disabled selected>Country</option>
                          {{#each country_list}}
@@ -126,7 +131,7 @@
                          {{/each}}
                      </select>
                    </div>
-                   <div class="text-field col l3 m4 s6 valign">
+                   <div class="input-field col l3 m4 s6 valign">
                      <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
                    </div>
                    </div>
@@ -166,27 +171,40 @@
                           </select>
                         </div>
                     </div>
-                 <div class="step-actions">
+            <!--     <div class="step-actions">
                     <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                  </div>
               </div>
-           </li>
-           <li class="step">
+           </li>-->
+    <!--       <li class="step">
               <div class="step-title waves-effect">Your Story</div>
-              <div class="step-content">
+              <div class="step-content"> -->
+
+              <div class="row col l12 m6 s6 valign">
+                <br>
+                2 - Your info/Stroy
+                <br>
+              </div>
                   <div class="input-field col l12 m12 s12  valign">
                     <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
                     <label for="about_myself">Write a paragraph about yourself</label>
                     </div>
-                 <div class="step-actions">
+
+      <!--            <div class="step-actions">
                     <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                     <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                  </div>
-              </div>
+             </div>
            </li>
            <li class="step">
               <div class="step-title waves-effect">Allergies</div>
-              <div class="step-content">
+              <div class="step-content"> -->
+
+              <div class="row col l12 m6 s6 valign">
+                <br>
+                3 - Your major allergies and dietary preferences
+                <br>
+              </div>
                 <div class ="row l12 valign">
                   <div class="text-field col l3 m3 s6 valign">
                     <h6>Major food allergies</h6>
@@ -195,7 +213,7 @@
                     {{> food_allergies}}
                     </div>
                   </div>
-                 <div class="step-actions">
+        <!--          <div class="step-actions">
                    <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                    <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                  </div>
@@ -203,7 +221,7 @@
            </li>
            <li class="step">
               <div class="step-title waves-effect">Perferences</div>
-              <div class="step-content">
+              <div class="step-content"> -->
                 <div class ="row l12 m6 s6 valign">
                   <div class="text-field col l3 m3 s6 valign">
                     <h6>Dietary preferences</h6>
@@ -212,23 +230,62 @@
                     {{> dietary_preferences}}
                     </div>
                   </div>
-                 <div class="step-actions">
+                 <!--<div class="step-actions">-->
+
                    <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=butoon>SUBMIT</button>
-                 </div>
-              </div>
+                   <br>
+                   <br>
+                   <br>
+                 <!--</div>
+             </div>
            </li>
-        </ul>
+      </ul>-->
       </div>
     </form>
 </template>
 
 
 
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+               </div>
+            </div>
+         </li>
+         <li class="step">
+            <div class="step-title waves-effect">Cooking Journey</div>
+            <div class="step-content">
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Chef Cooking Experience</h6>
+              </div>
+              <div class="input-field col l12 m12 s12 valign">
+                <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500"></textarea>
+                <label for="cooking_exp">Let us know your cooking experience! (Optional)</label>
+                </div>
+
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Chef Cooking Story</h6>
+                </div>
+                <div class="input-field col l12 m12 s12 valign">
+                  <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500"></textarea>
+                  <label for="cooking_story">Let us know your story about cooking! (Optional)</label>
+                  </div>
 
 
+               <div class="step-actions">
+                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+               </div>
+            </div>
+         </li>
 
+         <li class="step">
+            <div class="step-title waves-effect">Your Kitchen</div>
+            <div class="step-content">
 
-
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>Speciality</h6>
+              </div>
+              <div id='kitchen_speciality' class="chips chips-placeholder"></div>
 
 <!-- HOMECOOK PROFILE-->
 <!-- Template for homecook Profile-->
@@ -236,11 +293,15 @@
   <form class ="create_homecook_profile col l12 m12 s12" id="create_homecook_profile">
     {{>profile_banner}}
     <div class = "container">
-      <ul id='create_homecook_stepper' class="stepper horizontal" style="min-height:600px">
+      <!--<ul id='create_homecook_stepper' class="stepper horizontal" style="min-height:600px">
          <li class="step active">
             <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
-            <div class="step-content">
-
+            <div class="step-content">-->
+            <div class="row col l12 m6 s6 valign">
+              <br>
+              1 - Kitchen details
+              <br>
+            </div>
               <div class="row col l12 m12 s6 valign">
                 <div class="text-field col l3 m12 s12 valign">
                   <h6>Kitchen Details</h6>
@@ -301,14 +362,19 @@
                 </div>
 
 
-               <div class="step-actions">
+        <!--       <div class="step-actions">
                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                </div>
             </div>
          </li>
          <li class="step">
             <div class="step-title waves-effect">Cooking Journey</div>
-            <div class="step-content">
+            <div class="step-content"> -->
+            <div class="row col l12 m6 s6 valign">
+              <br>
+              2 - Your cooking journey
+              <br>
+            </div>
               <div class='text-field col l3 m6 s6 valign'>
                 <h6>Chef Cooking Experience</h6>
               </div>
@@ -326,7 +392,7 @@
                   </div>
 
 
-               <div class="step-actions">
+               <!--<div class="step-actions">
                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                   <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                </div>
@@ -335,8 +401,12 @@
 
          <li class="step">
             <div class="step-title waves-effect">Your Kitchen</div>
-            <div class="step-content">
-
+            <div class="step-content">-->
+            <div class="row col l12 m6 s6 valign">
+              <br>
+              3 - Your kitchen characteristics
+              <br>
+            </div>
               <div class='text-field col l3 m6 s6 valign'>
                 <h6>Speciality</h6>
               </div>
@@ -356,108 +426,20 @@
                   <label for="house_rule">Any House rules?</label>
                   </div>
 
-               <div class="step-actions">
+               <!--<div class="step-actions">-->
+                 <br>
                  <button id="create_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
-               </div>
+                 <br>
+                 <br>
+                 <br>
+
+               <!--</div>
             </div>
          </li>
-      </ul>
+      </ul>-->
     </div>
   </form>
 </template>
-
-
-
-<!--
-    <div class="row col l12 valign">
-      <div class="input-field col l9 m2 s4 offset-l3 valign">
-        <textarea id="about_homecook_myself" class="materialize-textarea" name="about_homecook_myself" type="text" data-length="500"></textarea>
-        <label for="about_homecook_myself">Write a paragraph about your food and the story about you</label>
-        </div>
-      </div>
-      <div class = "row col l12 valign">
-        <div class = "col l3 m3 s3 valign">
-          <h6> Serving Options</h6>
-        </div>
-        <div class = "col l9 m9 s9">
-          {{> serving_option}}
-        </div>
-      </div>
--->
-
-<!--Template of the homecook profile banner
-<template name="homecook_profile_banner">
-  <div class = "homecook_profile_banner_area valign-wrapper">
-    <div class = "container valign">
-      {{> upload_homecook_profile}}
-     <div class="col l12 m4 s4 valign">
-       <h5 class = "white-text center-align">
-         {{check_chef_name}}
-        </h5>
-    </div>
-    <div class="input-field col l6 m4 s4 valign">
-      <input id="homecook_profile_keywords" name="homecook_profile_keywords" type="text" style="text-align:center" placeholder="Write keywords about you" value={{check_chef_keywords}}>
-    </div>
-    <div class="row upload_banner_image">
-      {{#with currentUpload}}
-        <div class = "homecook_profile_banner_upload">
-          <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-        </div>
-      {{else}}
-        {{#if checkUpload}}
-          {{load_banner}}
-          <div class="homecook_profile_banner_upload">
-            <label for="homecook_banner_file_input">
-              <h6 class = "white-text center-align" id="homecook_banner_upload_button">Change Banner Image</h6>
-            </label>
-            <div class="file-field input-field">
-              <input id="homecook_banner_file_input" type="file">
-            <div class="file-path-wrapper">
-            </div>
-          </div>
-        </div>
-        {{else}}
-          <div class="homecook_profile_banner_upload">
-            <label for="homecook_banner_file_input">
-              <h6 class = "white-text center-align" id="homecook_banner_upload_button">Upload Banner Image</h6>
-            </label>
-            <div class="file-field input-field">
-              <input id="homecook_banner_file_input" type="file">
-              <div class="file-path-wrapper">
-              </div>
-            </div>
-          </div>
-        {{/if}}
-      {{/with}}
-    </div>
-  </div>
-</div>
-</template>-->
-
-<!--<template name="upload_homecook_profile">
-  <div class = "homecook_profile_upload_wrapper">
-    {{#with currentUpload}}
-     {{> spinner}}
-    {{else}}
-      {{#with checkUpload}}
-        <div class = "profile_upload_wrapper" style="background-image: url({{load_profile}})"></div>
-      {{else}}
-        <div class = "profile_image_upload">
-          <label for = "homecook_file_input">
-            <img class="homecook_profile_icon_img_upload" src="/img_upload_icon.svg" />
-          </label>
-          <div class="file-field input-field">
-            <input id="homecook_file_input" type="file">
-            <div class="file-path-wrapper">
-            </div>
-          </div>
-        </div>
-      {{/with}}
-    {{/with}}
-  </div>
-</template>-->
 
 
 

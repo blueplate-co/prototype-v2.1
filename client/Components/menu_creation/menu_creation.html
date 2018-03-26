@@ -7,7 +7,14 @@
 
 <template name = "menu_creation_content">
   <div class = "col l12 m12 s12">
-    <h5>Create set menu card</h5>
+    <div class = "row">
+      <div class = "col xl11 l11 m11 s11">
+        <h5>Create set menu card</h5>
+      </div>
+      <div class = "col xl1 l1 m1 s11">
+          <a class="modal-action modal-close btn-floating transparent z-depth-0 waves-effect waves-red" style="margin:0px;" id="cancel"><i class="black-text medium material-icons">close</i></a>
+      </div>
+    </div>
     <div class="input-field col l12 m12 s12">
       <input placeholder = "Menu Name" id="menu_name" type="text">
     </div>
@@ -53,16 +60,9 @@
     <div class = "section create_menu_dishes_selection">
       {{> dishes_selection}}
     </div>
-    <!-- {{#if first_visit}} -->
     <div class = "modal-footer section" id="modal-footer">
-      <span>
-        <div class = "right">
-          <a class="modal-action modal-close waves-effect waves-red btn-flat red-text text-lighten-2" id="cancel">Cancel</a>
-          <button class="modal-action btn waves-effect waves-light bp-green" type="submit" name="action" id="create_menu">Create</button>
-        </div>
-      </span>
+      <a class="modal-action btn waves-effect waves-light bp-blue white-text" type="submit" name="action" id="create_menu">Create</a>
     </div>
-    <!-- {{/if}} -->
 </template>
 
 <template name = "menu_initiation">
@@ -78,7 +78,7 @@
   <div class = "section">
     <div class = "row">
       <h5>Available set menus</h5>
-      <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent modal-trigger tooltipped" href="#create_menu_modal" data-position="bottom" data-delay="50" data-tooltip="Create new menu" id="add_menu">
+      <a class = "btn-floating waves-effect waves-red z-depth-0 left transparent modal-trigger tooltipped" href="#create_menu_modal" data-position="bottom" data-delay="50" data-tooltip="Create new menu" id="add_menu">
         <i class="material-icons black-text text-lighten-1">add</i>
       </a>
     </div>
@@ -86,12 +86,10 @@
   <div class = "divider"></div>
   <div class = "section menu_card_container">
     {{#if subscription}}
-      {{#each menu_retreival}}
-        {{> menu_card}}
-      {{/each}}
+      {{>menu_list}}
       {{>edit_content}}
     {{else}}
-        {{> spinner}}
+      {{> spinner}}
     {{/if}}
   </div>
   <div class = "section">
@@ -100,13 +98,9 @@
 </template>
 
 <template name = "modal">
-  <div class="modal modal-fixed-footer" id="create_menu_modal">
+  <div class="modal" id="create_menu_modal">
     <div class="modal-content" id="modal_content">
       <!-- {{> menu_creation_content}} -->
-    </div>
-    <div class ="modal-footer">
-      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" id="modal_menu_update_btn">Save</a>
-      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" id="close_create_menu_modal" >Close</a>
     </div>
   </div>
 </template>
@@ -116,7 +110,14 @@
       <div class = "modal-content" id="edit_menu_content">
         {{#with menu_retreival_edit}}
             <div class = "col l12 m12 s12">
-              <h5>Edit set menu</h5>
+              <div class = "row">
+                <div class = "col xl11 l11 m11 s11 valign-wrapper">
+                  <h5>Edit set menu</h5>
+                </div>
+                <div class = "col xl1 l1 m1 s1">
+                  <a class="modal-action modal-close btn-floating transparent z-depth-0 waves-effect waves-red" style="margin:0px;" id="edit_cancel"><i class="black-text medium material-icons">close</i></a>
+                </div>
+            </div>
               <div class="input-field col l12 m12 s12">
                 <input placeholder = "Menu Name" id="edit_menu_name" type="text" value="{{menu_name}}">
               </div>
@@ -192,9 +193,9 @@
               {{> spinner}}
             {{/if}}
           {{/with}}
+          <br>
           <div class = "modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat red-text text-lighten-2" id="edit_cancel">Cancel</a>
-            <a class="modal-action modal-close btn waves-effect waves-light bp-green" type="submit" name="action" id="update_menu">Update</a>
+            <a class="modal-action modal-close btn waves-effect waves-light bp-blue white-text" type="submit" name="action" id="update_menu">Update</a>
           </div>
         </div>
     </div>

@@ -2,6 +2,8 @@ import {
   address_geocode
 } from '/imports/functions/address_geocode.js';
 import './create_profile.html';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
 
 
 
@@ -236,6 +238,7 @@ Template.upload_profile.events({
   }
 });
 
+<<<<<<< HEAD
 Template.create_foodie_profile.onRendered(function(){
      this.$('#create_foodie_stepper').activateStepper({
       linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
@@ -249,11 +252,68 @@ Template.create_foodie_profile.onRendered(function(){
 
 Template.create_homecook_profile.onRendered(function(){
      this.$('#create_homecook_stepper').activateStepper({
+=======
+Template.create_foodie_profile.onRendered(function() {
+
+/**
+  this.$('#create_foodie_stepper').activateStepper({
+   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+   showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+});
+**/
+
+  //activate datepicker
+  this.$('.datepicker').pickadate({
+    selectMonths: 12, // Creates a dropdown to control month
+    selectYears: 150, // Creates a dropdown of 15 years to control year,
+    today: 'TODAY',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: false // Close upon selecting a date,
+  });
+
+  //activate modal
+  this.$('.modal').modal();
+
+  //activate dropdown
+  this.$('select').material_select();
+
+  //activate characterCounter
+  this.$('input#input_text, textarea#about_myself').characterCounter();
+
+  //activate the selection tabs
+  this.$(document).ready(function() {
+    $('ul.tabs').tabs();
+  });
+
+});
+
+
+
+
+Template.create_homecook_profile.onRendered(function(){
+     //activate dropdown
+     this.$('#kitchen_address_country').material_select();
+     this.$('#kitchen_contact_country').material_select();
+
+     //activate characterCounter
+     this.$('input#input_text, textarea#cooking_exp').characterCounter();
+     this.$('input#input_text, textarea#cooking_story').characterCounter();
+     this.$('input#input_text, textarea#house_rule').characterCounter();
+
+/**     this.$('#create_homecook_stepper').activateStepper({
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
       linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
       autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
       autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
       showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
+<<<<<<< HEAD
    });
+=======
+   });**/
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
 
      this.$('#kitchen_speciality').material_chip({
        data: [{
@@ -286,13 +346,13 @@ Template.create_foodie_profile.events({
     address_geocode('home_address_conversion', $('#create_home_address').val(), 'home address');
   },
   'blur #create_office_address': function() {
-    address_geocode('office_address_conversion', $('#create_office_address', 'office address').val());
+    address_geocode('office_address_conversion', $('#create_office_address').val(), 'office address');
   }
 });
 
 Template.create_homecook_profile.events({
   'blur #create_kitchen_address': function() {
-    address_geocode('kitchen_address_conversion', $('#create_kitchen_address', 'kitchen address').val());
+    address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
   }
 });
 
@@ -524,7 +584,11 @@ var saveToKraken = function(imgName, imgPath, sessionName)
 
 
 Template.create_foodie_profile.events({
+<<<<<<< HEAD
   'click#create_foodie_profile_button': function(event, template) {
+=======
+  'click #create_foodie_profile_button': function(event, template) {
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     event.preventDefault();
 
     //Step 1
@@ -597,17 +661,28 @@ Template.create_foodie_profile.events({
 
 
 Template.create_homecook_profile.events({
+<<<<<<< HEAD
   'click#create_homecook_button': function(event, template) {
+=======
+  'click #create_homecook_button': function(event, template) {
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     event.preventDefault();
 
     //Step 1
     const kitchen_name = $('#kitchen_name').val();
     const chef_name = $('#chef_name').val();
     const kitchen_address_country = $('#kitchen_address_country').val();
+<<<<<<< HEAD
     const kitchen_address = $('#create_kitchen_address').val();
     const kitchen_address_conversion = Session.get('kitchen_address_conversion');
     const kitchen_contact_country = $('#kitchen_contact_country').val();
     const kitchen_contact = $('kitchen_contact').val();
+=======
+    const kitchen_address = $('#kitchen_address').val();
+    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    const kitchen_contact_country = $('#kitchen_contact_country').val();
+    const kitchen_contact = $('#kitchen_contact').val();
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     const serving_option = Session.get('serving_option_tags');
 
     //Step 2
@@ -632,6 +707,10 @@ Template.create_homecook_profile.events({
     kitchen_address,
     kitchen_address_conversion,
     kitchen_contact_country,
+<<<<<<< HEAD
+=======
+    kitchen_contact,
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     serving_option,
     cooking_exp,
     cooking_story,
@@ -656,6 +735,7 @@ Template.create_homecook_profile.events({
       }
     );
 
+<<<<<<< HEAD
     }
     });
 
@@ -3413,11 +3493,75 @@ Template.profile_payment_details.helpers({
       "name": "Zimbabwe",
       "dial_code": "+263",
       "code": "ZW"
+=======
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
     }
-  ]
+    });
 
+<<<<<<< HEAD
 })
 Template.create_homecook_profile.helpers({
+=======
+//Validation rules
+
+//Trim Helper
+var trimInput = function(value) {
+  return value.replace(/^\s*|\s*$/g, "");
+}
+
+var isNotEmpty = function(value) {
+  if (value && value !== '') {
+    return true;
+  }
+  Bert.alert("Please fill in all fields", "danger", "growl-top-right");
+  return false;
+}
+//Email Validation
+isEmail = function(value) {
+  var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  if (filter.test(value)) {
+    return true;
+  }
+  Bert.alert("Please use a valid email address", "danger", "growl-top-right")
+  return false;
+}
+
+//Check Password fields
+isValidPassword = function(password) {
+
+  if (password.length < 8) {
+    Bert.alert("Password must be a least 8 charaters", "danger", "growl-top-right");
+    return false;
+  }
+  return true;
+};
+
+//Match Password
+areValidPassword = function(password, cpassword) {
+
+  if (!isValidPassword(password)) {
+
+    return false;
+
+  }
+  if (password !== cpassword) {
+    Bert.alert("Password do not match", "danger", "growl-top-right");
+    return false;
+  }
+  return true;
+}
+
+
+
+
+
+Template.create_foodie_profile.helpers({
+  'get_foodie_email': function() {
+    // to get user email always we enter profile page
+
+    return Meteor.users.findOne({"_id": Meteor.userId()}).emails[0].address
+  },
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40
 
   country_list: [{
       "name": "Hong Kong",
@@ -4653,7 +4797,8 @@ Template.create_homecook_profile.helpers({
 
 })
 
-Template.profile_bank_details.helpers({
+Template.create_homecook_profile.helpers({
+
 
   country_list: [{
       "name": "Hong Kong",
@@ -5889,6 +6034,7 @@ Template.profile_bank_details.helpers({
 
 })
 
+<<<<<<< HEAD
 /**
 const card_number = $('#card_number').val();
 const card_exp_month = $('#card_exp_month').val();
@@ -5909,3 +6055,92 @@ const bank_address_country = $('#bank_address_country').val();
 const bank_address = $('#bank_address').val();
 const user_id = Meteor.userId();
 **/
+=======
+/**Template.profile_bank_details.helpers({
+  bank_list: [{
+      name: '003 - Standard Chartered Bank (Hong Kong)',
+      option: '003 - Standard Chartered Bank (Hong Kong)'
+    },
+    {
+      name: '004 - Hongkong and Shanghai Banking Corporation',
+      option: '004 - Hongkong and Shanghai Banking Corporation'
+    },
+    {
+      name: '009 - China Construction Bank (Asia)',
+      option: '009 - China Construction Bank (Asia)'
+    },
+    {
+      name: '012 - Bank of China (Hong Kong)',
+      option: '012 - Bank of China (Hong Kong)'
+    },
+    {
+      name: '015 - Bank of East Asia',
+      option: '015 - Bank of East Asia'
+    },
+    {
+      name: '018 - China CITIC Bank International',
+      option: '018 - China CITIC Bank International'
+    },
+    {
+      name: '020 - Wing Lung Bank',
+      option: '020 - Wing Lung Bank'
+    },
+    {
+      name: '022 - OCBC Wing Hang Bank',
+      option: '022 - OCBC Wing Hang Bank'
+    },
+    {
+      name: '024 - Hang Seng Bank',
+      option: '024 - Hang Seng Bank'
+    },
+    {
+      name: '025 - Shanghai Commercial Bank',
+      option: '025 - Shanghai Commercial Bank'
+    },
+    {
+      name: '027 - Bank of Communications',
+      option: '027 - Bank of Communications'
+    },
+    {
+      name: '028 - Public Bank (Hong Kong)',
+      option: '028 - Public Bank (Hong Kong)'
+    },
+    {
+      name: '038 - Tai Yau Bank',
+      option: '038 - Tai Yau Bank'
+    },
+    {
+      name: '039 - Chiyu Banking Corporation',
+      option: '039 - Chiyu Banking Corporation'
+    },
+    {
+      name: '040 - Dah Sing Bank',
+      option: '040 - Dah Sing Bank'
+    },
+    {
+      name: '041 - Chong Hing Bank',
+      option: '041 - Chong Hing Bank'
+    },
+    {
+      name: '043 - Nanyang Commercial Bank',
+      option: '043 - Nanyang Commercial Bank'
+    },
+    {
+      name: '061 - Tai Sang Bank',
+      option: '061 - Tai Sang Bank'
+    },
+    {
+      name: '072 - Industrial and Commercial Bank of China (Asia)',
+      option: '072 - Industrial and Commercial Bank of China (Asia)'
+    },
+    {
+      name: '128 - Fubon Bank (Hong Kong)',
+      option: '128 - Fubon Bank (Hong Kong)'
+    },
+    {
+      name: '250 - CitiBank (Hong Kong)',
+      option: '250 - CitiBank (Hong Kong)'
+    },
+  ]
+});**/
+>>>>>>> 20c625372b700344f8dcc57c236bbf6f9202ba40

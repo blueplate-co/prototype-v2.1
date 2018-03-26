@@ -107,6 +107,10 @@
   text-align: right;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .no-padding {
   padding: 0px;
 }
@@ -265,6 +269,10 @@
 
 .dish-preview-navigation .rating-container {
   margin-left: 40px;
+}
+
+.show_room_wrapper {
+  margin-top: 50px;
 }
 
 .dish-preview-navigation .rating-container .fa-star {
@@ -578,6 +586,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#show_room_container {
-  margin-top: 60px;
+.show_room_wrapper {
+  margin-top: 60px!important;
 }

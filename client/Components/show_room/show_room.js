@@ -94,8 +94,6 @@ Template.show_room_chef.helpers ({
 
 Meteor.subscribe('theDishes');
 Meteor.subscribe('theMenu');
-
-Meteor.subscribe('theProfileImages');
 Meteor.subscribe('theIngredients');
 Meteor.subscribe('theShoppingCart');
 Meteor.subscribe('theOrderRecordSeller');

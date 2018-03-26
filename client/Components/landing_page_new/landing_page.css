@@ -204,20 +204,19 @@
   width: 130px;
   max-width: 130px;
   margin-left: 15px;
-  padding-top: 0px;
+  padding-top: 9px;
 }
 
 .login_icon {
-  width: 8%;
+  width: 12%;
   min-width: 63px;
-  margin-top: 8px;
+  margin-top: 15px;
   float: right;
 }
 
 .login {
   color: white;
   text-decoration: none;
-  font-size: ;
   margin-top: 20px;
   margin-right: 0.5vw;
   float: right;
@@ -575,7 +574,7 @@
   color: white;
   font-weight: 600;
   text-align: left;
-  padding-right: 5vh; 
+  padding-right: 5vh;
   line-height: 32px;
   position: relative;
   line-height: 100px;

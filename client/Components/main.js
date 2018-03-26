@@ -2,18 +2,12 @@ import {
   Accounts
 } from 'meteor/accounts-base'
 
-import {
-  stepper
-} from 'materialize-stepper'
-
 Meteor.startup(function () {
   Notification.requestPermission()
 
   GoogleMaps.load({
     v: '3',
-    key: 'AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac',
-    language: 'en',
-    libraries: 'places'
+    key: 'AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac'
   });
 
   window.fbAsyncInit = function () {

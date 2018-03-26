@@ -12,7 +12,18 @@ import {
 } from '/imports/functions/checkboxes_recall.js'
 
 Template.menu_creation.onRendered(function(){
-  this.$('modal').modal();
+  this.$('modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );
   this.$('select').material_select();
   this.$('.tooltipped').tooltip({delay: 500});
   //Check if menu has data instance
@@ -20,12 +31,7 @@ Template.menu_creation.onRendered(function(){
     if (err) {
       console.log('error when getting available menus. Please try again.');
     } else {
-      if (result) {
-        Blaze.render(Template.view_menu, document.getElementById('card_container'));
-        $('.carousel.carousel-slider').carousel({fullWidth: true});
-      } else {
-        Blaze.render(Template.menu_initiation, document.getElementById('card_container'));
-      }
+      Blaze.render(Template.view_menu, document.getElementById('card_container'));
     }
   })
 });
@@ -60,7 +66,18 @@ Template.menu_creation_content.onCreated( function(){
 
 Template.menu_creation_content.onRendered(function(template){
   this.$('select').material_select();
-  this.$('.modal').modal();
+  this.$('.modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );
   $('.create_menu_dishes_selection .switch').remove();
   console.log(Template.instance().view._templateInstance.firstNode.parentElement)
 });
@@ -186,6 +203,7 @@ Template.menu_creation_content.events({
     $('div.modal').scrollTop(0);
     Materialize.toast('Menu created', 8000, 'rounded lighten-2');
     $('.modal-overlay').click();
+    $('div.modal').modal('close');
   }
 });
 
@@ -195,7 +213,18 @@ Template.view_menu.onCreated(function(){
 
 Template.view_menu.onRendered(function(){
   this.$('.carousel.carousel-slider').carousel({fullWidth: true});
-  this.$('.modal').modal();
+  this.$('.modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );;
 });
 
 Template.view_menu.helpers({
@@ -240,7 +269,18 @@ Template.edit_content.onCreated(function() {
 
 Template.edit_content.onRendered(function() {
     this.$('select').material_select();
-    this.$('.modal').modal();
+    this.$('.modal').modal({
+        dismissible: false, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '4%', // Starting top style attribute
+        endingTop: '10%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        },
+        complete: function() {} // Callback for Modal close
+      }
+    );
 });
 
 Template.edit_content.helpers({
@@ -300,6 +340,7 @@ Template.edit_content.events({
       };
     }
     Session.set('menu_id', this._id);
+    $('#edit_menu_modal').modal('close');
   },
   'click #update_menu': function() {
     event.preventDefault;
