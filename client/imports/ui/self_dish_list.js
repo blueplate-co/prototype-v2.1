@@ -43,6 +43,7 @@ class SelfDishList extends Component {
         <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             {
+
               (item.user_id !== Meteor.userId()) ?
                 <Like type="dish" id={item._id} />
               : ''
@@ -109,4 +110,6 @@ export default withTracker(props => {
       listLoading: !handle.ready(),
       dishes: Dishes.find({ user_id: Meteor.userId(), deleted: false, online_status: true }).fetch(),
   };
+
 })(SelfDishList);
+

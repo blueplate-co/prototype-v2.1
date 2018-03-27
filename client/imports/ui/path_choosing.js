@@ -16,7 +16,7 @@ export default class PathOption extends Component {
         link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/ProfilePreview.svg",
         name: "preview kitchen profile",
         details: "Have a quick look at your own profile. This is how other users are going to see you",
-        redirect: "",
+        redirect: "/profile/show_homecook_profile",
       }, {
         link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dashboard.svg",
         name: "go to kitchen dashboard",

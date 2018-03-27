@@ -1,6 +1,6 @@
 <template name='show_foodie_profile'>
   {{#with get_foodie_profile}}
-  <div class='container'>
+<div class='container'>
     <div class='row l12 m12 s12'>
       <div class='col l3 m12 m12'>
         <h6>profile picture</h6>
@@ -55,14 +55,14 @@
        {{> dietary_preferences}}
      </div>
    </div>
-   </div>
+</div>
    {{/with}}
 </template>
 
 
 <template name='show_homecook_profile'>
   {{#with get_homecook_profile}}
-  <div class='container'>
+<div class='container'>
     <div class='row l12 m6 s12'>
       <div class='col l2 m4 m12 valign'>
         <h6>profile picture</h6>
@@ -110,62 +110,73 @@
      </div>
      <div class='row l12 m12 s12'>
       <h6>Menu</h6>
-     </div>
-     <div class='row l12 m12 s12'>
+     <br>
        {{>homecook_profile_menu_list}}
      </div>
+
+     <br>
+
      <div class='col l12 m12 s12'>
-     <div class='row l6 m12 s12'>
-       <h6>Speciality</h6>
-     </div>
-     <div class='row l6 m12 s12'>
+     <div class='row l12 m12 s12'>
+      <h6>Speciality</h6>
+       <br>
        {{#each kitchen_speciality}}
         <div class='chip'>
           {{this.tag}}
           </div>
           {{/each}}
         </div>
-     <div class='row l6 m12 s12'>
+
+      <div class='row l12 m12 s12'>
        <h6>Kitchen tags</h6>
-     </div>
-       <div class='row l6 m12 s12'>
+       <br>
          {{#each kitchen_tags}}
        <div class='chip'>
          {{this.tag}}
        </div>
        {{/each}}
      </div>
-   </div>
-   <div class='row l12 m12 s12'>
+     </div>
+   <div class='col l12 m12 s12'>
+     <div class='row l12 m12 s12'>
     <h6>House rules</h6>
     <div class='text-field col l12 m12 s12'>
      {{get_homecook_profile.house_rule}}
      </div>
      </div>
-     <br>
-    <div class='row l12 m12 s12'>
+
+
+     <div class='row l12 m12 s12'>
       <h6>Cooking experience</h6>
       <div class='text-field col l12 m12 s12'>
+
       {{get_homecook_profile.cooking_exp}}
     </div>
    </div>
-   </div>
+ </div>
+
+
+ </div>
+ <br>
+ <br>
+ <br>
+
    {{/with}}
 </template>
 
 
 <template name='homecook_profile_dish_list'>
-  <div class='container'>
+
     <div class='row l12 m12 s12 valign' id='dish_list'>
       <!-- REACJS COMPONENT RENDER AT HERE -->
     </div>
-  </div>
+
 </template>
 
 <template name='homecook_profile_menu_list'>
-  <div class='container'>
+
     <div class='row l12 m12 s12 valign' id='menu_list'>
       <!-- REACJS COMPONENT RENDER AT HERE -->
     </div>
-  </div>
+
 </template>

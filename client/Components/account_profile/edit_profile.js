@@ -42,9 +42,8 @@ Template.edit_foodie_profile.helpers({
 
 Template.edit_foodie_profile.onRendered(function() {
 
-  var get_profile = Profile_details.findOne({
-    'user_id': Meteor.userId()
-  });
+  //activate dropdown
+
   //activate steppers
 /**  this.$('# edit_foodie_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
@@ -54,17 +53,18 @@ Template.edit_foodie_profile.onRendered(function() {
 });**/
 
 
-
-  //activate dropdown
-  this.$('select').material_select();
-
-  //activate characterCounter
-  this.$('input#input_text, textarea#about_myself').characterCounter();
-
-  //activate the selection tabs
-/*  this.$(document).ready(function() {
+/*  //activate the selection tabs
+    this.$(document).ready(function() {
     $('ul.tabs').tabs();
   });*/
+  Meteor.setTimeout(function(){
+    var get_profile = Profile_details.findOne({
+      'user_id': Meteor.userId()
+    });
+    this.$('select').material_select();
+
+    //activate characterCounter
+    this.$('input#input_text, textarea#about_myself').characterCounter();
 
   //activate checkboxes_recall
   checkboxes_recall(get_profile.allergy_tags)
@@ -75,6 +75,9 @@ Template.edit_foodie_profile.onRendered(function() {
   Session.set('home_address_conversion', get_profile.home_address_conversion)
   Session.set('office_address_conversion', get_profile.office_address_conversion)
   /*checkboxes_recall(get_profile.serving_option_tags)*/
+
+}, 500);
+
 
 
 });
@@ -174,19 +177,10 @@ Template.edit_homecook_profile.helpers({
 
 Template.edit_homecook_profile.onRendered(function() {
 
-  var get_homecook_profile = Kitchen_details.findOne({
-    'user_id': Meteor.userId()
-  });
-  console.log(get_homecook_profile.serving_option)
 
 
-  //activate dropdown
-  this.$('select').material_select();
 
-  //activate characterCounter
-  this.$('input#input_text, textarea#cooking_exp').characterCounter();
-  this.$('input#input_text, textarea#cooking_story').characterCounter();
-  this.$('input#input_text, textarea#house_rule').characterCounter();
+
 
   /**this.$('# edit_homecook_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
@@ -194,15 +188,32 @@ Template.edit_homecook_profile.onRendered(function() {
    autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
    showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
  });**/
-  alert(get_homecook_profile.serving_option)
-  checkboxes_recall(get_homecook_profile.serving_option);
 
-  Session.set("serving_option_tags", get_homecook_profile.serving_option)
-  Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
+ Meteor.setTimeout(function(){
+   var get_homecook_profile = Kitchen_details.findOne({
+     'user_id': Meteor.userId()
+   });
+
+   //activate dropdown
+   this.$('select').material_select();
+
+   //activate characterCounter
+   this.$('input#input_text, textarea#cooking_exp').characterCounter();
+   this.$('input#input_text, textarea#cooking_story').characterCounter();
+   this.$('input#input_text, textarea#house_rule').characterCounter();
+ //activate checkboxes_recall
+ checkboxes_recall(get_homecook_profile.serving_option);
+
+ Session.set("serving_option_tags", get_homecook_profile.serving_option)
+ Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
 
 
-  this.$('#kitchen_speciality').material_chip({data: get_homecook_profile.kitchen_speciality});
-  this.$('#kitchen_tags').material_chip({data: get_homecook_profile.kitchen_tags});
+ this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+ this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
+
+}, 300);
+
+
 
 
 });
