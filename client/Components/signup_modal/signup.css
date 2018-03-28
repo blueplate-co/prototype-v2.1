@@ -19,6 +19,17 @@ margin-left: 0px;
 padding: 0px;
 }
 
+#cancel_signup {
+  position: absolute;
+  display: inline-block;
+  top: 1px;
+  right: 1px;
+}
+
+#signup {
+  margin: 24px;
+}
+
 @media (max-width: 768px) {
   .modal {
     border-radius: 0px !important;

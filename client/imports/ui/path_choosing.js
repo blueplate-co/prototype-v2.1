@@ -5,6 +5,10 @@ export default class PathOption extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   get_path() {
     return [
       {
@@ -27,13 +31,19 @@ export default class PathOption extends Component {
     ];
   }
 
+  on_item_click = (e) => {
+    Meteor.setTimeout(() => {
+      $('#btn_add_dish').click();
+    }, 300);
+  }
+
   render_path = () => {
     return this.get_path().map((path) => {
       return (
         <div className='col xl4 l4 m12 s12'>
           <div className='card z-depth-0 path_card'>
             <div className='card-content'>
-              <a href={path.redirect} onclick="$('#btn_add_dish').click()">
+              <a href={path.redirect} onClick={this.on_item_click}>
                 <img src={path.link} className="path_icons"/>
                 <h6 className='icon_titles bp-blue-text center-align' id='create_first_dish'>{path.name}</h6>
                 <p className='bp-blue-text'>{path.details}</p>

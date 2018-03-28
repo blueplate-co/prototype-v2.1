@@ -4,7 +4,7 @@ import { render}  from 'react-dom';
 import PathOption from '../../imports/ui/path_choosing.js';
 
 Template.path_choosing.onRendered(function() {
-    render(<PathOption />, document.getElementById('pathOption_container'));
+  render(<PathOption />, document.getElementById('pathOption_container'));
 })
 
 
