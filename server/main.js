@@ -39,7 +39,7 @@ Meteor.publish('getUserShoppingCart', function(){
 
 //- call Meteor methods
 if (Meteor.isServer) {
-
+  let publicFolder = __meteor_bootstrap__.serverDir.split(/(\\|\/).meteor/)[0] + '/public';
   Meteor.startup(() => {
     //- create cron jobs
     SyncedCron.config({
@@ -75,31 +75,20 @@ if (Meteor.isServer) {
       schedule: function (parser) {
         // parser is a later.parse object
         // return parser.text('at 12:00 pm'); //- at 12:00 on every day 
-        return parser.text('every 2 mins')
+        return parser.text('every 1 mins')
       },
 
-      // job: Meteor.bindEnvironment(function () {
-      //   console.log('removed...')
-      //   //DO SOME COOL STUFF HERE
-      //   //- delete pubilc/ folder
-      //   let rimraf = require('rimraf')
-      //   rimraf('../public', function () { 
-      //     console.log('Removed public/ folder at 12:00 pm every day')
-      //   });
-
-
-      // }),
-
       job: function() {
-
-
-        console.log('removed...')
         //DO SOME COOL STUFF HERE
         //- delete pubilc/ folder
-        let rimraf = require('rimraf')
-        rimraf('../public', function () { 
+        let fse = require('fs-extra')
+
+        //- using fs-extra
+        fse.remove(publicFolder, err => {
+          if (err) return console.error(err)
+        
           console.log('Removed public/ folder at 12:00 pm every day')
-        });
+        })
 
 
       }
