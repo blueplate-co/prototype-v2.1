@@ -4,15 +4,15 @@ import {
 
 Meteor.methods({
     'dish.like' (dishId) {
-        Dishes.update( { _id: dishId }, { $push: { like: Meteor.userId() } });
+        DishesLikes.insert({ user_id: Meteor.userId(), dish_id: dishId })
     },
     'dish.unlike' (dishId) {
-        Dishes.update( { _id: dishId }, { $pull: { like: Meteor.userId() } });
+        DishesLikes.remove({ user_id: Meteor.userId(), dish_id: dishId })
     },
     'menu.like' (menuId) {
-        Menu.update( { _id: menuId }, { $push: { like: Meteor.userId() } });
+        MenusLikes.insert({ user_id: Meteor.userId(), menu_id: menuId })
     },
     'menu.unlike' (menuId) {
-        Menu.update( { _id: menuId }, { $pull: { like: Meteor.userId() } });
+        MenusLikes.remove({ user_id: Meteor.userId(), menu_id: menuId })
     },
 });

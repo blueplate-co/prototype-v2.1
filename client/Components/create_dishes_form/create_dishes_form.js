@@ -1001,8 +1001,6 @@ Template.create_dishes_form.events({
         Session.get('condiments_tags'), Session.get('serving_temperature_tags'), new Date(), new Date(), false, false,
         //- adding meta data for different image sizes
         Session.get('imgMeta'),
-        //- Tan: set init like is []
-        [],
         function(err){
           if (!err) { // no error when create dishes
             Materialize.toast('Nice! You have created a dish!', 4000, "rounded bp-green");
