@@ -32,7 +32,8 @@ Meteor.methods({
         {
 
             // console.log('serving options > 0')
-            searchingQuery.push({serving_option: serving_option});    
+            searchingQuery.push({serving_option: serving_option});
+            console.log(serving_option);
 
         }
         console.log('searching query', searchingQuery);

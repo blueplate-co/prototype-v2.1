@@ -178,6 +178,7 @@ class TopNavigation extends Component {
             setTimeout(() => {
                 $('html').css('overflow', 'hidden');
             }, 200);
+            $("[role=navigation]").height('100%');
         });
     }
 
@@ -244,7 +245,7 @@ class TopNavigation extends Component {
 
                     Meteor.call('searching', self.state.lat, self.state.lng, service, date, this.state.time, limit, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
                         } else {
                             console.log('location found')
 
@@ -262,7 +263,7 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -274,7 +275,7 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', position.coords.latitude, position.coords.longitude, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -284,7 +285,7 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -315,7 +316,7 @@ class TopNavigation extends Component {
         var date = curr.toISOString().substr(0,10);
         return (
             <div className="search-page-container">
-                <span className="fa fa-times close-modal" onClick={ () =>  { this.setState({ search: false }); $('html').css('overflow', 'auto')} }></span>
+                <span className="fa fa-times close-modal" onClick={ () =>  { this.setState({ search: false }); $('html').css('overflow', 'auto'); $("[role=navigation]").height('65px'); }}></span>
                 <div className="container">
                     <div className="row">
                         <div onKeyPress = { this.handlePress } className="search-form col l6 offset-l3 m10 offset-m1 s12">
