@@ -16,7 +16,7 @@ export default class PathOption extends Component {
         link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/ProfilePreview.svg",
         name: "preview kitchen profile",
         details: "Have a quick look at your own profile. This is how other users are going to see you",
-        redirect: "",
+        redirect: "/profile/show_homecook_profile",
       }, {
         link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dashboard.svg",
         name: "go to kitchen dashboard",
@@ -33,7 +33,7 @@ export default class PathOption extends Component {
         <div className='col xl4 l4 m12 s12'>
           <div className='card z-depth-0 path_card'>
             <div className='card-content'>
-              <a href={path.redirect}>
+              <a href={path.redirect} onclick="$('#btn_add_dish').click()">
                 <img src={path.link} className="path_icons"/>
                 <h6 className='icon_titles bp-blue-text center-align' id='create_first_dish'>{path.name}</h6>
                 <p className='bp-blue-text'>{path.details}</p>

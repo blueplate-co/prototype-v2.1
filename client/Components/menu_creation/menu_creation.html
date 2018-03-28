@@ -55,6 +55,13 @@
         {{> serving_option_display}}
       </div>
     </div>
+    <div class = "row">
+      <div class = "col l12 m12 s12">
+        <h6>Tags:</h6>
+        <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+        <div class = "chips" id="menu_tags"></div>
+      </div>
+    </div>
   </div>
   <h6>Dishes to include in this menu:</h6>
     <div class = "section create_menu_dishes_selection">
@@ -161,6 +168,11 @@
                     {{> edit_serving_option_menu}}
                 </div>
               </div>
+              <div class = "row">
+                <div class = "col l12 m12 s12">
+                  {{> menu_tags}}
+                </div>
+              </div>
             </div>
             <h6>Dishes to include in this menu:</h6>
             {{#if dishes_subscription}}
@@ -199,4 +211,11 @@
           </div>
         </div>
     </div>
+</template>
+
+<template name = "menu_tags">
+  <h6>Tags:</h6>
+  {{get_tags}}
+  <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+  <div class = "chips" id="edit_menu_tags"></div>
 </template>

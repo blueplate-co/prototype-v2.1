@@ -5,7 +5,9 @@ import {
     HTTP
 } from 'meteor/http'
 
+
 Meteor.methods({
+
     'searching'(lat, lng, serving_option, date, time)
     {
         // check(limit, Object)
@@ -28,18 +30,20 @@ Meteor.methods({
 
         if(serving_option.length > 0)
         {
-            console.log('serving options > 0')
+
+            // console.log('serving options > 0')
             searchingQuery.push({serving_option: serving_option});    
+
         }
         console.log('searching query', searchingQuery);
 
         //- if date and time is not missing
         if((!_.isEmpty(date.trim()) && _.isDate(time)) || (!_.isEmpty(date.trim())))
         {
-            console.log('has date')
+            // console.log('has date')
             let datetime = stringToDate(date, "yyyy-mm-dd", "-");
             let dateTimeBetween = getDateTimeBetweenTwoDateTimes(new Date(), datetime) //- minutes or hours + minutes
-    
+
             //- convert to minutes
             let minutes = (dateTimeBetween.hours * 60) + dateTimeBetween.minutes;
             if(minutes > 0)
@@ -53,7 +57,7 @@ Meteor.methods({
                         '$lte': down  //- trễ hơn 30 phút
                     }
                 }).fetch();
-                
+
                 //- add to kitchen id array
                 kitchen_id = saveToArr(kitchen_id, dish_search.map(a=>a.kitchen_id));
 
@@ -68,7 +72,7 @@ Meteor.methods({
         //- if time is not empty
         if(_.isDate(time))
         {
-            console.log('has time')
+            // console.log('has time')
             let dateTimeBetween = getDateTimeBetweenTwoDateTimes(new Date(), time) //- minutes or hours + minutes
             //- convert to minutes
             let minutes = (dateTimeBetween.hours * 60) + dateTimeBetween.minutes;
@@ -86,13 +90,13 @@ Meteor.methods({
                     'online_status': true
                 }).fetch();
 
-                console.log('time results: ' ,  dish_search);
+                // console.log('time results: ' ,  dish_search);
                 //- add to dish id
                 dish_id = saveToArr(dish_id, dish_search.map(a=>a._id));
                 console.log('dish id',dish_id)
                 //- add to kitchen id
                 kitchen_id = saveToArr(kitchen_id, dish_search.map(a=>a.kitchen_id));
-                
+
             }
         }
 
@@ -101,21 +105,21 @@ Meteor.methods({
         //- remove other dish in kitchen return
         //- dish_id
         let find_kitchen_id = Kitchen_details.find({
-            '_id': { 
-                '$in': kitchen_id 
+            '_id': {
+                '$in': kitchen_id
             },
 
             // kitchen_address_conversion: {"$geoWithin": {"$centerSphere": [[lng, lat], radius]}},
         }).fetch()
 
-        console.log('find kitchen id', find_kitchen_id);
+        // console.log('find kitchen id', find_kitchen_id);
 
         //- searching depends on location latitude and longitude
         if((lat && lng) && (serving_option.length > 0 || !_.isEmpty(date.trim()) || _.isDate(time)))
         {
             console.log('here')
             baseOnLocation = true;
-            
+
             searchingQuery.push({kitchen_address_conversion: {"$geoWithin": {"$centerSphere": [[lng, lat], radius]}}});
 
             //- final search depends on location
@@ -128,7 +132,7 @@ Meteor.methods({
                             {$or: searchingQuery}
                         ]
                     },
-                    
+
                 },
                 {
                     $lookup:
@@ -155,7 +159,7 @@ Meteor.methods({
                 },
                 // {
                 //     $group:{
-    
+
                 //     }
                 // }
                 // {
@@ -202,7 +206,19 @@ Meteor.methods({
             //     console.log('search value ' + i, searched_results[i]);
             // }
 
-            
+
+            //- using map for searched_results
+
+            // let d = lodash.map(searched_results, 'Dish')[0]
+            // console.log('dishssssss....id........', dish_id)
+            // let removeItem = lodash.remove(searched_results, function(obj){
+            //     for(let i=0; i<dish_id.length; i++)
+            //     {
+            //         return obj.Dish._id === dish_id[i]
+            //     }
+            // })
+            // console.log(removeItem)
+
 
         }
 
@@ -218,7 +234,7 @@ Meteor.methods({
                     $match: {
                         $or: searchingQuery
                     },
-                    
+
                 },
                 {
                     $lookup:
@@ -270,11 +286,11 @@ let getDateTimeBetweenTwoDateTimes = function (currentDate, futureDate)
     let returned_data = {};
     let milliBetween = futureDate - currentDate;
     // console.log('millisecond between: ', milliBetween)
-    
+
     let dayBetween = Math.floor(milliBetween / 86400000); // days
     let hourBetween = Math.floor((milliBetween % 86400000) / 3600000); // hours
     let minuteBetween = Math.round(((milliBetween % 86400000) % 3600000) / 60000)
-    
+
     //- add to object to return
     returned_data.days = dayBetween
     returned_data.hours = hourBetween
@@ -283,14 +299,14 @@ let getDateTimeBetweenTwoDateTimes = function (currentDate, futureDate)
     return returned_data;
 }
 
-let currentDateAndTime = function () 
+let currentDateAndTime = function ()
 {
     let returned_data = {};
     let currDateTime = new Date().toLocaleString(); //- "09/08/2014, 2:35:56 AM"
     //- get date
     let currDate = currDateTime.split(' ')[0].slice(0, - 1)
     //- get time
-    let currTime = currDateTime.split(' ')[1]; 
+    let currTime = currDateTime.split(' ')[1];
 
     //- add to object
     returned_data.date = currDate;

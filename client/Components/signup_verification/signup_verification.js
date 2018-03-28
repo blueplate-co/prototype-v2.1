@@ -7,7 +7,7 @@ Template.sent_verification.onCreated(function(){
   countdown.start(function() {
     if (Meteor.userId()) {
       if(Meteor.users.findOne({_id:Meteor.userId()}).profile.chef_signup){
-        FlowRouter.go('/profile/create_homecook_profile');
+        FlowRouter.go('/path_choosing/create_homecook_profile');
         } else {
             FlowRouter.go('/main');
           };

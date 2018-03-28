@@ -143,6 +143,11 @@ Template.dishes_summary.events({
               break;
           }
       }
+      // Add chips to tagging section
+      console.log($('.chips-placeholder'))
+      console.log(get_dish.dish_tags);
+      $('#dish_tags').material_chip({data:get_dish.dish_tags});
+
       // Store all the values in Sessions
       Session.set('selected_dishes_id',get_dish._id);
       Session.set('image_id',get_dish.image_id);

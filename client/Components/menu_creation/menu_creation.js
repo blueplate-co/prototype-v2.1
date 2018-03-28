@@ -65,6 +65,7 @@ Template.menu_creation_content.onCreated( function(){
 });
 
 Template.menu_creation_content.onRendered(function(template){
+  this.$('#menu_tags').material_chip();
   this.$('select').material_select();
   this.$('.modal').modal({
       dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -138,6 +139,7 @@ Template.menu_creation_content.events({
     var dishes_id = Session.get('selected_dishes_id');
     var dishes_details = [];
     var image_id = [];
+    var menu_tags = $('#menu_tags').material_chip('data')
     if (typeof dishes_id !== 'undefined') {
       if (dishes_id.length == 0) {
         Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
@@ -169,6 +171,7 @@ Template.menu_creation_content.events({
         serving_option,
         dishes_id,
         image_id,
+        menu_tags,
         function(err) {
             if (err) Materialize.toast('Oops! Error when create your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
         }
@@ -193,6 +196,9 @@ Template.menu_creation_content.events({
     $('#min_order_range').val("");
     $('#lead_time_hours_range').val("");
     $('#lead_time_days_range').val("");
+    $('#menu_tags').material_chip({
+      data: [],
+    });
 
     var checkboxes = document.getElementsByClassName("dishes_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
@@ -362,8 +368,10 @@ Template.edit_content.events({
       image_id[i] = dishes_details[i].image_id;
     };
 
+    var menu_tags = $('#edit_menu_tags').material_chip('data')
+
     if (menu_name && menu_selling_price && dishes_id) {
-      Meteor.call('menu.update',menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, function(err){
+      Meteor.call('menu.update',menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, function(err){
           if (err) {
             Materialize.toast('Oops! Error when update your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
           } else {
@@ -383,3 +391,8 @@ Template.edit_content.events({
     }
   }
 });
+
+Template.menu_tags.onRendered(function(){
+  var menu_tags_init = Session.get('menu_tags');
+  this.$('#edit_menu_tags').material_chip({data: menu_tags_init});
+})

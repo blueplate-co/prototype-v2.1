@@ -124,7 +124,7 @@
               <h6>Tags</h6>
             </div>
             <div class = "col l9 m12 s12">
-              {{> food_tags}}
+              {{> tagging}}
             </div>
           </div>
 
@@ -272,161 +272,9 @@
     <br>
 </template>
 
-<template name="food_tags">
+<template name = "tagging">
   <br>
-  <ul class="collapsible" data-collapsible="expandable">
-    <li>
-      <div class="collapsible-header">By cuisine:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> cuisines_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header proteins">By proteins:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> proteins_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By categories:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> categories_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By cooking methods:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> cooking_methods_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By taste:</div>
-      <div class="collapsible-body">
-            <div class="row">
-              {{> tastes_list}}
-          </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By textures:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> textures_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By vegetables:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> vegetables_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By condiments:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> condiments_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By serving temperature:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> serving_temperature_list}}
-          </div>
-      </div>
-    </li>
-  </ul>
+  <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+  <br>
+  <div class="chips" id="dish_tags"></div>
 </template>
-
-<Template name= "cuisines_list">
-  {{# each cuisines_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="proteins_list">
-  {{# each proteins_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="categories_list">
-  {{# each categories_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="cooking_methods_list">
-  {{# each cooking_methods_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "tastes_list">
-  {{# each tastes_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "textures_list">
-  {{# each textures_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "vegetables_list">
-  {{# each vegetables_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "condiments_list">
-  {{# each condiments_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "serving_temperature_list">
-  {{# each serving_temperature_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>

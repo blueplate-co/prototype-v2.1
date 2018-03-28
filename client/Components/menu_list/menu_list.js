@@ -57,6 +57,9 @@ Template.menu_list.events({
   },
   'click #edit_menu': function() {
     $('#edit_menu_modal').modal('open')
+    var menu_tags = this.menu_tags;
+    $('#edit_menu_tags').material_chip({data: menu_tags});
+    Session.set('menu_tags', this.menu_tags);
     Session.set('menu_id', this._id);
     Session.set('dishes_id', this.dishes_id);
   }

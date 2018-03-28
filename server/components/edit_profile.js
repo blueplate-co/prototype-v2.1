@@ -40,7 +40,7 @@ Meteor.methods({
     about_myself,
     allergy_tags,
     dietary_tags,
-    // profileImg,
+    profileImg,
     bannerProfileImg
   ) {
 /**
@@ -90,7 +90,7 @@ Meteor.methods({
           allergy_tags:allergy_tags,
           dietary_tags:dietary_tags,
           updatedAt: new Date(),
-          // profileImg: profileImg,
+          profileImg: profileImg,
           bannerProfileImg: bannerProfileImg
         }
       })
@@ -137,8 +137,8 @@ Meteor.methods({
     kitchen_speciality,
     kitchen_tags,
     house_rule,
-    // kitchenImg,
-    bannerKitchenImg
+    profileImg,
+    bannerProfileImg
   ) {
 /**
     check(kitchen_profile_id, String);
@@ -156,8 +156,8 @@ Meteor.methods({
     check(bank_address_country, Match.Any);
     check(bank_address, Match.Any);
 **/
-    console.log('is banner empty? ', _.isEmpty(bannerKitchenImg));
-    if(!_.isEmpty(bannerKitchenImg)) //- if chef change banner's images
+    console.log('is banner empty? ', _.isEmpty(bannerProfileImg));
+    if(!_.isEmpty(bannerProfileImg)) //- if chef change banner's images
     {
       Kitchen_details.update({
         user_id: Meteor.userId()
@@ -177,8 +177,8 @@ Meteor.methods({
           kitchen_tags:kitchen_tags,
           house_rule:house_rule,
           updatedAt: new Date(),
-          // kitchenImg: kitchenImg,
-          bannerKitchenImg: bannerKitchenImg
+          profileImg: profileImg,
+          bannerProfileImg: bannerProfileImg
         }
       })
     }else{

@@ -97,7 +97,7 @@ Meteor.methods({
     kraken.upload(params2, function (status) {
       console.log(status);
       if (status.success) {
-          
+
         console.log("Success. Optimized image URL: %s", status);
         // console.log('return data: ', sizes);
 
@@ -249,15 +249,7 @@ Meteor.methods({
     dish_profit,
     allergy_tags,
     dietary_tags,
-    cuisines_tags,
-    proteins_tags,
-    categories_tags,
-    cooking_methods_tags,
-    tastes_tags,
-    textures_tags,
-    vegetables_tags,
-    condiments_tags,
-    serving_temperature_tags,
+    dish_tags,
     createdAt,
     updatedAt,
     online_status,
@@ -279,15 +271,7 @@ Meteor.methods({
     check(dish_profit, Match.Any);
     check(allergy_tags, Match.Any);
     check(dietary_tags, Match.Any);
-    check(cuisines_tags, Match.Any);
-    check(proteins_tags, Match.Any);
-    check(categories_tags, Match.Any);
-    check(cooking_methods_tags, Match.Any);
-    check(tastes_tags, Match.Any);
-    check(textures_tags, Match.Any);
-    check(vegetables_tags, Match.Any);
-    check(condiments_tags, Match.Any);
-    check(serving_temperature_tags, Match.Any);
+    check(dish_tags, Match.Any);
     check(createdAt, Date);
     check(updatedAt, Date);
     //- checking meta data for image sizes
@@ -309,15 +293,7 @@ Meteor.methods({
       dish_profit: dish_profit,
       allergy_tags: allergy_tags,
       dietary_tags: dietary_tags,
-      cuisines_tags: cuisines_tags,
-      proteins_tags: proteins_tags,
-      categories_tags: categories_tags,
-      cooking_methods_tags: cooking_methods_tags,
-      tastes_tags: tastes_tags,
-      textures_tags: textures_tags,
-      vegetables_tags: vegetables_tags,
-      condiments_tags: condiments_tags,
-      serving_temperature_tags: serving_temperature_tags,
+      dish_tags: dish_tags,
       createdAt: new Date(),
       updatedAt: new Date(),
       online_status: false,

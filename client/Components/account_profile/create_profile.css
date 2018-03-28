@@ -8,16 +8,62 @@
   background-repeat: no-repeat;
 }
 
+.profile_cover {
+  position: relative;
+  top: 100px;
+}
+
+.profile_banner_upload {
+  display: inline;
+  position: absolute;
+  right: 4.5vw;
+  top: 370px;
+}
+
+@media (min-height: 830px) {
+  .profile_banner_upload {
+    top: 44.5vh;
+  }
+}
+
 .profile_upload_wrapper {
     border-radius: 50%;
     width: 125px;
     height: 125px;
     background-size:cover;
     background-repeat: no-repeat;
-    background-position: center center ;
-    /** border: 1px solid grey; **/
-    margin: auto;
+    background-position: center center;
+    background-color: #ffffff;
     z-index:1;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.upload_fonts {
+  position: relative;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  padding-top: 24px;
+}
+
+#profile_upload_overlay {
+  margin-top: 0rem !important;
+}
+
+#profile_upload_overlay .upload_fonts {
+  visibility: hidden;
+  z-index: 10;
+}
+
+#profile_upload_overlay:hover .upload_fonts {
+  visibility: visible;
+  z-index: 10;
+  background:rgba(0,0,0,0.6);
+  opacity: 0.6;
+  transition: all 0.8s;
+  -webkit-transition: all 0.8s;
 }
 
 .profile_icon_img_upload {

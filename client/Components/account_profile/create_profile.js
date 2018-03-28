@@ -319,20 +319,6 @@ Template.create_homecook_profile.onRendered(function(){
 
 })
 
-Template.create_foodie_profile.events({
-  'blur #create_home_address': function() {
-    address_geocode('home_address_conversion', $('#create_home_address').val(), 'home address');
-  },
-  'blur #create_office_address': function() {
-    address_geocode('office_address_conversion', $('#create_office_address').val(), 'office address');
-  }
-});
-
-Template.create_homecook_profile.events({
-  'blur #create_kitchen_address': function() {
-    address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
-  }
-});
 
 /**Template.homecook_profile_banner.onCreated(function() {
   this.currentUpload = new ReactiveVar(false);
@@ -562,6 +548,12 @@ var saveToKraken = function(imgName, imgPath, sessionName)
 
 
 Template.create_foodie_profile.events({
+  'blur #create_home_address': function() {
+    address_geocode('home_address_conversion', $('#create_home_address').val(), 'home address');
+  },
+  'blur #create_office_address': function() {
+    address_geocode('office_address_conversion', $('#create_office_address').val(), 'office address');
+  },
   'click #create_foodie_profile_button': function(event, template) {
     event.preventDefault();
 
@@ -635,6 +627,9 @@ Template.create_foodie_profile.events({
 
 
 Template.create_homecook_profile.events({
+  'blur #kitchen_address': function() {
+    address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
+  },
   'click #create_homecook_button': function(event, template) {
     event.preventDefault();
 
@@ -678,8 +673,8 @@ Template.create_homecook_profile.events({
     kitchen_tags,
     house_rule,
     //- insert new images object of different size
-    Session.get('kitchenImg'),
-    Session.get('bannerKitchenImg'),
+    Session.get('profileImg'),
+    Session.get('bannerProfileImg'),
 
     function(err) {
       if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');

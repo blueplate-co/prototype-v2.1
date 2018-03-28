@@ -10,7 +10,7 @@ Template.path_choosing.onRendered(function() {
 
 Template.path_choosing.events({
   'click #create_homecook_profile': function(){
-    FlowRouter.go('/profile/create_homecook_profile')
+    FlowRouter.go('/path_choosing/create_homecook_profile')
   },
 
   'click #preview_foodie_profile': function(){
@@ -20,9 +20,7 @@ Template.path_choosing.events({
   },
 
   'click #preview_kitchen_profile': function(){
-    var profile_id = Kitchen_details.findOne({'user_id': this._id})
-    var route = '/kitchen/:' + String(profile_id)
-    FlowRouter.go(route);
+    FlowRouter.go('/profile/show_homecook_profile');
   },
 
   'click #create_first_dish': function(){

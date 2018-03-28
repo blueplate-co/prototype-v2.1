@@ -4,73 +4,70 @@
 <!--Template of the profile banner-->
 <template name = "profile_banner">
     <div class = "profile_banner_area valign-wrapper">
-      <div class="container col l12 m3 s3">
-        <div class = "center-align">
-
-            {{> upload_profile}}
-             <h5 class="white-text">{{check_foodie_name}}</h5>
-
+      <div class="container profile_cover">
+        <div class = "left-align">
+          {{> upload_profile}}
+           <!--<h5 class="white-text">{{check_foodie_name}}</h5> -->
         </div>
       </div>
       <br>
 
-      <div class="row l12 upload_banner_image">
-        {{#with currentUpload}}
-          <div class = "profile_banner_upload">
-            <div class="progress">
-                <div class="indeterminate"></div>
-            </div>
-          </div>
-        {{else}}
-          {{#if checkUpload}}
-            {{load_banner}}
+      <div class="upload_banner_image">
+          {{load_banner}}
             <div class="profile_banner_upload">
-              <label for="banner_file_input">
-                <h6 class = "white-text bottom" id="banner_upload_button">Change Banner Image</h6>
-              </label>
-              <div class="file-field input-field">
-                <input id="banner_file_input" type="file">
-              <div class="file-path-wrapper">
+                <div class="file-field input-field">
+                  <div>
+                    <p class = "white-text" style="white-space: nowrap;">
+                      {{#with currentUpload}}
+                        uploading...
+                      {{else}}
+                        <i class="material-icons white-text" style="position: relative; top: 5px;">file_upload</i>
+                        {{#if checkUpload}}
+                          change banner image
+                        {{else}}
+                          upload banner image
+                        {{/if}}
+                      {{/with}}
+                    </p>
+                    <input id="banner_file_input" type="file">
+                  </div>
+                  <div class="file-path-wrapper">
+                  </div>
               </div>
-            </div>
           </div>
-          {{else}}
-            <div class="profile_banner_upload">
-              <label for="banner_file_input">
-                <h6 class = "white-text center-align" id="banner_upload_button">Upload Banner Image</h6>
-              </label>
-              <div class="file-field input-field">
-                <input id="banner_file_input" type="file">
-                <div class="file-path-wrapper">
-                </div>
-              </div>
-            </div>
-          {{/if}}
-        {{/with}}
       </div>
-
   </div>
 </template>
 
 <template name="upload_profile">
-  <div class = "profile_upload_wrapper">
-    {{#with currentUpload}}
-     {{> spinner}}
-    {{else}}
-      {{#with checkUpload}}
-        <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')"></div>
-      {{else}}
-        <div class = "profile_image_upload">
-          <label for = "file_input">
-            <img class="profile_icon_img_upload" src="/img_upload_icon.svg" />
-          </label>
-          <div class="file-field input-field">
+  <div>
+    {{#with checkUpload}}
+      <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
+        <div class = "file-field input-field" id="profile_upload_overlay">
+          <div class = "upload_fonts">
+            <i class="material-icons white-text" style="margin: auto;">file_upload</i>
+            <p class = "center-align white-text">change profile picture</p>
             <input id="file_input" type="file">
-            <div class="file-path-wrapper">
-            </div>
           </div>
         </div>
-      {{/with}}
+        <div class = "file-path-wrapper"></div>
+      </div>
+    {{else}}
+      <div class = "profile_image_upload">
+        <div class="file-field input-field">
+          <div class = "profile_upload_wrapper">
+            {{#with currentUpload}}
+              {{> spinner}}
+            {{else}}
+              <i class="material-icons grey-text" style="margin: auto;">file_upload</i>
+              <p class = "center-align">upload profile picture</p>
+              <input id="file_input" type="file">
+            {{/with}}
+          </div>
+          <div class="file-path-wrapper">
+          </div>
+        </div>
+      </div>
     {{/with}}
   </div>
 </template>
@@ -304,7 +301,7 @@
                   <div class='text-field col l3 m3 s12 valign'>
                     <h6>Kitchen Contact</h6>
                   </div>
-               <div class="text-field col l2 m3 s6 valign">
+               <div class="input-field col l4 m4 s6 valign">
                  <select class="material_select" id="kitchen_contact_country">
                    <option value="" disabled selected>Country</option>
                       {{#each country_list}}
@@ -312,7 +309,7 @@
                       {{/each}}
                   </select>
                 </div>
-                <div class="text-field col l3 m6 s6 valign">
+                <div class="input-field col l3 m6 s6 valign">
                   <input id="kitchen_contact" name="kitchen_contact" type="text" placeholder="Kitchen Contact No.">
                 </div>
                 </div>
