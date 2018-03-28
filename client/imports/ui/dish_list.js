@@ -79,7 +79,7 @@ class DishList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+            <a href="/see_all/dish">{ this.props.seemore }</a>
           </div>
         </div>
 

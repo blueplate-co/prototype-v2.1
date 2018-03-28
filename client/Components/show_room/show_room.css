@@ -150,6 +150,12 @@
 
 .dish-wrapper {
   position: relative;
+  min-height: 240px!important;
+}
+
+.kitchen-wrapper {
+  position: relative;
+  min-height: 280px!important;
 }
 
 .dish-title {
