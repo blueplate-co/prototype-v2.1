@@ -32,9 +32,12 @@ Meteor.methods({
         {
 
             // console.log('serving options > 0')
-            searchingQuery.push({serving_option: serving_option});
-
+            searchingQuery.push({serving_option: serving_option});  
+            console.log('serving options: ', serving_option.length)  
+        }else{
+            searchingQuery.push({serving_option: null}); 
         }
+        
         console.log('searching query', searchingQuery);
 
         //- if date and time is not missing
@@ -128,8 +131,8 @@ Meteor.methods({
                     //- find query here
                     $match: {
                         $and: [
-                            {kitchen_address_conversion: {"$geoWithin": {"$centerSphere": [[lng, lat], radius]}} ,},
-                            {$or: searchingQuery}
+                            { kitchen_address_conversion: {"$geoWithin": {"$centerSphere": [[lng, lat], radius]}} , },
+                            { $or: searchingQuery },
                         ]
                     },
 
