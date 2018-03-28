@@ -251,7 +251,11 @@ class TopNavigation extends Component {
                     Meteor.call('searching', self.state.lat, self.state.lng, service, date, this.state.time, limit, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
-                            FlowRouter.go('/search');
+                            this.setState({
+                                search: false
+                            },() => {
+                                FlowRouter.go('/search');
+                            });
                         } else {
                             console.log('location found')
 
@@ -283,7 +287,11 @@ class TopNavigation extends Component {
                     Meteor.call('searching', position.coords.latitude, position.coords.longitude, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
-                            FlowRouter.go('/search');
+                            this.setState({
+                                search: false
+                            },() => {
+                                FlowRouter.go('/search');
+                            });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -294,7 +302,11 @@ class TopNavigation extends Component {
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
-                            FlowRouter.go('/search');
+                            this.setState({
+                                search: false
+                            },() => {
+                                FlowRouter.go('/search');
+                            });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -358,7 +370,7 @@ class TopNavigation extends Component {
         )
     }
 
-    componentWillReceiveProps = () => {
+    componentWillUnmount = () => {
         this.setState({
             status: 'Search'
         })
