@@ -84,6 +84,7 @@ class TopNavigation extends Component {
             lat: null,
             lng: null,
             time: '',
+            status: 'Search',
             multiSelect: [
                 { id: 1, label: 'Delivery', value: 'Delivery' },
                 { id: 2, label: 'Dine-in', value: 'Dine-in' },
@@ -226,10 +227,14 @@ class TopNavigation extends Component {
         limit.from = 0
         limit.to = 2
 
+        this.setState({
+            status: 'Searching'
+        });
+
 
         self.state.multiSelect.map((item, index) => {
             if (item.value !== false) {
-                service.push(item.value);
+                service.push(item.label);
             }
         })
         let date = document.getElementById('date').value;
@@ -246,6 +251,7 @@ class TopNavigation extends Component {
                     Meteor.call('searching', self.state.lat, self.state.lng, service, date, this.state.time, limit, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
+                            FlowRouter.go('/search');
                         } else {
                             console.log('location found')
 
@@ -264,6 +270,7 @@ class TopNavigation extends Component {
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
+                            FlowRouter.go('/search');
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -276,6 +283,7 @@ class TopNavigation extends Component {
                     Meteor.call('searching', position.coords.latitude, position.coords.longitude, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
+                            FlowRouter.go('/search');
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -286,6 +294,7 @@ class TopNavigation extends Component {
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
+                            FlowRouter.go('/search');
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -340,13 +349,19 @@ class TopNavigation extends Component {
                                 />
                             </div>
                             <div className="input-field col s12 text-center">
-                                <button onClick={ this.handleSearch } id="search-btn">Search</button>
+                                <button disabled={ this.state.status == 'Searching' } onClick={ this.handleSearch } id="search-btn">{ this.state.status }</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         )
+    }
+
+    componentWillReceiveProps = () => {
+        this.setState({
+            status: 'Search'
+        })
     }
 
     render() {
