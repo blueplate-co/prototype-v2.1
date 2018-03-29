@@ -74,8 +74,8 @@ if (Meteor.isServer) {
       name: 'Remove public folder in every day at 12:00 PM',
       schedule: function (parser) {
         // parser is a later.parse object
-        // return parser.text('at 12:00 pm'); //- at 12:00 on every day 
-        return parser.text('every 1 mins')
+        return parser.text('at 12:00 pm'); //- at 12:00 on every day 
+        // return parser.text('every 1 mins')
       },
 
       job: function() {
