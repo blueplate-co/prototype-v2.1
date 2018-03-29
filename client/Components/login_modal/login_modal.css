@@ -1,0 +1,10 @@
+.title_wrapper {
+  margin: 40px;
+}
+
+#cancel_login {
+  position: absolute;
+  display: inline-block;
+  top: 1px;
+  right: 1px;
+}
