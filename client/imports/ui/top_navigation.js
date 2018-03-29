@@ -254,6 +254,10 @@ class TopNavigation extends Component {
                             this.setState({
                                 search: false
                             },() => {
+                                $('html').css('overflow', 'auto');
+                                this.setState({
+                                    status: 'Search'
+                                })
                                 FlowRouter.go('/search');
                             });
                         } else {
@@ -274,6 +278,10 @@ class TopNavigation extends Component {
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
                             Session.set('advanced_search_results', result);
+                            $('html').css('overflow', 'auto');
+                            this.setState({
+                                status: 'Search'
+                            })
                             FlowRouter.go('/search');
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
@@ -290,7 +298,11 @@ class TopNavigation extends Component {
                             this.setState({
                                 search: false
                             },() => {
+                                $('html').css('overflow', 'auto');
                                 FlowRouter.go('/search');
+                                this.setState({
+                                    status: 'Search'
+                                })
                             });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
@@ -305,7 +317,11 @@ class TopNavigation extends Component {
                             this.setState({
                                 search: false
                             },() => {
+                                $('html').css('overflow', 'auto');
                                 FlowRouter.go('/search');
+                                this.setState({
+                                    status: 'Search'
+                                })
                             });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
@@ -368,12 +384,6 @@ class TopNavigation extends Component {
                 </div>
             </div>
         )
-    }
-
-    componentWillUnmount = () => {
-        this.setState({
-            status: 'Search'
-        })
     }
 
     render() {

@@ -6,6 +6,8 @@ import KitchenList from './kitchen_list';
 import DishAllList from './dish_all_list';
 import MenuAllList from './menu_all_list';
 import KitchenAllList from './kitchen_all_list';
+import DishSearchList from './dish_search_list';
+import MenuSearchList from './menu_search_list';
 import Modal from './modal';
 
 import ProgressiveImages from './progressive_image';
@@ -31,6 +33,10 @@ export default class ShowRoom extends Component {
     this.setState({
       selectedMenu: item
     });
+  }
+
+  componentDidMount = () => {
+    $("[role=navigation]").height('65px');
   }
 
   renderCategories = () => {
@@ -86,6 +92,20 @@ export default class ShowRoom extends Component {
               </div>
             </div>
             <KitchenAllList title="All kitchens around you" seemore="" popup={ this.handleDishPopup }/>
+            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+          </div>
+        )
+        break;
+      case 'search':
+        return (
+          <div className="col xl12 l12 m12 s12">
+            <div className="row">
+              <div className="col xl12 l12 m12 s12 categories_navigation">
+                { this.renderCategories() }
+              </div>
+            </div>
+            <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
+            <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )

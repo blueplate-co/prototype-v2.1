@@ -9,5 +9,5 @@ import { render } from 'react-dom';
 import ShowRoom from '../../imports/ui/show_room.js';
 
 Template.search.onRendered(function(){
-  // render(<ShowRoom />, document.getElementById('search_container'));
+  render(<ShowRoom screen="search" />, document.getElementById('search_container'));
 });
