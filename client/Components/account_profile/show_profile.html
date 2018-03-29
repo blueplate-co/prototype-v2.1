@@ -65,7 +65,7 @@
 <div class='container'>
     <div class='row l12 m6 s12'>
       <div class='col l1 m2 s12 valign center'>
-          <img id='show_profileImg' src="{{get_homecook_profile.profileImg.medium}}"/>
+          <img id='show_profileImg' src="{{get_homecook_profile.kitchenImg.medium}}"/>
       </div>
       <div class='col l10 m10 s12 offset-l1 valign'>
         <div class='col l4 m12 s12 center'>
@@ -109,11 +109,10 @@
      {{>homecook_profile_dish_list}}
      </div>
      <div class='row l12 m12 s12'>
-      <h6>Menu</h6>
+       <h6>Menu</h6>
+     </div>
      <br>
        {{>homecook_profile_menu_list}}
-     </div>
-
      <br>
 
      <div class='col l12 m12 s12'>
@@ -140,19 +139,26 @@
    <div class='col l12 m12 s12'>
      <div class='row l12 m12 s12'>
     <h6>House rules</h6>
-    <div class='text-field col l12 m12 s12'>
-     {{get_homecook_profile.house_rule}}
-     </div>
-     </div>
-
-
-     <div class='row l12 m12 s12'>
-      <h6>Cooking experience</h6>
-      <div class='text-field col l12 m12 s12'>
-
-      {{get_homecook_profile.cooking_exp}}
+    <div class='text-field'>
+      {{#if get_homecook_profile.house_rule}}
+        {{get_homecook_profile.house_rule}}
+      {{else}}
+        <p>There are no house rules written yet</p>
+      {{/if}}
     </div>
-   </div>
+  </div>
+
+
+  <div class='row l12 m12 s12'>
+    <h6>Cooking experience</h6>
+    <div class='text-field'>
+      {{#if get_homecook_profile.cooking_exp}}
+        {{get_homecook_profile.cooking_exp}}
+      {{else}}
+        <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking experience with us yet</p>
+      {{/if}}
+    </div>
+  </div>
  </div>
 
 
