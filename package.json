@@ -10,6 +10,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "chart.js": "^2.7.1",
+    "core-js": "^2.5.4",
     "kraken": "^0.3.3",
     "materialize-css": "^0.99.0",
     "meteor-node-stubs": "~0.2.4",
