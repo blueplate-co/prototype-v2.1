@@ -40,7 +40,7 @@ class KitchenList extends Component {
         hasBanner = false;
       }
       return (
-        <div key={index} className="col xl4 l4 m6 s12 modal-trigger" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl4 l4 m6 s12 modal-trigger kitchen-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="kitchen-images-thumbnail" style =  {{ background: '#ccc' }}>
             {
               (hasBanner) ?
