@@ -45,23 +45,25 @@ export default class DishCarousel extends Component {
 
   componentWillReceiveProps = () => {
     
-    if (Session.get('selectedItem') == 'menu') {
-        let menu = [];
-        Session.get('selectedMenu').dishes_id.map((item, index) => {
-            let dish = Dishes.find({ _id: item }).fetch();
-            menu.push(dish);
-        })
-        this.setState({
-            menus: menu
-        },() => {
-            setTimeout(() => {
-                $('.dish-carousel').slick({
-                    slickSetOption: true
-                });
-                $('.dish-carousel').slick('reinit'); 
-            }, 1000);
-            $('#dish-modal').modal('open');
-        })
+    if (Session.get('modal')) {
+        if (Session.get('selectedItem') == 'menu') {
+            let menu = [];
+            Session.get('selectedMenu').dishes_id.map((item, index) => {
+                let dish = Dishes.find({ _id: item }).fetch();
+                menu.push(dish);
+            })
+            this.setState({
+                menus: menu
+            },() => {
+                setTimeout(() => {
+                    $('.dish-carousel').slick({
+                        slickSetOption: true
+                    });
+                    $('.dish-carousel').slick('reinit'); 
+                }, 1000);
+                $('#dish-modal').modal('open');
+            })
+        }
     }
   }
 

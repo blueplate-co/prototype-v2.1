@@ -22,6 +22,7 @@ class KitchenList extends Component {
 
   handleClick = (item) => {
     // this.props.popup(item);
+    Session.set('modal', true);
   }
 
   renderList = () => {
