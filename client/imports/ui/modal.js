@@ -15,6 +15,7 @@ export default class DishModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            shouldRender: false,
             item: {},
             qty: 1,
             ingredients: [],
@@ -44,25 +45,31 @@ export default class DishModal extends Component {
         this.setState({
             qty: 1
         })
+
+        if (this.props.dish == {}) {
+            return true;
+        }
         
-        if (Session.get('selectedItem') == 'dish') {
-            this.setState({
-                item: Session.get('selectedDish'),
-                origin: Session.get('selectedDish').meta.origin,
-                small: Session.get('selectedDish').meta.small
-            },() => {
-                // get ingredients from database follow dish id
-                let dummyIngredients = Ingredients.find({ user_id: this.state.item.user_id, dish_name: this.state.item.dish_name }).fetch();
+        if (Session.get('modal')) {
+            if (Session.get('selectedItem') == 'dish') {
                 this.setState({
-                    ingredients: dummyIngredients
+                    item: Session.get('selectedDish'),
+                    origin: Session.get('selectedDish').meta.origin,
+                    small: Session.get('selectedDish').meta.small
                 },() => {
-                    $('#dish-modal').modal('open');
-                });
-            })
-        } else {
-            this.setState({
-                item: Session.get('selectedMenu'),
-            })
+                    // get ingredients from database follow dish id
+                    let dummyIngredients = Ingredients.find({ user_id: this.state.item.user_id, dish_name: this.state.item.dish_name }).fetch();
+                    this.setState({
+                        ingredients: dummyIngredients
+                    },() => {
+                        $('#dish-modal').modal('open');
+                    });
+                })
+            } else {
+                this.setState({
+                    item: Session.get('selectedMenu'),
+                })
+            }
         }
     }
 
