@@ -21,6 +21,15 @@ export default class ChefAvatar extends Component {
     }
   }
 
+  componentWillReceiveProps = () => {
+    let avatar = profile_images.find({ userId: this.props.userId }, { limit: 1 }).fetch();
+    if (avatar.length > 0) {
+      this.setState({
+        profileImages: avatar[0].meta.base64
+      })
+    }
+  }
+
   render() {
     return (
         (!this.state.profileImages)
