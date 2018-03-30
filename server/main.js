@@ -74,19 +74,38 @@ if (Meteor.isServer) {
       name: 'Remove public folder in every day at 12:00 PM',
       schedule: function (parser) {
         // parser is a later.parse object
-        return parser.text('at 12:00 pm'); //- at 12:00 on every day 
+        // return parser.text('at 12:00 pm'); //- at 12:00 on every day 
+        return parser.text('every 2 mins')
       },
-      job: Meteor.bindEnvironment(function () {
 
+      // job: Meteor.bindEnvironment(function () {
+      //   console.log('removed...')
+      //   //DO SOME COOL STUFF HERE
+      //   //- delete pubilc/ folder
+      //   let rimraf = require('rimraf')
+      //   rimraf('../public', function () { 
+      //     console.log('Removed public/ folder at 12:00 pm every day')
+      //   });
+
+
+      // }),
+
+      job: function() {
+
+
+        console.log('removed...')
         //DO SOME COOL STUFF HERE
         //- delete pubilc/ folder
         let rimraf = require('rimraf')
-        rimraf('/public', function () { 
+        rimraf('../public', function () { 
           console.log('Removed public/ folder at 12:00 pm every day')
         });
 
 
-      })
+      }
+      
+
+
     });
   
     SyncedCron.start();

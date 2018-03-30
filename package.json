@@ -15,7 +15,7 @@
     "meteor-node-stubs": "~0.2.4",
     "multi-select-react": "^0.1.8",
     "rc-time-picker": "^3.3.1",
-    "react": "^16.2.0",
+    "react": "^15.6.2",
     "react-chartjs-2": "^2.6.4",
     "react-dom": "^15.6.2",
     "react-places-autocomplete": "^6.1.3",
