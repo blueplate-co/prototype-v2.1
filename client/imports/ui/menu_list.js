@@ -24,6 +24,7 @@ class MenuList extends Component {
   handleClick = (item) => {
     Session.set('selectedMenu', item);
     Session.set('selectedItem', 'menu');
+    Session.set('modal', true);
     this.props.popup(item);
   }
 

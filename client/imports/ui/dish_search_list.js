@@ -24,6 +24,7 @@ class DishSearchList extends Component {
   handleClick = (item) => {
     Session.set('selectedDish', item);
     Session.set('selectedItem', 'dish');
+    Session.set('modal', true);
     this.props.popup(item);
   }
 

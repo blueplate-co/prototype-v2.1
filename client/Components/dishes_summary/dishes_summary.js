@@ -61,6 +61,7 @@ Template.dishes_summary.events({
     // clear all selected dishes in session
     event.preventDefault();
     Session.set('selected_dishes_id', []);
+    Session.set('tempImages', '');
   },
 
   'click .btn_edit_dish': function(event,template) {
