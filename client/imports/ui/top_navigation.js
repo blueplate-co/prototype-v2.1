@@ -108,7 +108,6 @@ class TopNavigation extends Component {
             (localStorage.getItem('userMode') == 'foodie') ?
                 <ul className="sidebar-container">
 
-                    <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/profile'); }) } } ><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/main'); }) } }>
                         <span>Search food</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg"/></li>
                     <li className="divider"></li>
@@ -139,7 +138,6 @@ class TopNavigation extends Component {
             :
                 <ul className="sidebar-container">
 
-                    <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/profile'); }) } } ><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/main'); }) } }>
                         <span>Search food</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg"/></li>
                     <li className="divider"></li>
@@ -150,12 +148,14 @@ class TopNavigation extends Component {
                     <li className="divider"></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/dashboard'); }) } }>
                         <span>Dashboard</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dashboard.svg"/></li>
+                    <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/profile/edit_homecook_profile'); }) } } >
+                        <span>Kitchen profile</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/dishes'); }) } }>
-                        <span>Manage dish</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg"/></li>
+                        <span>Manage dishes</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/menus'); }) } }>
-                        <span>Manage menu</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manageManage.svg"/></li>
+                        <span>Manage menus</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manageManage.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/orders'); }) } }>
-                        <span>Current Order</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg"/></li>
+                        <span>Manage orders</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg"/></li>
                     <li className="divider"></li>
                     <li>
                         <span>Help</span>
