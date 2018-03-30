@@ -51,7 +51,7 @@ class SelfDishList extends Component {
             {
               (hasThumbnail) ?
                 <ProgressiveImages
-                  large={ item.meta.origin }
+                  large={ item.meta.large }
                   small={ item.meta.small }
                 />
               : ""

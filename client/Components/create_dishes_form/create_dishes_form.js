@@ -451,8 +451,6 @@ Template.create_dishes_form.events({
         dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), dish_tags, new Date(), new Date(), false, false,
         //- adding meta data for different image sizes
         Session.get('imgMeta'),
-        //- Tan: set init like is []
-        [],
         function(err){
           if (!err) { // no error when create dishes
             Materialize.toast('Nice! You have created a dish!', 4000, "rounded bp-green");

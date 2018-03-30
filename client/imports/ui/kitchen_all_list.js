@@ -10,7 +10,7 @@ import ChefAvatar from './chef_avatar';
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
-class KitchenList extends Component {
+class KitchenAllList extends Component {
 
   constructor(props) {
     super(props);
@@ -30,10 +30,6 @@ class KitchenList extends Component {
     }
     let hasBanner;
     return this.props.kitchen.map((item, index) => {
-      // limit allow 3 items will be shown
-      if (index == 2) {
-        return true;
-      }
       if (item.bannerKitchenImg) {
         hasBanner = true;
       } else {
@@ -76,7 +72,7 @@ class KitchenList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a href="/see_all/kitchen" >{ this.props.seemore }</a>
+            <a>{ this.props.seemore }</a>
           </div>
         </div>
 
@@ -104,4 +100,4 @@ export default withTracker(props => {
       listLoading: !handle.ready(),
       kitchen: kitchen_info
   };
-})(KitchenList);
+})(KitchenAllList);

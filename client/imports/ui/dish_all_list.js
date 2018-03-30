@@ -6,11 +6,12 @@ import { Session } from 'meteor/session';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import ChefAvatar from './chef_avatar';
+import Like from './like_button';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
-class KitchenList extends Component {
+class DishAllList extends Component {
 
   constructor(props) {
     super(props);
@@ -21,38 +22,37 @@ class KitchenList extends Component {
   }
 
   handleClick = (item) => {
-    // this.props.popup(item);
+    Session.set('selectedDish', item);
+    Session.set('selectedItem', 'dish');
+    this.props.popup(item);
   }
 
   renderList = () => {
-    if (this.props.kitchen.length == 0) {
-      return <p>Has no kitchen to displayed</p>
+    if (this.props.dishes.length == 0) {
+      return <p>Has no dishes to be displayed</p>
     }
-    let hasBanner;
-    return this.props.kitchen.map((item, index) => {
-      // limit allow 3 items will be shown
-      if (index == 2) {
-        return true;
-      }
-      if (item.bannerKitchenImg) {
-        hasBanner = true;
+    let hasThumbnail;
+    return this.props.dishes.map((item, index) => {
+      if (item.meta) {
+        hasThumbnail = true;
       } else {
-        hasBanner = false;
+        hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl4 l4 m6 s12 modal-trigger kitchen-wrapper" onClick={ () => this.handleClick(item) }>
-          <div className="kitchen-images-thumbnail" style =  {{ background: '#ccc' }}>
+        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+          <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
+            <Like type="dish" id={item._id} />
             {
-              (hasBanner) ?
+              (hasThumbnail) ?
                 <ProgressiveImages
-                  large={ item.bannerKitchenImg.large }
-                  small={ item.bannerKitchenImg.small }
+                  large={ item.meta.large }
+                  small={ item.meta.small }
                 />
               : ""
             }
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
-            <h5 className="dish-title">{ item.kitchen_name }</h5>
+            <h5 className="dish-title">{ item.dish_name }</h5>
             <ChefAvatar userId={item.user_id} />
           </div>
           <div className="row no-margin">
@@ -60,6 +60,9 @@ class KitchenList extends Component {
               <Rating rating={item.average_rating}/>
               <span className="order-count">{ item.order_count }</span>
             </div>
+          </div>
+          <div className="row">
+            <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
           </div>
 
         </div>
@@ -76,7 +79,7 @@ class KitchenList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a href="/see_all/kitchen" >{ this.props.seemore }</a>
+            <a>{ this.props.seemore }</a>
           </div>
         </div>
 
@@ -99,9 +102,15 @@ export default withTracker(props => {
   const handle = Meteor.subscribe('theDishes');
   navbar_find_by("Kitchen_details");
   var kitchen_info = Session.get('searched_result');
+  var kitchen_id = [];
+  if (kitchen_info) {
+    for (i = 0; i < kitchen_info.length; i++) {
+      kitchen_id[i] = kitchen_info[i]._id;
+    }
+  }
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      kitchen: kitchen_info
+      dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }).fetch(),
   };
-})(KitchenList);
+})(DishAllList);
