@@ -11,6 +11,7 @@ import {
 Shopping_cart = new Mongo.Collection('shopping_cart');
 Dishes = new Mongo.Collection('dishes');
 Ingredients = new Mongo.Collection('ingredients');
+
 Images = new FilesCollection({
   storagePath: () => {
     return process.env.PWD + '/public/dishes_upload/';
@@ -27,9 +28,11 @@ Images = new FilesCollection({
   }
 });
 
+/**
 Meteor.publish('files.images.all', function() {
   return Images.find().cursor;
 });
+**/
 
 Meteor.methods({
   'saveToKraken'(imgName, imgPath){
@@ -254,9 +257,7 @@ Meteor.methods({
     online_status,
     deleted,
     //- insert the image different sizes
-    imgMeta,
-    //- set init like number
-    like
+    imgMeta
   ) {
     console.log('image meta data', imgMeta);
     // check it before insert
@@ -302,8 +303,7 @@ Meteor.methods({
       average_rating: 0,
       deleted: false,
       //- insert meta data for image sizes
-      meta: imgMeta,
-      like: like
+      meta: imgMeta
     });
   }
 });

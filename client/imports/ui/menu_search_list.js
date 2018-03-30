@@ -11,7 +11,7 @@ import Like from './like_button';
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
-class MenuList extends Component {
+class MenuSearchList extends Component {
 
   constructor(props) {
     super(props);
@@ -113,7 +113,7 @@ class MenuList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a href="/see_all/menu" >{ this.props.seemore }</a>
+            <a>{ this.props.seemore }</a>
           </div>
         </div>
 
@@ -134,17 +134,17 @@ class MenuList extends Component {
 
 export default withTracker(props => {
   const handle = Meteor.subscribe('theMenu');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (kitchen_info) {
-    for (i = 0; i < kitchen_info.length; i++) {
-      kitchen_id[i] = kitchen_info[i]._id;
+  var menu_results = [];
+  if (Session.get('advanced_search_results')) {
+    for (var i = 0; i < Session.get('advanced_search_results').length; i++) {
+      for (var j = 0; j < Session.get('advanced_search_results')[i].Menu.length; j++) {
+        menu_results.push(Session.get('advanced_search_results')[i].Menu[j]);
+      }
     }
   }
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 4 }).fetch(),
+      menus: menu_results,
   };
-})(MenuList);
+})(MenuSearchList);

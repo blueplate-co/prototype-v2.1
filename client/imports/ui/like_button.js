@@ -54,8 +54,8 @@ export default class Like extends Component {
 
     componentWillReceiveProps = () => {
         var self = this;
-        if (this.props.type == 'dish') {
-            let count = Dishes.find( { _id: this.props.id , like: { $in : [ Meteor.userId() ]} }).count();
+        if (this.props.type == 'dish' && DishesLikes) {
+            let count = DishesLikes.find({ user_id: Meteor.userId() , dish_id: this.props.id }).count();
             if (count > 0) {
                 self.setState({
                     like: true
@@ -66,23 +66,25 @@ export default class Like extends Component {
                 })
             }
         } else {
-            let count = Menu.find( { _id: this.props.id , like: { $in : [ Meteor.userId() ]} }).count();
-            if (count > 0) {
-                self.setState({
-                    like: true
-                })
-            } else {
-                self.setState({
-                    like: false
-                })
+            if (MenusLikes) {
+                let count = MenusLikes.find({ user_id: Meteor.userId() , menu_id: this.props.id }).count();
+                if (count > 0) {
+                    self.setState({
+                        like: true
+                    })
+                } else {
+                    self.setState({
+                        like: false
+                    })
+                }
             }
         }
     }
 
     componentDidMount = () => {
         var self = this;
-        if (this.props.type == 'dish') {
-            let count = Dishes.find( { _id: this.props.id , like: { $in : [ Meteor.userId() ]} }).count();
+        if (this.props.type == 'dish' && DishesLikes) {
+            let count = DishesLikes.find({ user_id: Meteor.userId() , dish_id: this.props.id }).count();
             if (count > 0) {
                 self.setState({
                     like: true
@@ -93,15 +95,17 @@ export default class Like extends Component {
                 })
             }
         } else {
-            let count = Menu.find( { _id: this.props.id , like: { $in : [ Meteor.userId() ]} }).count();
-            if (count > 0) {
-                self.setState({
-                    like: true
-                })
-            } else {
-                self.setState({
-                    like: false
-                })
+            if (MenusLikes) {
+                let count = MenusLikes.find({ user_id: Meteor.userId() , menu_id: this.props.id }).count();
+                if (count > 0) {
+                    self.setState({
+                        like: true
+                    })
+                } else {
+                    self.setState({
+                        like: false
+                    })
+                }
             }
         }
     }

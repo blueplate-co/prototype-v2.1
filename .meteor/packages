@@ -41,7 +41,6 @@ service-configuration       # for facebook login
 meteorhacks:aggregate       # MongoDB aggregation for query and operation/grouping
 random                      # Random function
 flyandi:reactive-countdown
-mrgalaxy:stripe             #Stripe payment gateway
 oaf:html5-desktop-notifications  #HTML5 notification package
 u2622:persistent-session
 check

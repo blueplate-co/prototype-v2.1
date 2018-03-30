@@ -199,7 +199,7 @@ export default class DishCarousel extends Component {
             <div className="col l4 m4 s12 dish-preview-banner no-padding">
                 <Like type="menu" id={ Session.get('selectedMenu')._id } />
                 <ProgressiveImages
-                    large={ item.meta.origin }
+                    large={ item.meta.large }
                     small={ item.meta.small }
                 />
             </div>
