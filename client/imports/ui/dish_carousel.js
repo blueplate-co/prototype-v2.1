@@ -82,6 +82,10 @@ export default class DishCarousel extends Component {
                 </li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No ingredients</li>
+        )
     }
   }
 
@@ -92,6 +96,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Allergies</li>
+        )
     }
   }
 
@@ -102,6 +110,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Dietary</li>
+        )
     }
   }
 
@@ -112,6 +124,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Cuisines Tags</li>
+        )
     }
   }
 
@@ -122,6 +138,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Proteins Tags</li>
+        )
     }
   }
 
@@ -132,6 +152,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Caterogies Tag</li>
+        )
     }
   }
 
@@ -142,6 +166,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    }  else {
+        return (
+            <li className="row no-padding">No Cooking Methods Tags</li>
+        )
     }
   }
 
@@ -152,6 +180,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Taste Tags</li>
+        )
     }
   }
 
@@ -162,6 +194,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Textures Tag</li>
+        )
     }
   }
 
@@ -172,6 +208,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Vegetables Tags</li>
+        )
     }
   }
 
@@ -182,6 +222,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Condiments Tags</li>
+        )
     }
   }
 
@@ -192,6 +236,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <li className="row no-padding">No Serving Temperatures Tags</li>
+        )
     }
   }
 
