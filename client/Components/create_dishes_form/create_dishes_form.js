@@ -20,7 +20,7 @@ import {
 import './create_dishes_form.html';
 
 
-Meteor.subscribe('files.images.all');
+// Meteor.subscribe('files.images.all');
 
 /** function from ostrio **/
 

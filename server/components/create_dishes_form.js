@@ -27,9 +27,11 @@ Images = new FilesCollection({
   }
 });
 
+/**
 Meteor.publish('files.images.all', function() {
   return Images.find().cursor;
 });
+**/
 
 Meteor.methods({
   'saveToKraken'(imgName, imgPath){
