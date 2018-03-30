@@ -40,10 +40,11 @@ Profile_details.deny({
     return true;
   }
 });
-
+/**
 Meteor.publish('files.profile_images.all', function() {
   return profile_images.find().cursor;
 });
+**/
 
 Meteor.methods({
   'profile_images.remove' (purpose) {

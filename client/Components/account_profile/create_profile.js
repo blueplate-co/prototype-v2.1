@@ -20,7 +20,7 @@ profile_images = new FilesCollection({
     }
   }
 });
-Meteor.subscribe('files.profile_images.all');
+// Meteor.subscribe('files.profile_images.all');
 
 Session.keys = {}
 

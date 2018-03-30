@@ -11,7 +11,7 @@ import Like from './like_button';
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
-class MenuList extends Component {
+class MenuAllList extends Component {
 
   constructor(props) {
     super(props);
@@ -113,7 +113,7 @@ class MenuList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a href="/see_all/menu" >{ this.props.seemore }</a>
+            <a>{ this.props.seemore }</a>
           </div>
         </div>
 
@@ -145,6 +145,6 @@ export default withTracker(props => {
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 4 }).fetch(),
+      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }).fetch(),
   };
-})(MenuList);
+})(MenuAllList);

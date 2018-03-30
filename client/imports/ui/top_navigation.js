@@ -18,7 +18,8 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        height: 65
     },
     sidebar : {
         zIndex: 999,
@@ -83,6 +84,7 @@ class TopNavigation extends Component {
             lat: null,
             lng: null,
             time: '',
+            status: 'Search',
             multiSelect: [
                 { id: 1, label: 'Delivery', value: 'Delivery' },
                 { id: 2, label: 'Dine-in', value: 'Dine-in' },
@@ -177,6 +179,7 @@ class TopNavigation extends Component {
             setTimeout(() => {
                 $('html').css('overflow', 'hidden');
             }, 200);
+            $("[role=navigation]").height('100%');
         });
     }
 
@@ -224,10 +227,14 @@ class TopNavigation extends Component {
         limit.from = 0
         limit.to = 2
 
+        this.setState({
+            status: 'Searching'
+        });
+
 
         self.state.multiSelect.map((item, index) => {
             if (item.value !== false) {
-                service.push(item.value);
+                service.push(item.label);
             }
         })
         let date = document.getElementById('date').value;
@@ -243,7 +250,16 @@ class TopNavigation extends Component {
 
                     Meteor.call('searching', self.state.lat, self.state.lng, service, date, this.state.time, limit, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
+                            this.setState({
+                                search: false
+                            },() => {
+                                $('html').css('overflow', 'auto');
+                                this.setState({
+                                    status: 'Search'
+                                })
+                                FlowRouter.go('/search');
+                            });
                         } else {
                             console.log('location found')
 
@@ -261,7 +277,12 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
+                            $('html').css('overflow', 'auto');
+                            this.setState({
+                                status: 'Search'
+                            })
+                            FlowRouter.go('/search');
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -273,7 +294,16 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', position.coords.latitude, position.coords.longitude, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
+                            this.setState({
+                                search: false
+                            },() => {
+                                $('html').css('overflow', 'auto');
+                                FlowRouter.go('/search');
+                                this.setState({
+                                    status: 'Search'
+                                })
+                            });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -283,7 +313,16 @@ class TopNavigation extends Component {
                     clearTimeout(etimeout);
                     Meteor.call('searching', null, null, service, date, this.state.time, (error, result) => {
                         if (!error) {
-                            console.log(result);
+                            Session.set('advanced_search_results', result);
+                            this.setState({
+                                search: false
+                            },() => {
+                                $('html').css('overflow', 'auto');
+                                FlowRouter.go('/search');
+                                this.setState({
+                                    status: 'Search'
+                                })
+                            });
                         } else {
                             Materialize.toast("Error! " + error, "rounded bp-green");
                         }
@@ -314,7 +353,7 @@ class TopNavigation extends Component {
         var date = curr.toISOString().substr(0,10);
         return (
             <div className="search-page-container">
-                <span className="fa fa-times close-modal" onClick={ () =>  { this.setState({ search: false }); $('html').css('overflow', 'auto')} }></span>
+                <span className="fa fa-times close-modal" onClick={ () =>  { this.setState({ search: false }); $('html').css('overflow', 'auto'); $("[role=navigation]").height('65px'); }}></span>
                 <div className="container">
                     <div className="row">
                         <div onKeyPress = { this.handlePress } className="search-form col l6 offset-l3 m10 offset-m1 s12">
@@ -338,7 +377,7 @@ class TopNavigation extends Component {
                                 />
                             </div>
                             <div className="input-field col s12 text-center">
-                                <button onClick={ this.handleSearch } id="search-btn">Search</button>
+                                <button disabled={ this.state.status == 'Searching' } onClick={ this.handleSearch } id="search-btn">{ this.state.status }</button>
                             </div>
                         </div>
                     </div>

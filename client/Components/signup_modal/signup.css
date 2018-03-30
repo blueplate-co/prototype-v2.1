@@ -27,14 +27,29 @@ padding: 0px;
 }
 
 #signup {
-  margin: 24px;
+  margin: 16px;
+}
+
+#signup_modal {
+  min-height: 565px !important;
 }
 
 @media (max-width: 768px) {
   .modal {
     border-radius: 0px !important;
-    top: 0% !important;
-    height: 100% !important;
-    width: 100% !important;
+    top: 0vh !important;
+    height: 100vh !important;
+    width: 100vh !important;
+    overflow: scroll !important;
+  }
+}
+
+@media (max-height: 680px) {
+  .modal {
+    border-radius: 0px !important;
+    top: 0vh !important;
+    height: 100vh !important;
+    width: 100vh !important;
+    overflow: scroll !important;
   }
 }
