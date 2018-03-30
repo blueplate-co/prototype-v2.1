@@ -84,7 +84,6 @@ Template.uploadForm.events({
             /** above is the line that prevents meteor from reloading **/
 
             //- meteor call
-            debugger
             Meteor.call('saveToKraken', Images.name, Images.path, (error, result)=>{
               if(error) console.log('kraken errors', error);
               console.log(result);
@@ -421,8 +420,8 @@ Template.create_dishes_form.events({
     var dish_name = event.target.dish_name.value;
     var dish_cost = event.target.dish_cost.value;
     var dish_selling_price = event.target.dish_selling_price.value;
-    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.trim().length == "") {
-      Materialize.toast("Sorry we can't save your dish. We need to have at least your dish name, dish cost and selling price to save", 6000, 'rounded bp-green');
+    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.trim().length == "" || Session.get('tempImages') == "") {
+      Materialize.toast("Sorry we can't save your dish. We need to have at least your dish images, dish name, dish cost and selling price to save", 6000, 'rounded bp-green');
       return false;
     } else {
       var dish_description = event.target.dish_description.value;
