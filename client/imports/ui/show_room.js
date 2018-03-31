@@ -42,13 +42,13 @@ export default class ShowRoom extends Component {
   renderCategories = () => {
     return (
       <ul>
-        <li id="dish_list_all" onClick={() => { this.setState({ screen: 'all_dish' }); FlowRouter.go('/see_all/dish');  }}>
+        <li id="dish_list_all" onClick={() => { this.setState({ screen: 'all_dish' }); Session.set('modal', false); FlowRouter.go('/see_all/dish');  }}>
           <span>Dish</span>
         </li>
-        <li id="menu_list_all" onClick={() => { this.setState({ screen: 'all_menu' }); FlowRouter.go('/see_all/menu');  }}>
+        <li id="menu_list_all" onClick={() => { this.setState({ screen: 'all_menu' }); Session.set('modal', false); FlowRouter.go('/see_all/menu');  }}>
           <span>Menu</span>
         </li>
-        <li id="kitchen_list_all" onClick={() => { this.setState({ screen: 'all_kitchen' }); FlowRouter.go('/see_all/kitchen');  }}>
+        <li id="kitchen_list_all" onClick={() => { this.setState({ screen: 'all_kitchen' }); Session.set('modal', false); FlowRouter.go('/see_all/kitchen');  }}>
           <span>Kitchen</span>
         </li>
       </ul>
