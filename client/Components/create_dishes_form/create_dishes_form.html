@@ -23,7 +23,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Serving Options</h6>
+              <h6>Serving options</h6>
             </div>
             <div class="col l9 m12 s12">
               {{> serving_option_display}}
@@ -31,7 +31,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Cooking Time <small>(mins)</small></h6>
+              <h6>Advanced order time</h6>
             </div>
 
             <div class="input-field col l9 m9 s9">
@@ -209,7 +209,7 @@
       <td>
         <select id="ingredient_unit" name="ingredient_unit" type="text">
         <!-- https://en.wikibooks.org/wiki/Cookbook:Units_of_measurement -->
-          <option disabled>Choose an unit</option>
+          <option disabled selected value="0">Choose an unit</option>
           {{#each units}}
             <option value={{shortform}}>{{name}}</option>
           {{/each}}

@@ -249,7 +249,7 @@ Template.ingredient_input.events({
 
     $('#ingredient_name').val("");
     $('#ingredient_quantity').val("");
-    $('select>option:eq(0)').prop('selected', true);
+    $('#ingredient_unit option[value=0]').prop('selected', true);
   },
 
   'click #ingredient_update': function(event) {
@@ -274,7 +274,7 @@ Template.ingredient_input.events({
   },
 
   'click #delete_temp_ingredient': function(event) {
-    filter_array = Session.set('ingredient_temp').filter(function( obj ) {
+    filter_array = Session.get('ingredient_temp').filter(function( obj ) {
       return obj._id !== this._id;
     });
     Session.set('ingredient_temp', filter_array);
@@ -446,6 +446,9 @@ Template.create_dishes_form.events({
         Ingredients.insert(doc);
       });
       var dish_tags = $('#dish_tags').material_chip('data')
+      if (!Session.get('imgMeta')) {
+        Session.set('imgMeta', null)
+      }
       Meteor.call('dish.insert', Session.get('image_id'), user_id, kitchen_id, dish_name, dish_description, Session.get('serving_option_tags'), cooking_time, days, hours, mins,
         dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), dish_tags, new Date(), new Date(), false, false,
         //- adding meta data for different image sizes
