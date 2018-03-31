@@ -62,6 +62,7 @@ Template.dishes_summary.events({
     event.preventDefault();
     Session.set('selected_dishes_id', []);
     Session.set('tempImages', '');
+    Session.set('ingredient_temp', []);
   },
 
   'click .btn_edit_dish': function(event,template) {
