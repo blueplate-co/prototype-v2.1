@@ -144,20 +144,20 @@
       {{#with currentUpload}}
         {{>spinner}}
       {{else}}
-            {{#if checkUpload}}
-                <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
-            {{else}}
-                <div class = "image_upload">
-                    <label for = "file_input">
-                        <img class="icon_img_upload" src="/img_upload_icon.svg" />
-                    </label>
-                    <div class="file-field input-field">
-                        <input id="file_input" type="file">
-                      <div class="file-path-wrapper">
-                      </div>
-                    </div>
+        {{#if checkUpload}}
+            <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
+        {{else}}
+            <div class = "image_upload">
+                <label for = "file_input">
+                    <img class="icon_img_upload" src="/img_upload_icon.svg" />
+                </label>
+                <div class="file-field input-field">
+                    <input id="file_input" type="file">
+                  <div class="file-path-wrapper">
+                  </div>
                 </div>
-            {{/if}}
+            </div>
+        {{/if}}
       {{/with}}
      </div>
 </template>

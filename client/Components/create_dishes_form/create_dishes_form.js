@@ -35,12 +35,12 @@ Template.uploadForm.helpers({
   },
 
   checkUpload() {
-    return Session.get('image_id');
+    return Session.get('imgMeta');
   },
 
   load_dish: function() {
-    dish_url = Images.meata.base64;
-    return dish_url;
+    var dish_url = Session.get('imgMeta');
+    return dish_url.medium;
   }
 });
 
@@ -202,14 +202,14 @@ Template.ingredient_input.helpers({
   },
   'check_status': function() {
     var selected_dish = Session.get('selected_dishes_id');
-    if (selected_dish) {
+    if (!selected_dish || selected_dish.length === 0) {
+      return "ingredient_input";
+    } else {
       Ingredients.find({
         dish_name: selected_dish.dish_name,
         user_id: Meteor.userId()
       });
       return "ingredient_update";
-    } else {
-      return "ingredient_input";
     }
   }
 });
@@ -227,16 +227,15 @@ Template.ingredient_input.events({
       return false;
     }
 
-    var ingedient_temp = Session.get('ingredient_temp')
-    ingedient_temp.push({
+    var ingredient_temp = Session.get('ingredient_temp')
+    ingredient_temp.push({
       dish_name: dish_name,
       user_id: Meteor.userId(),
       ingredient_name: ingredient_name,
       ingredient_quantity: ingredient_quantity,
       ingredient_unit: ingredient_unit
     });
-
-    Session.set('ingredient_temp', ingedient_temp);
+    Session.set('ingredient_temp', ingredient_temp);
 
     // should keep that to make visual action on modal content
     Ingredients_temporary.insert({
@@ -264,7 +263,7 @@ Template.ingredient_input.events({
 
     $('#ingredient_name').val("");
     $('#ingredient_quantity').val("");
-    $('select>option:eq(0)').prop('selected', true);
+    $('#ingredient_unit option[value=0]').prop('selected', true);
   },
 
   'click #delete_perm_ingredient': function(event) {
@@ -486,6 +485,7 @@ Template.create_dishes_form.events({
     Session.keys = {}
     Session.set('ingredient_temp', []);
     Session.set('tempImages', []);
+    Session.set('imgMeta', []);
     $('#dish_tags').material_chip({
       data: [],
     });
@@ -552,5 +552,6 @@ Template.create_dishes_form.events({
 
     Session.set('ingredient_temp', []);
     Session.set('selected_dishes_id', null);
+    Session.set('imgMeta', []);
   }
 });
