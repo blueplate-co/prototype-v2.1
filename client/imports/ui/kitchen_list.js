@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
@@ -22,7 +23,8 @@ class KitchenList extends Component {
 
   handleClick = (item) => {
     // this.props.popup(item);
-    Session.set('modal', true);
+    var link = "/kitchen/" + item._id + "/"
+    FlowRouter.go(link)
   }
 
   renderList = () => {
@@ -35,7 +37,7 @@ class KitchenList extends Component {
       if (index == 2) {
         return true;
       }
-      if (item.bannerKitchenImg) {
+      if (item.bannerProfileImg) {
         hasBanner = true;
       } else {
         hasBanner = false;
@@ -46,8 +48,8 @@ class KitchenList extends Component {
             {
               (hasBanner) ?
                 <ProgressiveImages
-                  large={ item.bannerKitchenImg.large }
-                  small={ item.bannerKitchenImg.small }
+                  large={ item.bannerProfileImg.large }
+                  small={ item.bannerProfileImg.small }
                 />
               : ""
             }
