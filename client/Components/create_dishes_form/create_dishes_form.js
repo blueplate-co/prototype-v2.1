@@ -35,12 +35,12 @@ Template.uploadForm.helpers({
   },
 
   checkUpload() {
-    return Session.get('image_id');
+    return Session.get('imgMeta');
   },
 
   load_dish: function() {
-    dish_url = Images.meata.base64;
-    return dish_url;
+    var dish_url = Session.get('imgMeta');
+    return dish_url.medium;
   }
 });
 
@@ -263,7 +263,7 @@ Template.ingredient_input.events({
 
     $('#ingredient_name').val("");
     $('#ingredient_quantity').val("");
-    $('select>option:eq(0)').prop('selected', true);
+    $('#ingredient_unit option[value=0]').prop('selected', true);
   },
 
   'click #delete_perm_ingredient': function(event) {
@@ -485,6 +485,7 @@ Template.create_dishes_form.events({
     Session.keys = {}
     Session.set('ingredient_temp', []);
     Session.set('tempImages', []);
+    Session.set('imgMeta', []);
     $('#dish_tags').material_chip({
       data: [],
     });
@@ -551,5 +552,6 @@ Template.create_dishes_form.events({
 
     Session.set('ingredient_temp', []);
     Session.set('selected_dishes_id', null);
+    Session.set('imgMeta', []);
   }
 });
