@@ -282,7 +282,7 @@ Template.edit_homecook_profile.events({
           //   navbar: "bp_navbar",
           //   render_component: "show_room"
           // });
-          FlowRouter.go('/path_choosing');
+          FlowRouter.go('/cooking/dashboard');
         }
       }
     );

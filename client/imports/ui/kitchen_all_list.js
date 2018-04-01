@@ -31,7 +31,7 @@ class KitchenAllList extends Component {
     }
     let hasBanner;
     return this.props.kitchen.map((item, index) => {
-      if (item.bannerKitchenImg) {
+      if (item.bannerProfileImg) {
         hasBanner = true;
       } else {
         hasBanner = false;
@@ -42,8 +42,8 @@ class KitchenAllList extends Component {
             {
               (hasBanner) ?
                 <ProgressiveImages
-                  large={ item.bannerKitchenImg.large }
-                  small={ item.bannerKitchenImg.small }
+                  large={ item.bannerProfileImg.large }
+                  small={ item.bannerProfileImg.small }
                 />
               : ""
             }
