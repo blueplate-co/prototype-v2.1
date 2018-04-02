@@ -82,6 +82,10 @@ export default class DishCarousel extends Component {
                 </li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No ingredients</span>
+        )
     }
   }
 
@@ -92,6 +96,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Allergies</span>
+        )
     }
   }
 
@@ -102,6 +110,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Dietary</span>
+        )
     }
   }
 
@@ -112,6 +124,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Cuisines Tags</span>
+        )
     }
   }
 
@@ -122,6 +138,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Proteins Tags</span>
+        )
     }
   }
 
@@ -132,6 +152,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Caterogies Tag</span>
+        )
     }
   }
 
@@ -142,6 +166,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    }  else {
+        return (
+            <span className="row none no-padding">No Cooking Methods Tags</span>
+        )
     }
   }
 
@@ -152,6 +180,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Taste Tags</span>
+        )
     }
   }
 
@@ -162,6 +194,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Textures Tag</span>
+        )
     }
   }
 
@@ -172,6 +208,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Vegetables Tags</span>
+        )
     }
   }
 
@@ -182,6 +222,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Condiments Tags</span>
+        )
     }
   }
 
@@ -192,6 +236,10 @@ export default class DishCarousel extends Component {
                 <li key={index}>{ item }</li>
             )
         })
+    } else {
+        return (
+            <span className="row none no-padding">No Serving Temperatures Tags</span>
+        )
     }
   }
 
@@ -210,7 +258,7 @@ export default class DishCarousel extends Component {
                 <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                 <div className="row dish-preview-navigation">
                     <div className="row">
-                        <div className="col l1 s2 m2" style={{ position: 'relative' }}>
+                        <div className="col l1 s2 m2 no-padding float-left" style={{ position: 'relative' }}>
                             <ChefAvatar userId={Session.get('selectedMenu').user_id} />
                         </div>
                         <div className="col l10 s10 m10">

@@ -83,8 +83,10 @@ Template.uploadForm.events({
             Session.set('image_id', Images._id);
             /** above is the line that prevents meteor from reloading **/
 
+            let newImgName = changeImgName(Image.path)
+            console.log('image new name: ', newImgName)
             //- meteor call
-            Meteor.call('saveToKraken', Images.name, Images.path, (error, result)=>{
+            Meteor.call('saveToKraken', newImgName, Images.path, (error, result)=>{
               if(error) console.log('kraken errors', error);
               console.log(result);
             });
@@ -555,3 +557,21 @@ Template.create_dishes_form.events({
     Session.set('imgMeta', []);
   }
 });
+
+let changeImgName = function(imgPath)
+{
+
+  //- return new name DateTime in milliseconds + unique ID 
+  let currentDate = new Date()
+  var milliseconds = currentDate.getMilliseconds()
+  //- uniqid
+  let uniqid = require('uniqid');
+
+  //- get extension from img path
+  let fileExtension = require('file-extension')
+  let extension = fileExtension(imgPath)
+  console.log('file extension', extension)
+
+  return milliseconds + '_' + uniqid()+ '.' + extension
+
+}

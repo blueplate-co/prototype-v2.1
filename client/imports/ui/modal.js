@@ -88,6 +88,10 @@ export default class DishModal extends Component {
                     </li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No ingredients</span>
+            )
         }
     }
 
@@ -98,6 +102,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Allergies</span>
+            )
         }
     }
 
@@ -108,6 +116,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Dietary</span>
+            )
         }
     }
 
@@ -118,6 +130,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Cuisines Tag</span>
+            )
         }
     }
 
@@ -128,6 +144,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Proteins Tags</span>
+            )
         }
     }
 
@@ -138,6 +158,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Categories Tags</span>
+            )
         }
     }
 
@@ -148,6 +172,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Cooking Methods Tag</span>
+            )
         }
     }
 
@@ -158,6 +186,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Taste Tags</span>
+            )
         }
     }
 
@@ -168,6 +200,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Textures Tag</span>
+            )
         }
     }
 
@@ -178,6 +214,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Vegetables Tags</span>
+            )
         }
     }
 
@@ -188,6 +228,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Condiments Tags</span>
+            )
         }
     }
 
@@ -198,6 +242,10 @@ export default class DishModal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
+        } else {
+            return (
+                <span className="row none no-padding">No Temperature Tags</span>
+            )
         }
     }
 
@@ -349,7 +397,7 @@ export default class DishModal extends Component {
                     <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                     <div className="row dish-preview-navigation">
                         <div className="row">
-                            <div className="col l1 s2 m2" style={{ position: 'relative' }}>
+                            <div className="col l1 s2 m2 no-padding float-left" style={{ position: 'relative' }}>
                                 <ChefAvatar userId={Session.get('selectedDish').user_id} />
                             </div>
                             <div className="col l11 s10 m10">

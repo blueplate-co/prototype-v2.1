@@ -46,7 +46,10 @@ Meteor.methods({
       "api_secret": "88b424bc8e85febe7c18bec79d4ea31e6bc71546"
     });
 
-    console.log('here in saveToKraken function');
+    //- change image name
+    // imgName = changeImgName(imgPath)
+
+    // console.log('here in saveToKraken function');
     // console.log('image path', imgPath);
     // console.log('image name', imgName);
 
@@ -307,3 +310,21 @@ Meteor.methods({
     });
   }
 });
+
+let changeImgName = function(imgPath)
+{
+
+  //- return new name DateTime in milliseconds + unique ID 
+  let currentDate = new Date()
+  var milliseconds = currentDate.getMilliseconds()
+  //- uniqid
+  let uniqid = require('uniqid');
+
+  //- get extension from img path
+  let fileExtension = require('file-extension')
+  let extension = fileExtension(imgPath)
+  console.log('file extension', extension)
+
+  return milliseconds + '_' + uniqid()+ '.' + extension
+
+}
