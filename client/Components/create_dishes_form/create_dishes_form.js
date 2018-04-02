@@ -83,7 +83,7 @@ Template.uploadForm.events({
             Session.set('image_id', Images._id);
             /** above is the line that prevents meteor from reloading **/
 
-            let newImgName = changeImgName(Image.path)
+            let newImgName = changeImgName(Images.path)
             console.log('image new name: ', newImgName)
             //- meteor call
             Meteor.call('saveToKraken', newImgName, Images.path, (error, result)=>{
