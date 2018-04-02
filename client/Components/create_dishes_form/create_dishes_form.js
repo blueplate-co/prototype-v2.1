@@ -92,10 +92,10 @@ Template.uploadForm.events({
             });
 
             //- declare some sizes
-            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + Images.name;
-            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + Images.name;
-            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + Images.name;
-            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + Images.name;
+            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + newImgName;
+            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + newImgName;
+            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + newImgName;
+            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + newImgName;
 
             //- add to sizes object
             var sizes    = {};
