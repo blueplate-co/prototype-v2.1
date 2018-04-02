@@ -162,8 +162,9 @@ Template.profile_banner.events({
               $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
             }, 3000);
             /** below is the line that prevents meteor from reloading **/
-
-            saveToKraken(profile_images.name, profile_images.path, 'bannerProfileImg');
+            let newImgName = changeImgName(profile_images.path)
+            console.log('new image name: ', newImgName)
+            saveToKraken(newImgName, profile_images.path, 'bannerProfileImg');
 
           }
           Meteor._reload.onMigrate(function() {
@@ -253,7 +254,9 @@ Template.upload_profile.events({
             /** above is the line that prevents meteor from reloading **/
 
             //- kraken
-            saveToKraken(profile_images.name, profile_images.path, 'profileImg');
+            let newImgName = changeImgName(profile_images.path)
+            console.log('new image name: ', newImgName)
+            saveToKraken(newImgName, profile_images.path, 'profileImg');
 
 
           }
@@ -3343,3 +3346,22 @@ Template.create_homecook_profile.helpers({
     },
   ]
 });**/
+
+
+let changeImgName = function(imgPath)
+{
+
+  //- return new name DateTime in milliseconds + unique ID 
+  let currentDate = new Date()
+  var milliseconds = currentDate.getMilliseconds()
+  //- uniqid
+  let uniqid = require('uniqid');
+
+  //- get extension from img path
+  let fileExtension = require('file-extension')
+  let extension = fileExtension(imgPath)
+  console.log('file extension', extension)
+
+  return milliseconds + '_' + uniqid()+ '.' + extension
+
+}

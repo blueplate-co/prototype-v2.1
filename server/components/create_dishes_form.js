@@ -47,7 +47,7 @@ Meteor.methods({
     });
 
     //- change image name
-    imgName = changeImgName(imgPath)
+    // imgName = changeImgName(imgPath)
 
     // console.log('here in saveToKraken function');
     // console.log('image path', imgPath);
