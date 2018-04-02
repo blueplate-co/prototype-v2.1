@@ -144,8 +144,8 @@ Meteor.methods({
     kitchen_speciality,
     kitchen_tags,
     house_rule,
-    kitchenImg,
-    bannerKitchenImg,
+    profileImg,
+    bannerProfileImg,
   ) {
 
 /** Not necessary to check at this stage
@@ -184,8 +184,8 @@ Meteor.methods({
       average_rating: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      kitchenImg: kitchenImg,
-      bannerKitchenImg: bannerKitchenImg
+      profileImg: profileImg,
+      bannerProfileImg: bannerProfileImg
     });
   }
 });

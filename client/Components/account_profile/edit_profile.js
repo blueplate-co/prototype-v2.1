@@ -57,6 +57,9 @@ Template.edit_foodie_profile.onRendered(function() {
     this.$(document).ready(function() {
     $('ul.tabs').tabs();
   });*/
+
+  window.scrollTo(0, 0);
+
   Meteor.setTimeout(function(){
     var get_profile = Profile_details.findOne({
       'user_id': Meteor.userId()
@@ -74,6 +77,8 @@ Template.edit_foodie_profile.onRendered(function() {
   Session.set("dietary_tags", get_profile.dietary_tags)
   Session.set('home_address_conversion', get_profile.home_address_conversion)
   Session.set('office_address_conversion', get_profile.office_address_conversion)
+  Session.set('profileImg',get_profile.profileImg)
+  Session.set('bannerProfileImg', get_profile.bannerProfileImg)
   /*checkboxes_recall(get_profile.serving_option_tags)*/
 
 }, 800);
@@ -107,6 +112,8 @@ Template.edit_foodie_profile.events({
     const office_address_country = $('#office_address_country').val();
     const office_address = $('#edit_office_address').val();
     const office_address_conversion = Session.get('office_address_conversion');
+    const profileImg = Session.get('profileImg');
+    const bannerProfileImg = Session.get('bannerProfileImg');
 
 
     //Step 2
@@ -137,6 +144,9 @@ Template.edit_foodie_profile.events({
             about_myself,
             allergy_tags,
             dietary_tags,
+            profileImg,
+            bannerProfileImg,
+
               function(err, result) {
 
                 if (err) {
@@ -176,18 +186,14 @@ Template.edit_homecook_profile.helpers({
 })
 
 Template.edit_homecook_profile.onRendered(function() {
-
-
-
-
-
-
   /**this.$('# edit_homecook_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
    autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
    autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
    showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
  });**/
+
+ window.scrollTo(0,0);
 
  Meteor.setTimeout(function(){
    var get_homecook_profile = Kitchen_details.findOne({
@@ -201,21 +207,18 @@ Template.edit_homecook_profile.onRendered(function() {
    this.$('input#input_text, textarea#cooking_exp').characterCounter();
    this.$('input#input_text, textarea#cooking_story').characterCounter();
    this.$('input#input_text, textarea#house_rule').characterCounter();
- //activate checkboxes_recall
- checkboxes_recall(get_homecook_profile.serving_option);
+   //activate checkboxes_recall
+   checkboxes_recall(get_homecook_profile.serving_option);
 
- Session.set("serving_option_tags", get_homecook_profile.serving_option)
- Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
+   Session.set("serving_option_tags", get_homecook_profile.serving_option)
+   Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
+   Session.set('profileImg',get_homecook_profile.profileImg)
+   Session.set('bannerProfileImg', get_homecook_profile.bannerProfileImg)
 
+   this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+   this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
 
- this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
- this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
-
-}, 1000);
-
-
-
-
+  }, 1000);
 });
 
 
@@ -279,7 +282,7 @@ Template.edit_homecook_profile.events({
           //   navbar: "bp_navbar",
           //   render_component: "show_room"
           // });
-          FlowRouter.go('/path_choosing');
+          FlowRouter.go('/cooking/dashboard');
         }
       }
     );

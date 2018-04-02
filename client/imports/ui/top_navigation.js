@@ -94,7 +94,11 @@ class TopNavigation extends Component {
     }
 
     openProfile = () => {
+      if (Profile_details.findOne({user_id: Meteor.userId()})) {
+        FlowRouter.go('/profile/edit_foodie_profile');
+      } else {
         FlowRouter.go('/profile');
+      }
     }
 
     onSetSidebarOpen = (open) => {
