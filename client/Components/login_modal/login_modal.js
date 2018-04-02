@@ -40,11 +40,11 @@ Template.login_modal.events({
   },
   'click #login, keypress': function(event){
     if (event.which === 1||event.which === 13){
-      
+
       var email = $('#login_email').val().trim();
       var password = $('#login_password').val().trim();
 
-      
+
       //- basic validation
       var isOK = false;
       //- check null
@@ -68,7 +68,7 @@ Template.login_modal.events({
         }
 
       }
-      
+
 
       //- if validate is ok
       // if (email || password) {
@@ -87,9 +87,13 @@ Template.login_modal.events({
             $('#loginLoader').hide(); // hide the loader
             localStorage.setItem("loggedIn", true);
             $('#login_modal').modal('close');
-            Bert.alert('Login successfully !' , 'success', 'fixed-top');
-            FlowRouter.go("/main");
-            
+            if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
+              FlowRouter.go("/followup");
+            } else {
+              Bert.alert('Login successfully!' , 'success', 'fixed-top');  
+              FlowRouter.go("/main");
+            }
+
           } else {
 
             //- logout
@@ -106,7 +110,7 @@ Template.login_modal.events({
 
           }
         });
-      } 
+      }
       else {
         $('#loginLoader').hide(); // hide the loader
         Bert.alert('Please check your email, password and try again!', "danger", "growl-top-right");
