@@ -140,12 +140,31 @@ Template.menu_creation_content.events({
     var dishes_details = [];
     var image_id = [];
     var menu_tags = $('#menu_tags').material_chip('data')
+    let hasDish = false
+
+
     if (typeof dishes_id !== 'undefined') {
-      if (dishes_id.length == 0) {
-        Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      // if (dishes_id.length == 0) {
+      //   Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      //   return false;
+      // }else{
+      //   hasDish = true;
+      // }
+
+      if(dishes_id.length != 0)
+      {
+        hasDish = true
       }
+      
     } else {
       Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      return false;
+    }
+
+    if(!hasDish)
+    {
+      Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      return false
     }
 
     //remove 'on' problem
@@ -153,12 +172,21 @@ Template.menu_creation_content.events({
       dishes_id = dishes_id.filter(function(a){return a !== "on"})
     }
 
-    for (i=0; i < dishes_id.length; i++){
-      dishes_details[i] = Dishes.findOne({_id: dishes_id[i]});
-      image_id[i] = dishes_details[i].image_id;
-    }
+    //- dish list
+    if(hasDish && dishes_id.length > 0)
+    {
+      //- find some dish
+      for (i=0; i < dishes_id.length; i++){
+        dishes_details[i] = Dishes.findOne({_id: dishes_id[i]});
+        image_id[i] = dishes_details[i].image_id;
+      }
 
-    if (menu_name && menu_selling_price && dishes_id) {
+    }
+    
+
+    if (menu_name && menu_selling_price && hasDish) {
+
+      //- insert menu
       Meteor.call('menu.insert',
         menu_name,
         menu_description,
@@ -173,12 +201,26 @@ Template.menu_creation_content.events({
         image_id,
         menu_tags,
         function(err) {
-            if (err) Materialize.toast('Oops! Error when create your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
+          if (err) Materialize.toast('Oops! Error when create your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
+          Materialize.toast('Menu created', 8000, 'rounded lighten-2');
         }
       );
-    } else {
+
+
+    } else{
       Materialize.toast('<strong>Menu creation failed</strong>: You are missing either menu name, selling price, or at least a dish in the menu', 8000, 'rounded bp-green');
+      return false
     }
+    // else {
+      
+    
+
+      // return false;
+
+      // Materialize.toast('<strong>Menu creation failed</strong>: You are missing either menu name, selling price, or at least a dish in the menu', 8000, 'rounded bp-green');
+      // return false
+
+    // }
     // this template is reused in a modal setting, the followig is the check
     // whether this template render location is on a modal or not.
     // if it is on a modal, view shoudln't be removed and view menu template
@@ -207,7 +249,7 @@ Template.menu_creation_content.events({
     Session.keys = {};
     Session.set('serving_option_tags', null);
     $('div.modal').scrollTop(0);
-    Materialize.toast('Menu created', 8000, 'rounded lighten-2');
+    // Materialize.toast('Menu created', 8000, 'rounded lighten-2');
     $('.modal-overlay').click();
     $('div.modal').modal('close');
   }
