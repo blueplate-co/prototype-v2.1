@@ -258,7 +258,7 @@ export default class DishCarousel extends Component {
                 <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                 <div className="row dish-preview-navigation">
                     <div className="row">
-                        <div className="col l1 s2 m2" style={{ position: 'relative' }}>
+                        <div className="col l1 s2 m2 no-padding float-left" style={{ position: 'relative' }}>
                             <ChefAvatar userId={Session.get('selectedMenu').user_id} />
                         </div>
                         <div className="col l10 s10 m10">
