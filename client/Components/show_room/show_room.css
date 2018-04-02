@@ -504,6 +504,12 @@
   background-repeat: no-repeat;
 }
 
+.none {
+  display: block;
+  width: 100%;
+  line-height: 35px;
+}
+
 @media only screen and (max-width: 600px) {
   .categories_navigation {
     display: none;

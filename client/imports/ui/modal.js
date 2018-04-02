@@ -90,7 +90,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No ingredients</li>
+                <span className="row none no-padding">No ingredients</span>
             )
         }
     }
@@ -104,7 +104,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Allergies</li>
+                <span className="row none no-padding">No Allergies</span>
             )
         }
     }
@@ -118,7 +118,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Dietary</li>
+                <span className="row none no-padding">No Dietary</span>
             )
         }
     }
@@ -132,7 +132,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Cuisines Tag</li>
+                <span className="row none no-padding">No Cuisines Tag</span>
             )
         }
     }
@@ -146,7 +146,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Proteins Tags</li>
+                <span className="row none no-padding">No Proteins Tags</span>
             )
         }
     }
@@ -160,7 +160,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Categories Tags</li>
+                <span className="row none no-padding">No Categories Tags</span>
             )
         }
     }
@@ -174,7 +174,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Cooking Methods Tag</li>
+                <span className="row none no-padding">No Cooking Methods Tag</span>
             )
         }
     }
@@ -188,7 +188,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Taste Tags</li>
+                <span className="row none no-padding">No Taste Tags</span>
             )
         }
     }
@@ -202,7 +202,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Textures Tag</li>
+                <span className="row none no-padding">No Textures Tag</span>
             )
         }
     }
@@ -216,7 +216,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Vegetables Tags</li>
+                <span className="row none no-padding">No Vegetables Tags</span>
             )
         }
     }
@@ -230,7 +230,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Condiments Tags</li>
+                <span className="row none no-padding">No Condiments Tags</span>
             )
         }
     }
@@ -244,7 +244,7 @@ export default class DishModal extends Component {
             })
         } else {
             return (
-                <li className="row no-padding">No Temperature Tags</li>
+                <span className="row none no-padding">No Temperature Tags</span>
             )
         }
     }
