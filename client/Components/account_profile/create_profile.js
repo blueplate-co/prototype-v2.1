@@ -652,7 +652,7 @@ Template.create_foodie_profile.events({
           //   navbar: "bp_navbar",
           //   render_component: "show_room"
           // });
-          FlowRouter.go('/path_choosing');
+          FlowRouter.go('/main');
         }
       }
     );
@@ -3351,7 +3351,7 @@ Template.create_homecook_profile.helpers({
 let changeImgName = function(imgPath)
 {
 
-  //- return new name DateTime in milliseconds + unique ID 
+  //- return new name DateTime in milliseconds + unique ID
   let currentDate = new Date()
   var milliseconds = currentDate.getMilliseconds()
   //- uniqid
