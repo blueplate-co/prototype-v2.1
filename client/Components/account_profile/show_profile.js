@@ -14,6 +14,7 @@ import SelfDishList from '../../imports/ui/self_dish_list.js';
 import SelfMenuList from '../../imports/ui/self_menu_list.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 
 Template.show_foodie_profile.helpers({
@@ -25,34 +26,65 @@ Template.show_foodie_profile.helpers({
 
 })
 
+Template.show_homecook_profile.onCreated(function() {
+  this._id = new ReactiveVar(null);
+  window.scrollTo(0,0);
+})
 
 Template.show_homecook_profile.helpers({
-  'get_homecook_profile': function() {
-    return Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    });
+  'get_homecook_profile': function(template) {
+    var instance = Template.instance()
+    instance._id.set(FlowRouter.getParam("homecook_id"))
+    if (!instance._id.get()) {
+      return Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    } else {
+      return Kitchen_details.findOne({
+        'user_id': instance._id.get()
+      });
+    }
   },
 
   'kitchen_speciality':function(){
-    var kitchen_speciality = Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    }).kitchen_speciality;
+    var instance = Template.instance()
+    if (!instance._id.get()) {
+      var kitchen_speciality = Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      }).kitchen_speciality;
+    } else {
+      var kitchen_speciality = Kitchen_details.findOne({
+        'user_id': instance._id.get()
+      }).kitchen_speciality;
+    }
     return kitchen_speciality
   },
 
   'kitchen_tags':function(){
-    var kitchen_tags = Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    }).kitchen_tags;
+    var instance = Template.instance()
+    if (!instance._id.get()) {
+      var kitchen_tags = Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      }).kitchen_tags;
+    } else {
+      var kitchen_tags = Kitchen_details.findOne({
+        'user_id': instance._id.get()
+      }).kitchen_tags;
+    }
     return kitchen_tags
   },
 
   'kitchen_like':function(){
     var dishes_likes = 0
     var menu_likes = 0
+    var instance = Template.instance()
 
-
-    Dishes.find({ "user_id": Meteor.userId() }).map(function (doc) {
+    if (!instance._id.get()) {
+      var user_id = Meteor.userId();
+    } else {
+      var user_id = instance._id.get();
+    }
+    Dishes.find({ "user_id": user_id }).map(function (doc) {
       if(doc.like === undefined){
         dishes_likes += 0
       }else{
@@ -61,7 +93,7 @@ Template.show_homecook_profile.helpers({
 
     });
 
-    Menu.find({ "user_id": Meteor.userId() }).map(function (doc) {
+    Menu.find({ "user_id": user_id }).map(function (doc) {
       if(doc.like === undefined){
         menu_likes += 0
       }else{
@@ -73,8 +105,14 @@ Template.show_homecook_profile.helpers({
 
   'kitchen_follow':function(){
     var kitchen_follow = 0
+    var instance = Template.instance()
+    if (!instance._id.get()) {
+      var user_id = Meteor.userId();
+    } else {
+      var user_id = instance._id.get();
+    }
 
-    Kitchen_details.find({ "user_id": Meteor.userId() }).map(function (doc) {
+    Kitchen_details.find({ "user_id": user_id }).map(function (doc) {
       if(doc.follow === undefined){
 
         kitchen_follow += 0
@@ -88,6 +126,12 @@ Template.show_homecook_profile.helpers({
 
   'kitchen_tried':function(){
     var kitchen_tried = 0
+    var instance = Template.instance()
+    if (!instance._id.get()) {
+      var user_id = Meteor.userId();
+    } else {
+      var user_id = instance._id.get();
+    }
 
     Kitchen_details.find({ "user_id": Meteor.userId() }).map(function (doc) {
       if(doc.follow === undefined){
