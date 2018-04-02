@@ -669,3 +669,7 @@
   fill: red;
   fill-opacity: 0.8;
 }
+
+[type="checkbox"] + label {
+  display: inline-flex!important;
+}
