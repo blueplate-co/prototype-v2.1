@@ -40,10 +40,11 @@ Profile_details.deny({
     return true;
   }
 });
-
+/**
 Meteor.publish('files.profile_images.all', function() {
   return profile_images.find().cursor;
 });
+**/
 
 Meteor.methods({
   'profile_images.remove' (purpose) {
@@ -143,8 +144,8 @@ Meteor.methods({
     kitchen_speciality,
     kitchen_tags,
     house_rule,
-    kitchenImg,
-    bannerKitchenImg,
+    profileImg,
+    bannerProfileImg,
   ) {
 
 /** Not necessary to check at this stage
@@ -183,8 +184,8 @@ Meteor.methods({
       average_rating: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      kitchenImg: kitchenImg,
-      bannerKitchenImg: bannerKitchenImg
+      profileImg: profileImg,
+      bannerProfileImg: bannerProfileImg
     });
   }
 });

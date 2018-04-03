@@ -23,7 +23,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Serving Options</h6>
+              <h6>Serving options</h6>
             </div>
             <div class="col l9 m12 s12">
               {{> serving_option_display}}
@@ -31,7 +31,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Cooking Time <small>(mins)</small></h6>
+              <h6>Advanced order time</h6>
             </div>
 
             <div class="input-field col l9 m9 s9">
@@ -144,20 +144,20 @@
       {{#with currentUpload}}
         {{>spinner}}
       {{else}}
-            {{#if checkUpload}}
-                <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
-            {{else}}
-                <div class = "image_upload">
-                    <label for = "file_input">
-                        <img class="icon_img_upload" src="/img_upload_icon.svg" />
-                    </label>
-                    <div class="file-field input-field">
-                        <input id="file_input" type="file">
-                      <div class="file-path-wrapper">
-                      </div>
-                    </div>
+        {{#if checkUpload}}
+            <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
+        {{else}}
+            <div class = "image_upload">
+                <label for = "file_input">
+                    <img class="icon_img_upload" src="/img_upload_icon.svg" />
+                </label>
+                <div class="file-field input-field">
+                    <input id="file_input" type="file">
+                  <div class="file-path-wrapper">
+                  </div>
                 </div>
-            {{/if}}
+            </div>
+        {{/if}}
       {{/with}}
      </div>
 </template>
@@ -209,7 +209,7 @@
       <td>
         <select id="ingredient_unit" name="ingredient_unit" type="text">
         <!-- https://en.wikibooks.org/wiki/Cookbook:Units_of_measurement -->
-          <option disabled>Choose an unit</option>
+          <option disabled selected value="0">Choose an unit</option>
           {{#each units}}
             <option value={{shortform}}>{{name}}</option>
           {{/each}}
@@ -267,7 +267,7 @@
       {{#each dietary_list}}
         <div class="card z-depth-0" id="checkbox">
             <input type="checkbox" class="filled-in" id="{{file_name}}" value={{name}} >
-            <label for="{{file_name}}">{{name}}<div class="icon icon_{{file_name}}"></div></label>
+            <label for="{{file_name}}">{{name}}</label>
         </div>
       {{/each}}
     </div>
