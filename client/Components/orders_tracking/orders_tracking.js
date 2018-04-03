@@ -253,7 +253,7 @@ Template.pending_confirmation.events({
         //get the price of each cart and calculating a total for this transaction
         var price_of_cart = parseInt(String(order.total_price))
         var status = String(order.status)
-        var stripeToken = String(order.stripeToken)
+        // var stripeToken = String(order.stripeToken)
 
 
         //check if transactions inserted already, if yes, just insert the order into array
@@ -266,13 +266,13 @@ Template.pending_confirmation.events({
         if (check) {
           var total_price_of_transaction = parseInt(check.amount) //check the amount in the transaction collection
           total_price_of_transaction += parseInt(price_of_cart) //add the cart_price into the transaction table
-          Meteor.call('transactions.cancelled', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
+          // Meteor.call('transactions.cancelled', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
           Meteor.call('order_record.cancelled', order_id) //update the order to cooking
         } else {
           if (serving_option === 'Delivery') {
             price_of_cart += 50
           } //delivery cost, should have a variable table
-          Meteor.call('transactions.cancelled', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken) //insert to transaction
+          // Meteor.call('transactions.cancelled', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken) //insert to transaction
           Meteor.call('order_record.cancelled', order_id) //update the order to cooking
         }
       }, 100 * index)

@@ -343,32 +343,34 @@ function order_record_insert(array_value) {
   profile_details = Profile_details.findOne({ user_id: Meteor.userId() })
 
 
-  Stripe.card.createToken({
-    number: ccNum,
-    cvc: cvc,
-    exp_month: expMo,
-    exp_year: expYr,
-  }, function(status, response) {
-    console.log(status);
-    console.log(response);
-    if(response.error){
-      Materialize.toast('Oops! Error related to payment. Please check the card details again.' + response.error, 4000, 'rounded bp-green');
-    }else{
+  // Stripe.card.createToken({
+  //   number: ccNum,
+  //   cvc: cvc,
+  //   exp_month: expMo,
+  //   exp_year: expYr,
+  // }, function(status, response) {
+  //   console.log(status);
+  //   console.log(response);
+  //   if(response.error){
+  //     Materialize.toast('Oops! Error related to payment. Please check the card details again.' + response.error, 4000, 'rounded bp-green');
+  //   }else{
 
-        stripeToken = response.id;
+  //       stripeToken = response.id;
 
-        if(stripeToken != null){
+  //       if(stripeToken != null){
 
-          Session.set('token_no', stripeToken)
+  //         Session.set('token_no', stripeToken)
 
-          var seller_id = array_value
-          var products = search_distinct_in_shopping_cart_seller_specific('product_id', seller_id)
+  //         var seller_id = array_value
+  //         var products = search_distinct_in_shopping_cart_seller_specific('product_id', seller_id)
 
-          setTimeout(products.forEach(to_order_record_insert), 200000)
-          Session.clear('token_no')
-        }
-      }
-  });
+  //         setTimeout(products.forEach(to_order_record_insert), 200000)
+  //         Session.clear('token_no')
+  //       }
+  //     }
+  // });
+
+
 }
 
   function to_order_record_insert(array_value) {
@@ -408,7 +410,7 @@ function order_record_insert(array_value) {
     } else {
       var ready_time = Session.get('ready_time_ms')
       var total_price = cart_details.total_price_per_dish
-      var stripeToken = Session.get('token_no')
+      // var stripeToken = Session.get('token_no')
       var transaction = Transactions.findOne({ 'buyer_id': buyer_id, 'seller_id': seller_id }, { sort: { transaction_no: -1 } });
       if (transaction) {
         var transaction_no = parseInt(transaction.transaction_no) + 1
@@ -418,41 +420,41 @@ function order_record_insert(array_value) {
       if (parseInt(Session.get('preferred_time_ms')) > 0) {
         if (parseInt(Session.get('preferred_time_ms')) > parseInt(Session.get('ready_time_ms'))) {
           var ready_time = Session.get('preferred_time_ms')
-          Meteor.call('order_record.insert', transaction_no, buyer_id, seller_id, product_id, quantity, total_price, address, serving_option, ready_time, stripeToken, function (err) {
-            if (err) {
-              Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-            } else {
-              Meteor.call('shopping_cart.remove', cart_id)
-              Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
-              Session.clear;
-              if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
-                $('#confirm_order_modal').modal();
-                $('#confirm_order_modal').modal('open');
-              } else {
-                Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
-              }
-            }
-          });
+          // Meteor.call('order_record.insert', transaction_no, buyer_id, seller_id, product_id, quantity, total_price, address, serving_option, ready_time, stripeToken, function (err) {
+          //   if (err) {
+          //     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+          //   } else {
+          //     Meteor.call('shopping_cart.remove', cart_id)
+          //     Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
+          //     Session.clear;
+          //     if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
+          //       $('#confirm_order_modal').modal();
+          //       $('#confirm_order_modal').modal('open');
+          //     } else {
+          //       Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
+          //     }
+          //   }
+          // });
         } else {
           Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
         }
       } else {
         var ready_time = Session.get('ready_time_ms')
-        Meteor.call('order_record.insert', transaction_no, buyer_id, seller_id, product_id, quantity, total_price, address, serving_option, ready_time, stripeToken, function (err) {
-          if (err) {
-            Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-          } else {
-            Meteor.call('shopping_cart.remove', cart_id)
-            Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
-            Session.clear;
-            if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
-              $('#confirm_order_modal').modal();
-              $('#confirm_order_modal').modal('open');
-            } else {
-              Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
-            }
-          }
-        });
+        // Meteor.call('order_record.insert', transaction_no, buyer_id, seller_id, product_id, quantity, total_price, address, serving_option, ready_time, stripeToken, function (err) {
+        //   if (err) {
+        //     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+        //   } else {
+        //     Meteor.call('shopping_cart.remove', cart_id)
+        //     Meteor.call('notification.place_order', seller_id, buyer_id, product_id, quantity)
+        //     Session.clear;
+        //     if (Shopping_cart.findOne({ "buyer_id": Meteor.userId() })) {
+        //       $('#confirm_order_modal').modal();
+        //       $('#confirm_order_modal').modal('open');
+        //     } else {
+        //       Bert.alert("Preferred Ready Time must be later than the Earliest Ready Time", "danger", "growl-top-right")
+        //     }
+        //   }
+        // });
       }
     }
   };

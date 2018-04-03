@@ -373,7 +373,7 @@ Template.request_card.events({
         console.log(price_of_cart)
 
         var status = String(order.status)
-        var stripeToken = String(order.stripeToken)
+        // var stripeToken = String(order.stripeToken)
 
 
         //check if transactions inserted already, if yes, just insert the order into array
@@ -387,20 +387,20 @@ Template.request_card.events({
           console.log(1)
           var total_price_of_transaction = parseInt(check.amount) //check the amount in the transaction collection
           total_price_of_transaction += parseInt(price_of_cart) //add the cart_price into the transaction table
-          Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
+          // Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
           Meteor.call('order_record.accepted', order_id) //update the order to cooking
         } else {
           console.log(2)
           if (serving_option === 'Delivery') {
             price_of_cart += 50
           } //delivery cost, should have a variable table
-          Meteor.call('transactions.accepted', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken, function (err, result) {
-            if (err) {
-              Materialize.toast("An error has occurred: " + err.message.message, 4000, 'rounded bp-green');
-            } else {
-              Materialize.toast("Order has been accepted", 4000, 'rounded bp-green');
-            }
-          }) //insert to transaction
+          // Meteor.call('transactions.accepted', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken, function (err, result) {
+          //   if (err) {
+          //     Materialize.toast("An error has occurred: " + err.message.message, 4000, 'rounded bp-green');
+          //   } else {
+          //     Materialize.toast("Order has been accepted", 4000, 'rounded bp-green');
+          //   }
+          // }) //insert to transaction
           Meteor.call('order_record.accepted', order_id, function(){
             if (err) {
               Materialize.toast("An error has occurred: " + err.message.message, 4000, 'rounded bp-green');
@@ -432,10 +432,10 @@ Template.request_card.events({
         var homecook = Kitchen_details.findOne({
           'user_id': Meteor.userId()
         })
-        var stripeToken = transaction.stripeToken
+        // var stripeToken = transaction.stripeToken
         var amount = transaction.amount
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name;
-        Meteor.call('chargeCard', stripeToken, amount, description);
+        // Meteor.call('chargeCard', stripeToken, amount, description);
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);
@@ -478,7 +478,7 @@ Template.request_card.events({
         console.log(price_of_cart)
 
         var status = String(order.status)
-        var stripeToken = String(order.stripeToken)
+        // var stripeToken = String(order.stripeToken)
 
 
         //check if transactions inserted already, if yes, just insert the order into array
@@ -499,7 +499,7 @@ Template.request_card.events({
           if (serving_option === 'Delivery') {
             price_of_cart += 50
           } //delivery cost, should have a variable table
-          Meteor.call('transactions.rejected', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken) //insert to transaction
+          // Meteor.call('transactions.rejected', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken) //insert to transaction
           Meteor.call('order_record.rejected', order_id) //update the order to cooking
         }
       }, 100 * index)

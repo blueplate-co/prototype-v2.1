@@ -6,22 +6,22 @@ import { check } from 'meteor/check';
 Order_record = new Mongo.Collection('order_record');
 
 Meteor.methods({
-  'chargeCard': function(stripeToken, amount, description) {
-    check(stripeToken, String);
-    check(amount, Match.Any);
-    check(description, Match.Any);
+  // 'chargeCard': function(stripeToken, amount, description) {
+  //   check(stripeToken, String);
+  //   check(amount, Match.Any);
+  //   check(description, Match.Any);
 
-    var Stripe = StripeAPI('sk_test_K51exlBQovfRkYAag2TKbzjl');
+  //   var Stripe = StripeAPI('sk_test_K51exlBQovfRkYAag2TKbzjl');
 
-    Stripe.charges.create({
-      amount: amount*100,
-      currency: 'hkd',
-      source: stripeToken,
-      description: description
-    }, function(err, charge) {
-      console.log(err, charge);
-    });
-  },
+  //   Stripe.charges.create({
+  //     amount: amount*100,
+  //     currency: 'hkd',
+  //     source: stripeToken,
+  //     description: description
+  //   }, function(err, charge) {
+  //     console.log(err, charge);
+  //   });
+  // },
 
   'order_record.insert'(
     transaction_no,
@@ -33,7 +33,7 @@ Meteor.methods({
     address,
     serving_option,
     ready_time,
-    stripeToken
+    // stripeToken
   ){
     check(transaction_no, Number);
     check(buyer_id, String);
@@ -56,7 +56,7 @@ Meteor.methods({
       address: address,
       serving_option: serving_option,
       ready_time: ready_time,
-      stripeToken: stripeToken,
+      // stripeToken: stripeToken,
       status: 'Created',
       rating: 0,
       createdAt: new Date(),

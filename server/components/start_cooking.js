@@ -25,14 +25,14 @@ Meteor.methods({
     seller_id,
     order_id,
     price_of_cart,
-    stripeToken
+    // stripeToken
   ) {
     check(trans_no, Number);
     check(buyer_id, String);
     check(seller_id, String);
     check(order_id, String);
     check(price_of_cart, Match.Any);
-    check(stripeToken, Match.Any);
+    // check(stripeToken, Match.Any);
 
     Transactions.insert({
       transaction_no: trans_no,
@@ -41,7 +41,7 @@ Meteor.methods({
       'order': [order_id],
       status: 'Accepted',
       amount: price_of_cart,
-      stripeToken: stripeToken,
+      // stripeToken: stripeToken,
       createdAt: new Date(),
       updatedAt: new Date()
     })
@@ -54,7 +54,7 @@ Meteor.methods({
     seller_id,
     order_id,
     total_price_of_transaction,
-    stripeToken
+    // stripeToken
   ) {
     check(trans_no, Match.Any);
     check(buyer_id, String);
@@ -66,7 +66,7 @@ Meteor.methods({
       transaction_no: trans_no,
       buyer_id: buyer_id,
       seller_id: seller_id,
-      stripeToken: stripeToken
+      // stripeToken: stripeToken
     }, {
       '$push': {
         'order': order_id
@@ -85,14 +85,14 @@ Meteor.methods({
     seller_id,
     order_id,
     price_of_cart,
-    stripeToken
+    // stripeToken
   ) {
     check(trans_no, Match.Any);
     check(buyer_id, String);
     check(seller_id, String);
     check(order_id, String);
     check(price_of_cart, Match.Any);
-    check(stripeToken, Match.Any);
+    // check(stripeToken, Match.Any);
 
     Transactions.insert({
       transaction_no: trans_no,
@@ -101,7 +101,7 @@ Meteor.methods({
       'order': [order_id],
       status: 'Rejected',
       amount: price_of_cart,
-      stripeToken: stripeToken,
+      // stripeToken: stripeToken,
       createdAt: new Date(),
       updatedAt: new Date()
     })
@@ -113,14 +113,14 @@ Meteor.methods({
     seller_id,
     order_id,
     price_of_cart,
-    stripeToken
+    // stripeToken
   ) {
     check(trans_no, Match.Any);
     check(buyer_id, String);
     check(seller_id, String);
     check(order_id, String);
     check(price_of_cart, Match.Any);
-    check(stripeToken, Match.Any);
+    // check(stripeToken, Match.Any);
 
     Transactions.insert({
       transaction_no: trans_no,
@@ -129,7 +129,7 @@ Meteor.methods({
       'order': [order_id],
       status: 'Cancelled',
       amount: price_of_cart,
-      stripeToken: stripeToken,
+      // stripeToken: stripeToken,
       createdAt: new Date(),
       updatedAt: new Date()
     })

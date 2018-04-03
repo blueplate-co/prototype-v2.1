@@ -29,14 +29,14 @@ Images = new FilesCollection({
 });
 
 Meteor.startup(function() {
-    Stripe.setPublishableKey('pk_test_G9LJfGcn9zGEmQuMwc7bqGQF');
+    // Stripe.setPublishableKey('pk_test_G9LJfGcn9zGEmQuMwc7bqGQF');
 });
 
 Meteor.startup(function() {
-    var handler = StripeCheckout.configure({
-      key: 'pk_test_G9LJfGcn9zGEmQuMwc7bqGQF',
-      token: function(token) {}
-    });
+    // var handler = StripeCheckout.configure({
+    //   key: 'pk_test_G9LJfGcn9zGEmQuMwc7bqGQF',
+    //   token: function(token) {}
+    // });
 });
 
 Collections = {
