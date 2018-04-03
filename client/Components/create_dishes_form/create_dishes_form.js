@@ -233,13 +233,13 @@ Template.ingredient_input.events({
 
       if(ingredient_name == '')
       {
-        Materialize.toast('Please fill your ingredient name.', 4000, 'rounded bp-green');
+        Materialize.toast('Please  your ingredient name.', 4000, 'rounded bp-green');
         return false;
       }
 
       if(ingredient_quantity == '')
       {
-        Materialize.toast('Please fill the quantity field.', 4000, 'rounded bp-green');
+        Materialize.toast('Please check your the quantity field again. Number is required', 4000, 'rounded bp-green');
         return false;
       }
       
