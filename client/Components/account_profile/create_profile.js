@@ -3,7 +3,6 @@ import {
 } from '/imports/functions/address_geocode.js';
 import './create_profile.html';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Tracker } from 'meteor/tracker'
 
 
 profile_images = new FilesCollection({
@@ -68,27 +67,25 @@ Template.profile_banner.helpers({
   },
 
   'checkUpload': function() {
-    tracker.autorun(function(){
-      if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-        var checkupload = Kitchen_details.findOne({
-          'user_id': Meteor.userId()
-        });
-      } else {
-        var checkupload = Profile_details.findOne({
-          'user_id': Meteor.userId()
-        });
-      }
+    if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
+      var checkupload = Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    } else {
+      var checkupload = Profile_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    }
 
-      if (!checkupload || !Session.get('bannerProfileImg') || Session.get('bannerProfileImg') == null) {
-        return false;
+    if (!checkupload || !Session.get('bannerProfileImg') || Session.get('bannerProfileImg') == null) {
+      return false;
+    } else {
+      if (checkupload.bannerProfileImg) {
+        return true;
       } else {
-        if (checkupload.bannerProfileImg) {
-          return true;
-        } else {
-          return false;
-        }
+        return false;
       }
-    })
+    }
   },
   'load_banner': function() {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
@@ -203,26 +200,24 @@ Template.upload_profile.helpers({
   },
 
   checkUpload: function() {
-    tracker.autorun(function(){
-      if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-        var check_profile_picture = Kitchen_details.findOne({
-          'user_id': Meteor.userId()
-        });
+    if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
+      var check_profile_picture = Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    } else {
+      var check_profile_picture = Profile_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    }
+    if (!check_profile_picture || !Session.get('profileImg') || Session.get('profileImg') == null) {
+      return false
+    } else {
+      if (check_profile_picture.profileImg) {
+        return true;
       } else {
-        var check_profile_picture = Profile_details.findOne({
-          'user_id': Meteor.userId()
-        });
+        return false;
       }
-      if (!check_profile_picture || !Session.get('profileImg') || Session.get('profileImg') == null) {
-        return false
-      } else {
-        if (check_profile_picture.profileImg) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    })
+    }
   },
 
   load_profile: function() {
@@ -342,7 +337,7 @@ Template.create_foodie_profile.onRendered(function() {
     var input_office_address = document.getElementById('create_office_address');
     new google.maps.places.Autocomplete(input_office_address);
   }
-  
+
   google.maps.event.addDomListener(window, 'load', initialize);
 
 });
@@ -356,8 +351,8 @@ Template.create_homecook_profile.onRendered(function(){
       var input = document.getElementById('kitchen_address');
       new google.maps.places.Autocomplete(input);
     }
-    
-    google.maps.event.addDomListener(window, 'load', initialize); 
+
+    google.maps.event.addDomListener(window, 'load', initialize);
 
      //activate dropdown
      this.$('#kitchen_address_country').material_select();
