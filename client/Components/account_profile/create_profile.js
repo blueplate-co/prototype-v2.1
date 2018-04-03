@@ -306,12 +306,30 @@ Template.create_foodie_profile.onRendered(function() {
     $('ul.tabs').tabs();
   });
 
+  function initialize() {
+    var input_home_address = document.getElementById('create_home_address');
+    new google.maps.places.Autocomplete(input_home_address);
+
+    var input_office_address = document.getElementById('create_office_address');
+    new google.maps.places.Autocomplete(input_office_address);
+  }
+  
+  google.maps.event.addDomListener(window, 'load', initialize);
+
 });
 
 
 
 
 Template.create_homecook_profile.onRendered(function(){
+    // add google places autocomplete
+    function initialize() {
+      var input = document.getElementById('kitchen_address');
+      new google.maps.places.Autocomplete(input);
+    }
+    
+    google.maps.event.addDomListener(window, 'load', initialize); 
+
      //activate dropdown
      this.$('#kitchen_address_country').material_select();
      this.$('#kitchen_contact_country').material_select();
