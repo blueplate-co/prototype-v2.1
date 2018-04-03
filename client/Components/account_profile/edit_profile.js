@@ -42,15 +42,11 @@ Template.edit_foodie_profile.helpers({
 
 Template.edit_foodie_profile.onRendered(function() {
   // google places autocomplete
-  function initialize() {
-    var home_address = document.getElementById('edit_home_address');
-    new google.maps.places.Autocomplete(home_address);
+  var home_address = document.getElementById('edit_home_address');
+  new google.maps.places.Autocomplete(home_address);
 
-    var office_address = document.getElementById('edit_office_address');
-    new google.maps.places.Autocomplete(office_address);
-  }
-  
-  google.maps.event.addDomListener(window, 'load', initialize);
+  var office_address = document.getElementById('edit_office_address');
+  new google.maps.places.Autocomplete(office_address);
 
   //activate dropdown
 
@@ -199,12 +195,8 @@ Template.edit_homecook_profile.onRendered(function() {
 
 
   // add google places autocomplete
-  function initialize() {
-    var input = document.getElementById('kitchen_address');
-    new google.maps.places.Autocomplete(input);
-  }
-  
-  google.maps.event.addDomListener(window, 'load', initialize); 
+  var input = document.getElementById('kitchen_address');
+  new google.maps.places.Autocomplete(input); 
 
 
 
