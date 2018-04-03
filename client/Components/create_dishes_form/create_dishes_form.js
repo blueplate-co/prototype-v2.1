@@ -83,7 +83,7 @@ Template.uploadForm.events({
             Session.set('image_id', Images._id);
             /** above is the line that prevents meteor from reloading **/
 
-            let newImgName = changeImgName(Image.path)
+            let newImgName = changeImgName(Images.path)
             console.log('image new name: ', newImgName)
             //- meteor call
             Meteor.call('saveToKraken', newImgName, Images.path, (error, result)=>{
@@ -92,10 +92,10 @@ Template.uploadForm.events({
             });
 
             //- declare some sizes
-            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + Images.name;
-            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + Images.name;
-            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + Images.name;
-            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + Images.name;
+            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + newImgName;
+            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + newImgName;
+            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + newImgName;
+            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + newImgName;
 
             //- add to sizes object
             var sizes    = {};
@@ -224,9 +224,27 @@ Template.ingredient_input.events({
     var ingredient_quantity = $('#ingredient_quantity').val();
     var ingredient_unit = $('#ingredient_unit').val();
 
-    if (!ingredient_name || ingredient_name == '' || !ingredient_quantity || ingredient_quantity == ''){
-      Materialize.toast('Please complete ingedient before add into dish.', 4000, 'rounded bp-green');
-      return false;
+    console.log('ingredient quantity', ingredient_quantity)
+
+    if (!ingredient_name || ingredient_name == '' ||
+        !ingredient_quantity || ingredient_quantity == '' || 
+        !_.isNumber(ingredient_quantity) )
+    {
+
+      if(ingredient_name == '')
+      {
+        Materialize.toast('Please  your ingredient name.', 4000, 'rounded bp-green');
+        return false;
+      }
+
+      if(ingredient_quantity == '')
+      {
+        Materialize.toast('Please check your the quantity field again. Number is required', 4000, 'rounded bp-green');
+        return false;
+      }
+      
+      // Materialize.toast('Please complete ingedient before add into dish.', 4000, 'rounded bp-green');
+      // return false;
     }
 
     var ingredient_temp = Session.get('ingredient_temp')
