@@ -46,14 +46,17 @@ Template.profile_banner.onRendered(function() {
       });
     }
 
-
-    if (check_profile_banner.bannerProfileImg) {
-      var banner_url = check_profile_banner.bannerProfileImg.origin;
-      $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
-      $("#banner_upload_button").text("Change Banner Image");
+    if (!check_profile_banner) {
+      return false;
     } else {
-      console.log('hi');
-      $(".profile_banner_area").css("background-color", "#56AACD");
+      if (check_profile_banner.bannerProfileImg) {
+        var banner_url = check_profile_banner.bannerProfileImg.origin;
+        $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
+        $("#banner_upload_button").text("Change Banner Image");
+      } else {
+        console.log('hi');
+        $(".profile_banner_area").css("background-color", "#56AACD");
+      }
     }
   }, 500);
 });
@@ -74,11 +77,16 @@ Template.profile_banner.helpers({
       });
     }
 
-    if (checkupload.bannerProfileImg) {
-      return true;
-    } else {
+    if (!checkupload) {
       return false;
+    } else {
+      if (checkupload.bannerProfileImg) {
+        return true;
+      } else {
+        return false;
+      }
     }
+
   },
   'load_banner': function() {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
@@ -90,12 +98,17 @@ Template.profile_banner.helpers({
         'user_id': Meteor.userId()
       });
     }
-    if (checkuploadBannerprofile.bannerProfileImg) {
-      banner_url = checkuploadBannerprofile.bannerProfileImg.origin;
-      $(".profile_banner_area").css("background-color", "");
-      $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
-    } else {
+
+    if (!checkuploadBannerprofile){
       return false;
+    } else {
+      if (checkuploadBannerprofile.bannerProfileImg) {
+        banner_url = checkuploadBannerprofile.bannerProfileImg.origin;
+        $(".profile_banner_area").css("background-color", "");
+        $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
+      } else {
+        return false;
+      }
     }
   },
 
@@ -197,9 +210,14 @@ Template.upload_profile.helpers({
         'user_id': Meteor.userId()
       });
     }
-
-    if (check_profile_picture.profileImg) {
-      return true;
+    if (!check_profile_picture) {
+      return false
+    } else {
+      if (check_profile_picture.profileImg) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
 
@@ -213,9 +231,16 @@ Template.upload_profile.helpers({
         'user_id': Meteor.userId()
       });
     }
-    if (profile_id_location.profileImg) {
-      return profile_id_location.profileImg.large;
+    if (!profile_id_location) {
+      return false;
+    } else {
+      if (profile_id_location.profileImg) {
+        return profile_id_location.profileImg.large;
+      } else {
+        return false;
+      }
     }
+
   }
 });
 
