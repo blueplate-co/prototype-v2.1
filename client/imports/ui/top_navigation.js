@@ -106,7 +106,15 @@ class TopNavigation extends Component {
     }
 
     toggle = () => {
-        this.setState({sidebarOpen: true})
+        this.setState({sidebarOpen: true});
+    }
+
+    checkKitchenProfileExists = () => {
+      if (Kitchen_details.findOne({user_id: Meteor.userId()})) {
+        FlowRouter.go('/profile/edit_homecook_profile')
+      } else {
+        FlowRouter.go('/profile/create_homecook_profile')
+      }
     }
 
     renderSideBar = () => {
@@ -154,7 +162,7 @@ class TopNavigation extends Component {
                     <li className="divider"></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/dashboard'); }) } }>
                         <span>Dashboard</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dashboard.svg"/></li>
-                    <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/profile/edit_homecook_profile'); }) } } >
+                    <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { this.checkKitchenProfileExists() }) } } >
                         <span>Kitchen profile</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/dishes'); }) } }>
                         <span>Manage dishes</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg"/></li>
