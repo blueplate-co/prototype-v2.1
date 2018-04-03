@@ -23,7 +23,7 @@ class KitchenList extends Component {
 
   handleClick = (item) => {
     // this.props.popup(item);
-    var link = "/kitchen/" + item._id + "/"
+    var link = "/kitchen/" + item.user_id + "/"
     FlowRouter.go(link)
   }
 

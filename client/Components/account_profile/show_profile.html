@@ -105,7 +105,7 @@
         {{#if get_homecook_profile.cooking_story}}
           {{get_homecook_profile.cooking_story}}
         {{else}}
-          <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking story with us yet.</p>
+          <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking story with us.</p>
         {{/if}}
       </div>
      </div>
@@ -127,23 +127,32 @@
      <div class='row l12 m12 s12'>
       <h6>Speciality</h6>
        <br>
-       {{#each kitchen_speciality}}
-        <div class='chip'>
-          {{this.tag}}
-          </div>
+       {{#if kitchen_speciality}}
+         {{#each kitchen_speciality}}
+            <div class='chip'>
+              {{this.tag}}
+            </div>
           {{/each}}
+        {{else}}
+          <p>{{get_homecook_profile.chef_name}} hasn't shared his specialities with us.</p>
+        {{/if}}
         </div>
-
+        <br>
       <div class='row l12 m12 s12'>
        <h6>Kitchen tags</h6>
        <br>
+       {{#if kitchen_tags}}
          {{#each kitchen_tags}}
-       <div class='chip'>
-         {{this.tag}}
-       </div>
-       {{/each}}
+           <div class='chip'>
+             {{this.tag}}
+           </div>
+         {{/each}}
+       {{else}}
+          <p>{{get_homecook_profile.chef_name}} hasn't updated any tags.</p>
+       {{/if}}
      </div>
      </div>
+     <br>
    <div class='col l12 m12 s12'>
      <div class='row l12 m12 s12'>
     <h6>House rules</h6>
@@ -163,7 +172,7 @@
       {{#if get_homecook_profile.cooking_exp}}
         {{get_homecook_profile.cooking_exp}}
       {{else}}
-        <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking experience with us yet.</p>
+        <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking experience with us.</p>
       {{/if}}
     </div>
   </div>
