@@ -42,6 +42,15 @@ Template.edit_foodie_profile.helpers({
 
 Template.edit_foodie_profile.onRendered(function() {
 
+  setTimeout(() => {
+    // google places autocomplete
+    var home_address = document.getElementById('edit_home_address');
+    new google.maps.places.Autocomplete(home_address);
+
+    var office_address = document.getElementById('edit_office_address');
+    new google.maps.places.Autocomplete(office_address);
+  }, 1000);
+
   //activate dropdown
 
   //activate steppers
@@ -186,6 +195,13 @@ Template.edit_homecook_profile.helpers({
 })
 
 Template.edit_homecook_profile.onRendered(function() {
+
+  setTimeout(() => {
+    // add google places autocomplete
+    var input = document.getElementById('kitchen_address');
+    new google.maps.places.Autocomplete(input); 
+  }, 1000);
+
   /**this.$('# edit_homecook_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
    autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
