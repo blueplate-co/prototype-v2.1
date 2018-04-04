@@ -563,7 +563,7 @@
   background-attachment: fixed;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1366px) {
   .vet_photo {
     background-attachment: initial;
   }
@@ -600,7 +600,7 @@
   background-attachment: fixed;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1366px) {
   .what_happen_image {
     background-attachment: initial;
   }
@@ -671,7 +671,7 @@
   background-attachment: fixed;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1366px) {
   .hand {
     background-attachment: initial;
   }
@@ -832,7 +832,7 @@
   margin-bottom: 0px;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1366px) {
   .bow {
     background-attachment: initial;
   }
