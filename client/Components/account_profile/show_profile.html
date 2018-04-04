@@ -1,0 +1,205 @@
+<template name='show_foodie_profile'>
+  {{#with get_foodie_profile}}
+<div class='container'>
+    <div class='row l12 m12 s12'>
+      <div class='col l3 m12 m12'>
+        <h6>profile picture</h6>
+      </div>
+      <div class='col l6 m12 s12'>
+        {{get_foodie_profile.foodie_name}}
+      </div>
+       <div class='col l3 m12 s12'>
+         <div class='col l3 m4 s4 offset-l1 center'>
+           100 Tried
+         </div>
+
+         <div class='col l3 m4 s4 center'>
+           15 Followed
+         </div>
+
+         <div class='col l3 m4 s4 center'>
+           100 Likes
+         </div>
+       </div>
+       </div>
+       <div class='row l12 m12 s12'>
+         <div class='col l9 offset-l3'>
+         {{#if get_foodie_profile.about_myself}}
+          <h6>{{get_foodie_profile.about_myself}}</h6>
+         {{else}}
+          <p>{{get_foodie_profile.foodie_name}} hasn't updated his story yet.</p>
+         {{/if}}
+       </div>
+     </div>
+     <div class='row l12 m12 s12'>
+      Like
+     </div>
+     <div class='row l12 m12 s12'>
+
+     </div>
+     <div class='row l12 m12 s12'>
+      Ordered
+     </div>
+     <div class='row l12 m12 s12'>
+
+     </div>
+     <div class='row l12 m12 s12'>
+      Followed
+     </div>
+     <div class='row l12 m12 s12'>
+
+     </div>
+     <div class='col l12 m12 s12'>
+     <div class='row l6 m12 s12'>
+         Major food allergies
+         {{> food_allergies}}
+        </div>
+     <div class='row l6 m12 s12'>
+         Dietary preferences
+       {{> dietary_preferences}}
+     </div>
+   </div>
+</div>
+   {{/with}}
+</template>
+
+
+<template name='show_homecook_profile'>
+  {{#with get_homecook_profile}}
+<div class='container'>
+    <div class='row l12 m6 s12'>
+      <div class='col l2 m2 s12 valign center'>
+          <img id='show_profileImg' src="{{get_homecook_profile.profileImg.medium}}"/>
+      </div>
+      <div class='col l10 m10 s12 valign'>
+        <div class='col l4 m12 s12 center'>
+          <h5 id="chef_name">{{get_homecook_profile.chef_name}}</h5>
+        </div>
+
+        <div class='col l8 m12 s12'>
+         <div class='col l2 m3 s3 offset-l4 center'>
+            <p>{{kitchen_tried}}</p><p>Tried</p>
+         </div>
+
+         <div class='col l4 m6 s6 center'>
+           <div class ='col l3 m3 s3 '>
+           .
+            </div>
+            <div class='col l6 m6 s6 center'>
+              <p>{{kitchen_follow}}</p><p>Follows</p>
+            </div>
+            <div class='col l3 m3 s3 '>
+              .
+            </div>
+         </div>
+
+         <div class='col l2 m3 s3 center'>
+           <p>{{kitchen_like}}</p><p>Likes</p>
+         </div>
+        </div>
+       <br>
+       <br>
+       <br>
+
+      <div class='col l11 m12 s12 center valign' id="chef_story">
+        {{#if get_homecook_profile.cooking_story}}
+          {{get_homecook_profile.cooking_story}}
+        {{else}}
+          <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking story with us.</p>
+        {{/if}}
+      </div>
+     </div>
+     </div>
+
+     <div class='row l12 m12 s12 valign'>
+      <h6>Dish</h6>
+     <br>
+     {{>homecook_profile_dish_list}}
+     </div>
+     <div class='row l12 m12 s12'>
+       <h6>Menu</h6>
+     </div>
+     <br>
+       {{>homecook_profile_menu_list}}
+     <br>
+
+     <div class='col l12 m12 s12'>
+     <div class='row l12 m12 s12'>
+      <h6>Speciality</h6>
+       <br>
+       {{#if kitchen_speciality}}
+         {{#each kitchen_speciality}}
+            <div class='chip'>
+              {{this.tag}}
+            </div>
+          {{/each}}
+        {{else}}
+          <p>{{get_homecook_profile.chef_name}} hasn't shared his specialities with us.</p>
+        {{/if}}
+        </div>
+        <br>
+      <div class='row l12 m12 s12'>
+       <h6>Kitchen tags</h6>
+       <br>
+       {{#if kitchen_tags}}
+         {{#each kitchen_tags}}
+           <div class='chip'>
+             {{this.tag}}
+           </div>
+         {{/each}}
+       {{else}}
+          <p>{{get_homecook_profile.chef_name}} hasn't updated any tags.</p>
+       {{/if}}
+     </div>
+     </div>
+     <br>
+   <div class='col l12 m12 s12'>
+     <div class='row l12 m12 s12'>
+    <h6>House rules</h6>
+    <div class='text-field'>
+      {{#if get_homecook_profile.house_rule}}
+        {{get_homecook_profile.house_rule}}
+      {{else}}
+        <p>There are no house rules written yet.</p>
+      {{/if}}
+    </div>
+  </div>
+
+
+  <div class='row l12 m12 s12'>
+    <h6>Cooking experience</h6>
+    <div class='text-field'>
+      {{#if get_homecook_profile.cooking_exp}}
+        {{get_homecook_profile.cooking_exp}}
+      {{else}}
+        <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking experience with us.</p>
+      {{/if}}
+    </div>
+  </div>
+ </div>
+
+
+ </div>
+ <br>
+ <br>
+ <br>
+
+   {{/with}}
+</template>
+
+
+<template name='homecook_profile_dish_list'>
+
+    <div class='row l12 m12 s12 valign' id='dish_list'>
+      <!-- REACJS COMPONENT RENDER AT HERE -->
+    </div>
+
+</template>
+
+<template name='homecook_profile_menu_list'>
+
+    <div class='row l12 m12 s12 valign' id='menu_list'>
+      <!-- REACJS COMPONENT RENDER AT HERE -->
+    </div>
+
+</template>

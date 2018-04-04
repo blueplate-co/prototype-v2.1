@@ -23,7 +23,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Serving Options</h6>
+              <h6>Serving options</h6>
             </div>
             <div class="col l9 m12 s12">
               {{> serving_option_display}}
@@ -31,7 +31,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Cooking Time <small>(mins)</small></h6>
+              <h6>Advanced order time</h6>
             </div>
 
             <div class="input-field col l9 m9 s9">
@@ -41,6 +41,7 @@
                     <span>Days</span>
                     <select id="days" name="days" class="browser-default">
                       <option value="0" disabled selected>Choose your days</option>
+                      <option value="0">0</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -50,6 +51,7 @@
                       <span>Hours</span>
                       <select id="hours" name="hours" class="browser-default">
                         <option value="0" disabled selected>Choose your hours</option>
+                        <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -124,7 +126,7 @@
               <h6>Tags</h6>
             </div>
             <div class = "col l9 m12 s12">
-              {{> food_tags}}
+              {{> tagging}}
             </div>
           </div>
 
@@ -134,7 +136,7 @@
     </div>
 </template>
 
-<!------------------------------ TEMPLATES SESSION ----------------------------------------->
+<!------------------------------ TEMPLATES SESSION ------------------------------------------>
 
 <template name="uploadForm">
 
@@ -142,20 +144,20 @@
       {{#with currentUpload}}
         {{>spinner}}
       {{else}}
-            {{#if checkUpload}}
-                <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
-            {{else}}
-                <div class = "image_upload">
-                    <label for = "file_input">
-                        <img class="icon_img_upload" src="/img_upload_icon.svg" />
-                    </label>
-                    <div class="file-field input-field">
-                        <input id="file_input" type="file">
-                      <div class="file-path-wrapper">
-                      </div>
-                    </div>
+        {{#if checkUpload}}
+            <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
+        {{else}}
+            <div class = "image_upload">
+                <label for = "file_input">
+                    <img class="icon_img_upload" src="/img_upload_icon.svg" />
+                </label>
+                <div class="file-field input-field">
+                    <input id="file_input" type="file">
+                  <div class="file-path-wrapper">
+                  </div>
                 </div>
-            {{/if}}
+            </div>
+        {{/if}}
       {{/with}}
      </div>
 </template>
@@ -202,12 +204,12 @@
           <input id="ingredient_name" name="ingredient_name" type="text">
       </td>
       <td>
-          <input id="ingredient_quantity" name="ingredient_quantity" type="number" min="0">
+          <input id="ingredient_quantity" name="ingredient_quantity" placeholder="0" type="number" min="0">
       </td>
       <td>
         <select id="ingredient_unit" name="ingredient_unit" type="text">
         <!-- https://en.wikibooks.org/wiki/Cookbook:Units_of_measurement -->
-          <option disabled>Choose an unit</option>
+          <option disabled selected value="0">Choose an unit</option>
           {{#each units}}
             <option value={{shortform}}>{{name}}</option>
           {{/each}}
@@ -265,168 +267,16 @@
       {{#each dietary_list}}
         <div class="card z-depth-0" id="checkbox">
             <input type="checkbox" class="filled-in" id="{{file_name}}" value={{name}} >
-            <label for="{{file_name}}">{{name}}<div class="icon icon_{{file_name}}"></div></label>
+            <label for="{{file_name}}">{{name}}</label>
         </div>
       {{/each}}
     </div>
     <br>
 </template>
 
-<template name="food_tags">
+<template name = "tagging">
   <br>
-  <ul class="collapsible" data-collapsible="expandable">
-    <li>
-      <div class="collapsible-header">By cuisine:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> cuisines_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header proteins">By proteins:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> proteins_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By categories:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> categories_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By cooking methods:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> cooking_methods_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By taste:</div>
-      <div class="collapsible-body">
-            <div class="row">
-              {{> tastes_list}}
-          </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By textures:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> textures_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By vegetables:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> vegetables_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By condiments:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> condiments_list}}
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header">By serving temperature:</div>
-      <div class="collapsible-body">
-        <div class="row">
-          {{> serving_temperature_list}}
-          </div>
-      </div>
-    </li>
-  </ul>
+  <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+  <br>
+  <div class="chips" id="dish_tags"></div>
 </template>
-
-<Template name= "cuisines_list">
-  {{# each cuisines_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="proteins_list">
-  {{# each proteins_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="categories_list">
-  {{# each categories_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name="cooking_methods_list">
-  {{# each cooking_methods_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "tastes_list">
-  {{# each tastes_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "textures_list">
-  {{# each textures_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "vegetables_list">
-  {{# each vegetables_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "condiments_list">
-  {{# each condiments_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>
-
-<Template name = "serving_temperature_list">
-  {{# each serving_temperature_list}}
-      <div class="col l4 m4 s6 food_tags_list">
-          <input type="checkbox" class="filled-in" id={{id}} value={{name}}>
-          <label for={{id}}>{{name}}</label>
-      </div>
-  {{/each}}
-</Template>

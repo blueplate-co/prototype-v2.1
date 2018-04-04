@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    color: #000000;
+    font-weight: 600;
+    opacity: 0.87;
+}
+
+.render_component{
+  margin-top: 65px;
+}
+
+.btn {
+  text-transform: lowercase;
+  font-weight: 600;
+  border-radius: 30px;
+}
+
+.bp-blue {
+  background-color: #56AACD;
+  color: #000000;
+}
+
+.bp-blue:hover {
+  background-color: #407E97;
+}
+
+.bp-green {
+  background-color: #B1DBBE;
+  opacity: 0.87;
+  color: #000000;
+}
+
+.bp-green:hover {
+  background-color: #B1DBBE;
+}
+
+html {
+  height: 70vh;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body p {
+  font-family: 'Montserrat', sans-serif;
+  color: rgba(0,0,0,0.54);
+  opacity: 0.87;
+  margin:0;
+  padding:0;
+}
+
+.chip{
+  background-color: #56AACD !important;
+  color: white;
+}
+
+.card {
+  border-radius: 20px   !important;
+  display: inline-block;
+  border-color: #B1DBBE;
+  border-width: medium;
+  overflow: visible !important;
+}
+
+.card-action {
+  border-radius: 0px 0px 20px 20px !important;
+}
+
+/* modal responsive settings */
+/* desktop and above */
+@media (min-width:1024px) {
+  .modal {
+    top: 15% !important;
+    width: 100%;
+  }
+}
+/* iPad and below */
+@media (max-width: 1023px) {
+  .modal {
+    border-radius: 0px !important;
+    top: 0% !important;
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+
+/* Showroom grid settings */
+@media (max-width: 869px) {
+  .card_container {
+    -webkit-column-count: 1;
+    -webkit-column-gap:   6px;
+    -moz-column-count:    1;
+    -moz-column-gap:      6px;
+    column-count:         1;
+    column-gap:           6px;
+  }
+}
+
+@media(min-width: 870px) {
+  .card_container {
+    -webkit-column-count: 2;
+    -webkit-column-gap:   6px;
+    -moz-column-count:    2;
+    -moz-column-gap:      6px;
+    column-count:         2;
+    column-gap:           6px;
+  }
+}
+
+@media(min-width:1220px) {
+  .card_container {
+    -webkit-column-count: 3;
+    -webkit-column-gap:   6px;
+    -moz-column-count:    3;
+    -moz-column-gap:      6px;
+    column-count:         3;
+    column-gap:           6px;
+  }
+}
+
+@media(min-width:1522px) {
+  .card_container {
+    -webkit-column-count: 4;
+    -webkit-column-gap:   6px;
+    -moz-column-count:    4;
+    -moz-column-gap:      6px;
+    column-count:         4;
+    column-gap:           6px;
+  }
+}
+
+@media(min-width:1824px) {
+  .card_container {
+    -webkit-column-count: 5;
+    -webkit-column-gap:   6px;
+    -moz-column-count:    5;
+    -moz-column-gap:      6px;
+    column-count:         5;
+    column-gap:           6px;
+  }
+}

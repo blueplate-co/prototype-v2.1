@@ -1,5 +1,4 @@
 import { Blaze } from 'meteor/blaze'
-import { Tracker } from 'meteor/tracker'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
 
 Template.dishes_summary.onRendered(function(){
@@ -17,6 +16,7 @@ Template.dishes_summary.onRendered(function(){
   });
   $('.tooltipped').tooltip({delay: 500});
   Session.set('ingredient_temp', []);
+  Session.set('imgMeta', []);
 });
 
 Template.dishes_summary.events({
@@ -62,6 +62,9 @@ Template.dishes_summary.events({
     // clear all selected dishes in session
     event.preventDefault();
     Session.set('selected_dishes_id', []);
+    Session.set('tempImages', '');
+    Session.set('ingredient_temp', []);
+    Session.set('imgMeta', []);
   },
 
   'click .btn_edit_dish': function(event,template) {
@@ -144,6 +147,11 @@ Template.dishes_summary.events({
               break;
           }
       }
+      // Add chips to tagging section
+      console.log($('.chips-placeholder'))
+      console.log(get_dish.dish_tags);
+      $('#dish_tags').material_chip({data:get_dish.dish_tags});
+
       // Store all the values in Sessions
       Session.set('selected_dishes_id',get_dish._id);
       Session.set('image_id',get_dish.image_id);
@@ -159,6 +167,7 @@ Template.dishes_summary.events({
       Session.set('vegetables_tags',get_dish.vegetables_tags);
       Session.set('condiments_tags',get_dish.condiments_tags);
       Session.set('serving_temperature_tags',get_dish.serving_temperature_tags);
+      Session.set('imgMeta', get_dish.meta);
     }
   },
 
@@ -231,6 +240,7 @@ Template.dishes_summary.events({
         checkboxes[i].checked = false;
     };
     Ingredients_temporary.remove({});
+    Session.set('imgMeta', []);
   },
   'click #modal_add_btn': function() {
     $('.modal-content').scrollTop(0);

@@ -18,8 +18,9 @@ Menu.deny({
 });
 
 Meteor.methods({
-  'menu.insert' (menu_name, user_id, kitchen_id, menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id) {
+  'menu.insert' (menu_name, menu_description, user_id, kitchen_id, menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id, menu_tags) {
     check(menu_name, String);
+    check(menu_description, String);
     check(user_id, String);
     check(kitchen_id, String);
     check(menu_selling_price, Match.Any);
@@ -29,9 +30,11 @@ Meteor.methods({
     check(serving_option, Match.Any);
     check(dishes_id, Match.Any);
     check(image_id, Match.Any);
+    check(menu_tags, Match.Any);
 
     Menu.insert({
       menu_name: menu_name,
+      menu_description: menu_name,
       user_id: Meteor.userId(),
       kitchen_id: kitchen_id,
       createdAt: new Date(),
@@ -42,13 +45,14 @@ Meteor.methods({
       serving_option: serving_option,
       dishes_id: dishes_id,
       image_id: image_id,
+      menu_tags: menu_tags,
       updatedAt: new Date(),
       order_count: 0,
       average_rating: 0,
       deleted: false
     });
   },
-  'menu.update' (menu_id, menu_name, menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id) {
+  'menu.update' (menu_id, menu_name, menu_description,  menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id, menu_tags) {
     check(menu_id, String);
     check(menu_name, String);
     check(menu_selling_price, Match.Any);
@@ -58,12 +62,14 @@ Meteor.methods({
     check(serving_option, Match.Any);
     check(dishes_id, Match.Any);
     check(image_id, Match.Any);
+    check(menu_tags, Match.Any);
 
     Menu.update({
       _id: menu_id
     }, {
       $set: {
         menu_name: menu_name,
+        menu_description: menu_description,
         menu_selling_price: menu_selling_price,
         min_order: min_order,
         lead_hours: lead_hours,
@@ -71,6 +77,7 @@ Meteor.methods({
         serving_option: serving_option,
         dishes_id: dishes_id,
         image_id: image_id,
+        menu_tags: menu_tags,
         updatedAt: new Date()
       }
     });

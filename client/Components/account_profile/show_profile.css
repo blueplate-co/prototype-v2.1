@@ -1,0 +1,19 @@
+#show_profileImg{
+
+  position: center;
+  border-radius: 50%;
+  background-size:cover;
+  repeat: no-repeat;
+  width: 105px;
+
+}
+
+@media only screen and (min-width: 992px) {
+  #chef_name {
+    text-align: left;
+  }
+  
+  #chef_story {
+    text-align: left;
+  }
+}

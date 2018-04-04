@@ -40,10 +40,11 @@ Profile_details.deny({
     return true;
   }
 });
-
+/**
 Meteor.publish('files.profile_images.all', function() {
   return profile_images.find().cursor;
 });
+**/
 
 Meteor.methods({
   'profile_images.remove' (purpose) {
@@ -55,26 +56,23 @@ Meteor.methods({
   },
 
   'profile_details.insert' (
-    user_id,
     foodie_name,
+    first_name,
+    last_name,
     email,
     date_of_birth,
+    gender,
     mobile_dial_code,
     mobile,
-    profile_keywords,
-    gender,
-    about_myself,
     home_address_country,
     home_address,
     home_address_conversion,
     office_address_country,
     office_address,
     office_address_conversion,
+    about_myself,
     allergy_tags,
     dietary_tags,
-    card_number,
-    card_exp_month,
-    card_exp_year,
     //- image sizes metadata
     profileImg,
     bannerProfileImg,
@@ -108,25 +106,23 @@ Meteor.methods({
 **/
     Profile_details.insert({
       user_id: Meteor.userId(),
-      foodie_name: foodie_name,
-      email: email,
-      date_of_birth: date_of_birth,
-      mobile_dial_code: mobile_dial_code,
-      mobile: mobile,
-      profile_keywords: profile_keywords,
-      gender: gender,
-      about_myself: about_myself,
-      home_address_country: home_address_country,
-      home_address: home_address,
-      home_address_conversion: home_address_conversion,
-      office_address_country: office_address_country,
-      office_address: office_address,
-      office_address_conversion: office_address_conversion,
-      allergy_tags: allergy_tags,
-      dietary_tags: dietary_tags,
-      card_number: card_number,
-      card_exp_month: card_exp_month,
-      card_exp_year: card_exp_year,
+      foodie_name:foodie_name,
+      first_name:first_name,
+      last_name:last_name,
+      email:email,
+      date_of_birth:date_of_birth,
+      gender:gender,
+      mobile_dial_code:mobile_dial_code,
+      mobile:mobile,
+      home_address_country:home_address_country,
+      home_address:home_address,
+      home_address_conversion:home_address_conversion,
+      office_address_country:office_address_country,
+      office_address:office_address,
+      office_address_conversion:office_address_conversion,
+      about_myself:about_myself,
+      allergy_tags:allergy_tags,
+      dietary_tags:dietary_tags,
       createdAt: new Date(),
       updatedAt: new Date(),
       profileImg: profileImg,
@@ -135,22 +131,21 @@ Meteor.methods({
   },
 
   'kitchen_details.insert' (
-    user_id,
     kitchen_name,
     chef_name,
-    homecook_profile_keywords,
     kitchen_address_country,
     kitchen_address,
     kitchen_address_conversion,
-    about_homecook_myself,
+    kitchen_contact_country,
+    kitchen_contact,
     serving_option,
-    bank_fullname,
-    bank_name,
-    bank_account_no,
-    bank_address_country,
-    bank_address,
-    kitchenImg,
-    bannerKitchenImg,
+    cooking_exp,
+    cooking_story,
+    kitchen_speciality,
+    kitchen_tags,
+    house_rule,
+    profileImg,
+    bannerProfileImg,
   ) {
 
 /** Not necessary to check at this stage
@@ -172,25 +167,25 @@ Meteor.methods({
 
     Kitchen_details.insert({
       user_id: Meteor.userId(),
-      kitchen_name: kitchen_name,
-      chef_name: chef_name,
-      homecook_profile_keywords: homecook_profile_keywords,
-      kitchen_address_country: kitchen_address_country,
-      kitchen_address: kitchen_address,
-      kitchen_address_conversion: kitchen_address_conversion,
-      about_homecook_myself: about_homecook_myself,
-      serving_option,
-      bank_fullname: bank_fullname,
-      bank_name: bank_name,
-      bank_account_no: bank_account_no,
-      bank_address_country: bank_address_country,
-      bank_address: bank_address,
+      kitchen_name:kitchen_name,
+      chef_name:chef_name,
+      kitchen_address_country:kitchen_address_country,
+      kitchen_address:kitchen_address,
+      kitchen_address_conversion:kitchen_address_conversion,
+      kitchen_contact_country:kitchen_contact_country,
+      kitchen_contact:kitchen_contact,
+      serving_option:serving_option,
+      cooking_exp:cooking_exp,
+      cooking_story:cooking_story,
+      kitchen_speciality:kitchen_speciality,
+      kitchen_tags:kitchen_tags,
+      house_rule:house_rule,
       order_count: 0,
       average_rating: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      kitchenImg: kitchenImg,
-      bannerKitchenImg: bannerKitchenImg
+      profileImg: profileImg,
+      bannerProfileImg: bannerProfileImg
     });
   }
 });
@@ -204,7 +199,7 @@ Meteor.methods({
 });
 
 var isEmpty = function(obj) {
-  for ( var p in obj ) { 
+  for ( var p in obj ) {
       if ( obj.hasOwnProperty( p ) ) { return false; }
   }
   return true;

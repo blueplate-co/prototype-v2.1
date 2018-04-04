@@ -8,14 +8,22 @@ import {
   Blaze
 } from 'meteor/blaze';
 import {
-  Tracker
-} from 'meteor/tracker';
-import {
   checkboxes_recall
 } from '/imports/functions/checkboxes_recall.js'
 
 Template.menu_creation.onRendered(function(){
-  this.$('modal').modal();
+  this.$('modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );
   this.$('select').material_select();
   this.$('.tooltipped').tooltip({delay: 500});
   //Check if menu has data instance
@@ -23,12 +31,7 @@ Template.menu_creation.onRendered(function(){
     if (err) {
       console.log('error when getting available menus. Please try again.');
     } else {
-      if (result) {
-        Blaze.render(Template.view_menu, document.getElementById('card_container'));
-        $('.carousel.carousel-slider').carousel({fullWidth: true});
-      } else {
-        Blaze.render(Template.menu_initiation, document.getElementById('card_container'));
-      }
+      Blaze.render(Template.view_menu, document.getElementById('card_container'));
     }
   })
 });
@@ -62,8 +65,20 @@ Template.menu_creation_content.onCreated( function(){
 });
 
 Template.menu_creation_content.onRendered(function(template){
+  this.$('#menu_tags').material_chip();
   this.$('select').material_select();
-  this.$('.modal').modal();
+  this.$('.modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );
   $('.create_menu_dishes_selection .switch').remove();
   console.log(Template.instance().view._templateInstance.firstNode.parentElement)
 });
@@ -112,6 +127,7 @@ Template.menu_creation_content.events({
   'click #create_menu': function(event, template) {
     event.preventDefault;
     var menu_name = $('#menu_name').val();
+    var menu_description = $('#menu_description').val();
     var user_id = Meteor.userId();
     var kitchen = Kitchen_details.findOne({'user_id': user_id});
     var kitchen_id = kitchen._id;
@@ -123,12 +139,32 @@ Template.menu_creation_content.events({
     var dishes_id = Session.get('selected_dishes_id');
     var dishes_details = [];
     var image_id = [];
+    var menu_tags = $('#menu_tags').material_chip('data')
+    let hasDish = false
+
+
     if (typeof dishes_id !== 'undefined') {
-      if (dishes_id.length == 0) {
-        Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      // if (dishes_id.length == 0) {
+      //   Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      //   return false;
+      // }else{
+      //   hasDish = true;
+      // }
+
+      if(dishes_id.length != 0)
+      {
+        hasDish = true
       }
+      
     } else {
       Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      return false;
+    }
+
+    if(!hasDish)
+    {
+      Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
+      return false
     }
 
     //remove 'on' problem
@@ -136,14 +172,24 @@ Template.menu_creation_content.events({
       dishes_id = dishes_id.filter(function(a){return a !== "on"})
     }
 
-    for (i=0; i < dishes_id.length; i++){
-      dishes_details[i] = Dishes.findOne({_id: dishes_id[i]});
-      image_id[i] = dishes_details[i].image_id;
-    }
+    //- dish list
+    if(hasDish && dishes_id.length > 0)
+    {
+      //- find some dish
+      for (i=0; i < dishes_id.length; i++){
+        dishes_details[i] = Dishes.findOne({_id: dishes_id[i]});
+        image_id[i] = dishes_details[i].image_id;
+      }
 
-    if (menu_name && menu_selling_price && dishes_id) {
+    }
+    
+
+    if (menu_name && menu_selling_price && hasDish) {
+
+      //- insert menu
       Meteor.call('menu.insert',
         menu_name,
+        menu_description,
         user_id,
         kitchen_id,
         menu_selling_price,
@@ -153,13 +199,28 @@ Template.menu_creation_content.events({
         serving_option,
         dishes_id,
         image_id,
+        menu_tags,
         function(err) {
-            if (err) Materialize.toast('Oops! Error when create your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
+          if (err) Materialize.toast('Oops! Error when create your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
+          Materialize.toast('Menu created', 8000, 'rounded lighten-2');
         }
       );
-    } else {
+
+
+    } else{
       Materialize.toast('<strong>Menu creation failed</strong>: You are missing either menu name, selling price, or at least a dish in the menu', 8000, 'rounded bp-green');
+      return false
     }
+    // else {
+      
+    
+
+      // return false;
+
+      // Materialize.toast('<strong>Menu creation failed</strong>: You are missing either menu name, selling price, or at least a dish in the menu', 8000, 'rounded bp-green');
+      // return false
+
+    // }
     // this template is reused in a modal setting, the followig is the check
     // whether this template render location is on a modal or not.
     // if it is on a modal, view shoudln't be removed and view menu template
@@ -177,6 +238,9 @@ Template.menu_creation_content.events({
     $('#min_order_range').val("");
     $('#lead_time_hours_range').val("");
     $('#lead_time_days_range').val("");
+    $('#menu_tags').material_chip({
+      data: [],
+    });
 
     var checkboxes = document.getElementsByClassName("dishes_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
@@ -185,8 +249,9 @@ Template.menu_creation_content.events({
     Session.keys = {};
     Session.set('serving_option_tags', null);
     $('div.modal').scrollTop(0);
-    Materialize.toast('Menu created', 8000, 'rounded lighten-2');
+    // Materialize.toast('Menu created', 8000, 'rounded lighten-2');
     $('.modal-overlay').click();
+    $('div.modal').modal('close');
   }
 });
 
@@ -196,7 +261,18 @@ Template.view_menu.onCreated(function(){
 
 Template.view_menu.onRendered(function(){
   this.$('.carousel.carousel-slider').carousel({fullWidth: true});
-  this.$('.modal').modal();
+  this.$('.modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    }
+  );;
 });
 
 Template.view_menu.helpers({
@@ -241,7 +317,18 @@ Template.edit_content.onCreated(function() {
 
 Template.edit_content.onRendered(function() {
     this.$('select').material_select();
-    this.$('.modal').modal();
+    this.$('.modal').modal({
+        dismissible: false, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '4%', // Starting top style attribute
+        endingTop: '10%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        },
+        complete: function() {} // Callback for Modal close
+      }
+    );
 });
 
 Template.edit_content.helpers({
@@ -301,11 +388,13 @@ Template.edit_content.events({
       };
     }
     Session.set('menu_id', this._id);
+    $('#edit_menu_modal').modal('close');
   },
   'click #update_menu': function() {
     event.preventDefault;
     var menu_id = Session.get('menu_id');
     var menu_name = $('#edit_menu_name').val();
+    var menu_description = $('#edit_menu_description').val();
     var menu_selling_price = $('#edit_menu_selling_price').val();
     var min_order = $('#edit_min_order_range').val();
     var lead_hours = $('#edit_lead_time_hours_range').val();
@@ -321,8 +410,10 @@ Template.edit_content.events({
       image_id[i] = dishes_details[i].image_id;
     };
 
+    var menu_tags = $('#edit_menu_tags').material_chip('data')
+
     if (menu_name && menu_selling_price && dishes_id) {
-      Meteor.call('menu.update',menu_id, menu_name, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, function(err){
+      Meteor.call('menu.update',menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, function(err){
           if (err) {
             Materialize.toast('Oops! Error when update your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
           } else {
@@ -342,3 +433,8 @@ Template.edit_content.events({
     }
   }
 });
+
+Template.menu_tags.onRendered(function(){
+  var menu_tags_init = Session.get('menu_tags');
+  this.$('#edit_menu_tags').material_chip({data: menu_tags_init});
+})

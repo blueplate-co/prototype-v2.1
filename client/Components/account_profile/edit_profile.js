@@ -1,22 +1,15 @@
 import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
-import {
-  Template
-} from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';
 import {
   checkboxes_recall
 } from '/imports/functions/checkboxes_recall.js'
 import {
   address_geocode
 } from '/imports/functions/address_geocode.js'
-import './edit_profile.html';
+import {
+  get_checkboxes_value
+} from '/imports/functions/get_checkboxes_value.js'
 
 
 
@@ -29,140 +22,78 @@ Template.edit_foodie_profile.helpers({
   'get_foodie_email': function() {
     return Accounts.users.find().fetch()[0].emails[0].address;
   },
-  'check_gender': function() {
+  'check_male': function() {
     var gender = this.gender
     if (gender === "male") {
       return true
-    }
-  },
+    }else{
+      return false
+    }},
+    'check_female': function() {
+      var gender = this.gender
+      if (gender === "female") {
+        return true
+      }else{
+        return false
+      }},
 
-  month_list: [{
-      month: '01',
-      option: '01'
-    },
-    {
-      month: '02',
-      option: '02'
-    },
-    {
-      month: '03',
-      option: '03'
-    },
-    {
-      month: '04',
-      option: '04'
-    },
-    {
-      month: '05',
-      option: '05'
-    },
-    {
-      month: '06',
-      option: '06'
-    },
-    {
-      month: '07',
-      option: '07'
-    },
-    {
-      month: '08',
-      option: '08'
-    },
-    {
-      month: '09',
-      option: '09'
-    },
-    {
-      month: '10',
-      option: '10'
-    },
-    {
-      month: '11',
-      option: '11'
-    },
-    {
-      month: '12',
-      option: '12'
-    },
-  ],
 
-  year_list: [{
-      year: '2017',
-      option: '2017'
-    },
-    {
-      year: '2018',
-      option: '2018'
-    },
-    {
-      year: '2019',
-      option: '2019'
-    },
-    {
-      year: '2020',
-      option: '2020'
-    },
-    {
-      year: '2021',
-      option: '2021'
-    },
-    {
-      year: '2022',
-      option: '2022'
-    },
-    {
-      year: '2023',
-      option: '2023'
-    },
-    {
-      year: '2024',
-      option: '2024'
-    },
-    {
-      year: '2025',
-      option: '2025'
-    },
-    {
-      year: '2026',
-      option: '2026'
-    },
-    {
-      year: '2027',
-      option: '2027'
-    },
-    {
-      year: '2028',
-      option: '2028'
-    },
-
-  ],
-
-})
+});
 
 Template.edit_foodie_profile.onRendered(function() {
 
-  var get_profile = Profile_details.findOne({
-    'user_id': Meteor.userId()
-  });
+  setTimeout(() => {
+    // google places autocomplete
+    var home_address = document.getElementById('edit_home_address');
+    new google.maps.places.Autocomplete(home_address);
+
+    var office_address = document.getElementById('edit_office_address');
+    new google.maps.places.Autocomplete(office_address);
+  }, 1000);
 
   //activate dropdown
-  this.$('select').material_select();
 
-  //activate characterCounter
-  this.$('input#input_text, textarea#about_myself').characterCounter();
+  //activate steppers
+/**  this.$('# edit_foodie_stepper').activateStepper({
+   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+   showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
+});**/
 
-  //activate the selection tabs
-  this.$(document).ready(function() {
+
+/*  //activate the selection tabs
+    this.$(document).ready(function() {
     $('ul.tabs').tabs();
-  });
+  });*/
+
+  window.scrollTo(0, 0);
+
+  Meteor.setTimeout(function(){
+    var get_profile = Profile_details.findOne({
+      'user_id': Meteor.userId()
+    });
+    this.$('select').material_select();
+
+    //activate characterCounter
+    this.$('input#input_text, textarea#about_myself').characterCounter();
 
   //activate checkboxes_recall
   checkboxes_recall(get_profile.allergy_tags)
   checkboxes_recall(get_profile.dietary_tags)
-  checkboxes_recall(get_profile.serving_option_tags)
-  address_geocode('home_address_conversion', $('#edit_home_address').val(), 'home address');
-  address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
-  address_geocode('kitchen_address_conversion', $('#edit_kitchen_address').val(), 'kitchen address');
+
+  Session.set("allergy_tags", get_profile.allergy_tags)
+  Session.set("dietary_tags", get_profile.dietary_tags)
+  Session.set('home_address_conversion', get_profile.home_address_conversion)
+  Session.set('office_address_conversion', get_profile.office_address_conversion)
+  Session.set('profileImg',get_profile.profileImg)
+  Session.set('bannerProfileImg', get_profile.bannerProfileImg)
+  /*checkboxes_recall(get_profile.serving_option_tags)*/
+
+}, 800);
+
+
+
 });
 
 
@@ -173,9 +104,84 @@ Template.edit_foodie_profile.events({
   'blur #edit_office_address': function() {
     address_geocode('office_address_conversion', $('#edit_office_address').val(), 'office address');
   },
-  'click #edit_foodie_button': function(event, template) {
-    event.preventDefault();
-    $('#edit_homecook_button').click();
+  'click #edit_foodie_profile_button': function(){
+
+
+    const foodie_name = $('#foodie_name').val();
+    const first_name = $('#first_name').val();
+    const last_name = $('#last_name').val();
+    const email = $('#email').val();
+    const date_of_birth = $('#date_of_birth').val();
+    const gender = $("input[name='gender']:checked").val();
+    const mobile_dial_code = $('#mobile_country').val();
+    const mobile = $('#mobile').val();
+    const home_address_country = $('#home_address_country').val();
+    const home_address = $('#edit_home_address').val();
+    const home_address_conversion = Session.get('home_address_conversion');
+    const office_address_country = $('#office_address_country').val();
+    const office_address = $('#edit_office_address').val();
+    const office_address_conversion = Session.get('office_address_conversion');
+    const profileImg = Session.get('profileImg');
+    const bannerProfileImg = Session.get('bannerProfileImg');
+
+
+    //Step 2
+    const about_myself = $('#about_myself').val();
+
+    //Step 3
+    const allergy_tags = Session.get('allergy_tags');
+
+    //Step 4
+    const dietary_tags = Session.get('dietary_tags');
+
+
+            Meteor.call('profile_details.update',
+            foodie_name,
+            first_name,
+            last_name,
+            email,
+            date_of_birth,
+            gender,
+            mobile_dial_code,
+            mobile,
+            home_address_country,
+            home_address,
+            home_address_conversion,
+            office_address_country,
+            office_address,
+            office_address_conversion,
+            about_myself,
+            allergy_tags,
+            dietary_tags,
+            profileImg,
+            bannerProfileImg,
+
+              function(err, result) {
+
+                if (err) {
+                  Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded red lighten-2');
+
+                } else {
+                  Materialize.toast('Profile updated!', 4000, "rounded red lighten-2")
+
+                    //divert to the profile page
+                    // BlazeLayout.render('screen', {
+                    //   navbar: "bp_navbar",
+                    //   render_component: "show_room"
+                    // });
+                    FlowRouter.go('/main');
+                }
+
+              }
+            );
+
+
+
+
+var trimInput = function(value) {
+return value.replace(/^\s*|\s*$/g, "");
+    }
+
   }
 });
 
@@ -185,224 +191,124 @@ Template.edit_homecook_profile.helpers({
       'user_id': Meteor.userId()
     });
   },
-  bank_list: [{
-      name: '003 - Standard Chartered Bank (Hong Kong)',
-      option: '003 - Standard Chartered Bank (Hong Kong)'
-    },
-    {
-      name: '004 - Hongkong and Shanghai Banking Corporation',
-      option: '004 - Hongkong and Shanghai Banking Corporation'
-    },
-    {
-      name: '009 - China Construction Bank (Asia)',
-      option: '009 - China Construction Bank (Asia)'
-    },
-    {
-      name: '012 - Bank of China (Hong Kong)',
-      option: '012 - Bank of China (Hong Kong)'
-    },
-    {
-      name: '015 - Bank of East Asia',
-      option: '015 - Bank of East Asia'
-    },
-    {
-      name: '018 - China CITIC Bank International',
-      option: '018 - China CITIC Bank International'
-    },
-    {
-      name: '020 - Wing Lung Bank',
-      option: '020 - Wing Lung Bank'
-    },
-    {
-      name: '022 - OCBC Wing Hang Bank',
-      option: '022 - OCBC Wing Hang Bank'
-    },
-    {
-      name: '024 - Hang Seng Bank',
-      option: '024 - Hang Seng Bank'
-    },
-    {
-      name: '025 - Shanghai Commercial Bank',
-      option: '025 - Shanghai Commercial Bank'
-    },
-    {
-      name: '027 - Bank of Communications',
-      option: '027 - Bank of Communications'
-    },
-    {
-      name: '028 - Public Bank (Hong Kong)',
-      option: '028 - Public Bank (Hong Kong)'
-    },
-    {
-      name: '038 - Tai Yau Bank',
-      option: '038 - Tai Yau Bank'
-    },
-    {
-      name: '039 - Chiyu Banking Corporation',
-      option: '039 - Chiyu Banking Corporation'
-    },
-    {
-      name: '040 - Dah Sing Bank',
-      option: '040 - Dah Sing Bank'
-    },
-    {
-      name: '041 - Chong Hing Bank',
-      option: '041 - Chong Hing Bank'
-    },
-    {
-      name: '043 - Nanyang Commercial Bank',
-      option: '043 - Nanyang Commercial Bank'
-    },
-    {
-      name: '061 - Tai Sang Bank',
-      option: '061 - Tai Sang Bank'
-    },
-    {
-      name: '072 - Industrial and Commercial Bank of China (Asia)',
-      option: '072 - Industrial and Commercial Bank of China (Asia)'
-    },
-    {
-      name: '128 - Fubon Bank (Hong Kong)',
-      option: '128 - Fubon Bank (Hong Kong)'
-    },
-    {
-      name: '250 - CitiBank (Hong Kong)',
-      option: '250 - CitiBank (Hong Kong)'
-    },
-  ]
+
 })
 
 Template.edit_homecook_profile.onRendered(function() {
-  var get_homecook_profile = Kitchen_details.findOne({
-    'user_id': Meteor.userId()
-  });
 
-  checkboxes_recall(get_homecook_profile.serving_option);
+  setTimeout(() => {
+    // add google places autocomplete
+    var input = document.getElementById('kitchen_address');
+    new google.maps.places.Autocomplete(input); 
+  }, 1000);
 
-  //activate dropdown
-  this.$('select').material_select();
+  /**this.$('# edit_homecook_stepper').activateStepper({
+   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+   showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
+ });**/
 
-  //activate characterCounter
-  this.$('input#input_text, textarea#about_myself').characterCounter();
+ window.scrollTo(0,0);
 
-  //activate the selection tabs
-  this.$(document).ready(function() {
-    $('ul.tabs').tabs();
-  });
+ Meteor.setTimeout(function(){
+   var get_homecook_profile = Kitchen_details.findOne({
+     'user_id': Meteor.userId()
+   });
+
+   //activate dropdown
+   this.$('select').material_select();
+
+   //activate characterCounter
+   this.$('input#input_text, textarea#cooking_exp').characterCounter();
+   this.$('input#input_text, textarea#cooking_story').characterCounter();
+   this.$('input#input_text, textarea#house_rule').characterCounter();
+   //activate checkboxes_recall
+   checkboxes_recall(get_homecook_profile.serving_option);
+
+   Session.set("serving_option_tags", get_homecook_profile.serving_option)
+   Session.set('kitchen_address_conversion', get_homecook_profile.kitchen_address_conversion)
+   Session.set('profileImg',get_homecook_profile.profileImg)
+   Session.set('bannerProfileImg', get_homecook_profile.bannerProfileImg)
+
+   this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+   this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
+
+  }, 1000);
 });
 
 
-  //Kitchen Database
-    Template.edit_homecook_profile.events({
-      'blur #edit_kitchen_address': function() {
-        address_geocode('kitchen_address_conversion',$('#edit_kitchen_address').val(), 'kitchen address');
-      },
+Template.edit_homecook_profile.events({
+  'blur #kitchen_address': function() {
+    address_geocode('kitchen_address_conversion',$('#kitchen_address').val(), 'kitchen address');
 
-      'click #edit_homecook_button': function(event, template){
-        event.preventDefault();
+  },
 
-        const foodie_profile_id = Profile_details.findOne({'user_id': Meteor.userId()})._id;
-        const foodie_name = $('#foodie_name').val();
-        const email = $('#email').val();
-        const date_of_birth = $('#date_of_birth').val();
-        const mobile_dial_code = $('#mobile_country').val();
-        const mobile = $('#mobile').val();
-        const profile_keywords = $('#profile_keywords').val();
-        const gender =  $("input[name='gender']:checked"). val();
-        const about_myself = $('#about_myself').val();
-        const home_address_country = $('#home_address_country').val();
-        const home_address = $('#edit_home_address').val();
-        const home_address_conversion = Session.get('home_address_conversion');
-        const office_address = $('#edit_office_address').val();
-        const office_address_country = $('#office_address_country').val();
-        const office_address_conversion = Session.get('office_address_conversion');
-        const allergy_tags = Session.get('allergy_tags');
-        const dietary_tags = Session.get('dietary_tags');
-        const card_number = $('#card_number').val();
-        const card_exp_month = $('#card_exp_month').val();
-        const card_exp_year = $('#card_exp_year').val();
+  'click #edit_homecook_button':function(){
+    //Step 1
+    const kitchen_name = $('#kitchen_name').val();
+    const chef_name = $('#chef_name').val();
+    const kitchen_address_country = $('#kitchen_address_country').val();
+    const kitchen_address = $('#kitchen_address').val();
+    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    const kitchen_contact_country = $('#kitchen_contact_country').val();
+    const kitchen_contact = $('#kitchen_contact').val();
+    const serving_option = Session.get('serving_option_tags');
 
-        const kitchen_profile_id = Kitchen_details.findOne({'user_id': Meteor.userId()})._id
-        const kitchen_name = $('#edit_kitchen_name').val();
-        const chef_name = $('#chef_name').val();
-        const homecook_profile_keywords = $('#homecook_profile_keywords').val();
-        const kitchen_address_country = $('#kitchen_address_country').val();
-        const kitchen_address = $('#edit_kitchen_address').val();
-        const kitchen_address_conversion = Session.get('kitchen_address_conversion');
-        const about_homecook_myself = $('#about_homecook_myself').val();
-        const serving_option = Session.get('serving_option_tags');
-        const bank_fullname = $('#bank_fullname').val();
-        const bank_name = $('#bank_name').val();
-        const bank_account_no = $('#bank_account_no').val();
-        const bank_address_country = $('#bank_address_country').val();
-        const bank_address = $('#bank_address').val();
+    //Step 2
+    const cooking_exp = $('#cooking_exp').val();
+    const cooking_story = $('#cooking_story').val();
 
-        const user_id = Meteor.userId()
+    //Step 3
+    var speciality = $('#kitchen_speciality').material_chip('data');
+    const kitchen_speciality = speciality;
+
+    var tags = $('#kitchen_tags').material_chip('data');
+    const kitchen_tags = tags;
 
 
-                Meteor.call('profile_details.update',
-                  foodie_profile_id,
-                  foodie_name,
-                  email,
-                  date_of_birth,
-                  mobile_dial_code,
-                  mobile,
-                  profile_keywords,
-                  gender,
-                  about_myself,
-                  home_address_country,
-                  home_address,
-                  home_address_conversion,
-                  office_address_country,
-                  office_address,
-                  office_address_conversion,
-                  allergy_tags,
-                  dietary_tags,
-                  card_number,
-                  card_exp_month,
-                  card_exp_year,
-                  Session.get('bannerProfileImg'),
-                  function(err) {
-                    if (err) Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded bp-green');
-                  }
-                );
+    //Step 4
+    const house_rule = $('#house_rule').val();
 
-                Meteor.call('kitchen_details.update',
-                  kitchen_profile_id,
-                  kitchen_name,
-                  chef_name,
-                  homecook_profile_keywords,
-                  kitchen_address_country,
-                  kitchen_address,
-                  kitchen_address_conversion,
-                  about_homecook_myself,
-                  serving_option,
-                  bank_fullname,
-                  bank_name,
-                  bank_account_no,
-                  bank_address_country,
-                  bank_address,
-                  Session.get('bannerKitchenImg'),
-                  function(err) {
-                    if (err) Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded bp-green');
-                  }
-                );
 
-      Materialize.toast('Profile updated!', 4000, "rounded bp-green")
 
-      //divert to the profile page
-      // BlazeLayout.render('screen', {
-      //   navbar: "bp_navbar",
-      //   render_component: "show_room"
-      // });
-      FlowRouter.go('/main');
-    }
+    Meteor.call('kitchen_details.update',
+    kitchen_name,
+    chef_name,
+    kitchen_address_country,
+    kitchen_address,
+    kitchen_address_conversion,
+    kitchen_contact_country,
+    kitchen_contact,
+    serving_option,
+    cooking_exp,
+    cooking_story,
+    kitchen_speciality,
+    kitchen_tags,
+    house_rule,
+    Session.get('profileImg'),
+    Session.get('bannerProfileImg'),
 
-});
+    function(err) {
+      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+         else {
+          Materialize.toast('Profile updated!', 4000);
+          //divert to the profile page
+          // BlazeLayout.render('screen', {
+          //   navbar: "bp_navbar",
+          //   render_component: "show_room"
+          // });
+          FlowRouter.go('/cooking/dashboard');
+        }
+      }
+    );
 
-var trimInput = function(value) {
-  return value.replace(/^\s*|\s*$/g, "");
-}
+  }
+
+}),
+
+
+
 
 
 Template.edit_foodie_profile.helpers({

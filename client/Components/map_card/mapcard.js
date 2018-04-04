@@ -1,6 +1,5 @@
 import { Blaze } from 'meteor/blaze';
 import { Meteor } from 'meteor/meteor';
-import { Tracker } from 'meteor/tracker';
 
 kitchen_marker = []; //define a global marker array to administrate pin locations of kitchens on google map
 marker = [];

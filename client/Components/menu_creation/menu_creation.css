@@ -2,49 +2,6 @@
   height: 82vh;
 }
 
-@media(max-width: 592px) {
-  .menu_card_container {
-    -webkit-column-count: 1;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    1;
-    -moz-column-gap:      6px;
-    column-count:         1;
-    column-gap:           6px;
-  }
-}
-
-@media(max-width:854px) {
-  .menu_card_container {
-    -webkit-column-count: 2;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    2;
-    -moz-column-gap:      6px;
-    column-count:         2;
-    column-gap:           6px;
-  }
-}
-
-@media(max-width:1708px) {
-  .menu_card_container {
-    -webkit-column-count: 3;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    3;
-    -moz-column-gap:      6px;
-    column-count:         3;
-    column-gap:           6px;
-  }
-}
-
-@media(min-width:1709px) {
-  .menu_card_container {
-    -webkit-column-count: 4;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    4;
-    -moz-column-gap:      6px;
-    column-count:         4;
-    column-gap:           6px;
-  }
-}
 
 .menu_card_container .preloader-wrapper {
   margin-left: 150%;

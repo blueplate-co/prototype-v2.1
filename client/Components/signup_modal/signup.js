@@ -85,7 +85,7 @@ var isNotEmpty = function(value){
   if (value && value !== ''){
     return true;
   }
-  Bert.alert("Please fill in all fields", "danger", "growl-top-right");
+  Bert.alert("Email or password fields cannot be blank", "danger", "growl-top-right");
   return false;
 }
 //Email Validation
@@ -99,8 +99,8 @@ isEmail = function(value){
 }
 //Check Password fields
 isValidPassword=function(password){
-  if(password.length <8){
-  Bert.alert("Password must be a least 8 charaters", "danger","growl-top-right");
+  if(password.length < 8){
+  Bert.alert("Password must be greater than 8 charaters", "danger","growl-top-right");
     return false;
   }
     return true;
@@ -111,8 +111,14 @@ areValidPassword = function(password, cpassword){
     return false;
   }
   if(password !== cpassword){
-    Bert.alert("Password do not match","danger","growl-top-right");
+    Bert.alert("Password and confirm password mismatch. Please try again !","danger","growl-top-right");
     return false;
   }
     return true;
+}
+
+//- validating email
+var validateEmail = function(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }

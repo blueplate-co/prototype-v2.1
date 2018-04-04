@@ -1,4 +1,7 @@
 node_modules/
-public/
+public/*
 .vscode/*
 yarn.lock
+npm-debug.log
+public/.DS_Store
+.idea/

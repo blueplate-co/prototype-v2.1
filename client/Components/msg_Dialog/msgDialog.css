@@ -92,15 +92,7 @@
 }
 
 */
-.message_wrapper {
-  border-radius: 14px;
-  background: #c7c7c7;
-  padding: 5px 14px 5px 14px;
-  height: auto;
-  max-width: 80%;
-  display: inline-block;
-  margin-bottom: 14px;
-}
+
 
 .time_wrapper {
   display: inline;

@@ -11,9 +11,6 @@ import {
   FilesCollection
 } from 'meteor/ostrio:files';
 import {
-  Tracker
-} from 'meteor/tracker'
-import {
   ReactiveVar
 } from 'meteor/reactive-var'
 import {
@@ -23,7 +20,7 @@ import {
 import './create_dishes_form.html';
 
 
-Meteor.subscribe('files.images.all');
+// Meteor.subscribe('files.images.all');
 
 /** function from ostrio **/
 
@@ -38,12 +35,12 @@ Template.uploadForm.helpers({
   },
 
   checkUpload() {
-    return Session.get('image_id');
+    return Session.get('imgMeta');
   },
 
   load_dish: function() {
-    dish_url = Images.meata.base64;
-    return dish_url;
+    var dish_url = Session.get('imgMeta');
+    return dish_url.medium;
   }
 });
 
@@ -79,23 +76,26 @@ Template.uploadForm.events({
             alert('Error during upload: ' + error.message);
           } else {
             Meteor.setTimeout(function() {
-              var dish_url = Images.meta.base64;
+              Session.set('tempImages', Images.meta.base64);
+              var dish_url = Session.get('tempImages');
               $(".circle_base").css("background-image", "url(" + dish_url + ")");
             }, 500);
             Session.set('image_id', Images._id);
             /** above is the line that prevents meteor from reloading **/
-            
+
+            let newImgName = changeImgName(Images.path)
+            console.log('image new name: ', newImgName)
             //- meteor call
-            Meteor.call('saveToKraken', Images.name, Images.path, (error, result)=>{
+            Meteor.call('saveToKraken', newImgName, Images.path, (error, result)=>{
               if(error) console.log('kraken errors', error);
               console.log(result);
             });
 
             //- declare some sizes
-            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + Images.name;
-            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + Images.name;
-            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + Images.name;
-            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + Images.name;
+            var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + newImgName;
+            var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + newImgName;
+            var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + newImgName;
+            var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + newImgName;
 
             //- add to sizes object
             var sizes    = {};
@@ -204,14 +204,14 @@ Template.ingredient_input.helpers({
   },
   'check_status': function() {
     var selected_dish = Session.get('selected_dishes_id');
-    if (selected_dish) {
+    if (!selected_dish || selected_dish.length === 0) {
+      return "ingredient_input";
+    } else {
       Ingredients.find({
         dish_name: selected_dish.dish_name,
         user_id: Meteor.userId()
       });
       return "ingredient_update";
-    } else {
-      return "ingredient_input";
     }
   }
 });
@@ -224,21 +224,38 @@ Template.ingredient_input.events({
     var ingredient_quantity = $('#ingredient_quantity').val();
     var ingredient_unit = $('#ingredient_unit').val();
 
-    if (!ingredient_name || ingredient_name == '' || !ingredient_quantity || ingredient_quantity == ''){
-      Materialize.toast('Please complete ingedient before add into dish.', 4000, 'rounded bp-green');
-      return false;
+    console.log('ingredient quantity', ingredient_quantity)
+
+    if (!ingredient_name || ingredient_name == '' ||
+        !ingredient_quantity || ingredient_quantity == '' || 
+        !_.isNumber(ingredient_quantity) )
+    {
+
+      if(ingredient_name == '')
+      {
+        Materialize.toast('Please  your ingredient name.', 4000, 'rounded bp-green');
+        return false;
+      }
+
+      if(ingredient_quantity == '')
+      {
+        Materialize.toast('Please check your the quantity field again. Number is required', 4000, 'rounded bp-green');
+        return false;
+      }
+      
+      // Materialize.toast('Please complete ingedient before add into dish.', 4000, 'rounded bp-green');
+      // return false;
     }
 
-    var ingedient_temp = Session.get('ingredient_temp')
-    ingedient_temp.push({
+    var ingredient_temp = Session.get('ingredient_temp')
+    ingredient_temp.push({
       dish_name: dish_name,
       user_id: Meteor.userId(),
       ingredient_name: ingredient_name,
       ingredient_quantity: ingredient_quantity,
       ingredient_unit: ingredient_unit
     });
-
-    Session.set('ingredient_temp', ingedient_temp);
+    Session.set('ingredient_temp', ingredient_temp);
 
     // should keep that to make visual action on modal content
     Ingredients_temporary.insert({
@@ -251,7 +268,7 @@ Template.ingredient_input.events({
 
     $('#ingredient_name').val("");
     $('#ingredient_quantity').val("");
-    $('select>option:eq(0)').prop('selected', true);
+    $('#ingredient_unit option[value=0]').prop('selected', true);
   },
 
   'click #ingredient_update': function(event) {
@@ -266,7 +283,7 @@ Template.ingredient_input.events({
 
     $('#ingredient_name').val("");
     $('#ingredient_quantity').val("");
-    $('select>option:eq(0)').prop('selected', true);
+    $('#ingredient_unit option[value=0]').prop('selected', true);
   },
 
   'click #delete_perm_ingredient': function(event) {
@@ -276,7 +293,7 @@ Template.ingredient_input.events({
   },
 
   'click #delete_temp_ingredient': function(event) {
-    filter_array = Session.set('ingredient_temp').filter(function( obj ) {
+    filter_array = Session.get('ingredient_temp').filter(function( obj ) {
       return obj._id !== this._id;
     });
     Session.set('ingredient_temp', filter_array);
@@ -402,558 +419,9 @@ Template.dietary_preferences.events({
   }
 });
 
-Template.food_tags.onRendered(function() {
-  this.$('.collapsible').collapsible('open', 0);
-  this.$('.collapsible').collapsible('close', 1);
-  this.$('.collapsible').collapsible('close', 2);
-  this.$('.collapsible').collapsible('close', 3);
-  this.$('.collapsible').collapsible('close', 4);
-  this.$('.collapsible').collapsible('close', 5);
-  this.$('.collapsible').collapsible('close', 6);
-  this.$('.collapsible').collapsible('close', 7);
-  this.$('.collapsible').collapsible('close', 8);
-  this.$('.collapsible').collapsible({
-    accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-  });
-});
 
-Template.food_tags.helpers({
-
-  title_list: [{
-      name: 'Cuisine',
-      id: 'Cuisine'
-    },
-    {
-      name: 'Protein',
-      id: 'Protein'
-    },
-    {
-      name: 'Categories',
-      id: 'Categories'
-    },
-    {
-      name: 'Cooking method',
-      id: 'Cooking_method'
-    },
-    {
-      name: 'Taste',
-      id: 'Taste'
-    },
-    {
-      name: 'Texture',
-      id: 'Texture'
-    },
-    {
-      name: 'Vegetables',
-      id: 'Vegetables'
-    },
-    {
-      name: 'Condiements',
-      id: 'Condiements'
-    },
-    {
-      name: 'Serving temperature',
-      id: 'Serving_temperature'
-    },
-  ],
-});
-
-Template.cuisines_list.helpers({
-  cuisines_list: [{
-      name: 'African',
-      id: 'African'
-    },
-    {
-      name: 'American',
-      id: 'American'
-    },
-    {
-      name: 'Australian',
-      id: 'Australian'
-    },
-    {
-      name: 'Chinese',
-      id: 'Chinese'
-    },
-    {
-      name: 'French',
-      id: 'French'
-    },
-    {
-      name: 'Fusion',
-      id: 'Fusion'
-    },
-    {
-      name: 'Indian',
-      id: 'Indian'
-    },
-    {
-      name: 'International',
-      id: 'International'
-    },
-    {
-      name: 'Italian',
-      id: 'Italian'
-    },
-    {
-      name: 'Japanese',
-      id: 'Japanese'
-    },
-    {
-      name: 'Korean',
-      id: 'Korean'
-    },
-    {
-      name: 'Mexican',
-      id: 'Mexican'
-    },
-    {
-      name: 'Nordic',
-      id: 'Nordic'
-    },
-    {
-      name: 'Portuguese',
-      id: 'Portuguese'
-    },
-    {
-      name: 'South American',
-      id: 'South_American'
-    },
-    {
-      name: 'Southeast Asian',
-      id: 'Southeast_Asian'
-    },
-    {
-      name: 'Spanish',
-      id: 'Spanish'
-    },
-    {
-      name: 'Taiwanese',
-      id: 'Taiwanese'
-    },
-  ],
-});
-
-Template.cuisines_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('cuisines_tags', template);
-  }
-});
-
-Template.proteins_list.helpers({
-  proteins_list: [{
-      name: 'Beef',
-      id: 'Beef'
-    },
-    {
-      name: 'Chicken',
-      id: 'Chicken'
-    },
-    {
-      name: 'Egg',
-      id: 'Egg'
-    },
-    {
-      name: 'Fish',
-      id: 'Fish'
-    },
-    {
-      name: 'Lamb',
-      id: 'Lamb'
-    },
-    {
-      name: 'Pork',
-      id: 'Pork'
-    },
-    {
-      name: 'Seafood',
-      id: 'Seafood'
-    },
-  ],
-})
-
-Template.proteins_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('proteins_tags', template);
-  }
-});
-
-Template.categories_list.helpers({
-  categories_list: [{
-      name: 'Bread',
-      id: 'Bread'
-    },
-    {
-      name: 'Burger',
-      id: 'Burger'
-    },
-    {
-      name: 'Cake',
-      id: 'Cake'
-    },
-    {
-      name: 'Curry',
-      id: 'Curry'
-    },
-    {
-      name: 'Dessert',
-      id: 'Dessert'
-    },
-    {
-      name: 'Drinks',
-      id: 'Drinks'
-    },
-    {
-      name: 'Noodles',
-      id: 'Noodles'
-    },
-    {
-      name: 'Pasta',
-      id: 'Pasta'
-    },
-    {
-      name: 'Pastry',
-      id: 'Pastry'
-    },
-    {
-      name: 'Porridge',
-      id: 'Porridge'
-    },
-    {
-      name: 'Rice',
-      id: 'Rice'
-    },
-    {
-      name: 'Salad',
-      id: 'Salad'
-    },
-    {
-      name: 'Sandwich',
-      id: 'Sandwich'
-    },
-    {
-      name: 'Soup',
-      id: 'Soup'
-    },
-    {
-      name: 'Vegan',
-      id: 'Vegan'
-    },
-    {
-      name: 'Vegetarian',
-      id: 'Vegetarian'
-    },
-  ]
-});
-
-Template.categories_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('categories_tags', template);
-  }
-});
-
-Template.cooking_methods_list.helpers({
-  cooking_methods_list: [{
-      name: 'BBQ',
-      id: 'BBQ'
-    },
-    {
-      name: 'Braised',
-      id: 'Braised'
-    },
-    {
-      name: 'Deep-fried',
-      id: 'Deep_fried'
-    },
-    {
-      name: 'Poached',
-      id: 'Poached'
-    },
-    {
-      name: 'Roast',
-      id: 'Roast'
-    },
-    {
-      name: 'Smoked',
-      id: 'Smoked'
-    },
-    {
-      name: 'Sous-vide',
-      id: 'Sous_vide'
-    },
-    {
-      name: 'Steamed',
-      id: 'Steamed'
-    },
-    {
-      name: 'Stewed',
-      id: 'Stewed'
-    },
-    {
-      name: 'Stir-fried',
-      id: 'Stir_fried'
-    },
-  ],
-});
-
-Template.cooking_methods_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('cooking_methods_tags', template);
-  }
-});
-
-Template.tastes_list.helpers({
-  tastes_list: [{
-      name: 'Bitter',
-      id: 'Bitter'
-    },
-    {
-      name: 'Cheesy',
-      id: 'Cheesy'
-    },
-    {
-      name: 'Floral',
-      id: 'Floral'
-    },
-    {
-      name: 'Heavy',
-      id: 'Heavy'
-    },
-    {
-      name: 'Hot',
-      id: 'Hot'
-    },
-    {
-      name: 'Salty',
-      id: 'Salty'
-    },
-    {
-      name: 'Savory',
-      id: 'Savory'
-    },
-    {
-      name: 'Smoky',
-      id: 'Smoky'
-    },
-    {
-      name: 'Sour',
-      id: 'Sour'
-    },
-    {
-      name: 'Spicy',
-      id: 'Spicy'
-    },
-    {
-      name: 'Sweet',
-      id: 'Sweet'
-    },
-    {
-      name: 'Tart',
-      id: 'Tart'
-    },
-    {
-      name: 'Umami',
-      id: 'Umami'
-    },
-  ],
-});
-
-Template.tastes_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('tastes_tags', template);
-  }
-});
-
-Template.textures_list.helpers({
-  textures_list: [{
-      name: 'Dry',
-      id: 'Dry'
-    },
-    {
-      name: 'Mushy',
-      id: 'Mushy'
-    },
-    {
-      name: 'Moist',
-      id: 'Moist'
-    },
-    {
-      name: 'Gooey',
-      id: 'Gooey'
-    },
-    {
-      name: 'Greasy',
-      id: 'Greasy'
-    },
-    {
-      name: 'Oily',
-      id: 'Oily'
-    },
-    {
-      name: 'Crumbly',
-      id: 'Crumbly'
-    },
-    {
-      name: 'Creamy',
-      id: 'Creamy'
-    },
-  ],
-});
-
-Template.textures_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('textures_tags', template);
-  }
-});
-
-Template.vegetables_list.helpers({
-  vegetables_list: [{
-      name: 'Beans',
-      id: 'Beans'
-    },
-    {
-      name: 'Flowers & flower buds',
-      id: 'Flowers_buds'
-    },
-    {
-      name: 'Fruits',
-      id: 'Fruits'
-    },
-    {
-      name: 'Grains',
-      id: 'Grains'
-    },
-    {
-      name: 'Herbs',
-      id: 'Herbs'
-    },
-    {
-      name: 'Melons',
-      id: 'Melons'
-    },
-    {
-      name: 'Root vegetables',
-      id: 'Roots'
-    },
-    {
-      name: 'Salad leaf vegetables',
-      id: 'Salad_leaves'
-    },
-    {
-      name: 'Squashes',
-      id: 'Squashes'
-    },
-  ],
-});
-
-Template.vegetables_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('vegetables_tags', template);
-  }
-});
-
-Template.condiments_list.helpers({
-  condiments_list: [{
-      name: 'Butter',
-      id: 'Butter'
-    },
-    {
-      name: 'Cheese',
-      id: 'Cheese'
-    },
-    {
-      name: 'Cream',
-      id: 'Cream'
-    },
-    {
-      name: 'Dried food',
-      id: 'Dried_food'
-    },
-    {
-      name: 'Dried fruits',
-      id: 'Dried_fruits'
-    },
-    {
-      name: 'Dried seafood',
-      id: 'Dried_seafood'
-    },
-    {
-      name: 'Dried vegetables',
-      id: 'Dried_vegetables'
-    },
-    {
-      name: 'Dry herbs',
-      id: 'Dry_herbs'
-    },
-    {
-      name: 'Flour',
-      id: 'Flour'
-    },
-    {
-      name: 'Jam',
-      id: 'Jam'
-    },
-    {
-      name: 'Oil',
-      id: 'Oil'
-    },
-    {
-      name: 'Powder',
-      id: 'Powder'
-    },
-    {
-      name: 'Salt',
-      id: 'Salt'
-    },
-    {
-      name: 'Sauce',
-      id: 'Sauce'
-    },
-    {
-      name: 'Sugar',
-      id: 'Sugar'
-    },
-    {
-      name: 'Yoghurt',
-      id: 'Yoghurt'
-    },
-  ],
-});
-
-Template.condiments_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('condiemnts_tags', template);
-  }
-});
-
-Template.serving_temperature_list.helpers({
-  serving_temperature_list: [{
-      name: 'Chill',
-      id: 'Chill'
-    },
-    {
-      name: 'Cold',
-      id: 'Cold'
-    },
-    {
-      name: 'Frozen',
-      id: 'Frozen'
-    },
-    {
-      name: 'Hot',
-      id: 'Hot'
-    },
-    {
-      name: 'Warm',
-      id: 'Warm'
-    },
-  ],
-});
-
-Template.serving_temperature_list.events({
-  'change .filled-in': function(event, template) {
-    get_checkboxes_value('serving_temperature_tags', template);
-  }
+Template.tagging.onRendered(function() {
+  $('#dish_tags').material_chip();
 });
 
 Template.create_dishes_form.onCreated( function(){
@@ -971,8 +439,9 @@ Template.create_dishes_form.events({
     var dish_name = event.target.dish_name.value;
     var dish_cost = event.target.dish_cost.value;
     var dish_selling_price = event.target.dish_selling_price.value;
-    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.trim().length == "") {
-      Materialize.toast("Sorry we can't save your dish. We need to have at least your dish name, dish cost and selling price to save", 6000, 'rounded bp-green');
+    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.trim().length == "" || Session.get('tempImages') == "") {
+      Materialize.toast("Sorry we can't save your dish. We need to have at least your dish images, dish name, dish cost and selling price to save", 6000, 'rounded bp-green');
+      return false;
     } else {
       var dish_description = event.target.dish_description.value;
       var days = event.target.days.value;
@@ -995,10 +464,12 @@ Template.create_dishes_form.events({
       list_ingredients.forEach(function(doc){
         Ingredients.insert(doc);
       });
+      var dish_tags = $('#dish_tags').material_chip('data')
+      if (!Session.get('imgMeta')) {
+        Session.set('imgMeta', null)
+      }
       Meteor.call('dish.insert', Session.get('image_id'), user_id, kitchen_id, dish_name, dish_description, Session.get('serving_option_tags'), cooking_time, days, hours, mins,
-        dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), Session.get('cuisines_tags'), Session.get('proteins_tags'),
-        Session.get('categories_tags'), Session.get('cooking_methods_tags'), Session.get('tastes_tags'), Session.get('textures_tags'), Session.get('vegetables_tags'),
-        Session.get('condiments_tags'), Session.get('serving_temperature_tags'), new Date(), new Date(), false, false, 
+        dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), dish_tags, new Date(), new Date(), false, false,
         //- adding meta data for different image sizes
         Session.get('imgMeta'),
         function(err){
@@ -1033,6 +504,12 @@ Template.create_dishes_form.events({
     Session.set('image_id',null);
     Session.keys = {}
     Session.set('ingredient_temp', []);
+    Session.set('tempImages', []);
+    Session.set('imgMeta', []);
+    $('#dish_tags').material_chip({
+      data: [],
+    });
+    $('.modal').modal('close');
   },
   'click .update_dish_submit_btn': function(event) {
     event.preventDefault();
@@ -1055,6 +532,8 @@ Template.create_dishes_form.events({
     var dish_selling_price = $('#dish_selling_price').val();
     var dish_profit = dish_selling_price - dish_cost;
 
+    var dish_tags = $('#dish_tags').material_chip('data')
+
     Meteor.call('dish.update',
       Session.get('selected_dishes_id'),
       Session.get('image_id'),
@@ -1072,15 +551,7 @@ Template.create_dishes_form.events({
       dish_profit,
       Session.get('allergy_tags'),
       Session.get('dietary_tags'),
-      Session.get('cuisines_tags'),
-      Session.get('proteins_tags'),
-      Session.get('categories_tags'),
-      Session.get('cooking_methods_tags'),
-      Session.get('tastes_tags'),
-      Session.get('textures_tags'),
-      Session.get('vegetables_tags'),
-      Session.get('condiments_tags'),
-      Session.get('serving_temperature_tags'),
+      dish_tags,
       new Date(),
       function(err) {
         if (err) {
@@ -1101,5 +572,24 @@ Template.create_dishes_form.events({
 
     Session.set('ingredient_temp', []);
     Session.set('selected_dishes_id', null);
+    Session.set('imgMeta', []);
   }
 });
+
+let changeImgName = function(imgPath)
+{
+
+  //- return new name DateTime in milliseconds + unique ID 
+  let currentDate = new Date()
+  var milliseconds = currentDate.getMilliseconds()
+  //- uniqid
+  let uniqid = require('uniqid');
+
+  //- get extension from img path
+  let fileExtension = require('file-extension')
+  let extension = fileExtension(imgPath)
+  console.log('file extension', extension)
+
+  return milliseconds + '_' + uniqid()+ '.' + extension
+
+}

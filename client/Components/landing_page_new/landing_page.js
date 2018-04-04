@@ -15,24 +15,71 @@ import './landing_page.html';
 
 Template.landing_page.onRendered(function () {
   $('body').css('overflow-y', 'hidden');
-  // everything is loaded
-  window.onload = function () {
-    setTimeout(() => {
-      $('body').css('overflow-y', 'scroll');
-      $(document).scrollTop(0);
-      $('.loader-wrapper').fadeOut('slow');
-      $('.slogan').removeClass('notloaded');
 
-      if (!window.detectmob) {
-        // $('.what_happen').hide();
-        // $('.why_is_there').hide();
-        // $('.why_is_this').hide();
-        // $('.how_can_we').hide();
-        // $('.join_us').hide();
-      }
-    }, 1000);
-  }
-})
+  // everything is loaded
+  // window.onload = function () {
+  //   setTimeout(() => {
+  //     $('body').css('overflow-y', 'scroll');
+  //     $(document).scrollTop(0);
+  //     $('.loader-wrapper').fadeOut('slow');
+  //     $('.slogan').removeClass('notloaded');
+
+  //     if (!window.detectmob) {
+  //       // $('.what_happen').hide();
+  //       // $('.why_is_there').hide();
+  //       // $('.why_is_this').hide();
+  //       // $('.how_can_we').hide();
+  //       // $('.join_us').hide();
+  //     }
+
+  //     $('.vet_photo .changing').click(function(){
+  //       alert('asfhsdjfg');
+  //     });
+  //     console.log('loading...');
+  //   }, 1000);
+  // }
+
+  setTimeout(() => {
+    $('body').css('overflow-y', 'scroll');
+    $(document).scrollTop(0);
+    $('.loader-wrapper').fadeOut('slow');
+    $('.slogan').removeClass('notloaded');
+
+    if (!window.detectmob) {
+      // $('.what_happen').hide();
+      // $('.why_is_there').hide();
+      // $('.why_is_this').hide();
+      // $('.how_can_we').hide();
+      // $('.join_us').hide();
+    }
+
+    $('.vet_photo .changing').click(function(){
+      alert('asfhsdjfg');
+    });
+  }, 1000);
+
+  var options = [{
+    selector: '.banana',
+    offset: 200,
+    callback: function(el) {
+      Materialize.fadeInImage($(el));
+    }
+  }, {
+    selector: '.wall',
+    offset: 200,
+    callback: function(el) {
+      Materialize.fadeInImage($(el));
+    }
+    }, {
+    selector: '.green',
+    offset: 200,
+    callback: function(el) {
+      Materialize.fadeInImage($(el));
+    }
+  }];
+
+  Materialize.scrollFire(options);
+});
 
 Template.landing_page.events({
   'click .chef_signup': function() {
@@ -55,15 +102,14 @@ Template.landing_page.helpers({
     }, {
       title: "Why is there so much waste?",
       background_large: '"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing12.jpg"',
-      details: "We all know part of the food waste is created from food consumption.\
-       But, food is also wasted through out the process in the current supply\
+      details: "We all know that part of the food waste is created from food consumption.\
+       But, food is also wasted through out the logistic process in the current supply\
         chain system from farm to table. In this globalised world, food transports\
          much further than ever before, and there are more and more middlemen involved\
-          in the process. Food is wasted when travelling and changing hands. Hence, the\
-           further the distance travel and the more the food is changing hands, food waste\
-            is inevitably increased dramatically.",
+          in the process. The further the distance travel and the more the food is changing hands,\
+            food waste is inevitably increased dramatically.",
     }, {
-      title:"Why is this matter to us?",
+      title:"Why does it matter to us?",
       background_large:'"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing7.jpg"',
       details:"With more food is being wasted, we have to produce more food to\
        sustain. By 2025 we are going to run out of farm lands on Earth to upkeep\
@@ -76,7 +122,7 @@ Template.landing_page.helpers({
             too bad, what you are eating is not as nutritious as you thought.",
     }, {
       title:"How can we change that?",
-      background_large:'"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing5.jpg"',
+      background_large:'"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing13.jpg"',
       details:"Blueplate connects the world of foodies, home chefs and suppliers.\
        Using one platform to easily allow all to communicate, share and access\
         the best food in the most sustainable way, breaking down the traditional\

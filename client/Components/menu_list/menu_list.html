@@ -1,0 +1,50 @@
+<template name = "menu_list">
+  {{> confirm_delete}}
+  {{> confirm_multi_delete}}
+    {{#if subscription}}
+      {{#if user_menus.count}}
+        <table class = "bordered" id="menu_table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Menu Name</th>
+              <th>Selling price</th>
+              <th>Take menu online</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each user_menus}}
+              <tr>
+                <td width="40px">
+                  <input class="menus_checkbox" type="checkbox" id="{{checkbox_id}}" value="{{_id}}"/>
+                  <label for="{{checkbox_id}}"></label>
+                </td>
+                <td>{{menu_name}}</td>
+                <td>{{menu_selling_price}}</td>
+                <td>
+                  {{> online_switch}}
+                </td>
+                <td></td>
+                <td>
+                  <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent" id="edit_menu">
+                    <i class="material-icons grey-text text-lighten-1">edit</i>
+                  </a>
+                  <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent" href="" id="delete_menu">
+                    <i class="material-icons grey-text text-lighten-1">delete</i>
+                  </a>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+        <div class = "section">
+          <h6 class = "center-align">Looks like you haven't created any menus yet, click the 'add' button above to create your very first one!</h6>
+        </div>
+    {{/if}}
+    {{else}}
+      {{> spinner}}
+    {{/if}}
+</template>

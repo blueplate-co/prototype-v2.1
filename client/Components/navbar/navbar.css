@@ -89,3 +89,115 @@ nav {
   left: 80px;
   height: 40px !important;
 }
+
+ul.right .icon {
+  margin: 0px 10px;
+  cursor: pointer;
+}
+
+#cart-number {
+  position: absolute;
+  color: #7f7f7f;
+  top: 7px;
+  margin-left: 7px;
+  font-weight: 500;
+}
+
+.sidebar-container li {
+  display: block;
+  padding: 15px 20px;
+  height: 55px;
+  position: relative;
+  cursor: pointer;
+}
+
+.sidebar-container li img {
+  float: right;
+  width: 24px;
+  height: 21px;
+}
+
+.sidebar-container .divider {
+  width: 100%;
+  height: 2px;
+  background: none;
+  border-top: 1px solid #ccc;
+}
+
+#cart-number-sidebar {
+  position: absolute;
+  right: 27px;
+  margin-top: 1px;
+  color: #838383;
+  font-weight: 400;
+}
+
+.search-page-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 9999;
+  background-color: #fff;
+}
+
+.search-form {
+  margin-top: 80px;
+}
+
+.search-form input {
+  background-repeat: no-repeat!important;
+  background-position: 0px!important;
+  padding-left: 40px!important;
+  box-sizing: border-box!important;
+}
+
+.search-form #PlacesAutocomplete__root {
+  background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg');
+  background-repeat: no-repeat!important;
+  background-position: 0px 10px!important;
+  box-sizing: border-box!important;
+}
+
+.search-form #date {
+  background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/date-icon.svg');
+}
+
+.search-form #time {
+  background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/clock-icon.svg');
+}
+
+.multi-select .selected-options {
+  border: none!important;
+  border-bottom: 1px solid #9e9e9e!important;
+  border-radius: 0px!important;
+  height: 30px!important;
+  background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/service-option-icon.svg');
+  background-repeat: no-repeat;
+}
+
+.multi-select .arrow {
+  float: right!important;
+  width: 15px!important;
+}
+
+.selected-options-badges-list  {
+  margin-top: -20px!important;
+  padding-left: 30px!important;
+}
+
+#search-btn {
+  text-align: center;
+  background-color: #56AACD;
+  color: #fff;
+  -webkit-appearance: none;
+  border: none;
+  padding: 5px 30px;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+#PlacesAutocomplete__autocomplete-container {
+  z-index: 999!important;
+  background-color: #fff;
+  margin-top: -20px;
+}
