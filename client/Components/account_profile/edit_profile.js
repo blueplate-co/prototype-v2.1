@@ -41,12 +41,15 @@ Template.edit_foodie_profile.helpers({
 });
 
 Template.edit_foodie_profile.onRendered(function() {
-  // google places autocomplete
-  var home_address = document.getElementById('edit_home_address');
-  new google.maps.places.Autocomplete(home_address);
 
-  var office_address = document.getElementById('edit_office_address');
-  new google.maps.places.Autocomplete(office_address);
+  setTimeout(() => {
+    // google places autocomplete
+    var home_address = document.getElementById('edit_home_address');
+    new google.maps.places.Autocomplete(home_address);
+
+    var office_address = document.getElementById('edit_office_address');
+    new google.maps.places.Autocomplete(office_address);
+  }, 1000);
 
   //activate dropdown
 
@@ -193,12 +196,11 @@ Template.edit_homecook_profile.helpers({
 
 Template.edit_homecook_profile.onRendered(function() {
 
-
-  // add google places autocomplete
-  var input = document.getElementById('kitchen_address');
-  new google.maps.places.Autocomplete(input); 
-
-
+  setTimeout(() => {
+    // add google places autocomplete
+    var input = document.getElementById('kitchen_address');
+    new google.maps.places.Autocomplete(input); 
+  }, 1000);
 
   /**this.$('# edit_homecook_stepper').activateStepper({
    linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
