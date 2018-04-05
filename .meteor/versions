@@ -118,6 +118,7 @@ ostrio:cookies@2.2.2
 ostrio:files@1.8.2
 ostrio:flow-router-extra@3.3.3
 percolate:momentum@0.7.2
+percolate:synced-cron@1.3.2
 percolate:velocityjs@1.1.0
 promise@0.8.9
 raix:eventemitter@0.1.3

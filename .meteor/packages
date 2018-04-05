@@ -53,3 +53,4 @@ mdg:meteor-apm-agent
 react-meteor-data
 udondan:slick
 erasaur:meteor-lodash
+percolate:synced-cron
