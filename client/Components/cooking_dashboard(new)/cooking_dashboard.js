@@ -2,6 +2,7 @@ import {Bar, Line, Pie} from 'meteor/jmsalash:chartjs';
 import {Moment} from 'meteor/momentjs:moment';
 import {date_time_conversion} from '/imports/functions/date_time_conversion.js';
 
+/**
 Template.dashbaord_sales.onRendered(function(){
 
 var popCanvas = $('#sales_chart');
@@ -71,3 +72,4 @@ var sales_data = [];
 
     });
 })
+**/

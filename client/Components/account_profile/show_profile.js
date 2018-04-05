@@ -12,6 +12,8 @@ import {
 } from '/imports/functions/get_checkboxes_value.js'
 import SelfDishList from '../../imports/ui/self_dish_list.js';
 import SelfMenuList from '../../imports/ui/self_menu_list.js';
+import DishList from '../../imports/ui/dish_list.js';
+import MenuList from '../../imports/ui/menu_list.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -148,13 +150,17 @@ Template.show_homecook_profile.helpers({
 
 
 Template.homecook_profile_dish_list.onRendered(function() {
-
-  render(<SelfDishList />, document.getElementById('dish_list'));
-
+  if (!FlowRouter.getParam('homecook_id')) {
+    render(<SelfDishList />, document.getElementById('dish_list'));
+  } else {
+    render(<DishList />, document.getElementById('dish_list'));
+  }
 })
 
 Template.homecook_profile_menu_list.onRendered(function() {
-
-  render(<SelfMenuList />, document.getElementById('menu_list'));
-
+  if (!FlowRouter.getParam('homecook_id')) {
+    render(<SelfMenuList />, document.getElementById('menu_list'));
+  } else {
+    render(<MenuList />, document.getElementById('menu_list'));
+  }
 })

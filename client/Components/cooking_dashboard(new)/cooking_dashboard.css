@@ -1,0 +1,127 @@
+
+.grid-container {
+  grid-gap: 50px;
+}
+.welcome{
+  font-size:42px;
+  margin-top:120px;
+}
+
+@media only screen and (max-width: 600px) {
+  .welcome {
+    font-size:30px;
+  }
+}
+
+.banner{
+  height: 250px;
+  background-image:url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing4.jpg");
+  width:100%;
+  background-size: 100vw;
+  background-position: center center;
+}
+
+.balance{
+  height:325px;
+  background-color:#56AACD;
+  border: 2px solid #979797;
+}
+.view{
+  height:325px;
+  background-color:#EA6055;
+
+}
+@media only screen and (max-width: 768px) {
+  .balance{
+    height:220px;
+  }
+  .view{
+    height:220px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .view{
+  height:140px;
+}
+}
+
+/*standard*/
+.row{
+  margin-bottom:0px;
+}
+.card-panel{
+  border:solid #979797;
+  border-radius:15px;
+  box-shadow: none;
+
+}
+.col{
+  padding-left: 0px !important;
+}
+
+/*end standard*/
+
+.top-selling-menu{
+  height:300px;
+
+}
+.total-sales{
+  height:300px;
+}
+@media only screen and (min-width: 1200px) {
+  .top-selling-menu{
+  height:460px;
+}
+  .total-sales{
+  height:460px;
+}
+}
+
+.conversion{
+  height:300px;
+
+}
+.order{
+  height:300px;
+
+}
+@media only screen and (min-width: 1200px) {
+  .conversion{
+    height:460px;
+    }
+    .order{
+      height:460px;
+    }
+}
+.demographics{
+  height:300px;
+}
+.help-med-up{
+  height:300px;
+  background-color:orange;
+}
+.help-small{
+  height:220px;
+  background-color:red;
+  border:solid red;
+}
+
+@media only screen and (min-width: 600px) {
+ .help-small{
+   display:none
+ }
+}
+
+@media only screen and (min-width: 1200px) {
+  .demographics{
+    height:420px;
+  }
+  .help-med-up{
+    height:420px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .help-med-up{
+    display:none;
+  }
+}
