@@ -12,8 +12,8 @@ import {
 } from '/imports/functions/get_checkboxes_value.js'
 import SelfDishList from '../../imports/ui/self_dish_list.js';
 import SelfMenuList from '../../imports/ui/self_menu_list.js';
-import DishList from '../../imports/ui/dish_list.js';
-import MenuList from '../../imports/ui/menu_list.js';
+import ShowDishProfile from '../../imports/ui/show_dish_profile.js';
+import ShowMenuProfile from '../../imports/ui/show_menu_profile.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -43,7 +43,7 @@ Template.show_homecook_profile.helpers({
       });
     } else {
       return Kitchen_details.findOne({
-        'user_id': instance._id.get()
+        '_id': instance._id.get()
       });
     }
   },
@@ -56,7 +56,7 @@ Template.show_homecook_profile.helpers({
       }).kitchen_speciality;
     } else {
       var kitchen_speciality = Kitchen_details.findOne({
-        'user_id': instance._id.get()
+        '_id': instance._id.get()
       }).kitchen_speciality;
     }
     return kitchen_speciality
@@ -70,7 +70,7 @@ Template.show_homecook_profile.helpers({
       }).kitchen_tags;
     } else {
       var kitchen_tags = Kitchen_details.findOne({
-        'user_id': instance._id.get()
+        '_id': instance._id.get()
       }).kitchen_tags;
     }
     return kitchen_tags
@@ -83,17 +83,25 @@ Template.show_homecook_profile.helpers({
 
     if (!instance._id.get()) {
       var user_id = Meteor.userId();
+      Dishes.find({ "user_id": user_id }).map(function (doc) {
+        if(doc.like === undefined){
+          dishes_likes += 0
+        }else{
+            dishes_likes += parseInt(doc.like.length);
+        }
+      });
     } else {
-      var user_id = instance._id.get();
-    }
-    Dishes.find({ "user_id": user_id }).map(function (doc) {
-      if(doc.like === undefined){
-        dishes_likes += 0
-      }else{
-          dishes_likes += parseInt(doc.like.length);
-      }
+      var kitchen_id = instance._id.get();
+      Dishes.find({ "kitchen_id": kitchen_id }).map(function (doc) {
+        if(doc.like === undefined){
+          dishes_likes += 0
+        }else{
+            dishes_likes += parseInt(doc.like.length);
+        }
 
-    });
+      });
+    }
+
 
     Menu.find({ "user_id": user_id }).map(function (doc) {
       if(doc.like === undefined){
@@ -153,7 +161,7 @@ Template.homecook_profile_dish_list.onRendered(function() {
   if (!FlowRouter.getParam('homecook_id')) {
     render(<SelfDishList />, document.getElementById('dish_list'));
   } else {
-    render(<DishList />, document.getElementById('dish_list'));
+    render(<ShowDishProfile />, document.getElementById('dish_list'));
   }
 })
 
@@ -161,6 +169,6 @@ Template.homecook_profile_menu_list.onRendered(function() {
   if (!FlowRouter.getParam('homecook_id')) {
     render(<SelfMenuList />, document.getElementById('menu_list'));
   } else {
-    render(<MenuList />, document.getElementById('menu_list'));
+    render(<ShowMenuProfile />, document.getElementById('menu_list'));
   }
 })

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import ChefAvatar from './chef_avatar';
@@ -88,7 +88,11 @@ class MenuList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-            <ChefAvatar userId={item.user_id} />
+            {
+              (!FlowRouter.getParam('homecook_id')) ?
+                <ChefAvatar userId={item.user_id} />
+              : ""
+            }
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -138,11 +142,13 @@ export default withTracker(props => {
   navbar_find_by("Kitchen_details");
   var kitchen_info = Session.get('searched_result');
   var kitchen_id = [];
-  if (kitchen_info) {
-    for (i = 0; i < kitchen_info.length; i++) {
-      kitchen_id[i] = kitchen_info[i]._id;
-    }
-  }
+  if (FlowRouter.getParam('homecook_id')) {
+    kitchen_id[0] = FlowRouter.getParam('homecook_id')
+  } else {
+    if (kitchen_info) {
+      for (i = 0; i < kitchen_info.length; i++) {
+        kitchen_id[i] = kitchen_info[i]._id;
+      }
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),

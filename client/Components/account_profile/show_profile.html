@@ -1,6 +1,6 @@
 <template name='show_foodie_profile'>
   {{#with get_foodie_profile}}
-<div class='container'>
+
     <div class='row l12 m12 s12'>
       <div class='col l3 m12 m12'>
         <h6>profile picture</h6>
@@ -59,14 +59,13 @@
        {{> dietary_preferences}}
      </div>
    </div>
-</div>
    {{/with}}
 </template>
 
 
 <template name='show_homecook_profile'>
   {{#with get_homecook_profile}}
-<div class='container'>
+<div class='profile_container'>
     <div class='row l12 m6 s12'>
       <div class='col l2 m2 s12 valign center'>
           <img id='show_profileImg' src="{{get_homecook_profile.profileImg.medium}}"/>

@@ -11,10 +11,10 @@ import MenuSearchList from './menu_search_list';
 import Modal from './modal';
 
 import ProgressiveImages from './progressive_image';
- 
+
 // App component - represents the whole app
 export default class ShowRoom extends Component {
- 
+
   constructor(props) {
     super(props);
     this.state = {
@@ -106,7 +106,7 @@ export default class ShowRoom extends Component {
             </div>
             <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
             <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
           </div>
         )
         break;
@@ -118,14 +118,14 @@ export default class ShowRoom extends Component {
                 { this.renderCategories() }
               </div>
             </div>
-            <DishList title="Explore dish of today" seemore="see all available dish" popup={ this.handleDishPopup }/>
+            <DishList title="Explore dish of today" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
               <div className="col l12 m12 s12 banner">
                 <h1>everyone's home chef</h1>
               </div>
             </div>
-            <MenuList title="Set menu" seemore="see all available menu" popup={ this.handleMenuPopup }/>
-            <KitchenList title="Kitchen" seemore="see all available chefs"/>
+            <MenuList title="Set menu" seemore="see all" popup={ this.handleMenuPopup }/>
+            <KitchenList title="Kitchen" seemore="see all"/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
