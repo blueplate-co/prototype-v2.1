@@ -46,14 +46,17 @@ Template.profile_banner.onRendered(function() {
       });
     }
 
-
-    if (check_profile_banner.bannerProfileImg) {
-      var banner_url = check_profile_banner.bannerProfileImg.origin;
-      $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
-      $("#banner_upload_button").text("Change Banner Image");
+    if (!check_profile_banner) {
+      return false;
     } else {
-      console.log('hi');
-      $(".profile_banner_area").css("background-color", "#56AACD");
+      if (check_profile_banner.bannerProfileImg) {
+        var banner_url = check_profile_banner.bannerProfileImg.origin;
+        $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
+        $("#banner_upload_button").text("Change Banner Image");
+      } else {
+        console.log('hi');
+        $(".profile_banner_area").css("background-color", "#56AACD");
+      }
     }
   }, 500);
 });
@@ -64,7 +67,7 @@ Template.profile_banner.helpers({
   },
 
   'checkUpload': function() {
-    if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile"|| FlowRouter.getRouteName() === "Create Homecook Profile") {
+    if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
       var checkupload = Kitchen_details.findOne({
         'user_id': Meteor.userId()
       });
@@ -74,10 +77,14 @@ Template.profile_banner.helpers({
       });
     }
 
-    if (checkupload.bannerProfileImg) {
-      return true;
-    } else {
+    if (!checkupload || !Session.get('bannerProfileImg') || Session.get('bannerProfileImg') == null) {
       return false;
+    } else {
+      if (checkupload.bannerProfileImg) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   'load_banner': function() {
@@ -90,12 +97,17 @@ Template.profile_banner.helpers({
         'user_id': Meteor.userId()
       });
     }
-    if (checkuploadBannerprofile.bannerProfileImg) {
-      banner_url = checkuploadBannerprofile.bannerProfileImg.origin;
-      $(".profile_banner_area").css("background-color", "");
-      $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
-    } else {
+
+    if (!checkuploadBannerprofile){
       return false;
+    } else {
+      if (checkuploadBannerprofile.bannerProfileImg) {
+        banner_url = checkuploadBannerprofile.bannerProfileImg.origin;
+        $(".profile_banner_area").css("background-color", "");
+        $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
+      } else {
+        return false;
+      }
     }
   },
 
@@ -197,9 +209,14 @@ Template.upload_profile.helpers({
         'user_id': Meteor.userId()
       });
     }
-
-    if (check_profile_picture.profileImg) {
-      return true;
+    if (!check_profile_picture || !Session.get('profileImg') || Session.get('profileImg') == null) {
+      return false
+    } else {
+      if (check_profile_picture.profileImg) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
 
@@ -213,9 +230,16 @@ Template.upload_profile.helpers({
         'user_id': Meteor.userId()
       });
     }
-    if (profile_id_location.profileImg) {
-      return profile_id_location.profileImg.large;
+    if (!profile_id_location) {
+      return false;
+    } else {
+      if (profile_id_location.profileImg) {
+        return profile_id_location.profileImg.large;
+      } else {
+        return false;
+      }
     }
+
   }
 });
 
@@ -306,12 +330,27 @@ Template.create_foodie_profile.onRendered(function() {
     $('ul.tabs').tabs();
   });
 
+  setTimeout(() => {
+    var input_home_address = document.getElementById('create_home_address');
+    new google.maps.places.Autocomplete(input_home_address);
+
+    var input_office_address = document.getElementById('create_office_address');
+    new google.maps.places.Autocomplete(input_office_address);
+  }, 1000);
+
 });
 
 
 
 
 Template.create_homecook_profile.onRendered(function(){
+
+    // add google places autocomplete
+    setTimeout(() => {
+      var input = document.getElementById('kitchen_address');
+      new google.maps.places.Autocomplete(input);
+    }, 1000);
+
      //activate dropdown
      this.$('#kitchen_address_country').material_select();
      this.$('#kitchen_contact_country').material_select();
