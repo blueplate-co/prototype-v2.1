@@ -9,6 +9,5 @@ import { render } from 'react-dom';
 import ShowRoom from '../../imports/ui/show_room.js';
 
 Template.wish_list.onRendered(function(){
-  // render show room container from REACT
-//   render(<ShowRoom />, document.getElementById('show_room_container'));
+  render(<ShowRoom screen="wish_list"/>, document.getElementById('wish_list_container'));
 });
