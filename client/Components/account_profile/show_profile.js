@@ -10,8 +10,6 @@ import {
 import {
   get_checkboxes_value
 } from '/imports/functions/get_checkboxes_value.js'
-import SelfDishList from '../../imports/ui/self_dish_list.js';
-import SelfMenuList from '../../imports/ui/self_menu_list.js';
 import ShowDishProfile from '../../imports/ui/show_dish_profile.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
@@ -157,9 +155,5 @@ Template.show_homecook_profile.helpers({
 
 
 Template.homecook_profile_dish_list.onRendered(function() {
-  if (!FlowRouter.getParam('homecook_id')) {
-    render(<SelfDishList />, document.getElementById('dish_list'));
-  } else {
-    render(<ShowDishProfile />, document.getElementById('dish_list'));
-  }
+  render(<ShowDishProfile />, document.getElementById('dish_list'));
 })
