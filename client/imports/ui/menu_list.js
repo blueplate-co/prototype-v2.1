@@ -149,6 +149,8 @@ export default withTracker(props => {
       for (i = 0; i < kitchen_info.length; i++) {
         kitchen_id[i] = kitchen_info[i]._id;
       }
+    }
+  }
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),

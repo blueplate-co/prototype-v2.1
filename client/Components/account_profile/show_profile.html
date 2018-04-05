@@ -109,22 +109,19 @@
       </div>
      </div>
      </div>
-
-     <div class='row l12 m12 s12 valign'>
-      <h6>Dish</h6>
      <br>
-     {{>homecook_profile_dish_list}}
+     <div class = 'section'>
+       <div class='row'>
+         <div class = 'l12 m12 s12 valign'>
+           {{> homecook_profile_dish_list}}
+         </div>
+       </div>
      </div>
-     <div class='row l12 m12 s12'>
-       <h6>Menu</h6>
-     </div>
      <br>
-       {{>homecook_profile_menu_list}}
-     <br>
-
+     <div class = 'section'>
      <div class='col l12 m12 s12'>
      <div class='row l12 m12 s12'>
-      <h6>Speciality</h6>
+      <h5>Speciality</h5>
        <br>
        {{#if kitchen_speciality}}
          {{#each kitchen_speciality}}
@@ -134,11 +131,13 @@
           {{/each}}
         {{else}}
           <p>{{get_homecook_profile.chef_name}} hasn't shared his specialities with us.</p>
+          <br>
+          <br>
         {{/if}}
         </div>
         <br>
       <div class='row l12 m12 s12'>
-       <h6>Kitchen tags</h6>
+       <h5>Kitchen tags</h5>
        <br>
        {{#if kitchen_tags}}
          {{#each kitchen_tags}}
@@ -148,30 +147,37 @@
          {{/each}}
        {{else}}
           <p>{{get_homecook_profile.chef_name}} hasn't updated any tags.</p>
+          <br>
+          <br>
        {{/if}}
      </div>
      </div>
+   </div>
      <br>
    <div class='col l12 m12 s12'>
      <div class='row l12 m12 s12'>
-    <h6>House rules</h6>
+    <h5>House rules</h5>
     <div class='text-field'>
       {{#if get_homecook_profile.house_rule}}
         {{get_homecook_profile.house_rule}}
       {{else}}
         <p>There are no house rules written yet.</p>
+        <br>
+        <br>
       {{/if}}
     </div>
   </div>
 
 
   <div class='row l12 m12 s12'>
-    <h6>Cooking experience</h6>
+    <h5>Cooking experience</h5>
     <div class='text-field'>
       {{#if get_homecook_profile.cooking_exp}}
         {{get_homecook_profile.cooking_exp}}
       {{else}}
         <p>{{get_homecook_profile.chef_name}} hasn't shared his cooking experience with us.</p>
+        <br>
+        <br>
       {{/if}}
     </div>
   </div>
@@ -190,14 +196,6 @@
 <template name='homecook_profile_dish_list'>
 
     <div class='row l12 m12 s12 valign' id='dish_list'>
-      <!-- REACJS COMPONENT RENDER AT HERE -->
-    </div>
-
-</template>
-
-<template name='homecook_profile_menu_list'>
-
-    <div class='row l12 m12 s12 valign' id='menu_list'>
       <!-- REACJS COMPONENT RENDER AT HERE -->
     </div>
 

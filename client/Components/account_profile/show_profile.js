@@ -13,7 +13,6 @@ import {
 import SelfDishList from '../../imports/ui/self_dish_list.js';
 import SelfMenuList from '../../imports/ui/self_menu_list.js';
 import ShowDishProfile from '../../imports/ui/show_dish_profile.js';
-import ShowMenuProfile from '../../imports/ui/show_menu_profile.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -162,13 +161,5 @@ Template.homecook_profile_dish_list.onRendered(function() {
     render(<SelfDishList />, document.getElementById('dish_list'));
   } else {
     render(<ShowDishProfile />, document.getElementById('dish_list'));
-  }
-})
-
-Template.homecook_profile_menu_list.onRendered(function() {
-  if (!FlowRouter.getParam('homecook_id')) {
-    render(<SelfMenuList />, document.getElementById('menu_list'));
-  } else {
-    render(<ShowMenuProfile />, document.getElementById('menu_list'));
   }
 })
