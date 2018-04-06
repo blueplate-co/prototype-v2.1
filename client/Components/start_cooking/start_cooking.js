@@ -26,6 +26,10 @@ import {
   date_time_conversion
 } from '/imports/functions/date_time_conversion.js';
 
+Meteor.subscribe('listAllOrdersSeller');
+Meteor.subscribe('listAllOrdersBuyer');
+Meteor.subscribe('listAllTransactions');
+
 Template.start_cooking.helpers({
   'cooking': function() {
     var cooking = Order_record.find({
