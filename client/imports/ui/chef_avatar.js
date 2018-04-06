@@ -13,8 +13,8 @@ export default class ChefAvatar extends Component {
   }
 
   componentWillMount = () => {
-    let avatar = Profile_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0) {
+    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
+    if (avatar.length > 0 && avatar[0].profileImg) {
       this.setState({
         profileImages: avatar[0].profileImg.origin
       })
@@ -22,8 +22,8 @@ export default class ChefAvatar extends Component {
   }
 
   componentWillReceiveProps = () => {
-    let avatar = Profile_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0) {
+    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
+    if (avatar.length > 0 && avatar[0].profileImg) {
       this.setState({
         profileImages: avatar[0].profileImg.origin
       })

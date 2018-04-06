@@ -12,8 +12,12 @@
   #chef_name {
     text-align: left;
   }
-  
+
   #chef_story {
     text-align: left;
   }
+}
+
+.profile_container {
+  margin: 64px;
 }
