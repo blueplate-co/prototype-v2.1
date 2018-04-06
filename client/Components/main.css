@@ -36,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #B1DBBE;
 }
 
+.input-field.col label {
+    left: 0rem !important;
+}
+
 html {
   height: 70vh;
   font-family: 'Montserrat', sans-serif;

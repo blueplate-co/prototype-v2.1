@@ -11,7 +11,7 @@
 
             <div class="row col l12 m6 s6 valign">
               <br>
-              1 - Personal details (Only for internal)
+              <h4>1 - Personal details (Only for internal)</h4>
               <br>
             </div>
               <div class="row col l12 m6 s6 valign">
@@ -217,37 +217,39 @@
 
             <div class="row col l12 m6 s6 valign">
               <br>
-              1 - Kitchen details
+              <h4>Kitchen details</h4>
+              <p>Information about your kitchen. Details, like telephone number and address, are for internal record purpose, and it will only be given out to foodies if you accept their orders.</p>
               <br>
             </div>
               <div class="row col l12 m12 s6 valign">
                 <div class="text-field col l3 m12 s12 valign">
-                  <h6>Kitchen Details</h6>
+                  <h6>Kitchen title</h6>
                 </div>
                 <div class="input-field col l5 m6 s12 valign">
                   <input id="kitchen_name" name="kitchen_name" type="text" value="{{get_homecook_profile.kitchen_name}}">
-                    <label class="active" for="kitchen_name">kitchen name</label>
+                    <label class="active" for="kitchen_name">Kitchen name</label>
                   </div>
 
                   <div class="input-field col l4 m6 s12 valign">
                     <input id="chef_name" name="chef_name" type="text" value="{{get_homecook_profile.chef_name}}">
-                    <label class="active" for="chef_name">chef name</label>
+                    <label class="active" for="chef_name">Chef name</label>
                   </div>
 
 
                 </div>
               <div class="row col l12 valign">
                 <div class="text-field col l3 m12 s6 valign">
-                  <h6>Kitchen Address</h6>
+                  <h6>Kitchen location</h6>
                 </div>
 
                 <div class="input-field col l6 m9 s12 valign">
                   <input id="kitchen_address" name="kitchen_address" type="text" value="{{get_homecook_profile.kitchen_address}}">
-                  <label class="active" for="kitchen_address">kitchen address</label>
+                  <label class="active" for="kitchen_address">Address</label>
                   </div>
                   <div class="input-field col l3 m3 s6 valign">
                     <select class="material_select" id="kitchen_address_country">
                       <option value={{get_homecook_profile.kitchen_address_country}} selected>{{get_homecook_profile.kitchen_address_country}}</option>
+                      <option disabled selected>Select country</option>
                       {{#each country_list}}
                       <option value="{{name}}">{{name}}</option>
                       {{/each}}
@@ -257,8 +259,9 @@
 
                 <div class="row col l12 m12 s12 valign">
                   <div class='text-field col l3 m3 s12 valign'>
-                    <h6>Kitchen Contact</h6>
+                    <h6>Kitchen contact</h6>
                   </div>
+                  <!--
                <div class="input-field col l2 m3 s12 valign">
                  <select class="material_select" id="kitchen_contact_country">
                    <option value={{get_homecook_profile.kitchen_contact_country}} selected>{{get_homecook_profile.kitchen_contact_country}}</option>
@@ -267,9 +270,10 @@
                       {{/each}}
                   </select>
                 </div>
+              -->
                 <div class="input-field col l4 m6 s12 valign">
                   <input id="kitchen_contact" name="kitchen_contact" type="text" value="{{get_homecook_profile.kitchen_contact}}">
-                  <label class="active" for="kitchen_contact">kitchen contact</label>
+                  <label class="active" for="kitchen_contact">telephone no.</label>
                 </div>
                 </div>
 
@@ -281,7 +285,15 @@
                     {{> serving_option}}
                   </div>
                 </div>
-
+                <div class="row col l12 m12 s12 valign">
+                  <div class='text-field col l3 m6 s6 valign'>
+                    <h6>House rules</h6>
+                  </div>
+                  <div class="input-field col l9 m12 s12 valign">
+                    <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500" value='{{get_homecook_profile.house_rule}}'></textarea>
+                    <label class='active' for="house_rule">Any rules that you'd like your guests to follow when they order your food or eat at your place?</label>
+                  </div>
+                </div>
 
     <!--           <div class="step-actions">
                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
@@ -293,24 +305,28 @@
             <div class="step-content"> -->
             <div class="row col l12 m6 s6 valign">
               <br>
-              2 - Your cooking journey
+              <h4>Cooking journey</h4>
+              <p>Share with us and the community about your journey of cooking. Writing an interesting story can help differentiating yourself from others in this marketing palce and attracting more attention from foodies. It is optional, so don't worry if you want to come back to this later.</p>
               <br>
             </div>
-              <div class='text-field col l3 m6 s6 valign'>
-                <h6>Chef Cooking Experience</h6>
-              </div>
-              <div class="input-field col l12 m12 s12 valign">
-                <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500" value='{{get_homecook_profile.cooking_exp}}'></textarea>
-                <label class="active" for="cooking_exp">Let us know your cooking experience! (Optional)</label>
-                </div>
-
+              <div class="row col l12 m12 s12 valign">
                 <div class='text-field col l3 m6 s6 valign'>
-                  <h6>Chef Cooking Story</h6>
+                  <h6>Cooking experience</h6>
                 </div>
-                <div class="input-field col l12 m12 s12 valign">
+                <div class="input-field col l9 m12 s12 valign">
+                  <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500" value='{{get_homecook_profile.cooking_exp}}'></textarea>
+                  <label class="active" for="cooking_exp"></label>
+                </div>
+              </div>
+              <div class="row col l12 m12 s12 valign">
+                <div class='text-field col l3 m6 s6 valign'>
+                  <h6>Cooking story</h6>
+                </div>
+                <div class="input-field col l9 m12 s12 valign">
                   <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500" value='{{get_homecook_profile.cooking_story}}'></textarea>
-                  <label class="active" for="cooking_story">Let us know your story about cooking! (Optional)</label>
-                  </div>
+                  <label class="active" for="cooking_story"></label>
+                </div>
+              </div>
 
 
   <!--             <div class="step-actions">
@@ -325,27 +341,27 @@
             <div class="step-content">-->
             <div class="row col l12 m6 s6 valign">
               <br>
-              3 - Your kitchen characteristics
+              <h4>Kitchen characteristics</h4>
+              <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
               <br>
             </div>
+            <div class="row col l12 m12 s12 valign">
               <div class='text-field col l3 m6 s6 valign'>
-                <h6>Speciality</h6>
+                <h6>Specialities</h6>
               </div>
-              <div id='kitchen_speciality' class="chips chips-initial"></div>
-
-                <div class='text-field col l3 m6 s6 valign'>
-                  <h6>Tags about your place</h6>
-                </div>
+              <div class = 'col l9 m12 s12'>
+                <div id='kitchen_speciality' class="chips chips-initial"></div>
+              </div>
+            </div>
+            <br>
+            <div class="row col l12 m12 s12 valign">
+              <div class='text-field col l3 m6 s6 valign'>
+                <h6>About your place and kitchen</h6>
+              </div>
+              <div class = 'col l9 m12 s12'>
                 <div id='kitchen_tags' class="chips chips-initial"></div>
-
-
-                <div class='text-field col l3 m6 s6 valign'>
-                  <h6>House rules</h6>
-                </div>
-                <div class="input-field col l12 m12 s12 valign">
-                  <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500" value='{{get_homecook_profile.house_rule}}'></textarea>
-                  <label class='active' for="house_rule">Any House rules?</label>
-                  </div>
+              </div>
+            </div>
 
         <!--       <div class="step-actions"> -->
                   <br>
