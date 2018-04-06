@@ -13,6 +13,13 @@ export default class Like extends Component {
     actionLike = (event) => {
         // not excute parent click event
         event.stopPropagation();
+        var profile = Profile_details.findOne({
+            user_id: Meteor.userId()
+        }).foodie_name;
+        if (!profile) {
+            Materialize.toast('Please complete your profile before use this features.', 4000, 'rounded bp-green');
+            return true;
+        }
         if (this.props.type == 'dish') {
             if (this.state.like) {
                 Meteor.call('dish.unlike', this.props.id , (error, result) => {
