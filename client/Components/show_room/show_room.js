@@ -22,18 +22,10 @@ Template.show_room.onRendered(function(){
 Meteor.subscribe('theDishes');
 Meteor.subscribe('theMenu');
 Meteor.subscribe('theIngredients');
-// Meteor.subscribe('theShoppingCart');
-// Meteor.subscribe('theOrderRecordSeller');
-// Meteor.subscribe('theOrderRecordBuyer');
 Meteor.subscribe('theProfileDetail');
 Meteor.subscribe('theKitchenDetail');
 Meteor.subscribe('getDishesLikes');
 Meteor.subscribe('getMenusLikes');
 Meteor.subscribe('getKitchensLikes');
-// Meteor.subscribe('theTransactionSeller');
-// Meteor.subscribe('theTransactionBuyer');
-// Meteor.subscribe('theNotificationsSender');
-// Meteor.subscribe('theNotificationsReceiver');
-// Meteor.subscribe('theImages');
-// Meteor.subscribe('theOrderRatings');
+Meteor.subscribe('listAllNotifications');
 

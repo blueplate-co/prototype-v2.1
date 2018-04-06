@@ -10,7 +10,7 @@ import Like from './like_button';
 import ChefAvatar from './chef_avatar';
 
 // App component - represents the whole app
-export default class DishModal extends Component {
+export default class Modal extends Component {
 
     constructor(props) {
         super(props);
@@ -48,6 +48,16 @@ export default class DishModal extends Component {
 
         if (this.props.dish == {}) {
             return true;
+        }
+
+        if (Session.get('selectedDish').online_status) {
+            this.setState({
+                status: true
+            })
+        } else {
+            this.setState({
+                status: false
+            })
         }
         
         if (Session.get('modal')) {
@@ -404,7 +414,11 @@ export default class DishModal extends Component {
                                 <h1 className="title">{ this.state.item.dish_name }</h1>
                             </div>
                             <div className="col l4 s12 m4 m-visible">
-                                <button className="btn" onClick={ this.order } >Order</button>
+                                {
+                                    (this.state.status == false) ?
+                                        <button disabled className="btn">Offline</button>
+                                    :   <button className="btn" onClick={ this.order } >Order</button>
+                                }
                             </div>
                         </div>
                         <div className="row">
@@ -419,7 +433,11 @@ export default class DishModal extends Component {
                                 <span className="order-count">{ this.state.item.order_count }</span>
                             </div>
                             <div className="col l4 s12 m4 m-hidden">
-                                <button className="btn" onClick={ this.order } >Order</button>
+                                {
+                                    (this.state.status == false) ?
+                                        <button disabled className="btn">Offline</button>
+                                    :   <button className="btn" onClick={ this.order } >Order</button>
+                                }
                             </div>
                         </div>
                         <div className="row">

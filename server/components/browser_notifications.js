@@ -166,3 +166,9 @@ Meteor.methods({
     });
   },
 });
+
+
+Meteor.publish('listAllNotifications', function() {
+  var notifications = Notifications.find({});
+  return notifications;
+})

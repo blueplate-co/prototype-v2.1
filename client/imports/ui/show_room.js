@@ -8,6 +8,8 @@ import MenuAllList from './menu_all_list';
 import KitchenAllList from './kitchen_all_list';
 import DishSearchList from './dish_search_list';
 import MenuSearchList from './menu_search_list';
+import WishDishList from './wish_dish_list';
+import WishMenuList from './wish_menu_list';
 import Modal from './modal';
 
 import ProgressiveImages from './progressive_image';
@@ -106,6 +108,15 @@ export default class ShowRoom extends Component {
             </div>
             <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
             <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
+            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+          </div>
+        )
+        break;
+      case 'wish_list':
+        return (
+          <div className="col xl12 l12 m12 s12">
+            <WishDishList title="All dishes you liked" seemore="" popup={ this.handleDishPopup }/>
+            <WishMenuList title="All menus you liked" seemore="" popup={ this.handleMenuPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
