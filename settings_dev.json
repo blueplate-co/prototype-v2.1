@@ -1,0 +1,10 @@
+{
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://galaxy:blueplate123@cluster0-shard-00-00-oph59.mongodb.net:27017,cluster0-shard-00-01-oph59.mongodb.net:27017,cluster0-shard-00-02-oph59.mongodb.net:27017/meteor?replicaSet=Cluster0-shard-0&ssl=true&authSource=admin",
+      "MONGO_OPLOG_URL": "mongodb://oplog-galaxy:blueplate123@cluster0-shard-00-00-oph59.mongodb.net:27017,cluster0-shard-00-01-oph59.mongodb.net:27017,cluster0-shard-00-02-oph59.mongodb.net:27017/local?replicaSet=Cluster0-shard-0&ssl=true&authSource=admin",
+      "MAIL_URL": "smtps://ACCOUNT%2EADMIN%40BLUEPLATE%2ECO:ilqkgygkgeojntmu@smtp.gmail.com:465",
+      "ROOT_URL": "http://ap-southeast-2.galaxy-ingress.meteor.com"
+    }
+  }
+}
