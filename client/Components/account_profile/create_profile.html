@@ -83,7 +83,8 @@
               <div class="step-content"> -->
                 <div class="row col l12 m6 s6 valign">
                   <br>
-                  1 - Personal details (Only for internal)
+                  <h4>Personal details</h4>
+                  <p>All the personal details are used for internal record purpose only. It will not be disclosed to any other parties.</p>
                   <br>
                 </div>
                 <div class="row col l12 m6 s6 valign">
@@ -120,6 +121,7 @@
                      </div>
                    </div>
                    <div class="row col l12 m12 s12 valign">
+
                   <div class="input-field col l2 m4 s6 offset-l3 valign">
                     <select class="material_select" id="mobile_country">
                       <option value="" disabled selected>Country</option>
@@ -128,6 +130,7 @@
                          {{/each}}
                      </select>
                    </div>
+
                    <div class="input-field col l3 m4 s6 valign">
                      <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
                    </div>
@@ -135,30 +138,31 @@
 
                 <div class="row col l12 m6 s6 valign">
                   <div class="text-field col l3 m6 s6 valign">
-                    <h6>Delivery Address</h6>
+                    <h6>Delivery address</h6>
                   </div>
 
-                  <div class="input-field col l7 m10 s12 valign">
+                  <div class="input-field col l9 m12 s12 valign">
                     <input placeholder="" id="create_home_address" name="create_home_address" type="text">
                     <label for="create_home_address">Home Address</label>
 
                     </div>
-                    <div class="input-field col l2 m2 s6 valign">
+<!--                    <div class="input-field col l2 m2 s6 valign">
                       <select class="material_select" id="home_address_country">
                         <option value="" disabled selected>Country</option>
                         {{#each country_list}}
                         <option value={{name}}>{{name}}</option>
                         {{/each}}
                         </select>
-                      </div>
+                      </div> -->
                   </div>
 
 
                   <div class="row col l12 m6 s6 valign">
-                    <div class="input-field col l7 m10 s12 offset-l3 valign">
+                    <div class="input-field col l9 m12 s12 offset-l3 valign">
                       <input placeholder="" id="create_office_address" name="create_office_address" type="text">
                       <label for="create_office_address">Office Address</label>
                     </div>
+                    <!--
                       <div class="input-field col l2 m2 s6 valign">
                         <select class="material_select" id="office_address_country">
                           <option value="" disabled selected>Country</option>
@@ -166,7 +170,7 @@
                           <option value={{name}}>{{name}}</option>
                           {{/each}}
                           </select>
-                        </div>
+                        </div> -->
                     </div>
             <!--     <div class="step-actions">
                     <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
@@ -179,13 +183,16 @@
 
               <div class="row col l12 m6 s6 valign">
                 <br>
-                2 - Your info/Stroy
+                <h4>Your story</h4>
+                <p>Tell us more about yourself. You can write something about your background, the reason why you join blueplate, etc. Your story will be displayed on your profile that other member would be able to see.</p>
                 <br>
               </div>
+              <div class = "row col l12 m12 s12">
                   <div class="input-field col l12 m12 s12  valign">
                     <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
-                    <label for="about_myself">Write a paragraph about yourself</label>
+                    <label for="about_myself"></label>
                     </div>
+                  </div>
 
       <!--            <div class="step-actions">
                     <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
@@ -199,7 +206,8 @@
 
               <div class="row col l12 m6 s6 valign">
                 <br>
-                3 - Your major allergies and dietary preferences
+                <h4>Allergies and dietary preferences</h4>
+                <p>If you have food allergies and some special diet preference, please let us know. All the special requiremnts will be displayed to the homechefs when you make your order</p>
                 <br>
               </div>
                 <div class ="row l12 valign">
