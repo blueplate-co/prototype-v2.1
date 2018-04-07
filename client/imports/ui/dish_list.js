@@ -40,7 +40,7 @@ class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -129,7 +129,7 @@ export default withTracker(props => {
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 6 }).fetch(),
+        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 8 }).fetch(),
     };
   }
 })(DishList);

@@ -150,20 +150,30 @@
 
 .images-thumbnail {
   width: 100%;
-  height: 115px;
-  background-color: #ccc;
-  border-radius: 15px;
-  position: relative;
-  overflow: hidden;
-}
-
-.kitchen-images-thumbnail {
-  width: 100%;
-  height: 200px;
+  height: 250px;
   background-color: #ccc;
   border-radius: 5px;
   position: relative;
   overflow: hidden;
+}
+
+
+.kitchen-images-thumbnail {
+  width: 100%;
+  height: 300px;
+  background-color: #ccc;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 2000px) {
+  .image-thumbnail {
+    height: 300px;
+  }
+  .kitchen-images-thumbnail {
+    height: 350px;
+  }
 }
 
 .chef-avatar-container {
@@ -180,6 +190,7 @@
 .dish-wrapper {
   position: relative;
   min-height: 240px!important;
+  margin-bottom: 24px;
 }
 
 .kitchen-wrapper {
@@ -189,7 +200,7 @@
 
 .dish-title {
   font-size: 15px;
-  margin: 10px 0px;
+  margin: 10px 0 0 0;
   padding-right: 35%;
   max-height: 35px;
   overflow: hidden;
@@ -207,7 +218,10 @@
 
 .dish-price {
   color: #56AACD;
-  font-size: 18px;
+  font-size: 15px;
+}
+.fa-star {
+  margin: 1px;
 }
 
 .fa-star.checked {
@@ -222,8 +236,7 @@
 
 .order-count {
   color: #56AACD;
-  padding-left: 10px;
-  font-weight: bold;
+  padding-left: 2px;
 }
 
 .placeholder {
