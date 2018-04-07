@@ -189,13 +189,13 @@
 
 .dish-wrapper {
   position: relative;
-  min-height: 240px!important;
+  min-height: 340px!important;
   margin-bottom: 24px;
 }
 
 .kitchen-wrapper {
   position: relative;
-  min-height: 290px!important;
+  min-height: 375px!important;
 }
 
 .dish-title {
@@ -472,19 +472,26 @@
   font-weight: bold;
 }
 
-.banner {
-  height: 215px;
-  background-color: #ccc;
+.showroom_banner {
+  height: 350px;
+  vertical-align: baseline;
+  background-color: #B1DBBE;
   border-radius: 15px;
   color: white;
   overflow: hidden;
-  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/food3.jpg');
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/908_jfpm9gep.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  padding: 25px;
+  padding: 85px 35px !important;
   padding: 0 0.75rem;
   display: inline-block;
+}
+
+.banner_logo {
+  position: relative;
+  top: 50px;
+  right: 1px;
 }
 
 .banner h1 {

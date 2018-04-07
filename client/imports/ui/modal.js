@@ -50,16 +50,18 @@ export default class Modal extends Component {
             return true;
         }
 
-        if (Session.get('selectedDish').online_status) {
-            this.setState({
-                status: true
-            })
-        } else {
-            this.setState({
-                status: false
-            })
+        if (Session.get('selectedDish')) {
+          if (Session.get('selectedDish').online_status) {
+              this.setState({
+                  status: true
+              })
+          } else {
+              this.setState({
+                  status: false
+              })
+          }
         }
-        
+
         if (Session.get('modal')) {
             if (Session.get('selectedItem') == 'dish') {
                 this.setState({
@@ -330,11 +332,11 @@ export default class Modal extends Component {
             var menu_details = Menu.findOne({"_id":this.state.item._id});
             var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
             var foodie_id = Meteor.userId();
-        
+
             if (typeof foodie_details == 'undefined' || foodie_details.foodie_name == '') {
               Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
             }
-        
+
             var homecook_id = menu_details.user_id;
             var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
             var foodie_name = foodie_details.foodie_name;
@@ -349,14 +351,14 @@ export default class Modal extends Component {
                 Materialize.toast('Oops! Your quantities must not less than minium order of this menu. Please set at least ' + quantity + ' item.', 'rounded bp-green');
                 return true;
             }
-        
-        
+
+
             var serving_option = Session.get('method')
             var address = Session.get('address')
             //check if the dish has been put in shopping check_shopping_cart
             var order = Shopping_cart.findOne({"product_id":this._id, 'buyer_id':foodie_id});
             var total_price_per_dish = 0;
-        
+
             if (order) {
                 var order_id = order._id;
                 quantity = parseInt(order.quantity) + this.state.qty;

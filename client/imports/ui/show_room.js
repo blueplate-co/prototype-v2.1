@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import DishList from './dish_list';
 import MenuList from './menu_list';
+import ShowroomBanner from './showroom_banner';
 import KitchenList from './kitchen_list';
 import DishAllList from './dish_all_list';
 import MenuAllList from './menu_all_list';
@@ -132,9 +133,7 @@ export default class ShowRoom extends Component {
             </div>
             <DishList title="Explore dish of today" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
-              <div className="col l12 m12 s12 banner">
-                <h1>everyone's home chef</h1>
-              </div>
+            <ShowroomBanner />
             </div>
             <MenuList title="Set menu" seemore="see all" popup={ this.handleMenuPopup }/>
             <KitchenList title="Kitchen" seemore="see all"/>

@@ -45,16 +45,18 @@ export default class DishCarousel extends Component {
 
   componentWillReceiveProps = () => {
 
-    if (Session.get('selectedMenu').online_status) {
-        this.setState({
-            status: true
-        })
-    } else {
-        this.setState({
-            status: false
-        })
+    if (Session.get('selectedMenu')) {
+      if (Session.get('selectedMenu').online_status) {
+          this.setState({
+              status: true
+          })
+      } else {
+          this.setState({
+              status: false
+          })
+      }
     }
-    
+
     if (Session.get('modal')) {
         if (Session.get('selectedItem') == 'menu') {
             let menu = [];
@@ -69,7 +71,7 @@ export default class DishCarousel extends Component {
                     $('.dish-carousel').slick({
                         slickSetOption: true
                     });
-                    $('.dish-carousel').slick('reinit'); 
+                    $('.dish-carousel').slick('reinit');
                 }, 1000);
                 $('#dish-modal').modal('open');
             })
