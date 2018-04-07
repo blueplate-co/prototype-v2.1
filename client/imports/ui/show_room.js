@@ -62,46 +62,46 @@ export default class ShowRoom extends Component {
     switch (this.state.screen) {
       case 'all_dish':
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }
               </div>
             </div>
-            <DishAllList title="All dishes around you" seemore="" popup={ this.handleDishPopup }/>
+            <DishAllList title="All dishes" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
         break;
       case 'all_menu':
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }
               </div>
             </div>
-            <MenuAllList title="All menus around you" seemore="" popup={ this.handleDishPopup }/>
+            <MenuAllList title="All menus" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
         break;
       case 'all_kitchen':
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }
               </div>
             </div>
-            <KitchenAllList title="All kitchens around you" seemore="" popup={ this.handleDishPopup }/>
+            <KitchenAllList title="All kitchens" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
         break;
       case 'search':
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }
@@ -115,7 +115,7 @@ export default class ShowRoom extends Component {
         break;
       case 'wish_list':
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <WishDishList title="All dishes you liked" seemore="" popup={ this.handleDishPopup }/>
             <WishMenuList title="All menus you liked" seemore="" popup={ this.handleMenuPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
@@ -124,7 +124,7 @@ export default class ShowRoom extends Component {
         break;
       default:
         return (
-          <div className="col xl12 l12 m12 s12">
+          <div>
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }

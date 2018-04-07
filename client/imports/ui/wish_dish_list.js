@@ -71,7 +71,7 @@ class WishDishList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding'>
+      <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
@@ -83,14 +83,16 @@ class WishDishList extends Component {
         </div>
 
         {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
+        <div className = "section">
+          <div className="row">
+            {
+              (this.props.listLoading)
+              ?
+                <span>...loading</span>
+              :
+                this.renderList()
+            }
+          </div>
         </div>
       </div>
     );

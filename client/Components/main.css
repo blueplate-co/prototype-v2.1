@@ -7,6 +7,10 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0.87;
 }
 
+input[type='text'], input[type='number'], textarea {
+  font-size: 16px;
+}
+
 .render_component{
   margin-top: 65px;
 }
