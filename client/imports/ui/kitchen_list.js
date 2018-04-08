@@ -23,6 +23,7 @@ class KitchenList extends Component {
 
   handleClick = (item) => {
     // this.props.popup(item);
+    Meteor.call('kitchen.view', item._id);
     var link = "/kitchen/" + item._id + "/"
     FlowRouter.go(link)
   }
@@ -76,9 +77,9 @@ class KitchenList extends Component {
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
-            <h5>{ this.props.title }</h5>
+            <h4>{ this.props.title }</h4>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
+          <div className="col s6 m6 l6 text-right no-padding seeall">
             <a href="/see_all/kitchen" >{ this.props.seemore }</a>
           </div>
         </div>

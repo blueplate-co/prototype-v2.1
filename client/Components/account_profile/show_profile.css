@@ -19,5 +19,11 @@
 }
 
 .profile_container {
-  margin: 64px;
+  margin: 0 64px;
+}
+
+@media (max-width: 869px) {
+  .profile_container {
+    margin: 0 12px 0 12px;
+  }
 }
