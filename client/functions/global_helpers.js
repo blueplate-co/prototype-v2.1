@@ -11,6 +11,9 @@ Markers = new Mongo.Collection('markers');
 Transactions = new Mongo.Collection('transactions');
 Notifications = new Mongo.Collection('notifications');
 Order_ratings = new Mongo.Collection('order_ratings');
+DishesViews = new Mongo.Collection('dishes_views');
+MenusViews = new Mongo.Collection('menu_views');
+KitchenViews = new Mongo.Collection('kitchen_views');
 
 Images = new FilesCollection({
   collectionName: 'Images',

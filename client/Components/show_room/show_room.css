@@ -152,7 +152,7 @@
   width: 100%;
   height: 250px;
   background-color: #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
@@ -162,7 +162,7 @@
   width: 100%;
   height: 300px;
   background-color: #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
@@ -193,9 +193,18 @@
   margin-bottom: 24px;
 }
 
+.menu-wrapper {
+  position: relative;
+  min-height: 340px!important;
+  margin-bottom: 24px;
+}
 .kitchen-wrapper {
   position: relative;
   min-height: 375px!important;
+}
+
+.seeall {
+  padding-top: 30px !important;
 }
 
 .dish-title {

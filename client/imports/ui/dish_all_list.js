@@ -22,6 +22,7 @@ class DishAllList extends Component {
   }
 
   handleClick = (item) => {
+    Meteor.call('dish.view', item._id);
     Session.set('selectedDish', item);
     Session.set('selectedItem', 'dish');
     Session.set('modal', true);

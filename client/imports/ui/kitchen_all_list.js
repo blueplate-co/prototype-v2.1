@@ -23,6 +23,7 @@ class KitchenAllList extends Component {
   handleClick = (item) => {
     // this.props.popup(item);
     // Session.set('modal', true);
+    Meteor.call('kitchen.view', item._id);
     var link = "/kitchen/" + item._id + "/"
     FlowRouter.go(link)
   }

@@ -82,7 +82,7 @@ export default class ShowRoom extends Component {
                 { this.renderCategories() }
               </div>
             </div>
-            <MenuAllList title="All menus" seemore="" popup={ this.handleDishPopup }/>
+            <MenuAllList title="All Menus" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
@@ -95,7 +95,7 @@ export default class ShowRoom extends Component {
                 { this.renderCategories() }
               </div>
             </div>
-            <KitchenAllList title="All kitchens" seemore="" popup={ this.handleDishPopup }/>
+            <KitchenAllList title="All Kitchens" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
@@ -131,12 +131,12 @@ export default class ShowRoom extends Component {
                 { this.renderCategories() }
               </div>
             </div>
-            <DishList title="Explore dish of today" seemore="see all" popup={ this.handleDishPopup }/>
+            <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
             <ShowroomBanner />
             </div>
-            <MenuList title="Set menu" seemore="see all" popup={ this.handleMenuPopup }/>
-            <KitchenList title="Kitchen" seemore="see all"/>
+            <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
+            <KitchenList title="Kitchens" seemore="see all"/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
