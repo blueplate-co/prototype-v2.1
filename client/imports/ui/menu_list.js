@@ -89,11 +89,6 @@ class MenuList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-            {
-              (!FlowRouter.getParam('homecook_id')) ?
-                <ChefAvatar userId={item.user_id} />
-              : ""
-            }
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -116,7 +111,7 @@ class MenuList extends Component {
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
-            <h4>{ this.props.title }</h4>
+            <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding seeall">
             <a href="/see_all/menu" >{ this.props.seemore }</a>

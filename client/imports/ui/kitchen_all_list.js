@@ -53,7 +53,7 @@ class KitchenAllList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.kitchen_name }</h5>
-            <ChefAvatar userId={item.user_id} />
+
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
