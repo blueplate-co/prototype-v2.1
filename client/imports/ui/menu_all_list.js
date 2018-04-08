@@ -80,7 +80,7 @@ class MenuAllList extends Component {
     return this.props.menus.map((item, index) => {
       return (
         <div key={index} className="col xl3 l3 m4 s6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
-          <div className="images-thumbnail" style={{ height: '150px' }}>
+          <div className="images-thumbnail">
             <Like type="menu" id={item._id} />
             <div className="slider">
               { this.renderListCarousel(index) }
