@@ -28,4 +28,3 @@ Meteor.subscribe('getDishesLikes');
 Meteor.subscribe('getMenusLikes');
 Meteor.subscribe('getKitchensLikes');
 Meteor.subscribe('listAllNotifications');
-
