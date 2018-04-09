@@ -22,6 +22,7 @@ class DishAllList extends Component {
   }
 
   handleClick = (item) => {
+    Meteor.call('dish.view', item._id);
     Session.set('selectedDish', item);
     Session.set('selectedItem', 'dish');
     Session.set('modal', true);
@@ -54,7 +55,7 @@ class DishAllList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.dish_name }</h5>
-            <ChefAvatar userId={item.user_id} />
+
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -73,7 +74,7 @@ class DishAllList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding'>
+      <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
@@ -85,14 +86,16 @@ class DishAllList extends Component {
         </div>
 
         {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
+        <div className = "section">
+          <div className="row">
+            {
+              (this.props.listLoading)
+              ?
+                <span>...loading</span>
+              :
+                this.renderList()
+            }
+          </div>
         </div>
       </div>
     );

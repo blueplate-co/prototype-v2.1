@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import SelfDishList from '../../imports/ui/self_dish_list.js';
 import SelfMenuList from '../../imports/ui/self_menu_list.js';
 import DishList from './dish_list';

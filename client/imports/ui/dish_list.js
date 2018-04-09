@@ -22,6 +22,7 @@ class DishList extends Component {
   }
 
   handleClick = (item) => {
+    Meteor.call('dish.view', item._id);
     Session.set('selectedDish', item);
     Session.set('selectedItem', 'dish');
     Session.set('modal', true);
@@ -40,7 +41,7 @@ class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -54,11 +55,6 @@ class DishList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.dish_name }</h5>
-              {
-                (!FlowRouter.getParam('homecook_id')) ?
-                  <ChefAvatar userId={item.user_id} />
-                : ""
-              }
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -77,26 +73,28 @@ class DishList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding'>
+      <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
+          <div className="col s6 m6 l6 text-right no-padding seeall">
             <a href="/see_all/dish">{ this.props.seemore }</a>
           </div>
         </div>
 
         {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
+        <div className = "section">
+          <div className="row">
+            {
+              (this.props.listLoading)
+              ?
+                <span>...loading</span>
+              :
+                this.renderList()
+            }
+          </div>
         </div>
       </div>
     );
@@ -127,7 +125,7 @@ export default withTracker(props => {
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 6 }).fetch(),
+        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 8 }).fetch(),
     };
   }
 })(DishList);

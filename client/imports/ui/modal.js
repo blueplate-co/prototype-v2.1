@@ -10,7 +10,7 @@ import Like from './like_button';
 import ChefAvatar from './chef_avatar';
 
 // App component - represents the whole app
-export default class DishModal extends Component {
+export default class Modal extends Component {
 
     constructor(props) {
         super(props);
@@ -49,7 +49,19 @@ export default class DishModal extends Component {
         if (this.props.dish == {}) {
             return true;
         }
-        
+
+        if (Session.get('selectedDish')) {
+          if (Session.get('selectedDish').online_status) {
+              this.setState({
+                  status: true
+              })
+          } else {
+              this.setState({
+                  status: false
+              })
+          }
+        }
+
         if (Session.get('modal')) {
             if (Session.get('selectedItem') == 'dish') {
                 this.setState({
@@ -320,11 +332,11 @@ export default class DishModal extends Component {
             var menu_details = Menu.findOne({"_id":this.state.item._id});
             var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
             var foodie_id = Meteor.userId();
-        
+
             if (typeof foodie_details == 'undefined' || foodie_details.foodie_name == '') {
               Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
             }
-        
+
             var homecook_id = menu_details.user_id;
             var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
             var foodie_name = foodie_details.foodie_name;
@@ -339,14 +351,14 @@ export default class DishModal extends Component {
                 Materialize.toast('Oops! Your quantities must not less than minium order of this menu. Please set at least ' + quantity + ' item.', 'rounded bp-green');
                 return true;
             }
-        
-        
+
+
             var serving_option = Session.get('method')
             var address = Session.get('address')
             //check if the dish has been put in shopping check_shopping_cart
             var order = Shopping_cart.findOne({"product_id":this._id, 'buyer_id':foodie_id});
             var total_price_per_dish = 0;
-        
+
             if (order) {
                 var order_id = order._id;
                 quantity = parseInt(order.quantity) + this.state.qty;
@@ -404,7 +416,11 @@ export default class DishModal extends Component {
                                 <h1 className="title">{ this.state.item.dish_name }</h1>
                             </div>
                             <div className="col l4 s12 m4 m-visible">
-                                <button className="btn" onClick={ this.order } >Order</button>
+                                {
+                                    (this.state.status == false) ?
+                                        <button disabled className="btn">Offline</button>
+                                    :   <button className="btn" onClick={ this.order } >Order</button>
+                                }
                             </div>
                         </div>
                         <div className="row">
@@ -419,7 +435,11 @@ export default class DishModal extends Component {
                                 <span className="order-count">{ this.state.item.order_count }</span>
                             </div>
                             <div className="col l4 s12 m4 m-hidden">
-                                <button className="btn" onClick={ this.order } >Order</button>
+                                {
+                                    (this.state.status == false) ?
+                                        <button disabled className="btn">Offline</button>
+                                    :   <button className="btn" onClick={ this.order } >Order</button>
+                                }
                             </div>
                         </div>
                         <div className="row">

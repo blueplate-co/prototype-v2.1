@@ -22,6 +22,7 @@ class MenuSearchList extends Component {
   }
 
   handleClick = (item) => {
+    Meteor.call('menu.view', item._id);
     Session.set('selectedMenu', item);
     Session.set('selectedItem', 'menu');
     Session.set('modal', true);
@@ -88,7 +89,7 @@ class MenuSearchList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-            <ChefAvatar userId={item.user_id} />
+            "" 
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -107,7 +108,7 @@ class MenuSearchList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding'>
+      <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
@@ -119,14 +120,16 @@ class MenuSearchList extends Component {
         </div>
 
         {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
+        <div clasasName = "section">
+          <div className="row">
+            {
+              (this.props.listLoading)
+              ?
+                <span>...loading</span>
+              :
+                this.renderList()
+            }
+          </div>
         </div>
       </div>
     );

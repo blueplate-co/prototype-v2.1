@@ -11,7 +11,7 @@ import Like from './like_button';
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
-class MenuAllList extends Component {
+class WishMenuList extends Component {
 
   constructor(props) {
     super(props);
@@ -22,7 +22,6 @@ class MenuAllList extends Component {
   }
 
   handleClick = (item) => {
-    Meteor.call('menu.view', item._id);
     Session.set('selectedMenu', item);
     Session.set('selectedItem', 'menu');
     Session.set('modal', true);
@@ -81,7 +80,7 @@ class MenuAllList extends Component {
     return this.props.menus.map((item, index) => {
       return (
         <div key={index} className="col xl3 l3 m4 s6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
-          <div className="images-thumbnail">
+          <div className="images-thumbnail" style={{ height: '150px' }}>
             <Like type="menu" id={item._id} />
             <div className="slider">
               { this.renderListCarousel(index) }
@@ -89,7 +88,7 @@ class MenuAllList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-
+             
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -115,7 +114,7 @@ class MenuAllList extends Component {
             <h5>{ this.props.title }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+            <a href="/see_all/menu" >{ this.props.seemore }</a>
           </div>
         </div>
 
@@ -138,17 +137,21 @@ class MenuAllList extends Component {
 
 export default withTracker(props => {
   const handle = Meteor.subscribe('theMenu');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (kitchen_info) {
-    for (i = 0; i < kitchen_info.length; i++) {
-      kitchen_id[i] = kitchen_info[i]._id;
+  var result = [];
+  var menuID = [];
+  var menuLike = MenusLikes.find({ user_id: Meteor.userId() }).fetch();
+  for (var i = 0; i < menuLike.length; i++) {
+    menuID.push(menuLike[i].menu_id);
+  }
+  for (i = 0 ; i < menuID.length; i++) {
+    var temp = Menu.find({ _id: menuID[i], deleted: false }).fetch();
+    if (temp.length > 0) {
+      result.push(temp[0]);
     }
   }
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }).fetch(),
+      menus: result,
   };
-})(MenuAllList);
+})(WishMenuList);

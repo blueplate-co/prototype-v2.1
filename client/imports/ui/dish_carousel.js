@@ -44,7 +44,19 @@ export default class DishCarousel extends Component {
   }
 
   componentWillReceiveProps = () => {
-    
+
+    if (Session.get('selectedMenu')) {
+      if (Session.get('selectedMenu').online_status) {
+          this.setState({
+              status: true
+          })
+      } else {
+          this.setState({
+              status: false
+          })
+      }
+    }
+
     if (Session.get('modal')) {
         if (Session.get('selectedItem') == 'menu') {
             let menu = [];
@@ -59,7 +71,7 @@ export default class DishCarousel extends Component {
                     $('.dish-carousel').slick({
                         slickSetOption: true
                     });
-                    $('.dish-carousel').slick('reinit'); 
+                    $('.dish-carousel').slick('reinit');
                 }, 1000);
                 $('#dish-modal').modal('open');
             })
@@ -265,7 +277,11 @@ export default class DishCarousel extends Component {
                             <h1 className="title">{ Session.get('selectedMenu').menu_name }</h1>
                         </div>
                         <div className="col l4 s12 m4 m-visible">
-                            <button className="btn" onClick={ this.props.order } >Order</button>
+                            {
+                                (this.state.status == false) ?
+                                    <button disabled className="btn">Offline</button>
+                                :   <button className="btn" onClick={ this.order } >Order</button>
+                            }
                         </div>
                     </div>
                     <div className="row">
@@ -280,7 +296,11 @@ export default class DishCarousel extends Component {
                             <span className="order-count">{ item.order_count }</span>
                         </div>
                         <div className="col l4 s4 m4 m-hidden">
-                            <button className="btn" onClick={ this.props.order }>Order</button>
+                            {
+                                (this.state.status == false) ?
+                                    <button disabled className="btn">Offline</button>
+                                :   <button className="btn" onClick={ this.order } >Order</button>
+                            }
                         </div>
                     </div>
                     <div className="row">

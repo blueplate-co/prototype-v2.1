@@ -7,6 +7,10 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0.87;
 }
 
+input[type='text'], input[type='number'], textarea {
+  font-size: 16px !important;
+}
+
 .render_component{
   margin-top: 65px;
 }
@@ -34,6 +38,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .bp-green:hover {
   background-color: #B1DBBE;
+}
+
+.input-field.col label {
+    left: 0rem !important;
 }
 
 html {

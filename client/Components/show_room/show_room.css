@@ -17,6 +17,9 @@
 }
 
 @media (max-width: 869px) {
+  .show_room_wrapper {
+    padding: 0 12px 0 12px;
+  }
   #show_room {
     width: 290px;
     display: inline-block;
@@ -32,7 +35,7 @@
   .show_room_wrapper {
     width: 100vw;
     height: auto;
-    padding: 0 24px 0 24px;
+    padding: 0 64px 0 64px;
   }
   #show_room {
     width: 592px;
@@ -50,7 +53,7 @@
   .show_room_wrapper {
     width: 100vw;
     height: auto;
-    padding: 0 24px 0 24px;
+    padding: 0 64px 0 64px;
   }
   #show_room {
     width: 930px;
@@ -69,7 +72,7 @@
   .show_room_wrapper {
     width: 100vw;
     height: auto;
-    padding: 0 24px 0 24px;
+    padding: 0 64px 0 64px;
   }
   #show_room {
     width: 1232px;
@@ -86,7 +89,7 @@
   .show_room_wrapper {
     width: 100vw;
     height: auto;
-    padding: 0 24px 0 24px;
+    padding: 0 64px 0 64px;
   }
   #show_room {
     width: 1534px;
@@ -141,22 +144,36 @@
   margin: 0px;
 }
 
+.list-container {
+  margin: 24px 0px;
+}
+
 .images-thumbnail {
   width: 100%;
-  height: 115px;
+  height: 250px;
   background-color: #ccc;
-  border-radius: 15px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
 
+
 .kitchen-images-thumbnail {
   width: 100%;
-  height: 200px;
+  height: 300px;
   background-color: #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
+}
+
+@media (min-width: 2000px) {
+  .image-thumbnail {
+    height: 300px;
+  }
+  .kitchen-images-thumbnail {
+    height: 350px;
+  }
 }
 
 .chef-avatar-container {
@@ -172,17 +189,27 @@
 
 .dish-wrapper {
   position: relative;
-  min-height: 240px!important;
+  min-height: 340px!important;
+  margin-bottom: 24px;
 }
 
+.menu-wrapper {
+  position: relative;
+  min-height: 340px!important;
+  margin-bottom: 24px;
+}
 .kitchen-wrapper {
   position: relative;
-  min-height: 290px!important;
+  min-height: 375px!important;
+}
+
+.seeall {
+  /*padding-top: 30px !important; */
 }
 
 .dish-title {
   font-size: 15px;
-  margin: 10px 0px;
+  margin: 10px 0 0 0;
   padding-right: 35%;
   max-height: 35px;
   overflow: hidden;
@@ -200,7 +227,10 @@
 
 .dish-price {
   color: #56AACD;
-  font-size: 18px;
+  font-size: 15px;
+}
+.fa-star {
+  margin: 1px;
 }
 
 .fa-star.checked {
@@ -215,8 +245,7 @@
 
 .order-count {
   color: #56AACD;
-  padding-left: 10px;
-  font-weight: bold;
+  padding-left: 2px;
 }
 
 .placeholder {
@@ -452,26 +481,33 @@
   font-weight: bold;
 }
 
-.banner {
-  height: 215px;
-  background-color: #ccc;
+.showroom_banner {
+  height: 350px;
+  vertical-align: baseline;
+  background-color: #B1DBBE;
   border-radius: 15px;
   color: white;
   overflow: hidden;
-  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/food3.jpg');
+  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/908_jfpm9gep.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  padding: 25px;
+  padding: 85px 35px !important;
   padding: 0 0.75rem;
   display: inline-block;
+}
+
+.banner_logo {
+  position: relative;
+  top: 50px;
+  right: 1px;
 }
 
 .banner h1 {
   font-size: 2.5rem;
   color: #fff;
   vertical-align: middle;
-  margin-top: 65px; 
+  margin-top: 65px;
   margin-left: 3%;
 }
 
@@ -649,7 +685,7 @@
 .rc-time-picker input {
   width: 100%;
   background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/clock-icon.svg);
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
 }
 
 .like-container {

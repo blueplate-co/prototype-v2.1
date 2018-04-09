@@ -22,7 +22,10 @@ class KitchenAllList extends Component {
 
   handleClick = (item) => {
     // this.props.popup(item);
-    Session.set('modal', true);
+    // Session.set('modal', true);
+    Meteor.call('kitchen.view', item._id);
+    var link = "/kitchen/" + item._id + "/"
+    FlowRouter.go(link)
   }
 
   renderList = () => {
@@ -50,7 +53,7 @@ class KitchenAllList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.kitchen_name }</h5>
-            <ChefAvatar userId={item.user_id} />
+
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -66,7 +69,7 @@ class KitchenAllList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding'>
+      <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
           <div className="col s6 m6 l6 no-padding">
@@ -78,14 +81,16 @@ class KitchenAllList extends Component {
         </div>
 
         {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
+        <div className = "section">
+          <div className="row">
+            {
+              (this.props.listLoading)
+              ?
+                <span>...loading</span>
+              :
+                this.renderList()
+            }
+          </div>
         </div>
       </div>
     );

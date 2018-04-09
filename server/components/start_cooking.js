@@ -175,8 +175,17 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('getListDishes', function() {
-  var current_user = Meteor.userId();
-  var user_dishes = Dishes.find({"user_id": current_user, "deleted": false});
-  return user_dishes;
+Meteor.publish('listAllOrdersSeller', function() {
+  var sellerOrders =  Order_record.find({ 'seller_id': Meteor.userId() });
+  return sellerOrders;
 });
+
+Meteor.publish('listAllOrdersBuyer', function() {
+  var buyerOrders =  Order_record.find({ 'buyer_id': Meteor.userId() });
+  return buyerOrders;
+});
+
+Meteor.publish('listAllTransactions', function() {
+  var transactions = Transactions.find({});
+  return transactions;
+})
