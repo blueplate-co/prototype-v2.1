@@ -46,7 +46,7 @@
       </p>
       <p class="range-field col l4 m12 s12">
         Lead time (days):
-        <input type="range" id="lead_time_days_range" min="0" max="15" />
+        <input type="range" id="lead_time_days_range" min="0" max="30" />
       </p>
     </div>
     <div class = "row">
@@ -58,7 +58,7 @@
     <div class = "row">
       <div class = "col l12 m12 s12">
         <h6>Tags:</h6>
-        <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+        <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
         <div class = "chips" id="menu_tags"></div>
       </div>
     </div>
@@ -158,7 +158,7 @@
                 </p>
                 <p class="range-field col l4 m12 s12">
                   Lead time (days):
-                  <input type="range" id="edit_lead_time_days_range" min="0" max="15" value="{{lead_days}}"/>
+                  <input type="range" id="edit_lead_time_days_range" min="0" max="30" value="{{lead_days}}"/>
                 </p>
               </div>
               <div class = "row">
@@ -216,6 +216,6 @@
 <template name = "menu_tags">
   <h6>Tags:</h6>
   {{get_tags}}
-  <p>Type in some keywords then press 'enter' to create tags. These keywords would be used to match with the keywords from foodies when they search for food, so please keep them as relevant as possible.</p>
+  <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
   <div class = "chips" id="edit_menu_tags"></div>
 </template>
