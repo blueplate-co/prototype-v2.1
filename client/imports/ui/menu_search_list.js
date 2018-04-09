@@ -22,7 +22,7 @@ class MenuSearchList extends Component {
   }
 
   handleClick = (item) => {
-    Meteor.call('menu.view', item._id);
+    Meteor.call('menu.view', item._id, item.user_id);;
     Session.set('selectedMenu', item);
     Session.set('selectedItem', 'menu');
     Session.set('modal', true);
