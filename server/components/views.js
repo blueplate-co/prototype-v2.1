@@ -32,9 +32,7 @@ Meteor.methods({
     })
   },
   'total.views' () {
-    var total_views =
-      DishesViews.find({seller_id: Meteor.userId()).count() + MenusViews.find({seller_id: Meteor.userId()}).count() + KitchenViews.find({seller_id: Meteor.userId()}).count();
-    return total_views;
+    return DishesViews.find({seller_id: Meteor.userId()}).count() + MenusViews.find({seller_id: Meteor.userId()}).count() + KitchenViews.find({seller_id: Meteor.userId()}).count();
   }
 })
 
