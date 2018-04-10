@@ -121,21 +121,23 @@ class TopNavigation extends Component {
         return (
             (localStorage.getItem('userMode') == 'foodie') ?
                 <ul className="sidebar-container">
-
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/main'); }) } }>
                         <span>Search food</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg"/></li>
                     <li className="divider"></li>
+                    {/*
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/shopping_cart'); }) } } >
                         <span>Shopping cart</span>
                         <span id="cart-number-sidebar">{ this.props.shoppingCart.length }</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg"/></li>
                     <li>
                         <span>Notification</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/notification.svg"/></li>
-
+                        */}
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/wish-list'); }) } }>
 
                         <span>Wishlist</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Heart.svg"/></li>
+                    {/*
                     <li>
                         <span>Order Status</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/OrderStatus.svg"/></li>
+                        */}
                     <li className="divider"></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }); localStorage.setItem('userMode', 'chef'); setTimeout(() => {
                         this.setState({ sidebarOpen: true });
@@ -151,7 +153,6 @@ class TopNavigation extends Component {
                 </ul>
             :
                 <ul className="sidebar-container">
-
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/main'); }) } }>
                         <span>Search food</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg"/></li>
                     <li className="divider"></li>
@@ -168,8 +169,10 @@ class TopNavigation extends Component {
                         <span>Manage dishes</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg"/></li>
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/menus'); }) } }>
                         <span>Manage menus</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manageManage.svg"/></li>
+                    {/*
                     <li onClick={ () => { this.setState({ sidebarOpen: false }, () => { FlowRouter.go('/cooking/orders'); }) } }>
                         <span>Manage orders</span><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg"/></li>
+                        */}
                     <li className="divider"></li>
                     <li>
                         <span>Help</span>
@@ -422,6 +425,7 @@ class TopNavigation extends Component {
                                     <li className="icon" onClick={ () => this.openProfile() } >
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
                                     </li>
+                                    {/*
                                     <li onClick={() => FlowRouter.go('/shopping_cart')} className="icon" id="cart-icon">
                                         <span id="cart-number">{ this.props.shoppingCart.length }</span>
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
@@ -429,6 +433,7 @@ class TopNavigation extends Component {
                                     <li onClick={ () => this.searching() } className="icon" id="search-icon">
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
                                     </li>
+                                    */}
                                 </ul>
                             </div>
                         </nav>
