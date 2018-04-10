@@ -136,13 +136,13 @@ Template.landing_page.helpers({
        yourself as our partner in the system.",
     }, {
       number: "2",
-      title: "Get verified!",
-      details: "For food safety, we might need you to profile some proof of your\
-       delicious dishes",
-    }, {
-      number: "3",
       title: "Start setting up",
       details: "Once you have signed up, start writing up your specials, customizing your chef page and await your order to flow in!",
+    }, {
+      number: "3",
+      title: "Get verified!",
+      details: "In the mean time, our Community Support team will reach out to you. For safety purpose, we might need you to profile some proof of your\
+       delicious dishes",
     }
   ],
 })
