@@ -14,7 +14,7 @@ class Payment extends Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidMount() {
         if (!Session.get('product')) {
             Materialize.toast('Please complete your order before.', 'rounded bp-green');
             FlowRouter.go('/shopping_cart');

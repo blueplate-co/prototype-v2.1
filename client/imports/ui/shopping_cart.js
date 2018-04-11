@@ -88,8 +88,13 @@ class ShoppingCart extends Component {
                     $("#label_" + seller_id).text('Your dishes will be delivered to...');
                     $("#address_" + seller_id).removeAttr('disabled');
                 } else {
+                    var kitchenAddress = Kitchen_details.findOne({ "user_id": seller_id }).kitchen_address;
+                    globalCart[i].address = kitchenAddress;
+                    var commaIndex = kitchenAddress.indexOf(",");
+                    var shortAddress = kitchenAddress.substring(commaIndex + 1, kitchenAddress.length).trim();
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
-                    $("#address_" + seller_id).removeAttr('disabled');
+                    $("#address_" + seller_id).val(shortAddress);
+                    $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
                 }
             }
         }
