@@ -104,3 +104,45 @@ i.remove_button {
   font-weight: bold;
   margin: 20px 0px;
 }
+
+.no-background .rc-time-picker input {
+  background: none!important;
+}
+
+.no-border {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0px!important;
+  -webkit-appearance: none;
+}
+
+.btn.checkout {
+  min-width: 30%;
+  max-width: 50%;
+  background: #fff;
+  box-shadow: none;
+  border: 1px solid #56AACD!important;
+  color: #56AACD!important;
+  margin: 20px 0px;
+}
+
+.btn.checkout:disabled {
+  min-width: 30%;
+  max-width: 50%;
+  background-color: #fff!important;
+  box-shadow: none;
+  border: 1px solid #d0e7f1!important;
+  color: #d0e7f1!important;
+  margin: 20px 0px;
+}
+
+@media only screen and (max-width: 600px) {
+  .detail-product .detail-title {
+    font-size: 16px;
+    display: block;
+    padding-top: 7px;
+    padding-left: 20px;
+    font-weight: bold;
+    margin-top: 0px;
+  }
+}
