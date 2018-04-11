@@ -14,13 +14,13 @@ class Payment extends Component {
         }
     }
 
-    // componentDidUpdate() {
-    //     if (!Session.get('product')) {
-    //         Materialize.toast('Please complete your order before.', 'rounded bp-green');
-    //         FlowRouter.go('/shopping_cart');
-    //         return true;
-    //     }
-    // }
+    componentDidUpdate() {
+        if (!Session.get('product')) {
+            Materialize.toast('Please complete your order before.', 'rounded bp-green');
+            FlowRouter.go('/shopping_cart');
+            return true;
+        }
+    }
 
     choosePayment(payment) {
         if (payment == 'credits') {
