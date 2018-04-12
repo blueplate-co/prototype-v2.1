@@ -11,7 +11,7 @@ Template.cooking_dashboard.onRendered(function(){
 
   // render show room container from REACT
   render(<TotalViews />, document.getElementById('view'));
-
+  
 });
 
 /**
