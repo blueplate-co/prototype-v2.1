@@ -96,9 +96,9 @@ Template.landing_page.helpers({
       title: "What’s happening to our food?",
       background_large: '"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing2.jpg"',
       details: "Currently the world is producing more food than ever but with more food being wasted than consumed.\
-      Around 25% of our food goes to waste, that’s almost quarter of the food we eat!  And, to make matters worse, \
-      the food we do eat has been losing nutrients throughout its farm to fork journey, making it less nutritious\
-       in than the same food that was grown and served in the past.",
+      Around 25% of our food goes to waste, that’s almost one quarter of the food we eat!  And, to make matters worse, \
+      the food we do eat has been losing nutrients throughout its farm to fork journey, making it less nutritious \
+       than the same food that was grown and served in the past.",
     }, {
       title: "Why is there so much waste?",
       background_large: '"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing12.jpg"',
