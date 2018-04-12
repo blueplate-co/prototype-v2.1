@@ -7,7 +7,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0.87;
 }
 
-input[type='text'], input[type='number'], textarea {
+input, textarea {
   font-size: 16px !important;
 }
 

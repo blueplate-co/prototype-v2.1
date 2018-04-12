@@ -38,7 +38,7 @@
         </div>
         <div class = "row">
           <!-- <p>Already a member? <a id="login_redirect">Log in </a> here.</p> -->
-          <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a> and <a href="#">privacy policy</a>.</small></p>
+          <p><small>By submitting your email and password, you have agreed our website <a href="#" onClick="window.open('/terms_of_use', '_blank')">terms of use</a>, <a href="#" onClick="window.open('/terms_conditions', '_blank')">terms and conditions</a> and <a href="#" onClick="window.open('/privacy_policy', '_blank')">privacy policy</a>.</small></p>
         </div>
       </div>
     </div>
@@ -55,6 +55,8 @@
 
 <template name = "verification">
   <p>Thanks for signing up! A verification email has been sent to your email address. Please verify your account by clicking the link in the email.</p>
+  <br>
+  <p>If you don't see our verification email coming in, don't forget to check your junk/spam mailbox.</p>
   <br>
   <p><small>Haven't received our verification email yet? Click <a id="resend_verification" href="#">here</a> to resend.</small></p>
 </template>
