@@ -171,5 +171,5 @@ Template.show_homecook_profile.events({
 
 
 Template.homecook_profile_dish_list.onRendered(function() {
-  render(<ShowDishProfile />, document.getElementById('dish_list'));
+  render(<ShowDishProfile/>, document.getElementById('dish_list'));
 })

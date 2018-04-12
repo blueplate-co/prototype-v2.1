@@ -40,8 +40,8 @@ export default class ShowDishProfile extends Component {
     } else {
       return (
         <div className = "col xl12 l12 m12 s12">
-          <SelfDishList />
-          <SelfMenuList />
+          <SelfDishList title = "Dishes"/>
+          <SelfMenuList title = "Menus"/>
         </div>
       )
     }

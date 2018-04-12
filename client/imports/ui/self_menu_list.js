@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
@@ -81,8 +81,8 @@ class SelfMenuList extends Component {
     }
     return this.props.menus.map((item, index) => {
       return (
-        <div key={index} className="col xl3 l3 m4 s6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
-          <div className="images-thumbnail" style={{ height: '150px' }}>
+        <div key={index} className="col xl3 l4 m6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
+          <div className="images-thumbnail">
             {
 
               (item.user_id !== Meteor.userId()) ?
