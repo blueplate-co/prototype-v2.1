@@ -31,6 +31,17 @@ Template.show_homecook_profile.onCreated(function() {
 })
 
 Template.show_homecook_profile.helpers({
+  'own_profile': function(){
+    var instance = Template.instance()
+    instance._id.set(FlowRouter.getParam("homecook_id"))
+    if (!instance._id.get()){
+      console.log('ture')
+      return true;
+    } else {
+      console.log('false')
+      return false;
+    }
+  },
   'get_homecook_profile': function(template) {
     var instance = Template.instance()
     instance._id.set(FlowRouter.getParam("homecook_id"))
@@ -44,7 +55,6 @@ Template.show_homecook_profile.helpers({
       });
     }
   },
-
   'kitchen_speciality':function(){
     var instance = Template.instance()
     if (!instance._id.get()) {
@@ -151,6 +161,12 @@ Template.show_homecook_profile.helpers({
     });
     return kitchen_tried
   },
+})
+
+Template.show_homecook_profile.events({
+  'click #edit_homecook_profile': function() {
+    FlowRouter.go('/profile/edit_homecook_profile');
+  }
 })
 
 
