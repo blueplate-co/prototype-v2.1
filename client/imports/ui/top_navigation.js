@@ -111,7 +111,7 @@ class TopNavigation extends Component {
 
     checkKitchenProfileExists = () => {
       if (Kitchen_details.findOne({user_id: Meteor.userId()})) {
-        FlowRouter.go('/profile/edit_homecook_profile')
+        FlowRouter.go('/profile/show_homecook_profile')
       } else {
         FlowRouter.go('/profile/create_homecook_profile')
       }

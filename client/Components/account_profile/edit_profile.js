@@ -199,7 +199,7 @@ Template.edit_homecook_profile.onRendered(function() {
   setTimeout(() => {
     // add google places autocomplete
     var input = document.getElementById('kitchen_address');
-    new google.maps.places.Autocomplete(input); 
+    new google.maps.places.Autocomplete(input);
   }, 1000);
 
   /**this.$('# edit_homecook_stepper').activateStepper({
@@ -298,7 +298,7 @@ Template.edit_homecook_profile.events({
           //   navbar: "bp_navbar",
           //   render_component: "show_room"
           // });
-          FlowRouter.go('/cooking/dashboard');
+          FlowRouter.go('/profile/show_homecook_profile');
         }
       }
     );

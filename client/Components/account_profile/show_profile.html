@@ -74,7 +74,6 @@
         <div class='col l4 m12 s12 center'>
           <h5 id="chef_name">{{get_homecook_profile.chef_name}}</h5>
         </div>
-
         <div class='col l8 m12 s12'>
          <div class='col l2 m3 s3 offset-l4 center'>
             <p>{{kitchen_tried}}</p><p>Tried</p>
@@ -96,6 +95,11 @@
            <p>{{kitchen_like}}</p><p>Likes</p>
          </div>
         </div>
+        {{#if own_profile}}
+          <div class = 'col l4 m8 offset-m2 s12 center'>
+            <button id="edit_homecook_profile" class="waves-effect waves-dark btn" type="button">edit kitchen profile</button>
+          </div>
+        {{/if}}
        <br>
        <br>
        <br>
