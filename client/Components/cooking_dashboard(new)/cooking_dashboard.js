@@ -1,6 +1,15 @@
 import {Bar, Line, Pie} from 'meteor/jmsalash:chartjs';
 import {Moment} from 'meteor/momentjs:moment';
 import {date_time_conversion} from '/imports/functions/date_time_conversion.js';
+import { Meteor } from 'meteor/meteor';
+
+Template.cooking_dashboard.onRendered(function(){
+  var kitchen_id = Meteor.userId();
+  // get current balance in this month about kitchen id
+  Meteor.call('getBalance', kitchen_id, function(err, response) {
+    console.log(response);
+  });
+});
 
 /**
 Template.dashbaord_sales.onRendered(function(){
