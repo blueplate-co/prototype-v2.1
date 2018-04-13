@@ -24,7 +24,7 @@
   padding-left: 24px;
   padding-right: 24px;
   margin: 0px;
-  line-height:50%;
+  line-height:100%;
   display:block;
   position:relative;
 }
@@ -48,24 +48,6 @@
 
 .indicator {
   right:0;
-}
-
-.card-title {
-  font-size: 13px;
-  padding-top: 15px;
-}
-
-.card-content {
-  height: 30%;
-  margin-top: 0px;
-  font-size: 13px;
-  color: rgba(0,0,0,0.54);
-}
-
-.card-content {
-  display: block;
-/*  padding: 0px 24px 0px 24px; */
-  margin-bottom: 0px;
 }
 
 .info_wrapper {

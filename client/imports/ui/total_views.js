@@ -18,7 +18,7 @@ export default class TotalViews extends Component {
     return(
         <div className = 'valign-wrapper' style = {{ height: '100%' }}>
         <div className = 'col l12 m12 s12'>
-            <p>total views:</p>
+            <p style = {{fontSize: '34'}}>total views:</p>
             <h1>{this.state.view}</h1>
         </div>
         </div>

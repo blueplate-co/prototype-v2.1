@@ -36,6 +36,15 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #B1DBBE;
 }
 
+.bp-orange {
+  background-color: #EEAB21;
+}
+
+.btn-white-border {
+  border: 4px solid white;
+  box-shadow: none;
+}
+
 html {
   height: 70vh;
   font-family: 'Montserrat', sans-serif;
