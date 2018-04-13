@@ -1,0 +1,22 @@
+#wish_list_container {
+    /** margin-top: 60px; **/
+}
+
+.payment-wrapper {
+    text-align: center;
+    position: relative;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.payment-wrapper .text {
+    position: absolute;
+    bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    color: #55abcd;
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -5,8 +5,21 @@ import { Blaze } from 'meteor/blaze';
 import { FilesCollection } from 'meteor/ostrio:files';
 import { search_distinct_in_shopping_cart } from '/imports/functions/shopping_cart.js'
 import { search_distinct_for_delivery_in_shopping_cart } from '/imports/functions/shopping_cart.js'
-import { search_distinct_in_shopping_cart_seller_specific } from '/imports/functions/shopping_cart.js'
+import { search_distinct_in_shopping_cart_seller_specific } from '/imports/functions/shopping_cart.js';
 
+// integrate reactjs
+import React from 'react';
+import { render } from 'react-dom';
+
+import ShoppingCart from '../../imports/ui/shopping_cart';
+
+
+Template.shopping_cart_card.onRendered(function(){
+
+  // render show room container from REACT
+  render(<ShoppingCart />, document.getElementById('shoppingcart-container'));
+
+});
 
 Template.shopping_cart_card.helpers({
   'check_shopping_cart': function () {
@@ -18,7 +31,7 @@ Template.shopping_cart_card.helpers({
   },
 
   'total_price_per_dish': function () {
-    return this.quantity * this.product_price
+    return this.quantity * this.product_price 
   },
 })
 
@@ -409,6 +422,7 @@ function order_record_insert(array_value) {
       var ready_time = Session.get('ready_time_ms')
       var total_price = cart_details.total_price_per_dish
       var stripeToken = Session.get('token_no')
+      debugger
       var transaction = Transactions.findOne({ 'buyer_id': buyer_id, 'seller_id': seller_id }, { sort: { transaction_no: -1 } });
       if (transaction) {
         var transaction_no = parseInt(transaction.transaction_no) + 1
