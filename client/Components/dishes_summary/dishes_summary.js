@@ -2,6 +2,7 @@ import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
 
 Template.dishes_summary.onRendered(function(){
+  window.scrollTo(0,0);
   $('.modal').modal({
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
     opacity: .5, // Opacity of modal background

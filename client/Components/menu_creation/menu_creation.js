@@ -12,6 +12,7 @@ import {
 } from '/imports/functions/checkboxes_recall.js'
 
 Template.menu_creation.onRendered(function(){
+  window.scrollTo(0,0);
   this.$('modal').modal({
       dismissible: false, // Modal can be dismissed by clicking outside of the modal
       opacity: .5, // Opacity of modal background
@@ -155,7 +156,7 @@ Template.menu_creation_content.events({
       {
         hasDish = true
       }
-      
+
     } else {
       Materialize.toast('<strong>Menu creation failed</strong>: Menu must has least 1 dish', 8000, 'rounded bp-green');
       return false;
@@ -182,7 +183,7 @@ Template.menu_creation_content.events({
       }
 
     }
-    
+
 
     if (menu_name && menu_selling_price && hasDish) {
 
@@ -212,8 +213,8 @@ Template.menu_creation_content.events({
       return false
     }
     // else {
-      
-    
+
+
 
       // return false;
 
