@@ -40,7 +40,7 @@ class SelfDishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             {
 
