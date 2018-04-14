@@ -7,7 +7,12 @@ import CookingDashboard from '../../imports/ui/cooking_dashboard.js';
 
 Template.cooking_dashboard.onRendered(function(){
   // render show room container from REACT
+<<<<<<< HEAD
   render(<CookingDashboard />, document.getElementById('dashboard_wrapper'));
+=======
+  render(<TotalViews />, document.getElementById('view'));
+  
+>>>>>>> master_new
 });
 
 /**
