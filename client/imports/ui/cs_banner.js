@@ -20,7 +20,7 @@ const CsBanner = () => {
     <div className = "card help-med-up">
       <div className = "card-title">
         <h2>Need help?</h2>
-        <p style = { getHelpText}>Our Community Specialists are here for you</p>
+        <p style = {getHelpText}>Our Community Specialists are here for you</p>
       </div>
       <div className = "bp-orange btn-white-border btn" style = { getHelpBtnStyle }>get help</div>
     </div>

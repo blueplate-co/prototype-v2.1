@@ -2,17 +2,51 @@ import React, { Component } from 'react';
 import TotalViews from './total_views';
 import CsBanner from './cs_banner';
 import ShowroomBanner from './showroom_banner';
+import TopSells from './top_selling_card';
 
 export default class CookingDashboard extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      view: 0,
+      timeFrame: 7,
+      topSellers: []
+    }
+  }
+
+  componentWillMount() {
+    Meteor.call('total.views', (error, result) => {
+      this.setState({view: result});
+    })
+    Meteor.call('top_sellers.get', (error, result) => {
+      this.setState({topSellers: result});
+    })
+  }
+
+  componentDidMount() {
+    $('ul.tabs').tabs();
+  }
+
+  changeTimeFrame = (time) => {
+    this.setState({timeFrame: time});
   }
 
   render () {
     return (
       <div className="container">
         <h1 className="welcome">Hi Chef! Welcome back!</h1>
+        <div className = "row">
+          <div className = "col l2 m2 s3">
+            <div className="btn" id='seven_days_data' onClick={() => this.changeTimeFrame(7)}>7 days</div>
+          </div>
+          <div className = "col l2 m2 s3">
+            <div className="btn" id='one_month_data' onClick={() => this.changeTimeFrame(30)}>1 month</div>
+          </div>
+          <div className = "col l2 m2 s3">
+            <div className="btn" id='one_year_data' onClick={() => this.changeTimeFrame(365)}>1 year</div>
+          </div>
+        </div>
         <div className="row">
           <div className="col s12 m12 l12 xl12">
             <ShowroomBanner />
@@ -27,14 +61,14 @@ export default class CookingDashboard extends Component {
 
           <div className="col s12 m4 l4 xl4">
             <div className="card-panel view" id="view">
-              <TotalViews />
+              <TotalViews view = {this.state.view}/>
             </div>
           </div>
         </div>
 
         <div className="row">
           <div className="col s12 m4 l4 xl4">
-            <div className="card-panel top-selling-menu">top selling menu</div>
+            <TopSells data = {this.state.topSellers}/>
           </div>
           <div className="col s12 m8 l8 xl8">
             <div className="card-panel total-sales">total sales</div>

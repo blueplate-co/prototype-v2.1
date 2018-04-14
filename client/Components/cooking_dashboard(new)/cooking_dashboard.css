@@ -27,7 +27,6 @@
 }
 .view{
   height:325px;
-  background-color:#EA6055;
 
 }
 @media only screen and (max-width: 768px) {
@@ -44,12 +43,28 @@
 }
 }
 
+.dashboard-title {
+  font-size: 30px;
+  line-height: 100%;
+}
+
+.top_sell_thumbnail {
+  height: 40px;
+  border-radius: 5px;
+}
+
+.info_wrapper {
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
+  margin-top: 12px;
+}
+
 /*standard*/
 .row{
   margin-bottom:0px;
 }
 .card-panel{
-  border:solid #979797;
+  border:1px solid #979797;
   border-radius:15px;
   box-shadow: none;
 
