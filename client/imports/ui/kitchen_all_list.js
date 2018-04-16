@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import ChefAvatar from './chef_avatar';
@@ -30,7 +30,7 @@ class KitchenAllList extends Component {
 
   renderList = () => {
     if (this.props.kitchen.length == 0) {
-      return <p>Has no kitchen to displayed</p>
+      return <p>Has no kitchen to display</p>
     }
     let hasBanner;
     return this.props.kitchen.map((item, index) => {

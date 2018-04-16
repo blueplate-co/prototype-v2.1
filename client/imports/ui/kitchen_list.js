@@ -30,7 +30,7 @@ class KitchenList extends Component {
 
   renderList = () => {
     if (this.props.kitchen.length == 0) {
-      return <p>Has no kitchen to displayed</p>
+      return <p>Has no kitchen to display</p>
     }
     let hasBanner;
     return this.props.kitchen.map((item, index) => {
