@@ -6,21 +6,89 @@ import { check } from 'meteor/check';
 Order_record = new Mongo.Collection('order_record');
 
 Meteor.methods({
-  'chargeCard': function(stripeToken, amount, description) {
-    check(stripeToken, String);
-    check(amount, Match.Any);
-    check(description, Match.Any);
+  'chargeCard': function(stripeToken, amount, description, buyer_id, seller_id, paymentType) {
+    if (paymentType == 'card') {
+      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
 
-    var Stripe = StripeAPI('sk_test_K51exlBQovfRkYAag2TKbzjl');
-
-    Stripe.charges.create({
-      amount: amount*100,
-      currency: 'hkd',
-      source: stripeToken,
-      description: description
-    }, function(err, charge) {
-      console.log(err, charge);
-    });
+      var buyerStripeId = Meteor.users.findOne({ _id: buyer_id }).stripe_id;
+      var buyerEmail = Meteor.users.findOne({ _id: buyer_id }).emails[0].address;
+  
+      //- run charge for default payment methods of buyerStripeId
+      var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
+      charge({
+        amount: amount * 100,
+        currency: "hkd",
+        description: description,
+        receipt_email: buyerEmail,
+        customer: buyerStripeId
+      }, function(err, charge) {
+        //- charge completed, update balance of seller
+        if (!err) {
+          var transactionID = charge.balance_transaction; // get transaction id to get fee of this transaction
+          var sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id; // get Stripe id of seller
+          var transaction = Meteor.wrapAsync(stripe.balance.retrieveTransaction, stripe.balance);
+          transaction(
+            transactionID,
+            function(err, balanceTransaction) {
+              if (!err) {
+                var net = balanceTransaction.net;
+                // get balance of current customer seller
+                var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
+                customer(
+                  sellerCustomerId,
+                  function(err, customer) {
+                    if (!err) {
+                      var balance = customer.account_balance;
+                      var newBalance = balance + net;
+                      var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
+                      updatedCustomer(sellerCustomerId, {
+                        account_balance: newBalance
+                      }, function(err, customer) {
+                        if (!err) {
+                          console.log(customer);
+                        }
+                      });
+                    }
+                  }
+                )
+              }
+            }
+          );
+        }
+      })
+    } else {
+      console.log(paymentType);
+      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+      // when user choose pay by credits
+      var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
+      var sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id; // get Stripe id of seller
+      // update balance of seller
+      customer(
+        sellerCustomerId,
+        function(err, customer) {
+          if (!err) {
+            var balance = customer.account_balance;
+            var newBalance = balance + amount;
+            var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
+            updatedCustomer(sellerCustomerId, {
+              account_balance: newBalance * 100
+            }, function(err, customer) {
+              if (!err) {
+                // update credits of buyer
+                var credits = Meteor.users.findOne({ _id: buyer_id }).credits;
+                Meteor.users.update({
+                    _id: buyer_id
+                }, {
+                    $set: {
+                        'credits': credits - amount
+                    }
+                });
+              }
+            });
+          }
+        }
+      )
+    }
   },
 
   'order_record.insert'(
@@ -33,7 +101,8 @@ Meteor.methods({
     address,
     serving_option,
     ready_time,
-    stripeToken
+    stripeToken,
+    paymentType
   ){
     check(transaction_no, Number);
     check(buyer_id, String);
@@ -60,7 +129,8 @@ Meteor.methods({
       status: 'Created',
       rating: 0,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      paymentType: paymentType
     })
   },
 

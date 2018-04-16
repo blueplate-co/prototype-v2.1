@@ -295,7 +295,7 @@ export default class Modal extends Component {
                 if (order) {
                     var order_id = order._id;
                     quantity = parseInt(order.quantity) + this.state.qty;
-                    total_price_per_dish = parseInt(dish_price) * quantity
+                    total_price_per_dish = parseInt(dish_price) * quantity;
                     Meteor.call('shopping_cart.update',
                         order_id,
                         quantity,

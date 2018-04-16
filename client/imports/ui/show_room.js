@@ -40,7 +40,7 @@ export default class ShowRoom extends Component {
 
   componentDidMount = () => {
     $("[role=navigation]").height('65px');
-    localStorage.setItem('userMode', 'foodie')
+    localStorage.setItem('userMode', 'foodie');
   }
 
   renderCategories = () => {

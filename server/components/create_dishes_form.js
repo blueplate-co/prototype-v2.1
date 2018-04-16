@@ -149,7 +149,7 @@ Meteor.methods({
       product_name: dish_name,
       quantity: quantity,
       product_price: dish_price,
-      total_price_per_dish: dish_price,
+      total_price_per_dish: parseInt(quantity) * parseInt(dish_price),
       updatedAt: new Date(),
       createdAt: new Date()
     })

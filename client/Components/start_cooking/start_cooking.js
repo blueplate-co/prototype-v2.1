@@ -345,7 +345,8 @@ Template.request_card.events({
       'seller_id': seller_id,
       'status': 'Created'
     })
-    var trans_no = parseInt(order.transaction_no)
+    var trans_no = parseInt(order.transaction_no);
+    var paymentType = order.paymentType;
     var product = Order_record.find({
       'buyer_id': buyer_id,
       'seller_id': seller_id,
@@ -355,7 +356,7 @@ Template.request_card.events({
 
     product.forEach(add_order_to_transaction)
 
-    charge_card(buyer_id, seller_id, trans_no) //used timeout to make sure transaction insert finished before charing card
+    charge_card(buyer_id, seller_id, trans_no, paymentType) //used timeout to make sure transaction insert finished before charing card
 
 
 
@@ -424,7 +425,7 @@ Template.request_card.events({
 
     }
 
-    function charge_card(buyer_id, seller_id, trans_no) {
+    function charge_card(buyer_id, seller_id, trans_no, paymentType) {
       setTimeout(function() {
         console.log(buyer_id, seller_id, trans_no)
         var transaction = Transactions.findOne({
@@ -439,7 +440,7 @@ Template.request_card.events({
         var stripeToken = transaction.stripeToken
         var amount = transaction.amount
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - #" + seller_id;
-        Meteor.call('chargeCard', stripeToken, amount, description);
+        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType);
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);

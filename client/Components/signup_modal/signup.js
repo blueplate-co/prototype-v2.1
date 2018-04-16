@@ -63,7 +63,12 @@ Template.signup_modal.events({
                 $('.signup_form').remove();
                 $('.signup_submit_btn').remove();
                 $('.signup_cancel_btn').html('Close');
-                Meteor.call('sendVerificationEmail', Meteor.userId());
+                Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
+                  if (!err) {
+                    //- create Stripe user id for that user register
+                    Meteor.call('payment.createCustomer', Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address);
+                  }
+                });
               }
             });
           }
