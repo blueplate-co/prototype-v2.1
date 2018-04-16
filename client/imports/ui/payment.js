@@ -101,47 +101,37 @@ class Payment extends Component {
                         console.log(err);
                         Materialize.toast(err.message, 'rounded bp-green');
                     } else {
+                        debugger
                         // complete add to credits and charge credit card
-                        // validation card info
-                        Stripe.card.createToken({
-                            number: ccNum,
-                            cvc: cvc,
-                            exp_month: expMo,
-                            exp_year: expYr,
-                        }, function(status, response) {
-                            if (response.error) {
-                                Materialize.toast(response.error.message, 'rounded bp-green');
-                            } else {
-                                var StripeToken = response.id;
-                                var transaction_no = 1;
-                                //- add each every product into order collection
-                                var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
-                                shoppingCart.map(function(item, index) {
-                                    var kitchenOrderInfo;
-                                    //- get information order which user set in previous step
-                                    for (var i = 0 ; i < Session.get('product').length; i++) {
-                                        if (item.seller_id == Session.get('product')[i].id) {
-                                            kitchenOrderInfo = Session.get('product')[i];
-                                        }
-                                    }
-
-                                    var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
-                                    if (transaction) {
-                                        transaction_no = parseInt(transaction.transaction_no) + 1
-                                    }
-                                    Meteor.call('payment.addCard', StripeToken);
-                                    Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
-                                        if (err) {
-                                            Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-                                        } else {
-                                            Meteor.call('shopping_cart.remove', item._id)
-                                            Meteor.call('notification.place_order', kitchenOrderInfo.id, Meteor.userId(), item.product_id, item.quantity);
-                                            Session.clear;
-                                            FlowRouter.go('/orders_tracking');
-                                        }
-                                    })
-                                })
+                        // enough money to pay
+                        var StripeToken = '';
+                        var transaction_no = 1;
+                        //- add each every product into order collection
+                        var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+                        shoppingCart.map(function(item, index) {
+                            var kitchenOrderInfo;
+                            //- get information order which user set in previous step
+                            for (var i = 0 ; i < Session.get('product').length; i++) {
+                                if (item.seller_id == Session.get('product')[i].id) {
+                                    kitchenOrderInfo = Session.get('product')[i];
+                                }
                             }
+
+                            var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
+                            if (transaction) {
+                                transaction_no = parseInt(transaction.transaction_no) + 1
+                            }
+                            // no need add card because, if user has credit, thet must have already credit card
+                            Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
+                                if (err) {
+                                    Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                                } else {
+                                    Meteor.call('shopping_cart.remove', item._id)
+                                    Meteor.call('notification.place_order', kitchenOrderInfo.id, Meteor.userId(), item.product_id, item.quantity);
+                                    Session.clear;
+                                    FlowRouter.go('/orders_tracking');
+                                }
+                            })
                         })
                     }
                 })

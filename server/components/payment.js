@@ -73,6 +73,15 @@ Meteor.methods({
                     break;
             }
 
+            var buyerCredits = Meteor.users.findOne({ _id: buyer_id }).credits;
+            Meteor.users.update({
+                _id: buyer_id
+            }, {
+                $set: {
+                    'credits': buyerCredits + credits
+                }
+            });
+
             //- run charge for default payment methods of buyerStripeId
             var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
             charge({
@@ -84,15 +93,7 @@ Meteor.methods({
             }, function(err, charge) {
                 //- deposit new credits of user
                 if (!err) {
-                    var buyerCredits = Meteor.users.findOne({ _id: buyer_id }).credits;
-                    Meteor.users.update({
-                        _id: Meteor.userId()
-                    }, {
-                        $set: {
-                            'credits': buyerCredits + credits
-                        }
-                    });
-                    return credits;
+                    return charge;
                 }
             });
         }
