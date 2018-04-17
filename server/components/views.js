@@ -24,7 +24,7 @@ Meteor.methods({
     })
   },
   'kitchen.view' (kitchenId, sellerId) {
-    KitchensViews.insert({
+    KitchenViews.insert({
       viewer_id: Meteor.userId(),
       seller_id: sellerId,
       kitchen_id: kitchenId,
