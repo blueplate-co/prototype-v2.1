@@ -66,6 +66,7 @@ class Payment extends Component {
                                 Meteor.call('shopping_cart.remove', item._id)
                                 Meteor.call('notification.place_order', kitchenOrderInfo.id, Meteor.userId(), item.product_id, item.quantity);
                                 Session.clear;
+                                Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
                                 FlowRouter.go('/orders_tracking');
                             }
                         })
@@ -129,6 +130,7 @@ class Payment extends Component {
                                     Meteor.call('shopping_cart.remove', item._id)
                                     Meteor.call('notification.place_order', kitchenOrderInfo.id, Meteor.userId(), item.product_id, item.quantity);
                                     Session.clear;
+                                    Materialize.toast("Credit added sucessfully, we are now processing your order. please wait for chef's confirmation", 8000, 'rounded bp-green');
                                     FlowRouter.go('/orders_tracking');
                                 }
                             })
@@ -180,6 +182,7 @@ class Payment extends Component {
                             Meteor.call('shopping_cart.remove', item._id)
                             Meteor.call('notification.place_order', kitchenOrderInfo.id, Meteor.userId(), item.product_id, item.quantity);
                             Session.clear;
+                            Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
                             FlowRouter.go('/orders_tracking');
                         }
                     })
