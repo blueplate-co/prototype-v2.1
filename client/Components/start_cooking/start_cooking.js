@@ -396,6 +396,7 @@ Template.request_card.events({
           Meteor.call('order_record.accepted', order_id) //update the order to cooking
         } else {
           console.log(2)
+          // bookmark for recheck again
           if (serving_option === 'Delivery') {
             price_of_cart += 50
           } //delivery cost, should have a variable table
