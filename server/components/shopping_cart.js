@@ -31,7 +31,7 @@ Meteor.methods({
             transactionID,
             function(err, balanceTransaction) {
               if (!err) {
-                var net = balanceTransaction.net;
+                var ammount = balanceTransaction.amount;
                 // get balance of current customer seller
                 var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
                 customer(
@@ -39,7 +39,7 @@ Meteor.methods({
                   function(err, customer) {
                     if (!err) {
                       var balance = customer.account_balance;
-                      var newBalance = balance + net;
+                      var newBalance = balance + ammount;
                       var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                       updatedCustomer(sellerCustomerId, {
                         account_balance: newBalance
@@ -57,7 +57,6 @@ Meteor.methods({
         }
       })
     } else {
-      console.log(paymentType);
       var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
       // when user choose pay by credits
       var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);

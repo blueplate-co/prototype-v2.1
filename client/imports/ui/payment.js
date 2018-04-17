@@ -96,12 +96,13 @@ class Payment extends Component {
             if (response.error) {
                 Materialize.toast(response.error.message, 'rounded bp-green');
             } else {
-                Meteor.call('payment.depositCredits', response.id, creditPackage, Meteor.userId(), function(err, response){
+                // use Stripetoken to add this card into Customer account
+                Meteor.call('payment.addCard', response.id);
+                Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function(err, response){
                     if (err) {
                         console.log(err);
                         Materialize.toast(err.message, 'rounded bp-green');
                     } else {
-                        debugger
                         // complete add to credits and charge credit card
                         // enough money to pay
                         var StripeToken = '';
@@ -116,7 +117,6 @@ class Payment extends Component {
                                     kitchenOrderInfo = Session.get('product')[i];
                                 }
                             }
-
                             var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
                             if (transaction) {
                                 transaction_no = parseInt(transaction.transaction_no) + 1

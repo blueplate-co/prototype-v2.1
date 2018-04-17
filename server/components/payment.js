@@ -49,7 +49,7 @@ Meteor.methods({
     'payment.getCredits'() {
         return Meteor.users.findOne({ _id: Meteor.userId() }).credits;
     },
-    'payment.depositCredits'(StripeToken, creditPackage, buyer_id) {
+    'payment.depositCredits'(creditPackage, buyer_id) {
         if (creditPackage == '') {
             throw new Meteor.Error('Missing', 'Must select credits package.');
         } else {
@@ -60,16 +60,16 @@ Meteor.methods({
 
             switch (creditPackage) {
                 case 1:
-                    credits = 260;
-                    ammount = 257.55;
+                    credits = 260; // credit number will receive
+                    ammount = 250; // money will be charged
                     break;
                 case 2:
                     credits = 550;
-                    ammount = 514.80;
+                    ammount = 500;
                     break;
                 case 3:
                     credits = 1100;
-                    ammount = 1029.30;
+                    ammount = 1000;
                     break;
             }
 
