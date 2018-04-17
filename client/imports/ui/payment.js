@@ -33,7 +33,7 @@ class Payment extends Component {
                 for (var i = 0; i < shoppingCart.length; i++ ) {
                     total += parseInt(shoppingCart[i].total_price_per_dish);
                 }
-                if (credits <= total) {
+                if (credits < total) {
                     // not enough money to pay
                     Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
                     self.setState({
