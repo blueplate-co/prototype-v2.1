@@ -37,8 +37,8 @@ Template.orders_tracking.helpers({
 
 Template.pending_confirmation.helpers({
   'kitchen_profile_picture': function(){
-    var foodie = profile_images.findOne({'userId': String(this), "meta.purpose": "homecook_profile_picture"})
-    return foodie.meta.base64;
+    var foodie = Kitchen_details.findOne({'user_id': String(this)})
+    return foodie.profileImg.origin;
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': String(this)})
@@ -61,14 +61,11 @@ Template.pending_confirmation.helpers({
     return Dishes.findOne({'_id': this.product_id}).dish_name;
   },
   'get_dish_image': function(){
-    var dish_image_id = Dishes.findOne({
+    var dish_image = Dishes.findOne({
       '_id': this.product_id
-    }).image_id
+    }).meta.origin;
 
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    return dish_image;
   },
   'get_dish_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity
@@ -79,14 +76,12 @@ Template.pending_confirmation.helpers({
   'get_menu_image': function(){
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
-    }).image_id[0]
-    var ext = Images.findOne({
+    }).dishes_id[0];
+    
+    var menu_image = Dishes.findOne({
       '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+    return menu_image;
   },
   'get_menu_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity
@@ -123,8 +118,8 @@ Template.foodies_confirmed_order.helpers({
   'foodie_profile_picture': function(){
     var order = Order_record.findOne({'_id': String(this)})
     var buyer_id = order.buyer_id
-    var foodie = profile_images.findOne({'userId': buyer_id, "meta.purpose": "profile_picture"})
-    return foodie.meta.base64;
+    var foodie = Profile_details.findOne({'user_id': buyer_id})
+    return foodie.profileImg.origin;
   },
   'product_is_dish': function() {
     var order = Order_record.findOne({'_id': String(this)})
@@ -143,26 +138,23 @@ Template.foodies_confirmed_order.helpers({
     return Dishes.findOne({'_id': String(this)}).dish_name;
   },
   'get_dish_image': function() {
-    var dish_image = Dishes.findOne({
+    var dish_id = Order_record.findOne({
       '_id': String(this)
-    });
-    var imageId = dish_image_id.image_id;
-    var base64 = Images.findOne({
-      '_id': imageId
-    }).meta.base64
+    }).product_id;
 
-    return base64;
+    return Dishes.findOne({
+      '_id': dish_id
+    }).meta.origin;
+
+    return dish_image;
   },
 
   'get_menu_dish_image': function() {
-    var dish_image_id = Menus.findOne({
+    var dish_image = Dishes.findOne({
       '_id': String(this)
-    }).image_id
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
+    }).meta.origin
 
-    return base64;
+    return dish_image;
   },
 
   'get_menu_qty': function() {
@@ -179,17 +171,16 @@ Template.foodies_confirmed_order.helpers({
     var order = Order_record.findOne({
       '_id': String(this)
     })
-    var dish_id = order.product_id
-    var dish_image_id = Dishes.findOne({
-      '_id': dish_id
-    }).image_id
-    var ext = Images.findOne({
+
+    var dish_image_id = Menu.findOne({
+      '_id': this.product_id
+    }).dishes_id[0];
+
+    var menu_image = Dishes.findOne({
       '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+    return menu_image;
+
   },
 
   'get_dish_name': function(){
@@ -298,8 +289,8 @@ Template.ready_card.helpers({
     }
   },
   'kitchen_profile_picture': function(){
-    var foodie = profile_images.findOne({'userId': this.seller_id, "meta.purpose": "homecook_profile_picture"})
-    return foodie.meta.base64;
+    var foodie = Profile_details.findOne({'user_id': this.seller_id})
+    return foodie.profileImg.origin;
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})
@@ -325,12 +316,10 @@ Template.ready_card.helpers({
   'get_dish_image': function(){
     var dish_image_id = Dishes.findOne({
       '_id': this.product_id
-    }).image_id
+    }).meta.origin
 
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    return dish_image_id;
+
   },
   'get_dish_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity
@@ -339,16 +328,16 @@ Template.ready_card.helpers({
     return Menu.findOne({'_id': this.product_id}).menu_name;
   },
   'get_menu_image': function(){
+
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
-    }).image_id[0]
-    var ext = Images.findOne({
+    }).dishes_id[0];
+
+    var menu_image = Dishes.findOne({
       '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+    return menu_image;
+
   },
   'get_menu_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity

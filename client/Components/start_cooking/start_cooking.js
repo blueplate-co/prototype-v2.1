@@ -118,11 +118,10 @@ Template.order_card.helpers({
       '_id': String(this)
     })
     var buyer_id = order.buyer_id
-    var foodie = profile_images.findOne({
-      'userId': buyer_id,
-      "meta.purpose": "profile_picture"
+    var foodie = Profile_details.findOne({
+      'user_id': buyer_id
     });
-    return foodie.meta.base64;
+    return foodie.profileImg.origin;
   },
   'product_is_dish': function() {
     var order = Order_record.findOne({
@@ -151,14 +150,11 @@ Template.order_card.helpers({
     }).dish_name;
   },
   'get_menu_dish_image': function() {
-    var dish_image_id = Dishes.findOne({
+    var dish_image = Dishes.findOne({
       '_id': String(this)
-    }).image_id
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
+    }).meta.origin
 
-    return base64;
+    return dish_image;
   },
   'get_menu_qty': function() {
     return dish_qty;
@@ -187,16 +183,11 @@ Template.order_card.helpers({
       '_id': String(this)
     })
     var dish_id = order.product_id
-    var dish_image_id = Dishes.findOne({
+    var dish_image = Dishes.findOne({
       '_id': dish_id
-    }).image_id
-    var ext = Images.findOne({
-      '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+
+    return dish_image;
   },
 
   'get_dish_name': function() {
@@ -241,11 +232,10 @@ Template.request_card.events({
 Template.request_card.helpers({
 
   'foodie_profile_picture': function() {
-    var foodie = profile_images.findOne({
-      'userId': String(this),
-      "meta.purpose": "profile_picture"
+    var foodie = Profile_details.findOne({
+      'user_id': String(this)
     });
-    return  foodie.meta.base64;
+    return  foodie.profileImg.origin;
 
   },
 
@@ -295,14 +285,10 @@ Template.request_card.helpers({
     }).dish_name;
   },
   'get_dish_image': function() {
-    var dish_image_id = Dishes.findOne({
+    var dish_image = Dishes.findOne({
       '_id': this.product_id
-    }).image_id
-
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+    return dish_image;
   },
   'get_dish_qty': function() {
     return Order_record.findOne({
@@ -317,14 +303,13 @@ Template.request_card.helpers({
   'get_menu_image': function() {
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
-    }).image_id[0]
-    var ext = Images.findOne({
+    }).dishes_id[0];
+
+    var dish_image = Dishes.findOne({
       '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+
+    return dish_image;
   },
   'get_menu_qty': function() {
     return Order_record.findOne({
@@ -587,11 +572,10 @@ Template.chef_ready_card.events({
 
 Template.chef_ready_card.helpers({
   'foodie_profile_picture': function() {
-    var foodie = profile_images.findOne({
-      'userId': this.buyer_id,
-      "meta.purpose": "profile_picture"
+    var foodie = Profile_details.findOne({
+      'user_id': this.buyer_id
     });
-    return  foodie.meta.base64;
+    return  foodie.profileImg.origin;
 
   },
 
@@ -621,12 +605,8 @@ Template.chef_ready_card.helpers({
   'get_dish_image': function(){
     var dish_image_id = Dishes.findOne({
       '_id': this.product_id
-    }).image_id
-
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin;
+    return dish_image_id;
   },
   'get_dish_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity
@@ -637,14 +617,12 @@ Template.chef_ready_card.helpers({
   'get_menu_image': function(){
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
-    }).image_id[0]
-    var ext = Images.findOne({
+    }).dishes_id[0]
+
+    var images = Dishes.findOne({
       '_id': dish_image_id
-    }).extensionWithDot
-    var base64 = Images.findOne({
-      '_id': dish_image_id
-    }).meta.base64
-    return base64;
+    }).meta.origin
+    return images;
   },
   'get_menu_qty': function(){
     return Order_record.findOne({'product_id': this.product_id}).quantity

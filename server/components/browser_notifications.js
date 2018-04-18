@@ -31,18 +31,21 @@ Meteor.methods({
     var buyer_name = Profile_details.findOne({
       user_id: buyer_id
     }).foodie_name;
-    var dish_name = Dishes.findOne({
+
+    var dish = Dishes.findOne({
       _id: product_id
-    }).dish_name;
-    var title = 'New incoming order';
-    var message = buyer_name + ' has just placed ' + quantity + 'x ' + dish_name + ' from you.'
-    if (!dish_name) {
+    });
+
+    if (!dish) {
       var menu_name = Menu.findOne({
         _id: product_id
       }).menu_name;
-      var message = buyer_name + ' has just placed ' + quantity + 'x ' + menu_name + ' from you.'
+      var message = buyer_name + ' has just placed ' + quantity + 'x ' + menu_name + ' from you.';
+      var title = 'New incoming order';
+    } else {
+      var title = 'New incoming order';
+      var message = buyer_name + ' has just placed ' + quantity + 'x ' + dish.dish_name + ' from you.'
     }
-    var title = 'New incoming order';
 
     Notifications.insert({
       receiver_id: seller_id,
