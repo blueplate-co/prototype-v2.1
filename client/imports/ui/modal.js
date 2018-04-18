@@ -401,11 +401,11 @@ export default class Modal extends Component {
     renderDish = () => {
         return (
             <div className="row no-margin">
-                <div className="col l4 m4 s12 dish-preview-banner no-padding" style={{backgroundImage: "url(" + this.state.origin + ")"}}>
+                <div className="col l4 m12 s12 dish-preview-banner no-padding" style={{backgroundImage: "url(" + this.state.origin + ")"}}>
                     <Like type="dish" id={this.state.item._id} />
                 </div>
 
-                <div className="col l8 m8 s12 dish-preview-content">
+                <div className="col l8 m12 s12 dish-preview-content">
                     <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                     <div className="row dish-preview-navigation">
                         <div className="row">

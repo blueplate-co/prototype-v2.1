@@ -574,6 +574,20 @@
   line-height: 35px;
 }
 
+@media only screen and (max-width: 1024px) {
+  .dish-preview-banner {
+    height: 40vh;
+  }
+  .dish-preview-navigation .rating-container .fa-star {
+    font-size: 18px;
+  }
+  dish-preview-navigation .qty {
+    font-size: 25px;
+    color: #56AACD;
+    margin-left: 50px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .categories_navigation {
     display: none;

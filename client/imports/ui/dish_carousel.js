@@ -258,7 +258,7 @@ export default class DishCarousel extends Component {
   renderDish = (item, ingredients, index) => {
     return (
         <div className="row no-margin" key={index}>
-            <div className="col l4 m4 s12 dish-preview-banner no-padding">
+            <div className="col l4 m12 s12 dish-preview-banner no-padding">
                 <Like type="menu" id={ Session.get('selectedMenu')._id } />
                 <ProgressiveImages
                     large={ item.meta.large }
@@ -266,7 +266,7 @@ export default class DishCarousel extends Component {
                 />
             </div>
 
-            <div className="col l8 m8 s12 dish-preview-content">
+            <div className="col l8 m12 s12 dish-preview-content">
                 <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
                 <div className="row dish-preview-navigation">
                     <div className="row">
