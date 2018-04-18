@@ -398,7 +398,7 @@ Template.request_card.events({
           console.log(2)
           // bookmark for recheck again
           if (serving_option === 'Delivery') {
-            price_of_cart += 50
+            price_of_cart += 0
           } //delivery cost, should have a variable table
           Meteor.call('transactions.accepted', trans_no, buyer_id, seller_id, order_id, price_of_cart, stripeToken, function (err, result) {
             if (err) {
