@@ -392,7 +392,6 @@ Template.edit_content.events({
     $('#edit_menu_modal').modal('close');
   },
   'click #update_menu': function() {
-    event.preventDefault;
     var menu_id = Session.get('menu_id');
     var menu_name = $('#edit_menu_name').val();
     var menu_description = $('#edit_menu_description').val();
@@ -414,7 +413,7 @@ Template.edit_content.events({
     var menu_tags = $('#edit_menu_tags').material_chip('data')
 
     if (menu_name && menu_selling_price && dishes_id) {
-      Meteor.call('menu.update',menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, function(err){
+      Meteor.call('menu.update', menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, function(err){
           if (err) {
             Materialize.toast('Oops! Error when update your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
           } else {

@@ -64,6 +64,8 @@ Meteor.methods({
     check(image_id, Match.Any);
     check(menu_tags, Match.Any);
 
+    console.log(menu_description);
+
     Menu.update({
       _id: menu_id
     }, {
@@ -83,8 +85,8 @@ Meteor.methods({
     });
   },
   'menu.online' (menu_id, status) {
-    check(menu_id, String);
-    check(status, Boolean);
+    // check(menu_id, String);
+    // check(status, Boolean);
 
     Menu.update({
       _id: menu_id

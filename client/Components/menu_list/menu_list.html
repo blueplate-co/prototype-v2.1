@@ -15,14 +15,14 @@
             </tr>
           </thead>
           <tbody>
-            {{#each menu in user_menus}}
+            {{#each user_menus}}
               <tr>
                 <td width="40px">
-                  <input class="menus_checkbox" type="checkbox" id="{{menu.checkbox_id}}" value="{{menu._id}}"/>
-                  <label for="{{menu.checkbox_id}}"></label>
+                  <input class="menus_checkbox" type="checkbox" id="{{checkbox_id}}" value="{{_id}}"/>
+                  <label for="{{checkbox_id}}"></label>
                 </td>
-                <td>{{menu.menu_name}}</td>
-                <td>{{menu.menu_selling_price}}</td>
+                <td>{{menu_name}}</td>
+                <td>{{menu_selling_price}}</td>
                 <td>
                   {{> online_switch}}
                 </td>

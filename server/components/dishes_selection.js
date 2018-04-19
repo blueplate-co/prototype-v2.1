@@ -73,8 +73,8 @@ Meteor.methods({
   },
   'dish.online' (dish_id, status) {
     // check format data before excute action
-    check(dish_id, String);
-    check(status, Boolean);
+    // check(dish_id, String);
+    // check(status, Boolean);
     Dishes.update({
       _id: dish_id
     }, {

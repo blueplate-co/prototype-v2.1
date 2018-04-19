@@ -78,7 +78,7 @@ Template.dishes_selection.helpers({
     var current_user = Meteor.userId();
     var user_dishes = Dishes.find({"user_id": current_user, "deleted": false}).fetch();
     user_dishes.map((item, index) => {
-      item.dish_selling_price = item.dish_selling_price / 1.15
+      item.dish_selling_price = Math.floor(item.dish_selling_price / 1.15)
     });
     return user_dishes;
   }
