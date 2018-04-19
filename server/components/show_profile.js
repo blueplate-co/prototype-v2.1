@@ -6,5 +6,8 @@ Meteor.methods({
   },
   'kitchen_tried.get' (user_id) {
     return Order_record.find({seller_id: user_id}).fetch().length
+  },
+  'kitchen_follows.get' (user_id) {
+    return KitchenLikes.find({user_id: user_id}).fetch().length
   }
 })

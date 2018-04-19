@@ -29,6 +29,7 @@ Template.show_homecook_profile.onCreated(function() {
   this._id = new ReactiveVar(null);
   this.kitchen_likes = new ReactiveVar(0);
   this.kitchen_tried = new ReactiveVar(0);
+  this.kitchen_follows = new ReactiveVar(0);
   window.scrollTo(0,0);
 })
 
@@ -36,15 +37,29 @@ Template.show_homecook_profile.onRendered(function() {
   var instance = Template.instance()
   instance._id.set(FlowRouter.getParam("homecook_id"))
   if (!instance._id.get()) {
+    var user = Meteor.userId()
     //own kitchen
-    Meteor.call('kitchen_likes.get', Meteor.userId(), (error, result) => {
+    Meteor.call('kitchen_likes.get', user, (error, result) => {
      instance.kitchen_likes.set(result)
     })
+    Meteor.call('kitchen_tried.get', user, (error, result) => {
+      instance.kitchen_tried.set(result)
+    })
+    Meteor.call('kitchen_follows.get', user, (error, result) => {
+      instance.kitchen_follows.set(result)
+    })
   } else {
+    var user = instance._id.get()
   // other kitchen profile
-    var user_id = Kitchen_details.findOne({'_id': instance._id.get()}).user_id;
+    var user_id = Kitchen_details.findOne({'_id': user}).user_id;
     Meteor.call('kitchen_likes.get', user_id, (error, result) => {
       instance.kitchen_likes.set(result)
+    })
+    Meteor.call('kitchen_tried.get', user_id, (error, result) => {
+      instance.kitchen_tried.set(result)
+    })
+    Meteor.call('kitchen_follows.get', user_id, (error, result) => {
+      instance.kitchen_follows.set(result)
     })
   }
 })
@@ -106,45 +121,13 @@ Template.show_homecook_profile.helpers({
   },
 
   'kitchen_follow':function(){
-    var kitchen_follow = 0
     var instance = Template.instance()
-    if (!instance._id.get()) {
-      var user_id = Meteor.userId();
-    } else {
-      var user_id = instance._id.get();
-    }
-
-    Kitchen_details.find({ "user_id": user_id }).map(function (doc) {
-      if(doc.follow === undefined){
-
-        kitchen_follow += 0
-      }else{
-          kitchen_follow += parseInt(doc.follow.length);
-      }
-
-    });
-    return kitchen_follow
+    return instance.kitchen_follows.get();
   },
 
   'kitchen_tried':function(){
-    var kitchen_tried = 0
     var instance = Template.instance()
-    if (!instance._id.get()) {
-      var user_id = Meteor.userId();
-    } else {
-      var user_id = instance._id.get();
-    }
-
-    Kitchen_details.find({ "user_id": Meteor.userId() }).map(function (doc) {
-      if(doc.follow === undefined){
-
-        kitchen_tried += 0
-      }else{
-          kitchen_tried += parseInt(doc.follow.length);
-      }
-
-    });
-    return kitchen_tried
+    return instance.kitchen_tried.get();
   },
 })
 
