@@ -438,8 +438,8 @@ Template.create_dishes_form.events({
     var user_id = Meteor.userId();
     var dish_name = event.target.dish_name.value;
     var dish_cost = event.target.dish_cost.value;
-    var dish_selling_price = event.target.dish_selling_price.value;
-    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.trim().length == "" || Session.get('tempImages') == "") {
+    var dish_selling_price = parseInt(event.target.dish_selling_price.value) + (parseInt(event.target.dish_selling_price.value) * 0.15); // add fee 15% into selling price
+    if (dish_name.trim().length == "" || dish_cost.trim().length == "" || dish_selling_price.toString().trim().length == "" || Session.get('tempImages') == "") {
       Materialize.toast("Sorry we can't save your dish. We need to have at least your dish images, dish name, dish cost and selling price to save", 6000, 'rounded bp-green');
       return false;
     } else {

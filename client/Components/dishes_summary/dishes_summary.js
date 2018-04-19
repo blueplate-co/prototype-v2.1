@@ -102,7 +102,7 @@ Template.dishes_summary.events({
         serving_option: get_dish.serving_option,
         cooking_time: get_dish.cooking_time,
         dish_cost: get_dish.dish_cost,
-        dish_selling_price: get_dish.dish_selling_price,
+        dish_selling_price: get_dish.dish_selling_price / 1.15,
       };
       Blaze.renderWithData(Template.create_dishes_form, get_dish_contents,$("#edit_dish_modal_content")[0]);
       $(".create_dish_submit_btn").hide()
