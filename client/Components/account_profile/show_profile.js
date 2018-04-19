@@ -27,7 +27,26 @@ Template.show_foodie_profile.helpers({
 
 Template.show_homecook_profile.onCreated(function() {
   this._id = new ReactiveVar(null);
+  this.kitchen_likes = new ReactiveVar(0);
+  this.kitchen_tried = new ReactiveVar(0);
   window.scrollTo(0,0);
+})
+
+Template.show_homecook_profile.onRendered(function() {
+  var instance = Template.instance()
+  instance._id.set(FlowRouter.getParam("homecook_id"))
+  if (!instance._id.get()) {
+    //own kitchen
+    Meteor.call('kitchen_likes.get', Meteor.userId(), (error, result) => {
+     instance.kitchen_likes.set(result)
+    })
+  } else {
+  // other kitchen profile
+    var user_id = Kitchen_details.findOne({'_id': instance._id.get()}).user_id;
+    Meteor.call('kitchen_likes.get', user_id, (error, result) => {
+      instance.kitchen_likes.set(result)
+    })
+  }
 })
 
 Template.show_homecook_profile.helpers({
@@ -35,10 +54,8 @@ Template.show_homecook_profile.helpers({
     var instance = Template.instance()
     instance._id.set(FlowRouter.getParam("homecook_id"))
     if (!instance._id.get()){
-      console.log('ture')
       return true;
     } else {
-      console.log('false')
       return false;
     }
   },
@@ -84,40 +101,8 @@ Template.show_homecook_profile.helpers({
   },
 
   'kitchen_like':function(){
-    var dishes_likes = 0
-    var menu_likes = 0
     var instance = Template.instance()
-
-    if (!instance._id.get()) {
-      var user_id = Meteor.userId();
-      Dishes.find({ "user_id": user_id }).map(function (doc) {
-        if(doc.like === undefined){
-          dishes_likes += 0
-        }else{
-            dishes_likes += parseInt(doc.like.length);
-        }
-      });
-    } else {
-      var kitchen_id = instance._id.get();
-      Dishes.find({ "kitchen_id": kitchen_id }).map(function (doc) {
-        if(doc.like === undefined){
-          dishes_likes += 0
-        }else{
-            dishes_likes += parseInt(doc.like.length);
-        }
-
-      });
-    }
-
-
-    Menu.find({ "user_id": user_id }).map(function (doc) {
-      if(doc.like === undefined){
-        menu_likes += 0
-      }else{
-          menu_likes += parseInt(doc.like.length);
-      }
-    });
-    return dishes_likes + menu_likes
+    return instance.kitchen_likes.get();
   },
 
   'kitchen_follow':function(){
