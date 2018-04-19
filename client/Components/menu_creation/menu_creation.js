@@ -132,7 +132,7 @@ Template.menu_creation_content.events({
     var user_id = Meteor.userId();
     var kitchen = Kitchen_details.findOne({'user_id': user_id});
     var kitchen_id = kitchen._id;
-    var menu_selling_price = $('#menu_selling_price').val();
+    var menu_selling_price = parseInt($('#menu_selling_price').val()) + (parseInt($('#menu_selling_price').val()) * 0.15); // add fee into menu price
     var min_order = $('#min_order_range').val();
     var lead_hours = $('#lead_time_hours_range').val();
     var lead_days = $('#lead_time_days_range').val();

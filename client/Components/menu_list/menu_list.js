@@ -9,7 +9,10 @@ Template.menu_list.onRendered(function() {
 Template.menu_list.helpers({
   'user_menus': function() {
     var current_user = Meteor.userId();
-    var user_menus = Menu.find({"user_id": current_user, "deleted": false});
+    var user_menus = Menu.find({"user_id": current_user, "deleted": false}).fetch();
+    user_menus.map((item, index) => {
+      item.menu_selling_price = Math.floor(item.menu_selling_price / 1.15)
+    })
     return user_menus;
   },
   'subscription': function() {
