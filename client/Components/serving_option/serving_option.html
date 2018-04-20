@@ -13,8 +13,8 @@
   <div class="row">
     {{#each serving_option_list}}
       <div class="card z-depth-0" id="checkbox">
-          <input type="checkbox" class="serving_option_checkboxes filled-in" id= "{{this}}" value = "{{this}}">
-          <label for="{{this}}">{{this}}<div class="right icon icon_{{this}}"></div></label>
+          <input type="checkbox" class="serving_option_checkboxes filled-in" id= "create_{{this}}" value = "{{this}}">
+          <label for="create_{{this}}">{{this}}<div class="right icon icon_{{this}}"></div></label>
       </div>
     {{/each}}
   </div>
@@ -24,8 +24,8 @@
   <div class="row">
     {{#each serving_option_list}}
       <div class="card z-depth-0" id="checkbox">
-          <input type="checkbox" class="serving_option_checkboxes filled-in" id= "{{this}}" value = "{{this}}" {{is_checked}}>
-          <label for="{{this}}">{{this}}<div class="right icon icon_{{this}}"></div></label>
+          <input type="checkbox" class="serving_option_checkboxes filled-in" id= "edit_{{this}}" value = "{{this}}" {{is_checked}}>
+          <label for="edit_{{this}}">{{this}}<div class="right icon icon_{{this}}"></div></label>
       </div>
     {{/each}}
   </div>
