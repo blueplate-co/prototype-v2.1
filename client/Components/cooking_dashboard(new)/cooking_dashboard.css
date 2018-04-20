@@ -1,127 +1,129 @@
-
-.grid-container {
-  grid-gap: 50px;
+.dashboard-block-wrapper {
+  margin: 20px 0px;
 }
-.welcome{
-  font-size:42px;
-  margin-top:120px;
-}
-
-@media only screen and (max-width: 600px) {
-  .welcome {
-    font-size:30px;
-  }
+.amount-wrapper {
+  background-color: #EEAB21;
+  padding: 20px!important;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  height: 120px;
 }
 
-.banner{
+.amount-wrapper h5 {
+  font-weight: 300;
+}
+
+.amount-wrapper span.price {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.totalviews_wrapper {
+  position: relative;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  height: 120px;
+}
+
+.totalviews_wrapper .totalview-content {
+  position: absolute;
+  top: 20%;
+  padding: 0px 10px;
+}
+
+.totalviews_wrapper .totalview-content h5{
+  font-size: 3.5em;
+}
+
+.totalsales_wrapper {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 25px;
+  position: relative;
+}
+
+.totalsales_wrapper .wrapper_content {
+  margin-top: 10px;
+}
+
+.totalsales_wrapper .wrapper_content .list-option {
+  list-style: none;
+  display: inline-flex;
+  position: absolute;
+  font-size: 0.8em;
+  right: 20px;
+  top: 0px;
+}
+
+.totalsales_wrapper .wrapper_content .list-option span{
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.totalsales_wrapper .wrapper_content h5{
+  font-size: 3.5em;
+}
+
+.totalsales_wrapper .wrapper_content .list-option li{
+  margin: 0px 10px;
+  cursor: pointer;
+}
+
+.totalsales_wrapper .wrapper_content .list-option li.active{
+  margin: 0px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.conversion_wrapper {
   height: 250px;
-  background-image:url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing4.jpg");
-  width:100%;
-  background-size: 100vw;
-  background-position: center center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px!important;
 }
 
-.balance{
-  height:325px;
-  background-color:#56AACD;
-  border: 2px solid #979797;
-}
-.view{
-  height:325px;
-  background-color:#EA6055;
-
-}
-@media only screen and (max-width: 768px) {
-  .balance{
-    height:220px;
-  }
-  .view{
-    height:220px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .view{
-  height:140px;
-}
+.ordersummary_wrapper {
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px!important;
 }
 
-/*standard*/
-.row{
-  margin-bottom:0px;
-}
-.card-panel{
-  border:solid #979797;
-  border-radius:15px;
-  box-shadow: none;
-
-}
-.col{
-  padding-left: 0px !important;
+.ordersummary_wrapper .ordersummary_content ul {
+  font-size: 1.2em;
+  padding-left: 20px;
+  position: relative;
 }
 
-/*end standard*/
-
-.top-selling-menu{
-  height:300px;
-
-}
-.total-sales{
-  height:300px;
-}
-@media only screen and (min-width: 1200px) {
-  .top-selling-menu{
-  height:460px;
-}
-  .total-sales{
-  height:460px;
-}
+.ordersummary_wrapper .ordersummary_content ul li {
+  margin: 10px 0px;
 }
 
-.conversion{
-  height:300px;
-
-}
-.order{
-  height:300px;
-
-}
-@media only screen and (min-width: 1200px) {
-  .conversion{
-    height:460px;
-    }
-    .order{
-      height:460px;
-    }
-}
-.demographics{
-  height:300px;
-}
-.help-med-up{
-  height:300px;
-  background-color:orange;
-}
-.help-small{
-  height:220px;
-  background-color:red;
-  border:solid red;
+.ordersummary_wrapper .ordersummary_content ul li .dot{
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  margin-top: 5px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-@media only screen and (min-width: 600px) {
- .help-small{
-   display:none
- }
+.ordersummary_wrapper .ordersummary_content ul li .dot.pending{
+  background-color: rgb(235, 255, 57);
 }
 
-@media only screen and (min-width: 1200px) {
-  .demographics{
-    height:420px;
-  }
-  .help-med-up{
-    height:420px;
-  }
+.ordersummary_wrapper .ordersummary_content ul li .dot.confirmed{
+  background-color: rgb(70, 37, 255);
 }
-@media only screen and (max-width: 600px) {
-  .help-med-up{
-    display:none;
-  }
+
+.ordersummary_wrapper .ordersummary_content ul li .dot.completed{
+  background-color: rgb(0, 255, 64);
+}
+
+.ordersummary_wrapper .ordersummary_content ul li .dot.rejected{
+  background-color: rgba(211, 60, 60, 0.644);
 }

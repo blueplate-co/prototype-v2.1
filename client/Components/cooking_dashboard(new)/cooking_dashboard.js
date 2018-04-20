@@ -1,16 +1,13 @@
-import {Bar, Line, Pie} from 'meteor/jmsalash:chartjs';
-import {Moment} from 'meteor/momentjs:moment';
-import {date_time_conversion} from '/imports/functions/date_time_conversion.js';
 import React from 'react';
 import { render } from 'react-dom';
 
 // import for show room react component
-import TotalViews from '../../imports/ui/total_views.js';
+import Dashboard from '../../imports/ui/dashboard.js';
 
 Template.cooking_dashboard.onRendered(function(){
 
   // render show room container from REACT
-  render(<TotalViews />, document.getElementById('view'));
+  render(<Dashboard />, document.getElementById('dashboard_container'));
   
 });
 

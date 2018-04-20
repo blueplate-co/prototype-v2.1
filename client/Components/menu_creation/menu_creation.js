@@ -105,7 +105,6 @@ Template.menu_creation_content.events({
     // whether this template render location is on a modal or not.
     // if it is on a modal, view shoudln't be removed and view menu template
     // shoudln't be rendered.
-    console.log(Template.instance().view._templateInstance.firstNode.parentElement)
     var current_instance = Template.instance().view._templateInstance.firstNode.parentElement
     if (!current_instance) {
       console.log(Template.instance().view);
