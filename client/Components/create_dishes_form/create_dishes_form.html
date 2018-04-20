@@ -2,8 +2,6 @@
 
     <div class = "create_dishes_form_container container">
         <form class="dish_descriptions" id="dish_descriptions">
-          <br>
-          <br>
             {{> uploadForm }}
           <br>
           <br>
@@ -169,20 +167,21 @@
 
      <div class = "circle_base" >
       {{#with currentUpload}}
-        {{>spinner}}
+        <div style = "padding-top: 125px; padding-left: 130px; margin-left: 125px;">
+          {{> spinnerWhite}} <span class = 'white-text'>loading...</span>
+        </div>
       {{else}}
         {{#if checkUpload}}
             <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
         {{else}}
             <div class = "image_upload">
-                <label for = "file_input">
-                    <img class="icon_img_upload" src="/img_upload_icon.svg" />
-                </label>
-                <div class="file-field input-field">
-                    <input id="file_input" type="file">
-                  <div class="file-path-wrapper">
-                  </div>
+              <div class="file-field input-field">
+                <div class = "center-align"><i class="material-icons white-text">file_upload</i></div>
+                <p class = "center-align white-text">upload dish picture</p>
+                <input id="file_input" type="file">
+                <div class="file-path-wrapper">
                 </div>
+              </div>
             </div>
         {{/if}}
       {{/with}}
