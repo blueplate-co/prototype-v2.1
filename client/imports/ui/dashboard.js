@@ -5,6 +5,7 @@ import TotalViews from '../ui/total_views';
 import TotalSales from '../ui/total_sales';
 import Conversions from '../ui/conversion';
 import OrderSummary from '../ui/ordersummary';
+import DashboardSummary from '../ui/dashboard_summary';
 
 export default class Dashboard extends Component {
 
@@ -21,6 +22,9 @@ export default class Dashboard extends Component {
             <div className="row">
                 <Conversions />
                 <OrderSummary />
+            </div>
+            <div className="row">
+                <DashboardSummary />
             </div>
         </div>
     );

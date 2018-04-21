@@ -127,3 +127,27 @@
 .ordersummary_wrapper .ordersummary_content ul li .dot.rejected{
   background-color: rgba(211, 60, 60, 0.644);
 }
+
+.summary_wrapper {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px!important;
+}
+
+.summary_wrapper ul {
+  display: inline-flex;
+}
+
+.summary_wrapper ul li{
+  margin: 0px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.summary_wrapper ul li.active{
+  border-bottom: 3px solid rgb(235, 50, 50);
+}
+
+.summary_wrapper ul li:first-child{
+  margin-left: 0px!important;
+}

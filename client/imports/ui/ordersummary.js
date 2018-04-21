@@ -18,7 +18,6 @@ export default class OrderSummary extends Component {
   }
 
   renderList() {
-      console.log(this.state.data);
     return (
       <ul>
         <li><span className="dot pending"></span> { this.state.data.pending } pending orders</li>
