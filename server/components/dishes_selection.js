@@ -31,7 +31,7 @@ Meteor.methods({
       _id: image_id
     });
   },
-  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, days, hours, mins, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, dish_tags) {
+  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, days, hours, mins, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, dish_tags, imgMeta) {
     check(dish_id, String);
     check(image_id, String);
     check(user_id, String);
@@ -46,6 +46,7 @@ Meteor.methods({
     check(allergy_tags, Match.Any);
     check(dietary_tags, Match.Any);
     check(dish_tags, Match.Any);
+    console.log('backend:' + imgMeta);
 
     Dishes.update({
       _id: dish_id
@@ -67,6 +68,7 @@ Meteor.methods({
         allergy_tags: allergy_tags,
         dietary_tags: dietary_tags,
         dish_tags: dish_tags,
+        meta: imgMeta,
         updatedAt: new Date()
       }
     });
