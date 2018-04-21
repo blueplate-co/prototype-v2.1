@@ -26,6 +26,25 @@
   margin-right: auto;
 }
 
+#dish_upload_overlay {
+  border-radius: 10px;
+  height: 300px;
+}
+
+#dish_upload_overlay {
+  visibility: hidden;
+  z-index: 100;
+}
+
+.circle_base:hover #dish_upload_overlay{
+  visibility: visible;
+  z-index: 100;
+  background:rgba(0,0,0,0.6);
+  opacity: 0.6;
+  transition: all 0.8s;
+  -webkit-transition: all 0.8s;
+}
+
 .dish_upload_wrapper {
   padding-top: 125px;
 }
