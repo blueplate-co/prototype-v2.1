@@ -503,12 +503,12 @@ Template.create_dishes_form.events({
             $('#dish_tags').material_chip({
               data: [],
             });
-            $('.modal').modal('close');
             return false;
           } else {
             Materialize.toast('Oops! Error occur when create a dish. Please try again later.' + err.message, 4000, "rounded bp-green");
           }
         })
+      $('.modal').modal('close');
     }
   },
   'click .update_dish_submit_btn': function(event) {
