@@ -495,19 +495,19 @@ Template.create_dishes_form.events({
             };
             // hide popup with trigger click cancel button on modal
             $('#add_dish_modal > div.modal-footer > a.modal-action.modal-close.waves-effect.waves-green.btn-flat')[0].click();
-            Session.set('image_id',null);
-            Session.keys = {}
-            Session.set('ingredient_temp', []);
-            Session.set('tempImages', []);
-            Session.set('imgMeta', []);
-            $('#dish_tags').material_chip({
-              data: [],
-            });
             return false;
           } else {
             Materialize.toast('Oops! Error occur when create a dish. Please try again later.' + err.message, 4000, "rounded bp-green");
           }
         })
+        Session.set('image_id',null);
+        Session.keys = {}
+        Session.set('ingredient_temp', []);
+        Session.set('tempImages', []);
+        Session.set('imgMeta', []);
+        $('#dish_tags').material_chip({
+          data: [],
+        });
       $('.modal').modal('close');
     }
   },
