@@ -15,7 +15,7 @@ Meteor.methods({
   
       //- run charge for default payment methods of buyerStripeId
       var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
-      amount = ammount + ( amount * 0.034 ) + 2.35;
+      amount = amount + ( amount * 0.034 ) + 2.35;
       charge({
         amount: amount * 100,
         currency: "hkd",

@@ -22,7 +22,7 @@ Meteor.methods({
           {
             $set: {
               stripe_id: result.id,
-              credits: 50,
+              credits: 0,
             },
           }
         );
@@ -58,7 +58,8 @@ Meteor.methods({
     return card;
   },
   "payment.getCredits"() {
-    return Meteor.users.findOne({ _id: Meteor.userId() }).credits;
+    console.log(Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits);
+    return Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits;
   },
   "payment.depositCredits"(creditPackage, buyer_id) {
     if (creditPackage == "") {

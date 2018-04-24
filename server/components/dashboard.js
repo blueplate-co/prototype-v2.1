@@ -1,6 +1,6 @@
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
-import moment from 'moment';
+import moment from "moment";
 
 Meteor.methods({
   "dashboard.totalSales"() {
@@ -58,86 +58,98 @@ Meteor.methods({
       rejected: rejected,
     };
   },
-  'dashboard.summarydishes'() {
+  "dashboard.summarydishes"() {
     var result = [];
-    var item = { id: "", name: "", views: 0, likes: 0, orders: 0, rating: 0 };
     // calculate id, name, orders, rating
     var dishes = Dishes.find({ user_id: Meteor.userId() }).fetch();
-    dishes.forEach(dish => {
-      var singleDish = item;
-      singleDish.id = dish._id;
-      singleDish.name = dish.dish_name;
-      singleDish.orders = dish.order_count;
-      singleDish.rating = dish.average_rating;
+    for (var i = 0; i < dishes.length; i++) {
+      var singleDish = {
+        id: dishes[i]._id,
+        name: dishes[i].dish_name,
+        views: 0,
+        likes: 0,
+        orders: dishes[i].order_count,
+        rating: dishes[i].average_rating,
+      };
       result.push(singleDish);
-    });
+    }
     // calculate like
-    result.forEach(dish => {
-      var likes = DishesLikes.find({ dish_id: dish.id }).count();
-      dish.likes = likes;
-    });
+    for(var i = 0; i< result.length; i++) {
+      var likes = DishesLikes.find({ dish_id: dishes[i].id }).count();
+      result[i].likes = likes;
+    }
+
 
     //calculate views
-    result.forEach(dish => {
-      var views = DishesViews.find({ dish_id: dish.id }).count();
-      dish.views = views;
-    });
+    for(var i = 0; i< result.length; i++) {
+      var views = DishesViews.find({ dish_id: dishes[i].id }).count();
+      result[i].views = views;
+    }
 
     return result;
   },
-  'dashboard.summarymenu'() {
+  "dashboard.summarymenu"() {
     var result = [];
     var item = { id: "", name: "", views: 0, likes: 0, orders: 0, rating: 0 };
     // calculate id, name, orders, rating
     var menus = Menu.find({ user_id: Meteor.userId() }).fetch();
-    menus.forEach(menu => {
-      var singleMenu = item;
-      singleMenu.id = menu._id;
-      singleMenu.name = menu.menu_name;
-      singleMenu.orders = menu.order_count;
-      singleMenu.rating = menu.average_rating;
+    for (var i = 0; i < menus.length; i++) {
+      var singleMenu = {
+        id: menus[i]._id,
+        name: menus[i].menu_name,
+        views: 0,
+        likes: 0,
+        orders: menus[i].order_count,
+        rating: menus[i].average_rating,
+      };
       result.push(singleMenu);
-    });
+    }
     // calculate like
-    result.forEach(menu => {
-      var likes = MenusLikes.find({ menu_id: menu.id }).count();
-      menu.likes = likes;
-    });
+    for(var i = 0; i< result.length; i++) {
+      var likes = MenusLikes.find({ menu_id: menus[i].id }).count();
+      result[i].likes = likes;
+    }
 
     //calculate views
-    result.forEach(menu => {
-      var views = MenusViews.find({ menu_id: menu.id }).count();
-      menu.views = views;
-    });
+    for(var i = 0; i< result.length; i++) {
+      var views = MenusViews.find({ menu_id: menus[i].id }).count();
+      result[i].views = views;
+    }
 
     return result;
   },
-  'dashboard.summaryorder'() {
+  "dashboard.summaryorder"() {
     var result = [];
-    var item = { id: "", date: "", name: 0, foodie: 0, status: 0, amount: 0 };
     // calculate id, name, orders, rating
     var orders = Order_record.find({ seller_id: Meteor.userId() }).fetch();
-    orders.forEach(order => {
-      var singleOrder = item;
+    for (var i = 0; i < orders.length; i++) {
       //- id
-      singleOrder.id = order._id;
+      var id = orders[i]._id;
       //- date
-      singleOrder.date = moment(order.createdAt).format('DD/MM/YYYY');
+      var date = moment(orders[i].createdAt).format("DD/MM/YYYY");
       //- name
-      if (Dishes.find({ _id: order.product_id }).fetch().length > 0) {
-        singleOrder.name = Dishes.find({ _id: order.product_id }).fetch()[0].dish_name;
+      var name = "";
+      if (Dishes.find({ _id: orders[i].product_id }).fetch().length > 0) {
+        name = Dishes.find({
+          _id: orders[i].product_id,
+        }).fetch()[0].dish_name;
       } else {
-        singleOrder.name = Menu.find({ _id: order.product_id }).fetch()[0].menu_name;
+        name = Menu.find({
+          _id: orders[i].product_id,
+        }).fetch()[0].menu_name;
       }
       //- foodie
-      singleOrder.foodie = Profile_details.find({ user_id: order.buyer_id }).fetch()[0].foodie_name;
+      var foodie = Profile_details.find({
+        user_id: orders[i].buyer_id,
+      }).fetch()[0].foodie_name;
       //- status
-      singleOrder.status = order.status;
+      var status = orders[i].status;
       //- amount
-      singleOrder.amount = order.total_price;
+      var amount = orders[i].total_price;
+      singleOrder = { id: id, date: date, name: name, foodie: foodie, status: status, amount: amount }
       result.push(singleOrder);
-    });
+    }
 
     return result;
-  }
+  },
 });
