@@ -68,10 +68,10 @@ Meteor.methods({
         function(err, customer) {
           if (!err) {
             var balance = customer.account_balance;
-            var newBalance = balance + amount;
+            var newBalance = balance + ( amount * 100 );
             var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
             updatedCustomer(sellerCustomerId, {
-              account_balance: newBalance * 100
+              account_balance: newBalance
             }, function(err, customer) {
               if (!err) {
                 // update credits of buyer
