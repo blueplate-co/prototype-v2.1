@@ -167,6 +167,16 @@ Template.menu_creation_content.events({
       return false
     }
 
+    if (!Session.get('serving_option_tags')) {
+      Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+      return false;
+    } else {
+      if (Session.get('serving_option_tags').length == 0) {
+        Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+        return false;
+      }
+    }
+
     //remove 'on' problem
     if (typeof dishes_id !== "undefined" && typeof selected_dishes !== "string"){
       dishes_id = dishes_id.filter(function(a){return a !== "on"})

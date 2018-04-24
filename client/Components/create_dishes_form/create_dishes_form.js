@@ -468,6 +468,15 @@ Template.create_dishes_form.events({
       if (!Session.get('imgMeta')) {
         Session.set('imgMeta', null)
       }
+      if (!Session.get('serving_option_tags')) {
+        Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+        return false;
+      } else {
+        if (Session.get('serving_option_tags').length == 0) {
+          Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+          return false;
+        }
+      }
       Meteor.call('dish.insert', Session.get('image_id'), user_id, kitchen_id, dish_name, dish_description, Session.get('serving_option_tags'), cooking_time, days, hours, mins,
         dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), dish_tags, new Date(), new Date(), false, false,
         //- adding meta data for different image sizes

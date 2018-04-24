@@ -731,6 +731,16 @@ Template.create_homecook_profile.events({
     //Step 4
     const house_rule = $('#house_rule').val();
 
+    if (!Session.get('serving_option_tags')) {
+      Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+      return false;
+    } else {
+      if (Session.get('serving_option_tags').length == 0) {
+        Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+        return false;
+      }
+    }
+
 
     Meteor.call('kitchen_details.insert',
     kitchen_name,
