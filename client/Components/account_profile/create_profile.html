@@ -42,11 +42,11 @@
 <template name="upload_profile">
   <div>
     {{#with checkUpload}}
-      {{#with currentUpload}}
-        {{>spinnerWhite}}
-        <span class="white-text">{{progress.get}}%</span>
-      {{else}}
-        <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
+      <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
+        {{#with currentUpload}}
+          {{> spinner}}
+          <span class ="grey-text">{{progress.get}}%</span>
+        {{else}}
           <div class = "file-field input-field" id="profile_upload_overlay">
             <div class = "upload_fonts">
               <i class="material-icons white-text" style="margin: auto;">file_upload</i>
@@ -55,15 +55,15 @@
             </div>
           </div>
           <div class = "file-path-wrapper"></div>
-        </div>
-      {{/with}}
+        {{/with}}
+      </div>
     {{else}}
       <div class = "profile_image_upload">
         <div class="file-field input-field">
           <div class = "profile_upload_wrapper">
             {{#with currentUpload}}
-              {{> spinnerWhite}}
-              <span class="white-text">{{progress.get}}%</span>
+              {{> spinner}}
+              <span class ="grey-text">{{progress.get}}%</span>
             {{else}}
               <i class="material-icons grey-text" style="margin: auto;">file_upload</i>
               <p class = "center-align">upload profile picture</p>
