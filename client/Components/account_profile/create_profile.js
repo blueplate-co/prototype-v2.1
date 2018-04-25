@@ -54,7 +54,6 @@ Template.profile_banner.onRendered(function() {
         $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
         $("#banner_upload_button").text("Change Banner Image");
       } else {
-        console.log('hi');
         $(".profile_banner_area").css("background-color", "#56AACD");
       }
     }
@@ -221,25 +220,28 @@ Template.upload_profile.helpers({
   },
 
   load_profile: function() {
-    if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-      var profile_id_location = Kitchen_details.findOne({
-        'user_id': Meteor.userId()
-      });
-    } else {
-      var profile_id_location = Profile_details.findOne({
-        'user_id': Meteor.userId()
-      });
-    }
-    if (!profile_id_location) {
+    if (Template.instance().currentUpload.get()) {
       return false;
     } else {
-      if (profile_id_location.profileImg) {
-        return profile_id_location.profileImg.large;
+      if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
+        var profile_id_location = Kitchen_details.findOne({
+          'user_id': Meteor.userId()
+        });
       } else {
+        var profile_id_location = Profile_details.findOne({
+          'user_id': Meteor.userId()
+        });
+      }
+      if (!profile_id_location) {
         return false;
+      } else {
+        if (profile_id_location.profileImg) {
+          return profile_id_location.profileImg.large;
+        } else {
+          return false;
+        }
       }
     }
-
   }
 });
 
