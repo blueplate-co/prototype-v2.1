@@ -8,6 +8,8 @@ import {
   check
 } from 'meteor/check';
 
+import rotate_images from './image-processing.js';
+
 Profile_details = new Mongo.Collection('profile_details');
 Kitchen_details = new Mongo.Collection('kitchen_details');
 
@@ -26,6 +28,16 @@ profile_images = new FilesCollection({
     }
   }
 });
+
+profile_images.on('afterUpload', function(fileRef){
+  if (/png|jpe?g/i.test(fileRef.extension || '')) {
+    rotate_images(this, fileRef, (error, fileRef) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+  }
+})
 
 // set permission for Profile Details collection
 Profile_details.deny({
