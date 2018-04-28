@@ -4,6 +4,7 @@ import {
 import './create_profile.html';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+import gm from 'gm';
 
 profile_images = new FilesCollection({
   collectionName: 'profile_images',
@@ -32,6 +33,7 @@ Template.create_foodie_profile.onRendered(function() {
 
 Template.profile_banner.onCreated(function() {
   this.currentUpload = new ReactiveVar(false);
+  this.bannerStatus = new ReactiveVar(false);
 });
 
 Template.profile_banner.onRendered(function() {
@@ -63,6 +65,10 @@ Template.profile_banner.onRendered(function() {
 Template.profile_banner.helpers({
   currentUpload() {
     return Template.instance().currentUpload.get();
+  },
+
+  optimizing: function() {
+    return Template.instance().bannerStatus.get();
   },
 
   'checkUpload': function() {
@@ -101,7 +107,7 @@ Template.profile_banner.helpers({
       return false;
     } else {
       if (checkuploadBannerprofile.bannerProfileImg) {
-        banner_url = checkuploadBannerprofile.bannerProfileImg.origin;
+        banner_url = checkuploadBannerprofile.bannerProfileImg.large;
         $(".profile_banner_area").css("background-color", "");
         $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
       } else {
@@ -141,6 +147,7 @@ Template.profile_banner.helpers({
 
 Template.profile_banner.events({
   'change #banner_file_input': function(e, template) {
+    e.preventDefault;
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case
       // multiple files were selected
@@ -157,31 +164,32 @@ Template.profile_banner.events({
             purpose: "banner_picture"
           }
         }, false);
-        Meteor.call('profile_images.remove', "banner_picture");
+        //Meteor.call('profile_images.remove', "banner_picture");
 
         upload.on('start', function() {
           template.currentUpload.set(this);
         });
 
         upload.on('end', function(error, profile_images) {
+          template.bannerStatus.set(true)
           if (error) {
             alert('Error during upload: ' + error.message);
           } else {
             Meteor.setTimeout(function() {
-              var banner_url = profile_images.meta.base64;
+              let newImgName = changeImgName(profile_images.path)
+              console.log('new image name: ', newImgName)
+              saveToKraken(newImgName, profile_images.path, 'bannerProfileImg');
+              var banner_url = "/profile_upload/" + profile_images._id + profile_images.extensionWithDot;
               $(".profile_banner_area").css("background-color", "");
               $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
-            }, 3000);
-            /** below is the line that prevents meteor from reloading **/
-            let newImgName = changeImgName(profile_images.path)
-            console.log('new image name: ', newImgName)
-            saveToKraken(newImgName, profile_images.path, 'bannerProfileImg');
-
+              template.currentUpload.set(false);
+              template.bannerStatus.set(false);
+            }, 4500);
           }
+          /** below is the line that prevents meteor from reloading **/
           Meteor._reload.onMigrate(function() {
             return [false];
           });
-          template.currentUpload.set(false);
         });
         upload.start();
       };
@@ -191,11 +199,17 @@ Template.profile_banner.events({
 
 Template.upload_profile.onCreated(function() {
   this.currentUpload = new ReactiveVar(false);
+  this.profileStatus = new ReactiveVar(false);
 });
 
 Template.upload_profile.helpers({
   currentUpload() {
     return Template.instance().currentUpload.get();
+  },
+
+  profileStatus() {
+    console.log(Template.instance().profileStatus.get());
+    return Template.instance().profileStatus.get();
   },
 
   checkUpload: function() {
@@ -269,22 +283,22 @@ Template.upload_profile.events({
         });
 
         upload.on('end', function(error, profile_images) {
+          template.profileStatus.set(true);
+          template.currentUpload.set(this);
           if (error) {
             alert('Error during upload: ' + error.message);
           } else {
             Meteor.setTimeout(function() {
-              var profile_url = profile_images.meta.base64;
+              //- kraken
+              let newImgName = changeImgName(profile_images.path)
+              console.log('new image name: ', newImgName)
+              saveToKraken(newImgName, profile_images.path, 'profileImg');
+              var profile_url = "/profile_upload/" + profile_images._id + profile_images.extensionWithDot;
               $(".profile_upload_wrapper").css("background-image", "url(" + profile_url + ")");
               $(".profile_icon_img_upload").hide();
-            }, 3000);
+              template.profileStatus.set(false);
+            }, 6000);
             /** above is the line that prevents meteor from reloading **/
-
-            //- kraken
-            let newImgName = changeImgName(profile_images.path)
-            console.log('new image name: ', newImgName)
-            saveToKraken(newImgName, profile_images.path, 'profileImg');
-
-
           }
           Meteor._reload.onMigrate(function() {
             return [false];
