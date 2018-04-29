@@ -8,6 +8,8 @@ import {
   check
 } from 'meteor/check';
 
+import rotate_images from './image-processing.js';
+
 Shopping_cart = new Mongo.Collection('shopping_cart');
 Dishes = new Mongo.Collection('dishes');
 Ingredients = new Mongo.Collection('ingredients');
@@ -20,14 +22,23 @@ Images = new FilesCollection({
   allowClientCode: false,
   onBeforeUpload(file) {
 
-    if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.extension)) {
+    if (file.size <= 5242880 && /png|jpg|jpeg/i.test(file.extension)) {
       return true;
     } else {
-      return 'Please upload image, with size equal or less than 10MB';
+      return 'Please upload image, with size equal or less than 5MB';
     }
   }
 });
 
+Images.on('afterUpload', function(fileRef) {
+  if (/png|jpe?g/i.test(fileRef.extension || '')) {
+    rotate_images(this, fileRef, (error, fileRef) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+  }
+})
 /**
 Meteor.publish('files.images.all', function() {
   return Images.find().cursor;
@@ -314,7 +325,7 @@ Meteor.methods({
 let changeImgName = function(imgPath)
 {
 
-  //- return new name DateTime in milliseconds + unique ID 
+  //- return new name DateTime in milliseconds + unique ID
   let currentDate = new Date()
   var milliseconds = currentDate.getMilliseconds()
   //- uniqid

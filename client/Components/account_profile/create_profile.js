@@ -14,10 +14,10 @@ profile_images = new FilesCollection({
   allowClientCode: false,
   onBeforeUpload(file) {
 
-    if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.extension)) {
+    if (file.size <= 5242880 && /png|jpg|jpeg/i.test(file.extension)) {
       return true;
     } else {
-      return 'Please upload image, with size equal or less than 10MB';
+      return 'Please upload image, with size equal or less than 5MB';
     }
   }
 });
@@ -184,7 +184,7 @@ Template.profile_banner.events({
               $(".profile_banner_area").css("background-image", "url(" + banner_url + ")");
               template.currentUpload.set(false);
               template.bannerStatus.set(false);
-            }, 4500);
+            }, 6000);
           }
           /** below is the line that prevents meteor from reloading **/
           Meteor._reload.onMigrate(function() {
@@ -235,6 +235,7 @@ Template.upload_profile.helpers({
 
   load_profile: function() {
     if (Template.instance().currentUpload.get()) {
+      console.log('case 1')
       return false;
     } else {
       if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {

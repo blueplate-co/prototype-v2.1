@@ -21,15 +21,15 @@ profile_images = new FilesCollection({
   allowClientCode: false,
   onBeforeUpload(file) {
 
-    if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.extension)) {
+    if (file.size <= 5242880 && /png|jpg|jpeg/i.test(file.extension)) {
       return true;
     } else {
-      return 'Please upload image, with size equal or less than 10MB';
+      return 'Please upload image, with size equal or less than 5MB';
     }
   }
 });
 
-profile_images.on('afterUpload', function(fileRef){
+profile_images.on('afterUpload', function(fileRef) {
   if (/png|jpe?g/i.test(fileRef.extension || '')) {
     rotate_images(this, fileRef, (error, fileRef) => {
       if (error) {
