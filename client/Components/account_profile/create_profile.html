@@ -44,8 +44,8 @@
     {{#with checkUpload}}
       <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
         {{#with currentUpload}}
-          {{> spinner}}
-          <span class ="grey-text">{{progress.get}}%</span>
+          {{> spinnerWhite}}
+          <span class ="white-text">{{progress.get}}%</span>
         {{else}}
           <div class = "file-field input-field" id="profile_upload_overlay">
             <div class = "upload_fonts">

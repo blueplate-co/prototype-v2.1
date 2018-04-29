@@ -21,6 +21,7 @@ boilerplate-generator@1.2.0
 caching-compiler@1.1.9
 caching-html-compiler@1.1.2
 callback-hook@1.0.10
+ccorcos:clientside-image-manipulation@1.0.4
 cfs:base-package@0.0.30
 cfs:data-man@0.0.6
 cfs:ejson-file@0.1.4
