@@ -50,16 +50,16 @@ Template.uploadForm.events({
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case
       // multiple files were selected
-      var upload;
-      var reader = new FileReader();
-      reader.readAsDataURL(e.currentTarget.files[0]);
-      reader.onloadend = function () {
+      var file = e.currentTarget.files[0];
+      return data = processImage(file, function(data) {
         upload = Images.insert({
-          file: e.currentTarget.files[0],
+          file: data,
+          isBase64: true,
+          fileName: file.name,
           streams: 'dynamic',
           chunkSize: 'dynamic',
           meta: {
-            base64: reader.result
+            base64: data
           }
         }, false);
 
@@ -116,7 +116,7 @@ Template.uploadForm.events({
         });
 
         upload.start();
-      };
+      });
 
     }
   }
