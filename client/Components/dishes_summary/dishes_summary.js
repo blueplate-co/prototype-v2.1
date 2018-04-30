@@ -241,7 +241,6 @@ Template.dishes_summary.events({
         checkboxes[i].checked = false;
     };
     Ingredients_temporary.remove({});
-    Session.set('imgMeta', []);
   },
   'click #modal_add_btn': function() {
     $('.modal-content').scrollTop(0);
