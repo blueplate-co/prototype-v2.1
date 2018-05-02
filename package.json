@@ -2,7 +2,7 @@
   "name": "make_dishes",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor --settings ./settings.json",
     "deploy": "DEPLOY_HOSTNAME=ap-southeast-2.galaxy.meteor.com meteor deploy [blueplate] --settings ./settings.json",
     "deploy:dev": "DEPLOY_HOSTNAME=ap-southeast-2.galaxy-deploy.meteor.com meteor deploy --settings ./settings_dev.json ap-southeast-2.galaxy-ingress.meteor.com"
   },
