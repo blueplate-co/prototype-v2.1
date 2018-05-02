@@ -1,0 +1,40 @@
+.cat_navbar {
+  display: block;
+}
+
+.cat_admin_btn {
+  margin: 12px 24px;
+  padding: 0px 6px;
+}
+
+.cat_admin_btn i {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.category_display {
+  border-style: solid;
+  width: 100%;
+}
+
+#close_input {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.cat_save {
+  width: 100px !important;
+  margin-right: 24px;
+}
+
+.cat_icon_uploader {
+  width: 200px;
+  height: 200px;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.category_display .col {
+  padding-left: 10.5px !important;
+}
