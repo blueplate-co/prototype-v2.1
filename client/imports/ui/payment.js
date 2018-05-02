@@ -12,7 +12,8 @@ class Payment extends Component {
         this.validationAndCredits = this.validationAndCredits.bind(this);
         this.state = {
             payment: "",
-            creditPackage: ""
+            creditPackage: "",
+            action: false
         }
     }
 
@@ -82,6 +83,9 @@ class Payment extends Component {
 
     validationAndCredits() {
         var creditPackage = this.state.creditPackage;
+        this.setState({
+            action: true
+        })
         ccNum = $('#card_no').val();
         cvc = $('#cvc_no').val();
         expMo = $('#exp_month').val();
@@ -103,6 +107,9 @@ class Payment extends Component {
                     if (err) {
                         console.log(err);
                         Materialize.toast(err.message, 'rounded bp-green');
+                        this.setState({
+                            action: false
+                        })
                     } else {
                         // complete add to credits and charge credit card
                         // enough money to pay
@@ -126,6 +133,9 @@ class Payment extends Component {
                             Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
                                 if (err) {
                                     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                                    this.setState({
+                                        action: false
+                                    })
                                 } else {
                                     Meteor.call('shopping_cart.remove', item._id)
                                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
@@ -147,6 +157,10 @@ class Payment extends Component {
         expMo = $('#exp_month').val();
         expYr = $('#exp_year').val();
 
+        this.setState({
+            action: true
+        })
+
         // validation card info
         Stripe.card.createToken({
             number: ccNum,
@@ -156,6 +170,9 @@ class Payment extends Component {
         }, function(status, response) {
             if (response.error) {
                 Materialize.toast(response.error.message, 'rounded bp-green');
+                this.setState({
+                    action: false
+                })
             } else {
                 var StripeToken = response.id;
                 var transaction_no = 1;
@@ -178,6 +195,9 @@ class Payment extends Component {
                     Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
                         if (err) {
                             Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                            this.setState({
+                                action: false
+                            })
                         } else {
                             Meteor.call('shopping_cart.remove', item._id)
                             Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
@@ -255,7 +275,7 @@ class Payment extends Component {
                         </div>
                         <div className="row text-center">
                             <div className="col s12 m6 offset-m3 l6 offset-l3 xl6 offset-xl3">
-                                <button className="btn" onClick={ () => this.validationAndCredits() } style={{ marginTop: '30px' }}>Next</button>
+                                <button className="btn" disabled={this.state.action} onClick={ () => this.validationAndCredits() } style={{ marginTop: '30px' }}>Next</button>
                             </div>
                         </div>
                     </div>
@@ -299,7 +319,7 @@ class Payment extends Component {
                         </div>
                         <div className="row text-center">
                             <div className="col s12 m6 offset-m3 l6 offset-l3 xl6 offset-xl3">
-                                <button className="btn" onClick={ () => this.validationCardAndCharge() } style={{ marginTop: '30px' }}>Next</button>
+                                <button className="btn" disabled={this.state.action} onClick={ () => this.validationCardAndCharge() } style={{ marginTop: '30px' }}>Next</button>
                             </div>
                         </div>
                     </div>

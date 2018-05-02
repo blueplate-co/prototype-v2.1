@@ -1,3 +1,5 @@
+import { promotion } from '../../promotion';
+
 Template.menu_list.onCreated(function() {
   this.user_menus = this.subscribe('getListMenus');
 })
@@ -11,7 +13,7 @@ Template.menu_list.helpers({
     var current_user = Meteor.userId();
     var user_menus = Menu.find({"user_id": current_user, "deleted": false}).fetch();
     user_menus.map((item, index) => {
-      item.menu_selling_price = Math.floor(item.menu_selling_price / 1.15)
+      item.menu_selling_price = Math.floor(item.menu_selling_price / Meteor.settings.public.promotion.fee)
     })
     return user_menus;
   },

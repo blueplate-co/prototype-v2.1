@@ -1,5 +1,6 @@
 import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
+import { promotion } from '../../promotion'
 
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
@@ -102,7 +103,7 @@ Template.dishes_summary.events({
         serving_option: get_dish.serving_option,
         cooking_time: get_dish.cooking_time,
         dish_cost: get_dish.dish_cost,
-        dish_selling_price: Math.floor(get_dish.dish_selling_price / 1.15),
+        dish_selling_price: Math.floor(get_dish.dish_selling_price / Meteor.settings.public.promotion.fee),
       };
       Blaze.renderWithData(Template.create_dishes_form, get_dish_contents,$("#edit_dish_modal_content")[0]);
       $(".create_dish_submit_btn").hide()

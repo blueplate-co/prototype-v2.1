@@ -1,10 +1,18 @@
 {
   "galaxy.meteor.com": {
     "env": {
-      "MONGO_URL": "mongodb://galaxy:blueplate123@blueplate-cluster-galaxy-01-shard-00-00-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-01-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-02-oph59.mongodb.net:27017/meteor?ssl=true&replicaSet=blueplate-cluster-galaxy-01-shard-0&authSource=admin",
-      "MONGO_OPLOG_URL": "mongodb://oplog-galaxy:blueplate123@blueplate-cluster-galaxy-01-shard-00-00-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-01-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-02-oph59.mongodb.net:27017/local?ssl=true&replicaSet=blueplate-cluster-galaxy-01-shard-0&authSource=admin",
-      "MAIL_URL": "smtps://ACCOUNT%2EADMIN%40BLUEPLATE%2ECO:ilqkgygkgeojntmu@smtp.gmail.com:465",
+      "MONGO_URL":
+        "mongodb://galaxy:blueplate123@blueplate-cluster-galaxy-01-shard-00-00-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-01-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-02-oph59.mongodb.net:27017/meteor?ssl=true&replicaSet=blueplate-cluster-galaxy-01-shard-0&authSource=admin",
+      "MONGO_OPLOG_URL":
+        "mongodb://oplog-galaxy:blueplate123@blueplate-cluster-galaxy-01-shard-00-00-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-01-oph59.mongodb.net:27017,blueplate-cluster-galaxy-01-shard-00-02-oph59.mongodb.net:27017/local?ssl=true&replicaSet=blueplate-cluster-galaxy-01-shard-0&authSource=admin",
+      "MAIL_URL":
+        "smtps://ACCOUNT%2EADMIN%40BLUEPLATE%2ECO:ilqkgygkgeojntmu@smtp.gmail.com:465",
       "ROOT_URL": "https://www.blueplate.co"
+    }
+  },
+  "public": {
+    "promotion": {
+      "fee": 1.15
     }
   }
 }

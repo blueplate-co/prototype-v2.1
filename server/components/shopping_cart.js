@@ -67,8 +67,8 @@ Meteor.methods({
         sellerCustomerId,
         function(err, customer) {
           if (!err) {
-            var balance = customer.account_balance;
-            var newBalance = balance + ( amount * 100 );
+            var balance = customer.account_balance; // in cent
+            var newBalance = balance + ( amount * 100 ); // balance convert into cent 
             var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
             updatedCustomer(sellerCustomerId, {
               account_balance: newBalance
