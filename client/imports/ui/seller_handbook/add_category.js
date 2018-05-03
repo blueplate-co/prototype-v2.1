@@ -14,7 +14,7 @@ export default class CategoryInput extends Component {
     this.state = {
       cat_title: '',
       cat_description: '',
-      incomplete_form: true
+      incomplete_form: true,
     }
   }
 
@@ -27,6 +27,14 @@ export default class CategoryInput extends Component {
     const cat_description = this.state.cat_description;
     const createdAt = new Date();
     const createdBy = Meteor.userId();
+    const icon_link = Session.get('shIcons')
+    Meteor.call('category.add', cat_title, cat_description, icon_link, createdBy, (error, result) => {
+      if (!error) {
+        Materialize.toast('Category added', 4000)
+      } else {
+        Materialize.toast(error.message)
+      }
+    })
     this.props.close_add_cat();
   }
 

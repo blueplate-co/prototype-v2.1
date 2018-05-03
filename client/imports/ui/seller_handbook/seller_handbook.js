@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import CategoryInput from './add_category.js';
+import CategoryList from './category_list.js';
 
 class CategorySummary extends Component {
 
@@ -54,6 +55,7 @@ class CategorySummary extends Component {
             : ""
           }
         </div>
+        <CategoryList />
       </div>
     )
   }

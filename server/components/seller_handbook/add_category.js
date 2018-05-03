@@ -1,0 +1,22 @@
+import { Meteor } from 'meteor/meteor';
+
+Seller_handbook_category = new Mongo.Collection('seller_handbook_category')
+
+Meteor.publish('sellerhb_display_all', function() {
+  return Seller_handbook_category.find({deleted: false})
+})
+
+Meteor.methods({
+  'category.add' (cat_title, cat_description, icon_link, createdBy) {
+    Seller_handbook_category.insert({
+      cat_title: cat_title,
+      cat_description: cat_description,
+      icon_link: icon_link,
+      createdBy: createdBy,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      article_count: 0,
+      deleted: false
+    })
+  }
+})
