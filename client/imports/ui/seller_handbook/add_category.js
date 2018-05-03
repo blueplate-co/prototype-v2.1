@@ -4,6 +4,8 @@ import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+import IconUpload from './icon_upload.js';
+
 export default class CategoryInput extends Component {
 
   constructor (props) {
@@ -49,8 +51,7 @@ export default class CategoryInput extends Component {
         <div className = "card-content">
           <div className = "row">
             <div className = "col s12 m5 l3">
-             <div className = "cat_icon_uploader center">
-             </div>
+              <IconUpload />
             </div>
             <div className = "col s12 m7 l9">
               <div className="input-field">
@@ -63,7 +64,7 @@ export default class CategoryInput extends Component {
               </div>
             </div>
             <div className = "row">
-              <a className = "btn right cat_save" disabled = {this.state.cat_title.trim().length + this.state.cat_description.trim().length == 0}>save</a>
+              <a className = "btn right cat_save" disabled = {this.state.cat_title.trim().length + this.state.cat_description.trim().length == 0} onClick = {this.save_cat}>save</a>
             </div>
           </div>
         </div>

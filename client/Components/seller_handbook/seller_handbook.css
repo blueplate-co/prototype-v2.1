@@ -32,9 +32,49 @@
   width: 200px;
   height: 200px;
   border-style: solid;
-  border-radius: 10px;
+  border-radius: 10px
 }
 
 .category_display .col {
   padding-left: 10.5px !important;
+}
+
+.icon_upload_btn {
+  margin-left: 30px;
+}
+
+.iconDisplay {
+  position: absolute;
+  top: 26px;
+  left: 26px;
+  width: 194px;
+  padding: 6px;
+  height: 194px;
+  border-radius: 10px;
+}
+
+.icon_change_btn {
+  position: absolute;
+  width: 194px;
+  height: 194px;
+}
+
+.icon_change_btn .upload_display {
+  position: absolute;
+  top: -111px;
+  border-radius: 10px;
+  left: 0px;
+  width: 194px;
+  height: 195px;
+  visibility: hidden;
+  z-index: 10;
+}
+
+.icon_change_btn:hover .upload_display {
+  visibility: visible;
+  z-index: 10;
+  background:rgba(0,0,0,0.6);
+  opacity: 0.6;
+  transition: all 0.8s;
+  -webkit-transition: all 0.8s;
 }
