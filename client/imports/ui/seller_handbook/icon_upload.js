@@ -138,7 +138,7 @@ class IconUpload extends Component {
               <div className="file-field input-field icon_upload_btn">
                 <div>
                   <i className="material-icons grey-text darken-1">file_upload</i>
-                  <p className = "grey-text darken-1">upload icon / image</p>
+                  <p className = "grey-text darken-1">upload icon (Accept svg, jpg, png)</p>
                   <input type="file" onChange = {this.uploadFile} />
                 </div>
               </div>
