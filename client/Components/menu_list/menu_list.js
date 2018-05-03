@@ -1,5 +1,3 @@
-import { promotion } from '../../promotion';
-
 Template.menu_list.onCreated(function() {
   this.user_menus = this.subscribe('getListMenus');
 })

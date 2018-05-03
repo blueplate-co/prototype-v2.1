@@ -1,5 +1,3 @@
-import { promotion } from '../../promotion';
-
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
 });

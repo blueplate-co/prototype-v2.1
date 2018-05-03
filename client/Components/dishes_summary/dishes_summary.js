@@ -1,6 +1,5 @@
 import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
-import { promotion } from '../../promotion'
 
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
@@ -170,6 +169,13 @@ Template.dishes_summary.events({
       Session.set('condiments_tags',get_dish.condiments_tags);
       Session.set('serving_temperature_tags',get_dish.serving_temperature_tags);
       Session.set('imgMeta', get_dish.meta);
+
+      setTimeout(() => {
+        // Add chips to tagging section
+        console.log($('.chips-placeholder'))
+        console.log(get_dish.dish_tags);
+        $('#dish_tags').material_chip({data:get_dish.dish_tags});
+      }, 500);
     }
   },
 

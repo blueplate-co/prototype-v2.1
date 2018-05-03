@@ -205,9 +205,11 @@ Template.order_card.helpers({
       '_id': String(this)
     })
     var dish_id = order.product_id
-    dish_qty = Order_record.findOne({
-      'product_id': dish_id
-    }).quantity
+    dish_qty = Order_record.find({
+      'product_id': dish_id,
+      'buyer_id': order.buyer_id,
+      'seller_id': order.seller_id
+    }, {sort: {createdAt: -1}, limit: 1}).fetch()[0].quantity
     return dish_qty;
   },
   'ready_to_serve': function() {
@@ -291,9 +293,11 @@ Template.request_card.helpers({
     return dish_image;
   },
   'get_dish_qty': function() {
-    return Order_record.findOne({
-      'product_id': this.product_id
-    }).quantity
+    return Order_record.find({
+      'product_id': this.product_id,
+      'seller_id': Meteor.userId(),
+      'buyer_id': this.buyer_id
+    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].quantity
   },
   'get_menu_name': function() {
     return Menu.findOne({
