@@ -12,9 +12,9 @@ Meteor.methods({
     var sum_menu = 0;
     result.forEach(product => {
       if (Dishes.find({ _id: product.product_id }).fetch().length > 0) {
-        sum_dish = sum_dish + Math.round(product.total_price / Meteor.settings.promotion.fee);
+        sum_dish = sum_dish + Math.round(product.total_price / 1.15);
       } else {
-        sum_menu = sum_menu + Math.round(product.total_price / Meteor.settings.promotion.fee);
+        sum_menu = sum_menu + Math.round(product.total_price / 1.15);
       }
     });
     var res = { dish: sum_dish, menu: sum_menu };
@@ -145,7 +145,7 @@ Meteor.methods({
       //- status
       var status = orders[i].status;
       //- amount
-      var amount = Math.round(orders[i].total_price / Meteor.settings.Template.dishes_selectionpromotion.fee);
+      var amount = Math.round(orders[i].total_price / 1.15);
       singleOrder = { id: id, date: date, name: name, foodie: foodie, status: status, amount: amount }
       result.push(singleOrder);
     }

@@ -58,7 +58,6 @@ Meteor.methods({
     return card;
   },
   "payment.getCredits"() {
-    console.log(Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits);
     return Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits;
   },
   "payment.depositCredits"(creditPackage, buyer_id) {

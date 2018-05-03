@@ -15,9 +15,9 @@ Meteor.methods({
   
       //- run charge for default payment methods of buyerStripeId
       var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
-      amount = amount + ( amount * 0.034 ) + 2.35;
+      chargeAmount = Math.round(amount + ( amount * 0.034 ) + 2.35);
       charge({
-        amount: amount * 100,
+        amount: chargeAmount * 100,
         currency: "hkd",
         description: description,
         receipt_email: buyerEmail,
@@ -40,21 +40,34 @@ Meteor.methods({
                   function(err, customer) {
                     if (!err) {
                       var balance = customer.account_balance;
-                      var newBalance = balance + ammount;
+                      // update new balance with origin price
+                      var newBalance = balance + Math.round(amount / 1.15);
                       var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                       updatedCustomer(sellerCustomerId, {
-                        account_balance: newBalance
+                        account_balance: newBalance * 100
                       }, function(err, customer) {
                         if (!err) {
                           console.log(customer);
+                        } else {
+                          //console log update balance of customer err
+                          console.log(err);
                         }
                       });
+                    } else {
+                      //console log get balance of customer err
+                      console.log(err);
                     }
                   }
                 )
+              } else {
+                //console log get balance of transaction err
+                console.log(err);
               }
             }
           );
+        } else {
+          //console log charge err
+          console.log(err);
         }
       })
     } else {

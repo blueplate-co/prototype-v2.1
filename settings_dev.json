@@ -7,7 +7,9 @@
       "ROOT_URL": "http://ap-southeast-2.galaxy-ingress.meteor.com"
     }
   },
-  "promotion": {
-    "fee": 1.15
+  "public": {
+    "promotion": {
+      "fee": 1.15
+    }
   }
 }
