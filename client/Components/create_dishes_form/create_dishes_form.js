@@ -50,16 +50,16 @@ Template.uploadForm.events({
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case
       // multiple files were selected
-      var upload;
-      var reader = new FileReader();
-      reader.readAsDataURL(e.currentTarget.files[0]);
-      reader.onloadend = function () {
+      var file = e.currentTarget.files[0];
+      return data = processImage(file, function(data) {
         upload = Images.insert({
-          file: e.currentTarget.files[0],
+          file: data,
+          isBase64: true,
+          fileName: file.name,
           streams: 'dynamic',
           chunkSize: 'dynamic',
           meta: {
-            base64: reader.result
+            base64: data
           }
         }, false);
 
@@ -116,7 +116,7 @@ Template.uploadForm.events({
         });
 
         upload.start();
-      };
+      });
 
     }
   }
@@ -227,7 +227,7 @@ Template.ingredient_input.events({
     console.log('ingredient quantity', ingredient_quantity)
 
     if (!ingredient_name || ingredient_name == '' ||
-        !ingredient_quantity || ingredient_quantity == '' || 
+        !ingredient_quantity || ingredient_quantity == '' ||
         !_.isNumber(ingredient_quantity) )
     {
 
@@ -242,7 +242,7 @@ Template.ingredient_input.events({
         Materialize.toast('Please check your the quantity field again. Number is required', 4000, 'rounded bp-green');
         return false;
       }
-      
+
       // Materialize.toast('Please complete ingedient before add into dish.', 4000, 'rounded bp-green');
       // return false;
     }
@@ -509,19 +509,20 @@ Template.create_dishes_form.events({
             Materialize.toast('Oops! Error occur when create a dish. Please try again later.' + err.message, 4000, "rounded bp-green");
           }
         })
+        Session.set('image_id',null);
+        Session.keys = {}
+        Session.set('ingredient_temp', []);
+        Session.set('tempImages', []);
+        Session.set('imgMeta', []);
+        $('#dish_tags').material_chip({
+          data: [],
+        });
+      $('.modal').modal('close');
     }
-    Session.set('image_id',null);
-    Session.keys = {}
-    Session.set('ingredient_temp', []);
-    Session.set('tempImages', []);
-    Session.set('imgMeta', []);
-    $('#dish_tags').material_chip({
-      data: [],
-    });
-    $('.modal').modal('close');
   },
   'click .update_dish_submit_btn': function(event) {
     event.preventDefault();
+    console.log('updating...');
     var kitchen = Kitchen_details.findOne({
       user_id: Meteor.userId()
     });
@@ -542,6 +543,7 @@ Template.create_dishes_form.events({
     var dish_profit = dish_selling_price - dish_cost;
 
     var dish_tags = $('#dish_tags').material_chip('data')
+    console.log(Session.get('imgMeta'));
 
     Meteor.call('dish.update',
       Session.get('selected_dishes_id'),
@@ -561,34 +563,34 @@ Template.create_dishes_form.events({
       Session.get('allergy_tags'),
       Session.get('dietary_tags'),
       dish_tags,
-      new Date(),
+      Session.get('imgMeta'),
       function(err) {
         if (err) {
           Materialize.toast('Oops! Error update dish. Please try again. ' + err.message, 4000, "rounded bp-green");
         } else {
           Materialize.toast('Update successful.' , 4000, "rounded bp-green");
+
+              var list_ingredients = Session.get('ingredient_temp');
+              list_ingredients.forEach(function(doc){
+                doc.dish_name = event.target.dish_name.value;
+              });
+              list_ingredients.forEach(function(doc){
+                Ingredients.insert(doc);
+              });
+
+              Session.set('ingredient_temp', []);
+              Session.set('selected_dishes_id', null);
+              Session.set('imgMeta', []);
         }
       }
     );
-
-    var list_ingredients = Session.get('ingredient_temp');
-    list_ingredients.forEach(function(doc){
-      doc.dish_name = event.target.dish_name.value;
-    });
-    list_ingredients.forEach(function(doc){
-      Ingredients.insert(doc);
-    });
-
-    Session.set('ingredient_temp', []);
-    Session.set('selected_dishes_id', null);
-    Session.set('imgMeta', []);
   }
 });
 
 let changeImgName = function(imgPath)
 {
 
-  //- return new name DateTime in milliseconds + unique ID 
+  //- return new name DateTime in milliseconds + unique ID
   let currentDate = new Date()
   var milliseconds = currentDate.getMilliseconds()
   //- uniqid

@@ -2,8 +2,6 @@
 
     <div class = "create_dishes_form_container container">
         <form class="dish_descriptions" id="dish_descriptions">
-          <br>
-          <br>
             {{> uploadForm }}
           <br>
           <br>
@@ -168,24 +166,53 @@
 <template name="uploadForm">
 
      <div class = "circle_base" >
-      {{#with currentUpload}}
-        {{>spinner}}
-      {{else}}
-        {{#if checkUpload}}
-            <div class = "circle_base" style = "background-image: url({{load_dish}})"></div>
-        {{else}}
-            <div class = "image_upload">
-                <label for = "file_input">
-                    <img class="icon_img_upload" src="/img_upload_icon.svg" />
-                </label>
-                <div class="file-field input-field">
-                    <input id="file_input" type="file">
-                  <div class="file-path-wrapper">
+      {{#if checkUpload}}
+        <div class = "circle_base" style = "background-image: url({{load_dish}})">
+          <div id="dish_upload_overlay">
+            <div class="file-field input-field dish_upload_wrapper upload" >
+              <div class = "center-align">
+                {{#with currentUpload}}
+                  <div class = 'row'>
+                    <div class = 'col l2 offset-l5 m4 offset-m4 s8 offset-s2 center'>
+                      {{> spinnerWhite}}
+                      <span class = 'white-text'>{{progress.get}}% uploaded...</span>
+                    </div>
                   </div>
-                </div>
+                {{else}}
+                  <div class = "center-align">
+                    <i class="material-icons white-text">file_upload</i>
+                    <p class = "white-text center-align">change dish picture</p>
+                  </div>
+                {{/with}}
+              </div>
+              <input id="file_input" type="file">
+              <div class="file-path-wrapper">
+              </div>
             </div>
-        {{/if}}
-      {{/with}}
+          </div>
+        </div>
+      {{else}}
+          <div class = "image_upload">
+            <div class="file-field input-field dish_upload_wrapper">
+              <div class = "center-align">
+                {{#with currentUpload}}
+                  <div class = 'row'>
+                    <div class = 'col l2 offset-l5 m4 offset-m4 s8 offset-s2 center'>
+                      {{> spinnerWhite}}
+                      <span class = 'white-text'>{{progress.get}}% uploaded...</span>
+                    </div>
+                  </div>
+                {{else}}
+                  <i class="material-icons white-text">file_upload</i>
+                  <p class = "white-text center-align">upload dish picture</p>
+                {{/with}}
+              </div>
+              <input id="file_input" type="file">
+              <div class="file-path-wrapper">
+              </div>
+            </div>
+          </div>
+      {{/if}}
      </div>
 </template>
 
