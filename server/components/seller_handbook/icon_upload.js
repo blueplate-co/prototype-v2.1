@@ -17,5 +17,5 @@ shIcons = new FilesCollection({
 });
 
 Meteor.publish('shIcons.all', function() {
-  return shIcons.find({})
+  return shIcons.find({}).fetch();
 });

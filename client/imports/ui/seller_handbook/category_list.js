@@ -3,6 +3,8 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
+import CategoryCard from './category_card.js';
+
 Seller_handbook_category = new Mongo.Collection('seller_handbook_category')
 
 class CategoryList extends Component {
@@ -14,7 +16,13 @@ class CategoryList extends Component {
     return this.props.cat_list.map((item, index) => {
       return (
         <div key = {index}>
-          <p>{item.cat_title}</p>
+          <CategoryCard
+            title ={item.cat_title}
+            description = { item.cat_description }
+            link = {item.icon_link.origin}
+            article_count = {item.article_count}
+            updatedAt = {item.updatedAt}
+          />
         </div>
       )
     })
@@ -24,10 +32,10 @@ class CategoryList extends Component {
     return (
       <div>
       {
-      (this.props.listLoading) ?
-        <p>loading..</p>
-        :
-        this.catList()
+        (this.props.listLoading) ?
+          <p>loading...</p>
+          :
+          this.catList()
       }
       </div>
     )
@@ -37,6 +45,6 @@ class CategoryList extends Component {
     const cat_handle = Meteor.subscribe('sellerhb_display_all');
     return {
       listLoading: !cat_handle.ready(),
-      cat_list: Seller_handbook_category.find({deleted: false}).fetch()
+      cat_list: Seller_handbook_category.find({deleted: false}, {sort: {updatedAt: -1}}).fetch()
     };
   })(CategoryList);

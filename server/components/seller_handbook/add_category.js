@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 Seller_handbook_category = new Mongo.Collection('seller_handbook_category')
 
 Meteor.publish('sellerhb_display_all', function() {
-  return Seller_handbook_category.find({deleted: false})
+  return Seller_handbook_category.find({deleted: false}, {sort: {updatedAt: -1}})
 })
 
 Meteor.methods({
