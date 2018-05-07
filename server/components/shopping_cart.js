@@ -39,9 +39,9 @@ Meteor.methods({
                   sellerCustomerId,
                   function(err, customer) {
                     if (!err) {
-                      var balance = customer.account_balance;
+                      var balance = customer.account_balance / 100; //devide for 100 to convert it to dollar
                       // update new balance with origin price
-                      var newBalance = balance + Math.round(amount / 1.15);
+                      var newBalance = balance + Math.round(amount / 1.15); // dollar + dollar
                       var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                       updatedCustomer(sellerCustomerId, {
                         account_balance: newBalance * 100
@@ -81,7 +81,7 @@ Meteor.methods({
         function(err, customer) {
           if (!err) {
             var balance = customer.account_balance; // in cent
-            var newBalance = balance + ( amount * 100 ); // balance convert into cent 
+            var newBalance = balance + ( amount * 100 / 1.15 ); // balance convert into cent
             var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
             updatedCustomer(sellerCustomerId, {
               account_balance: newBalance

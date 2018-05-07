@@ -6,7 +6,7 @@ Meteor.methods({
   "dashboard.totalSales"() {
     var result = Order_record.find({
       seller_id: Meteor.userId(),
-      status: "Closed",
+      status: { $ne: "Created" },
     }).fetch();
     var sum_dish = 0;
     var sum_menu = 0;
@@ -44,6 +44,9 @@ Meteor.methods({
           confirmed = confirmed + 1;
           break;
         case "Ready":
+          completed = completed + 1;
+          break;
+        case "Closed":
           completed = completed + 1;
           break;
         case "Rejected":
