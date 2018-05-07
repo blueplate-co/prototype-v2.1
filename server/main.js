@@ -49,6 +49,10 @@ Meteor.publish('getKitchensLikes', function(){
   return KitchenLikes.find();
 })
 
+Meteor.publish('getAnnoucement', function(){
+  return Annoucement.find();
+})
+
 //- call Meteor methods
 if (Meteor.isServer) {
   let publicFolder = __meteor_bootstrap__.serverDir.split(/(\\|\/).meteor/)[0] + '/public';
@@ -109,4 +113,14 @@ if (Meteor.isServer) {
     
   });
 
+}
+
+Annoucement = new Mongo.Collection('annoucement');
+
+if (Annoucement.find({}).count() == 0) {
+  Annoucement.insert({
+    message: 'Welcome to Blueplate',
+    background: 'https://images.unsplash.com/photo-1463740839922-2d3b7e426a56?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a18285db9f6a93b9854a835fc1040c0a&auto=format&fit=crop&w=2019&q=80',
+    createdAt: new Date()
+  });
 }

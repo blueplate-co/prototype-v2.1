@@ -49,4 +49,6 @@ Meteor.startup(function () {
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-})
+});
+
+Meteor.subscribe('getAnnoucement');

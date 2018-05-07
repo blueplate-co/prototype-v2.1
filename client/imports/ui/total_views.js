@@ -16,7 +16,7 @@ export default class TotalViews extends Component {
 
   render() {
     return (
-      <div className="col l3 offset-l1 m12 s12 dashboard-block-wrapper totalviews_wrapper">
+      <div className="card dashboard-totalviews">
         <div className="totalview-content">
           <p>total views:</p>
           <h5>{this.state.view}</h5>

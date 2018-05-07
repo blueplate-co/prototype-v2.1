@@ -5,7 +5,7 @@ export default class DashboardBalance extends Component {
     super(props);
     this.state = {
       account_balance: "0",
-      credits: 0
+      credits: 0,
     };
   }
 
@@ -37,10 +37,21 @@ export default class DashboardBalance extends Component {
 
   render() {
     return (
-        <div className="col l8 m12 s12 dashboard-block-wrapper amount-wrapper">
-            <h5>Balance amount: <span className="price">{this.state.account_balance}</span></h5>
-            <h5>Credits amount: <span className="price">{this.state.credits}</span></h5>
+      <div className="card dashboard-balance">
+        <div className="infor-pane">
+          <h5>
+            Balance amount:{" "}
+            <span className="price">{this.state.account_balance}</span>
+          </h5>
+          <h5>
+            Credits amount: <span className="price">{this.state.credits}</span>
+          </h5>
         </div>
-    )
+        <div className="action-pane">
+          <button>Claim </button>
+          <button onClick={ () => window.open('/deposit','_blank')} >Add credits </button>
+        </div>
+      </div>
+    );
   }
 }

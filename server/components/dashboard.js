@@ -3,6 +3,10 @@ import { Meteor } from "meteor/meteor";
 import moment from "moment";
 
 Meteor.methods({
+  "getConfig"() {
+    var result = Annoucement.find({}).fetch()[0];
+    return result;
+  },
   "dashboard.totalSales"() {
     var result = Order_record.find({
       seller_id: Meteor.userId(),
