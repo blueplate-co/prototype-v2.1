@@ -67,7 +67,7 @@ export default class CategoryCard extends Component {
       <div>
       {
         (this.state.edit)?
-        <div className = "card category_display">
+        <div className = "card z-depth-0 category_display">
           <div className = "card-content">
             <div className = "row">
               <div className = "col s12 m5 l3">
@@ -91,7 +91,7 @@ export default class CategoryCard extends Component {
           </div>
         </div>
         :
-        <div className = "card category_display" onMouseOver = {this.highlight_cat} onMouseLeave = {this.unhighlight_cat} >
+        <div className = "card z-depth-0 category_display" onMouseOver = {this.highlight_cat} onMouseLeave = {this.unhighlight_cat} >
           <div className = "card_overlay" style = {(this.state.highlight)?{backgroundColor: "rgba(224,224,224, 1)"}:{backgroundColor: "transparent"}}>
             <div className = "card-content">
               <div className = "row">

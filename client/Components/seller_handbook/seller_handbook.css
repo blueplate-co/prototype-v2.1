@@ -13,7 +13,6 @@
 }
 
 .category_display {
-  border-style: solid;
   width: 100%;
 }
 
@@ -36,7 +35,6 @@
 .cat_icon_uploader {
   width: 200px;
   height: 200px;
-  border-style: solid;
   border-radius: 10px
 }
 

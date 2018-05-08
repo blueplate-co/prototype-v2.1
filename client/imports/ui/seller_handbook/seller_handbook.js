@@ -39,12 +39,6 @@ class CategorySummary extends Component {
             <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "add_cat" onClick={ () => this.add_cat() }>
               <i className="material-icons grey-text text-darken-1">add</i><span>Add</span>
             </a>
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "edit_cat">
-              <i className="material-icons grey-text text-darken-1" id= "edit_cat">edit</i><span>Edit</span>
-            </a>
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "remove_cat">
-              <i className="material-icons grey-text text-darken-1" id = "remove_cat">close</i><span>Remove</span>
-            </a>
           </div>
         </div>
         <div className = "divider"></div>
