@@ -110,6 +110,54 @@
   font-size: 4rem;
 }
 
+.dashboard-topselling {
+  padding: 20px;
+  grid-column: span 5;
+}
+
+.dashboard-topselling h1 {
+  margin: 0px;
+  font-size: 1.5rem;
+}
+
+.dashboard-topselling ul {
+  margin-top: 40px;
+}
+
+.dashboard-topselling ul li {
+  margin: 5px 0px;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+}
+
+.dashboard-topselling ul li:last-child {
+  border-bottom: none;
+}
+
+.dashboard-topselling ul li .thumbnail {
+  display: inline-block;
+  width: 60px!important;
+  height: 34px;
+  background-position: center center!important;
+  background-size: cover!important;
+  border-radius: 5px;
+}
+
+.dashboard-topselling ul li .dish-title {
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.dashboard-topselling ul li .order-count {
+  float: right;
+  font-size: 1.5rem;
+  color: #000;
+  font-weight: bold;
+}
+
 @media (max-width: 600px) {
   .cards .card {
     grid-column: span 12;

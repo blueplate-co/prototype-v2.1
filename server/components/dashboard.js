@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import moment from "moment";
 
 Meteor.methods({
-  "getConfig"() {
+  getConfig() {
     var result = Annoucement.find({}).fetch()[0];
     return result;
   },
@@ -81,14 +81,13 @@ Meteor.methods({
       result.push(singleDish);
     }
     // calculate like
-    for(var i = 0; i< result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       var likes = DishesLikes.find({ dish_id: dishes[i].id }).count();
       result[i].likes = likes;
     }
 
-
     //calculate views
-    for(var i = 0; i< result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       var views = DishesViews.find({ dish_id: dishes[i].id }).count();
       result[i].views = views;
     }
@@ -112,13 +111,13 @@ Meteor.methods({
       result.push(singleMenu);
     }
     // calculate like
-    for(var i = 0; i< result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       var likes = MenusLikes.find({ menu_id: menus[i].id }).count();
       result[i].likes = likes;
     }
 
     //calculate views
-    for(var i = 0; i< result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       var views = MenusViews.find({ menu_id: menus[i].id }).count();
       result[i].views = views;
     }
@@ -153,10 +152,24 @@ Meteor.methods({
       var status = orders[i].status;
       //- amount
       var amount = Math.round(orders[i].total_price / 1.15);
-      singleOrder = { id: id, date: date, name: name, foodie: foodie, status: status, amount: amount }
+      singleOrder = {
+        id: id,
+        date: date,
+        name: name,
+        foodie: foodie,
+        status: status,
+        amount: amount,
+      };
       result.push(singleOrder);
     }
 
     return result;
+  },
+  "dashboard.topselling"() {
+    var dishes = Dishes.find(
+      { user_id: Meteor.userId() },
+      { sort: { order_count: -1 }, limit: 5 }
+    ).fetch();
+    return dishes;
   },
 });

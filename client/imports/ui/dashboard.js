@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import DashboardBanner from "../ui/dashboard_banner";
 import DashboardBalance from "../ui/dashboard_balance";
 import TotalViews from "../ui/total_views";
+import TopSelling from "../ui/top_selling";
 import TotalSales from "../ui/total_sales";
 import Conversions from "../ui/conversion";
 import OrderSummary from "../ui/ordersummary";
@@ -19,6 +20,7 @@ export default class Dashboard extends Component {
             <DashboardBanner />
             <DashboardBalance />
             <TotalViews />
+            <TopSelling />
             {/* <DashboardBalance />
           <TotalViews />
           <TotalSales />
