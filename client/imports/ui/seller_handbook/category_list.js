@@ -17,11 +17,13 @@ class CategoryList extends Component {
       return (
         <div key = {index}>
           <CategoryCard
+            id = {item._id}
             title ={item.cat_title}
             description = { item.cat_description }
             link = {item.icon_link.origin}
             article_count = {item.article_count}
             updatedAt = {item.updatedAt}
+            icon_link = {item.icon_link.origin}
           />
         </div>
       )

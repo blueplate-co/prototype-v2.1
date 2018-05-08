@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import IconUpload from './icon_upload.js';
 
@@ -31,6 +29,7 @@ export default class CategoryInput extends Component {
     Meteor.call('category.add', cat_title, cat_description, icon_link, createdBy, (error, result) => {
       if (!error) {
         Materialize.toast('Category added', 4000)
+        Session.set('shIcons', {})
       } else {
         Materialize.toast(error.message)
       }

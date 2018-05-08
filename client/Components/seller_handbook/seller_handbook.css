@@ -28,6 +28,11 @@
   margin-right: 24px;
 }
 
+.cat_update {
+  width: 120px !important;
+  margin-right: 24px;
+}
+
 .cat_icon_uploader {
   width: 200px;
   height: 200px;
@@ -40,7 +45,7 @@
 }
 
 .icon_upload_btn {
-  margin-left: 30px;
+  margin-left: 56px;
 }
 
 .iconDisplay {
@@ -56,13 +61,13 @@
 
 .icon_change_btn {
   position: absolute;
+  top: 13px;
   width: 194px;
   height: 194px;
 }
 
 .icon_change_btn .upload_display {
   position: absolute;
-  top: -111px;
   border-radius: 10px;
   left: 0px;
   width: 194px;
@@ -78,4 +83,9 @@
   opacity: 0.6;
   transition: all 0.8s;
   -webkit-transition: all 0.8s;
+}
+
+.card_overlay {
+  border-radius: 15px;
+  z-index: 1000;
 }

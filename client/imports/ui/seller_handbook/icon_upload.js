@@ -36,6 +36,15 @@ class IconUpload extends Component {
     this.uploadFile = this.uploadFile.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.icon_link) {
+      this.setState({
+        iconLink: this.props.icon_link,
+        hasIcon: true,
+      })
+    }
+  }
+
   uploadFile(e) {
     e.preventDefault();
     let self = this;
@@ -122,9 +131,9 @@ class IconUpload extends Component {
               <div>
                 <img className = "iconDisplay" src = {this.state.iconLink} />
                 <div className="file-field input-field icon_change_btn">
-                  <div className = "upload_display valign-wrapper">
-                    <i className="material-icons white-text">file_upload</i>
-                    <p className = "white-text">change icon / image</p>
+                  <div className = "upload_display valign-wrapper center">
+                    <i className="material-icons white-text center-align">file_upload</i>
+                    <p className = "white-text center-align">change icon</p>
                     <input type="file" onChange = {this.uploadFile} />
                   </div>
                 </div>
@@ -138,7 +147,7 @@ class IconUpload extends Component {
               <div className="file-field input-field icon_upload_btn">
                 <div>
                   <i className="material-icons grey-text darken-1">file_upload</i>
-                  <p className = "grey-text darken-1">upload icon (Accept svg, jpg, png)</p>
+                  <p className = "grey-text darken-1">upload icon</p>
                   <input type="file" onChange = {this.uploadFile} />
                 </div>
               </div>

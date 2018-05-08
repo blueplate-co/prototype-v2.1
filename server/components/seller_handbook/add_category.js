@@ -18,5 +18,15 @@ Meteor.methods({
       article_count: 0,
       deleted: false
     })
+  },
+  'category.remove' (_id) {
+    Seller_handbook_category.update({
+      _id: _id
+    }, {
+      $set: {
+      updatedAt: new Date(),
+      deleted: true
+      }
+    })
   }
 })
