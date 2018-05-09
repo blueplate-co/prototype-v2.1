@@ -4,19 +4,11 @@ import { Meteor } from 'meteor/meteor'
 export default class SellerHandbook extends Component {
   constructor(props) {
     super(props)
-    this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.state = {
       mouseOver: -1,
       categories: [],
     }
-  }
-
-  handleMouseOver = (e) => {
-    console.log(e.target)
-    this.setState({
-      mouseOver: true
-    })
   }
 
   handleMouseLeave = (e) => {
@@ -37,12 +29,17 @@ export default class SellerHandbook extends Component {
 
   category_display_list = () => {
     return this.state.categories.map((item, index) => {
-      const card_className = this.state.mouseOver ? "card hoverable cat_display_container":"card hoverable cat_display_container z-depth-0"
       return (
         <div className = "col xl4 l4 m6 s12 center">
           <div
-            key = {index} className = {card_className}
-            onMouseOver={this.handleMouseOver}
+            key = {index}
+            className = {
+              this.state.mouseOver === index ?
+                "card hoverable cat_display_container"
+                :
+                "card hoverable cat_display_container z-depth-0"
+              }
+            onMouseOver= {(e) => {(this.setState({mouseOver: index}))}}
             onMouseLeave={this.handleMouseLeave}
           >
             <a href="">
