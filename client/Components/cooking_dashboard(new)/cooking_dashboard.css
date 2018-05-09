@@ -111,6 +111,7 @@
 }
 
 .dashboard-topselling {
+  height: 350px;
   padding: 20px;
   grid-column: span 5;
 }
@@ -156,6 +157,69 @@
   font-size: 1.5rem;
   color: #000;
   font-weight: bold;
+}
+
+.dashboard-totalsales {
+  position: relative;
+  padding: 20px;
+  grid-column: span 7;
+}
+
+.dashboard-totalsales .wrapper_content {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-option{
+  margin: 0px;
+  display: inline-flex;
+  text-align: right;
+  width: 50%;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-option li{
+  padding: 0px 5px;
+  cursor: pointer;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-option li.active{
+  padding: 0px 5px;
+  color: #56aacd;
+  text-decoration: underline;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-timeframe{
+  margin: 0px;
+  display: inline-flex;
+  text-align: left;
+  width: 50%;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-timeframe li{
+  padding: 0px 5px;
+  cursor: pointer;
+}
+
+.dashboard-totalsales .wrapper_content ul.list-timeframe li.active{
+  padding: 0px 5px;
+  color: #56aacd;
+  text-decoration: underline;
+}
+
+ul.list-timeframe li.active{
+  padding: 0px 5px;
+  color: #56aacd;
+  text-decoration: underline;
+}
+
+.dashboard-totalsales .wrapper_content .info {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.dashboard-totalsales .wrapper_content .chartjs-render-monitor {
+  bottom: 5px;
+  position: absolute;
 }
 
 @media (max-width: 600px) {

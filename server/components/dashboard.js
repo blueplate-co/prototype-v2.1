@@ -7,22 +7,81 @@ Meteor.methods({
     var result = Annoucement.find({}).fetch()[0];
     return result;
   },
-  "dashboard.totalSales"() {
-    var result = Order_record.find({
-      seller_id: Meteor.userId(),
-      status: { $ne: "Created" },
-    }).fetch();
-    var sum_dish = 0;
-    var sum_menu = 0;
-    result.forEach(product => {
-      if (Dishes.find({ _id: product.product_id }).fetch().length > 0) {
-        sum_dish = sum_dish + Math.round(product.total_price / 1.15);
-      } else {
-        sum_menu = sum_menu + Math.round(product.total_price / 1.15);
-      }
-    });
-    var res = { dish: sum_dish, menu: sum_menu };
-    return res;
+  "dashboard.totalSales"(timeframe) {
+    switch (timeframe) {
+      case "week":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $dayOfWeek: "$createdAt" } },
+              sales: { $sum: "$total_price" }
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          }
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+      case "month":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $dayOfMonth: "$createdAt" } },
+              sales: { $sum: "$total_price" }
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          }
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+      case "year":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $month: "$createdAt" } },
+              sales: { $sum: "$total_price" }
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          }
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+    }
   },
   "dashboard.salesCount"() {
     var sales = Order_record.find({
@@ -171,5 +230,81 @@ Meteor.methods({
       { sort: { order_count: -1 }, limit: 5 }
     ).fetch();
     return dishes;
+  },
+  "dashboard.totalsalesData"(timeframe) {
+    switch (timeframe) {
+      case "week":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $dayOfWeek: "$createdAt" } },
+              sales: { $sum: "$total_price" },
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          },
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+      case "month":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $dayOfMonth: "$createdAt" } },
+              sales: { $sum: "$total_price" },
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          },
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+      case "year":
+        var result = [];
+        var userId = Meteor.userId();
+        var pipeline = [
+          {
+            $match: {
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+            },
+          },
+          {
+            $group: {
+              _id: { day: { $month: "$createdAt" } },
+              sales: { $sum: "$total_price" },
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          },
+        ];
+        result = Order_record.aggregate(pipeline);
+        return result;
+        break;
+    }
   },
 });

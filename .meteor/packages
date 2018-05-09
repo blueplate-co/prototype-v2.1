@@ -55,3 +55,4 @@ erasaur:meteor-lodash
 percolate:synced-cron
 mrgalaxy:stripe
 ccorcos:clientside-image-manipulation
+monbro:mongodb-mapreduce-aggregation
