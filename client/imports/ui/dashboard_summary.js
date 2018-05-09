@@ -133,7 +133,7 @@ export default class DashboardSummary extends Component {
   }
   render() {
     return (
-      <div className="col l12 m12 s12 dashboard-block-wrapper summary_wrapper">
+      <div className="card dashboard-summary">
         <div className="wrapper_content">
           <h5>Summary</h5>
           <ul>

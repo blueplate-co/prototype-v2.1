@@ -282,6 +282,90 @@ ul.list-timeframe li.active{
   font-size: 1rem;
 }
 
+.dashboard-support {
+  grid-column: span 12;
+  background-color: #B1DBBE;
+  height: 200px;
+  text-align: center;
+}
+
+.dashboard-support .icon {
+  background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/headset-icon.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 120px;
+  height: 120px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -180px;
+  top: 20px;
+}
+
+.dashboard-support .support-content {
+  color: #fff;
+  text-align: left;
+  position: absolute;
+  left: 50%;
+  margin-left: -30px;
+  top: 20px;
+}
+
+.dashboard-support .support-content h7 {
+  color: #fff;
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.dashboard-support .support-content span {
+  color: #fff;
+  display: block;
+  font-size: 1rem;
+  padding: 0px 0px 20px 0px;
+}
+
+.dashboard-support .support-content button {
+  color: #fff;
+  display: block;
+  -webkit-appearance: none;
+  background: none;
+  border: 1px solid #fff;
+  padding: 5px 50px;
+  border-radius: 15px;
+}
+
+.dashboard-support .support-content button:hover {
+  color: #B1DBBE;
+  display: block;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #fff;
+  padding: 5px 50px;
+  border-radius: 15px;
+}
+
+.dashboard-summary {
+  grid-column: span 12;
+  padding: 20px;
+}
+
+.dashboard-summary .wrapper_content ul {
+  display: inline-flex;
+}
+
+.dashboard-summary .wrapper_content ul li {
+  padding: 0px 10px;
+  cursor: pointer;
+}
+
+.dashboard-summary .wrapper_content ul li.active {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #56AACD;
+}
+
 @media (max-width: 600px) {
   .cards .card {
     grid-column: span 12;

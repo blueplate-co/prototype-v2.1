@@ -7,6 +7,7 @@ import TopSelling from "../ui/top_selling";
 import TotalSales from "../ui/total_sales";
 import Conversions from "../ui/conversion";
 import OrderSummary from "../ui/ordersummary";
+import Support from "../ui/support";
 import DashboardSummary from "../ui/dashboard_summary";
 
 export default class Dashboard extends Component {
@@ -24,6 +25,8 @@ export default class Dashboard extends Component {
             <TotalSales />
             <Conversions />
             <OrderSummary />
+            <Support />
+            <DashboardSummary />
             {/* <DashboardBalance />
           <TotalViews />
           <TotalSales />
