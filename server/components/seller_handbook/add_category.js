@@ -28,5 +28,8 @@ Meteor.methods({
       deleted: true
       }
     })
+  },
+  'category.display' () {
+    return Seller_handbook_category.find({deleted: false}, {sort:{cat_title: 1}}).fetch();
   }
 })

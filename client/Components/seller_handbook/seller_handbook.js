@@ -3,8 +3,8 @@ import React from 'react';
 import { render } from 'react-dom';
 
 // import for show room react component
-import CategorySummary from '../../imports/ui/seller_handbook/seller_handbook.js';
+import SellerHandbook from '../../imports/ui/seller_handbook/seller_handbook.js';
 
-Template.category_list.onRendered(function() {
-  render (<CategorySummary />, document.getElementById('category_list_container'));
+Template.seller_handbook.onRendered(function() {
+  render (<SellerHandbook />, document.getElementById('seller_handbook_container'));
 })

@@ -1,58 +1,87 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
-import { Session } from 'meteor/session';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Meteor } from 'meteor/meteor'
 
-import CategoryInput from './add_category.js';
-import CategoryList from './category_list.js';
-
-class CategorySummary extends Component {
-
-  constructor (props) {
-    super(props);
-    this.add_cat = this.add_cat.bind(this);
-    this.close_add_cat = this.close_add_cat.bind(this);
+export default class SellerHandbook extends Component {
+  constructor(props) {
+    super(props)
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.state = {
-      add_category: false
+      mouseOver: -1,
+      categories: [],
     }
   }
 
-  add_cat = () => {
+  handleMouseOver = (e) => {
+    console.log(e.target)
     this.setState({
-      add_category: true
-    });
+      mouseOver: true
+    })
   }
 
-  close_add_cat = () => {
+  handleMouseLeave = (e) => {
     this.setState({
-      add_category: false
+      mouseOver: false
+    })
+  }
+
+  componentDidMount() {
+    Meteor.call('category.display', (error, result) => {
+      if (result) {
+        this.setState({
+          categories: result
+        });
+      }
+    })
+  }
+
+  category_display_list = () => {
+    return this.state.categories.map((item, index) => {
+      const card_className = this.state.mouseOver ? "card hoverable cat_display_container":"card hoverable cat_display_container z-depth-0"
+      return (
+        <div className = "col xl4 l4 m6 s12 center">
+          <div
+            key = {index} className = {card_className}
+            onMouseOver={this.handleMouseOver}
+            onMouseLeave={this.handleMouseLeave}
+          >
+            <a href="">
+              <div className = "card-image">
+                <img className = "iconDisplay" src = {item.icon_link.origin} />
+              </div>
+              <div className = "card-content left-align">
+                <h5>{item.cat_title}</h5>
+                <p>{item.cat_description}</p>
+                <br />
+                <p>see all articles ({item.article_count})</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      )
     })
   }
 
   render() {
     return (
-      <div className = "container seller_handbook_category">
+      <div className = "container">
         <div className = "section">
-          <h5>Seller handbook category list</h5>
+          <h4 className = "center-align">Seller Handbook</h4>
+          <p className = "center-align">This is a business guide for our partner</p>
+        </div>
+        <div className = "section">
+        <h6 className = "center-align">Categories</h6>
+
           <div className = "row">
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "add_cat" onClick={ () => this.add_cat() }>
-              <i className="material-icons grey-text text-darken-1">add</i><span>Add</span>
-            </a>
+            {
+              (this.state.categories !== []) ?
+              this.category_display_list()
+              :
+              <p>loading...</p>
+            }
           </div>
         </div>
-        <div className = "divider"></div>
-        <div className = "section">
-          {
-            (this.state.add_category) ?
-            <CategoryInput close_add_cat={this.close_add_cat} />
-            : ""
-          }
-        </div>
-        <CategoryList />
       </div>
     )
   }
 }
-
-export default CategorySummary;
