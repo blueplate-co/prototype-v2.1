@@ -30,7 +30,7 @@ export default class OrderSummary extends Component {
 
   render() {
     return (
-      <div className="col l5 offset-l1 m12 s12 dashboard-block-wrapper ordersummary_wrapper">
+      <div className="card dashboard-summaryorder">
         <div className="ordersummary_content">
           <h5>Orders</h5>
           {this.renderList()}

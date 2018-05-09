@@ -23,6 +23,7 @@ export default class Dashboard extends Component {
             <TopSelling />
             <TotalSales />
             <Conversions />
+            <OrderSummary />
             {/* <DashboardBalance />
           <TotalViews />
           <TotalSales />
