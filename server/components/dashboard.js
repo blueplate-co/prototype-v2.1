@@ -135,7 +135,7 @@ Meteor.methods({
         views: 0,
         likes: 0,
         orders: dishes[i].order_count,
-        rating: dishes[i].average_rating,
+        rating: Math.round(dishes[i].average_rating * 100) / 100
       };
       result.push(singleDish);
     }
@@ -165,7 +165,7 @@ Meteor.methods({
         views: 0,
         likes: 0,
         orders: menus[i].order_count,
-        rating: menus[i].average_rating,
+        rating: Math.round(menus[i].average_rating * 100) / 100,
       };
       result.push(singleMenu);
     }

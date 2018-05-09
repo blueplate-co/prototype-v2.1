@@ -193,7 +193,8 @@
   margin: 0px;
   display: inline-flex;
   text-align: left;
-  width: 50%;
+  width: auto;
+  float: right;
 }
 
 .dashboard-totalsales .wrapper_content ul.list-timeframe li{
@@ -225,17 +226,22 @@ ul.list-timeframe li.active{
 
 .dashboard-conversion {
   background-color: #D8D8D8;
-  padding: 20px;
   grid-column: span 6;
+  height: 200px;
+}
+
+.dashboard-conversion .totalview-content {
+  height: 160px;
+  margin: 20px;
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/funnel-icon.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: right 0px;
-  height: 200px;
 }
 
 .dashboard-conversion h6 {
   font-size: 1.5rem;
+  width: 50%;
 }
 
 .dashboard-conversion p {
@@ -246,7 +252,7 @@ ul.list-timeframe li.active{
 .dashboard-conversion .list-fields {
   position: absolute;
   right: 80px;
-  top: 0px;
+  top: 3px;
   text-align: center;
 }
 
