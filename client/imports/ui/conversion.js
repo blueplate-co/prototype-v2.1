@@ -30,11 +30,16 @@ export default class Conversions extends Component {
 
   render() {
     return (
-      <div className="col l6 m12 s12 dashboard-block-wrapper conversion_wrapper">
+      <div className="card dashboard-conversion">
         <div className="totalview-content">
-          <h6>Conversions</h6>
-          <p>views - sales</p>
-          {this.state.viewsPerSales} %
+          <h6>Conversions Funnel</h6>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+          <ul className="list-fields">
+            <li>search</li>
+            <li>views</li>
+            <li>sales</li>
+          </ul>
+          <span className="viewsPerSales">{this.state.viewsPerSales} %</span>
         </div>
       </div>
     );

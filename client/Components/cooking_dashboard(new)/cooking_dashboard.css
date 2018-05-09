@@ -1,5 +1,5 @@
 .cards {
-  max-width: 960px;
+  max-width: 100%;
 }
 
 .cards {
@@ -163,6 +163,7 @@
   position: relative;
   padding: 20px;
   grid-column: span 7;
+  height: 350px;
 }
 
 .dashboard-totalsales .wrapper_content {
@@ -213,13 +214,52 @@ ul.list-timeframe li.active{
 }
 
 .dashboard-totalsales .wrapper_content .info {
-  margin-top: 10px;
+  margin-top: 0px;
   font-size: 18px;
 }
 
 .dashboard-totalsales .wrapper_content .chartjs-render-monitor {
   bottom: 5px;
   position: absolute;
+}
+
+.dashboard-conversion {
+  background-color: #D8D8D8;
+  padding: 20px;
+  grid-column: span 6;
+  background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/funnel-icon.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right 0px;
+  height: 200px;
+}
+
+.dashboard-conversion h6 {
+  font-size: 1.5rem;
+}
+
+.dashboard-conversion p {
+  font-size: 0.8rem;
+  width: 50%;
+}
+
+.dashboard-conversion .list-fields {
+  position: absolute;
+  right: 80px;
+  top: 0px;
+  text-align: center;
+}
+
+.dashboard-conversion .list-fields li {
+  padding: 5px 0px;
+}
+
+.dashboard-conversion .viewsPerSales {
+  position: absolute;
+  right: 125px;
+  top: 60px;
+  width: 100px;
+  border-bottom: 1px solid;
 }
 
 @media (max-width: 600px) {
