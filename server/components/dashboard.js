@@ -141,13 +141,13 @@ Meteor.methods({
     }
     // calculate like
     for (var i = 0; i < result.length; i++) {
-      var likes = DishesLikes.find({ dish_id: dishes[i].id }).count();
+      var likes = DishesLikes.find({ dish_id: result[i].id }).count();
       result[i].likes = likes;
     }
 
     //calculate views
     for (var i = 0; i < result.length; i++) {
-      var views = DishesViews.find({ dish_id: dishes[i].id }).count();
+      var views = DishesViews.find({ dish_id: result[i].id }).count();
       result[i].views = views;
     }
 
@@ -171,13 +171,13 @@ Meteor.methods({
     }
     // calculate like
     for (var i = 0; i < result.length; i++) {
-      var likes = MenusLikes.find({ menu_id: menus[i].id }).count();
+      var likes = MenusLikes.find({ menu_id: result[i].id }).count();
       result[i].likes = likes;
     }
 
     //calculate views
     for (var i = 0; i < result.length; i++) {
-      var views = MenusViews.find({ menu_id: menus[i].id }).count();
+      var views = MenusViews.find({ menu_id: result[i].id }).count();
       result[i].views = views;
     }
 

@@ -229,7 +229,7 @@ export default class TotalSales extends Component {
             </li>
           </ul>
           <div className="info">
-            <span>total sales:</span>
+            <span>total sales</span>
             {this.state.by == "dishes" ? (
               <h5>${this.state.total_by_dishes}</h5>
             ) : (
