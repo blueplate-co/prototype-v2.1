@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PostEditor from './post_editor.js';
-import ReactDOM from 'react-dom';
 
 Seller_handbook_articles = new Mongo.Collection('seller_handbook_articles')
 
@@ -19,15 +18,12 @@ export default class ArticlePosting extends Component {
   }
 
   componentDidMount() {
-    var element = ReactDOM.findDOMNode(this.refs.dropdown)
     Meteor.call('category.display', (error, result) => {
       if (result) {
         this.setState({
           cat_display: result,
         })
-        $(element).ready = () => {
-          $('#category_selection').material_select();
-        }
+        $('#category_selection').material_select();
       }
     })
   }
@@ -41,7 +37,17 @@ export default class ArticlePosting extends Component {
   }
 
   handlePublish() {
-    Meteor.call('article.add', this.state.text)
+    Meteor.call('article.add', this.state.cat_selected, this.state.text, (error, result) => {
+      if (error) {
+        Materialize.toast(error + ' Please try again later.', 3000)
+      } else {
+        Materialize.toast('Article published.', 3000)
+        this.setState({
+          text: '',
+          cat_selected: '',
+        })
+      }
+    })
   }
 
   cat_list = () => {
