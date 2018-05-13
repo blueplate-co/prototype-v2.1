@@ -37,7 +37,7 @@ export default class ArticlePosting extends Component {
   }
 
   handleSelectChange(event) {
-    this.setState({cat_selected: '1'});
+    this.setState({cat_selected: event.target.value});
   }
 
   handlePublish() {
@@ -64,7 +64,7 @@ export default class ArticlePosting extends Component {
         </div>
         <PostEditor handleChange = {this.handleTextChange} text = {this.state.text} />
         <div className = "editor_action">
-          <div className = "btn post_publish right" onClick={this.handlePublish}>publish</div>
+          <div className = "btn-floating btn post_publish right" onClick={this.handlePublish}>publish</div>
         </div>
       </form>
     )
