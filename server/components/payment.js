@@ -1,6 +1,6 @@
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
-var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+var stripe = require("stripe")("pk_live_mqXbgtwXmodOMRSKycYVgsl6");
 
 Meteor.methods({
   "payment.createCustomer"(email) {

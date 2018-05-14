@@ -32,12 +32,12 @@ Images = new FilesCollection({
 });
 
 Meteor.startup(function() {
-    Stripe.setPublishableKey('pk_test_G9LJfGcn9zGEmQuMwc7bqGQF');
+    Stripe.setPublishableKey('pk_live_mqXbgtwXmodOMRSKycYVgsl6');
 });
 
 Meteor.startup(function() {
     var handler = StripeCheckout.configure({
-      key: 'pk_test_G9LJfGcn9zGEmQuMwc7bqGQF',
+      key: 'pk_live_mqXbgtwXmodOMRSKycYVgsl6',
       token: function(token) {}
     });
 });
