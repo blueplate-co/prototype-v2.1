@@ -120,7 +120,7 @@ class MenuSearchList extends Component {
         </div>
 
         {/* list items */}
-        <div clasasName = "section">
+        <div className = "section">
           <div className="row">
             {
               (this.props.listLoading)

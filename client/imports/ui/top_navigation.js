@@ -355,6 +355,7 @@ class TopNavigation extends Component {
       }
     });
     let date = document.getElementById("date").value;
+    let keyword = document.getElementById("keyword").value;
     if (this.state.address.trim().length > 0) {
       geocodeByAddress(this.state.address)
         .then(results => results[0])
@@ -374,7 +375,7 @@ class TopNavigation extends Component {
                 service,
                 date,
                 this.state.time,
-                limit,
+                keyword,
                 (error, result) => {
                   if (!error) {
                     Session.set("advanced_search_results", result);
@@ -534,6 +535,13 @@ class TopNavigation extends Component {
               onKeyPress={this.handlePress}
               className="search-form col l6 offset-l3 m10 offset-m1 s12"
             >
+              <div className="col s12">
+                <input
+                  id="keyword"
+                  type="text"
+                  placeholder="Keyword"
+                />
+              </div>
               <div className="col s12">
                 <PlacesAutocomplete inputProps={inputProps} />
               </div>
