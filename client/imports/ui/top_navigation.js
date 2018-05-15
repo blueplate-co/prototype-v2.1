@@ -367,7 +367,6 @@ class TopNavigation extends Component {
             },
             () => {
               // debugger
-
               Meteor.call(
                 "searching",
                 self.state.lat,
@@ -414,6 +413,7 @@ class TopNavigation extends Component {
             service,
             date,
             this.state.time,
+            keyword,
             (error, result) => {
               if (!error) {
                 Session.set("advanced_search_results", result);
