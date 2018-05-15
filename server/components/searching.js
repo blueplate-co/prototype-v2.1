@@ -278,7 +278,7 @@ Meteor.methods({
             searched_results = _.union(searched_results, kitchen_search, find_kitchen_id);
         }
 
-        if (keyword.trim() == '') {
+        if (!keyword) {
             return searched_results;
         } else {
             var keywordDish = [];
