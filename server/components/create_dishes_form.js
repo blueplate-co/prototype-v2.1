@@ -294,7 +294,7 @@ Meteor.methods({
       hours: hours,
       mins: mins,
       dish_cost: dish_cost,
-      dish_selling_price: dish_selling_price,
+      dish_selling_price: parseFloat(dish_selling_price).toFixed(2),
       dish_profit: dish_profit,
       allergy_tags: allergy_tags,
       dietary_tags: dietary_tags,
