@@ -38,7 +38,7 @@ Meteor.methods({
       user_id: Meteor.userId(),
       kitchen_id: kitchen_id,
       createdAt: new Date(),
-      menu_selling_price: menu_selling_price,
+      menu_selling_price: parseFloat(menu_selling_price).toFixed(2),
       min_order: min_order,
       lead_hours: lead_hours,
       lead_days: lead_days,
@@ -72,7 +72,7 @@ Meteor.methods({
       $set: {
         menu_name: menu_name,
         menu_description: menu_description,
-        menu_selling_price: menu_selling_price,
+        menu_selling_price: parseFloat(menu_selling_price).toFixed(2),
         min_order: min_order,
         lead_hours: lead_hours,
         lead_days: lead_days,
