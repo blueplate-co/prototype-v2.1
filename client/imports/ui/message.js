@@ -16,6 +16,17 @@ class Message extends Component {
     }
   }
 
+  toggleDisplay() {
+    if (this.state.display) {
+      $('#chat-panel').css('bottom', '-335px');
+    } else {
+      $('#chat-panel').css('bottom', '0px');
+    }
+    this.setState({
+      display: !this.state.display
+    })
+  }
+
   // render list of user are joining into chat panel
   renderListJoiner() {
     return (
@@ -81,7 +92,7 @@ class Message extends Component {
   render() {
     return (
       <div className="col chat-panel-wrapper">
-        <div className="chat-header">
+        <div onClick={() => { this.toggleDisplay() }}  className="chat-header">
           <span className="chat-header-name">Noel</span>
           <span id="support-icon" title="Contact support">
             <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" />
@@ -99,14 +110,23 @@ class Message extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe("theDishes");
+  var all_messages = [];
+  var all_conversation = [];
+  Meteor.call('message.getConversation', (err, res) => {
+    all_conversation = res;
+    if (all_conversation.length > 0) {
+      Meteor.call('getMessages', (err, res) => {
+        if (!err) {
+          all_messages = res;
+        } else {
+          alert('Error when get all messages');
+        }
+      });
+    }
+  });
   return {
     currentUser: Meteor.user(),
-    listLoading: !handle.ready(),
-    dishes: Dishes.find({
-      user_id: Meteor.userId(),
-      deleted: false,
-      online_status: true,
-    }).fetch(),
+    conversation: all_conversation,
+    messages: all_messages
   };
 })(Message);
