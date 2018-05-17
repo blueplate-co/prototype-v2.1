@@ -2,7 +2,6 @@ Dishes = new Mongo.Collection('dishes');
 Ingredients_temporary = new Mongo.Collection(null);
 Ingredients = new Mongo.Collection('ingredients');
 Menu = new Mongo.Collection('menu');
-// Messages = new Mongo.Collection('messages');
 Shopping_cart = new Mongo.Collection('shopping_cart');
 Order_record = new Mongo.Collection('order_record');
 Profile_details = new Mongo.Collection('profile_details');
@@ -46,7 +45,6 @@ Collections = {
   'Dishes': Dishes,
   'Ingredients': Ingredients,
   'Menu': Menu,
-  // 'Messages': Messages,
   'Images': Images,
   'Shopping_cart': Shopping_cart,
   'order_record': Order_record,

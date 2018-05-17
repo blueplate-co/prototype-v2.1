@@ -190,9 +190,23 @@ class ShoppingCart extends Component {
             }
             if (valid) {
                 Session.set('product', globalCart);
-                FlowRouter.go('/payment');
             }
-        })
+        });
+        if (valid) {
+            globalCart.forEach((item, index) => {
+                Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
+                    if (!err) {
+                        var conversation_id = res;
+                        Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', (err, res) => {
+                            if (!err) {
+                                console.log('Start conversation');
+                            }
+                        });
+                    }
+                })
+            })
+            FlowRouter.go('/payment');
+        }
     }
 
     renderSingleProduct(product) {

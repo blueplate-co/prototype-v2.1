@@ -16,6 +16,7 @@
     "fs-extra": "^5.0.0",
     "indexof": "0.0.1",
     "kraken": "^0.3.3",
+    "lodash": "^4.17.10",
     "materialize-css": "^0.99.0",
     "meteor-node-stubs": "^0.2.11",
     "multi-select-react": "^0.1.8",
