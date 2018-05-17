@@ -19,7 +19,7 @@ class Message extends Component {
 
   toggleDisplay() {
     if (this.state.display) {
-      $("#chat-panel").css("bottom", "-335px");
+      $("#chat-panel").css("bottom", "-350px");
     } else {
       $("#chat-panel").css("bottom", "0px");
     }
@@ -41,7 +41,7 @@ class Message extends Component {
             tempFriends.push(profile);
           } else {
             // remove duplicate conversation user
-            for (var m = 0 ; m < tempFriends.length; m++) {
+            for (var m = 0; m < tempFriends.length; m++) {
               if (profile._id !== tempFriends[m]._id) {
                 tempFriends.push(profile);
               }
@@ -55,21 +55,28 @@ class Message extends Component {
 
   sendMessage(e) {
     if (e.charCode == 13) {
-      var message = $('#message-content').val();
+      var message = $("#message-content").val();
       // get info about current conversation
       var conversation = Conversation.findOne({
-        _id: Session.get('current_conservation')
+        _id: Session.get("current_conservation"),
       });
       // get userid of receiver id
-      var receiverId = conversation.participants.filter((id) => {
-        return id != Meteor.userId()
+      var receiverId = conversation.participants.filter(id => {
+        return id != Meteor.userId();
       })[0];
-  
-      Meteor.call('message.createMessage', Meteor.userId(), receiverId, message, Session.get('current_conservation'), (err, res) => {
-        if (!err) {
-          $('#message-content').val("");
+
+      Meteor.call(
+        "message.createMessage",
+        Meteor.userId(),
+        receiverId,
+        message,
+        Session.get("current_conservation"),
+        (err, res) => {
+          if (!err) {
+            $("#message-content").val("");
+          }
         }
-      })
+      );
     }
   }
 
@@ -106,27 +113,37 @@ class Message extends Component {
   renderListMessage() {
     if (this.props.messages.length == 0) {
       return (
-        <ul style={{ height: '205px' }}></ul>
-      )
+        <div id="list-message-body" className="list-message">
+          <ul style={{ height: "225px" }} />
+        </div>
+      );
     } else {
       return (
-        <div className="list-message">
-          <ul style={{ height: '205px' }}>
-            {
-              this.props.messages[Session.get('current_conservation_index')].map((item, index) => {
+        <div id="list-message-body" className="list-message">
+          <ul style={{ height: "225px" }}>
+            {this.props.messages[Session.get("current_conservation_index")].map(
+              (item, index) => {
                 switch (item.type) {
-                  case 'status':
+                  case "status":
                     return (
-                      <li key={index} className="status">{ item.message }</li>
-                    )
+                      <li key={index} className="status">
+                        {item.message}
+                      </li>
+                    );
                     break;
-                  case 'message':
-                    return (
-                      (item.sender_id == Meteor.userId()) ? <li key={index} className="message sender">{ item.message }</li> : <li key={index} className="message receiver">{ item.message }</li>
-                    )
+                  case "message":
+                    return item.sender_id == Meteor.userId() ? (
+                      <li key={index} className="message sender">
+                        {item.message}
+                      </li>
+                    ) : (
+                      <li key={index} className="message receiver">
+                        {item.message}
+                      </li>
+                    );
                 }
-              })
-            }
+              }
+            )}
           </ul>
         </div>
       );
@@ -136,7 +153,12 @@ class Message extends Component {
   renderMessageTyping() {
     return (
       <div className="typing-container">
-        <input type="text" id="message-content" placeholder="Type a message here" onKeyPress={ e => this.sendMessage(e) } />
+        <input
+          type="text"
+          id="message-content"
+          placeholder="Type a message here"
+          onKeyPress={e => this.sendMessage(e)}
+        />
         <span title="send message" id="send-message">
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/send-message-icon.svg" />
         </span>
@@ -144,21 +166,45 @@ class Message extends Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.messages !== this.props.messages) {
+      // make scrollbar always at bottom when receive new message
+      var messageBody = document.querySelector('#list-message-body');
+      messageBody.scrollTop = messageBody.scrollHeight;
+      this.setState({ display: true }, () => {
+        $("#chat-panel").css("bottom", "0px");
+      });
+    }
+  }
+
+  componentDidMount() {
+    // make scrollbar always at bottom when receive new message
+    var messageBody = document.querySelector('#list-message-body');
+    messageBody.scrollTop = messageBody.scrollHeight;
+  }
+
   render() {
-    var chef_name = 'Chat';
-    if (Session.get('current_conservation')) {
+    var name = "Chat";
+    if (Session.get("current_conservation")) {
       var conversation = Conversation.findOne({
-        _id: Session.get('current_conservation')
+        _id: Session.get("current_conservation"),
       });
       // get userid of receiver id
-      var receiverId = conversation.participants.filter((id) => {
-        return id != Meteor.userId()
+      var receiverId = conversation.participants.filter(id => {
+        return id != Meteor.userId();
       })[0];
-  
+
       var profile = Kitchen_details.findOne({
-        user_id: receiverId
+        user_id: receiverId,
       });
-      chef_name = profile.chef_name;
+      name = profile.chef_name;
+
+      if (name == "") {
+        var profile = Profile_details.findOne({
+          user_id: receiverId,
+        });
+        name = profile.foodie_name;
+      }
     }
     return (
       <div className="col chat-panel-wrapper">
@@ -168,13 +214,13 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="chat-header-name">{ chef_name }</span>
+          <span className="chat-header-name">{name}</span>
           <span id="support-icon" title="Contact support">
             <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" />
           </span>
         </div>
         <div className="chat-content-wrapper">
-          {this.renderProgress()}
+          {/* {this.renderProgress()} */}
           {this.renderListJoiner()}
           {this.renderListMessage()}
           {this.renderMessageTyping()}
@@ -197,8 +243,8 @@ export default withTracker(props => {
   }).fetch();
 
   if (all_conversation.length > 0) {
-    Session.set('current_conservation', all_conversation[0]._id);
-    Session.set('current_conservation_index', 0);
+    Session.set("current_conservation", all_conversation[0]._id);
+    Session.set("current_conservation_index", 0);
   }
 
   for (var i = 0; i < all_conversation.length; i++) {

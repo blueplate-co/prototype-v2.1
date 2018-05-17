@@ -197,7 +197,7 @@ class ShoppingCart extends Component {
                 Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
                     if (!err) {
                         var conversation_id = res;
-                        Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', (err, res) => {
+                        Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', conversation_id, (err, res) => {
                             if (!err) {
                                 console.log('Start conversation');
                             }
