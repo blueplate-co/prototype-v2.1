@@ -7,7 +7,7 @@ import CategoryCard from './category_card.js';
 
 Seller_handbook_category = new Mongo.Collection('seller_handbook_category')
 
-class CategoryList extends Component {
+export default class CategoryList extends Component {
   constructor(props) {
     super(props);
   }
@@ -43,10 +43,3 @@ class CategoryList extends Component {
     )
   }
 }
-  export default withTracker ((props) => {
-    const cat_handle = Meteor.subscribe('sellerhb_display_all');
-    return {
-      listLoading: !cat_handle.ready(),
-      cat_list: Seller_handbook_category.find({deleted: false}, {sort: {updatedAt: -1}}).fetch()
-    };
-  })(CategoryList);

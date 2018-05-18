@@ -13,6 +13,15 @@ export default class CategoryCard extends Component {
       edit: false,
       cat_title: '',
       cat_description: '',
+      parentElement: ''
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.parentElement) {
+      this.setState({
+        parentElement: this.props.parentElement
+      })
     }
   }
 
@@ -93,36 +102,35 @@ export default class CategoryCard extends Component {
         :
         <div className = "card z-depth-0 category_display" onMouseOver = {this.highlight_cat} onMouseLeave = {this.unhighlight_cat} >
           <div className = "card_overlay" style = {(this.state.highlight)?{backgroundColor: "rgba(224,224,224, 1)"}:{backgroundColor: "transparent"}}>
-            <div className = "card-content">
-              <div className = "row">
-                <div className = "col s12 m5 l3">
-                  <div className = "cat_icon_uploader grey lighten-2">
-                    <img src = {this.props.link} className = "iconDisplay"/>
+            <a href="" onClick = {this.handle_edit}>
+              <div className = "card-content">
+                <div className = "row">
+                  <div className = "col s12 m5 l3">
+                    <div className = "cat_icon_uploader grey lighten-2">
+                      <img src = {this.props.link} className = "iconDisplay"/>
+                    </div>
+                  </div>
+                  <div className = "col s12 m7 l9">
+                    <h5>{this.props.title}</h5>
+                    <p>{this.props.description}</p>
+                    <p>Total number of articles: {this.props.article_count}</p>
+                    <p>Last updated: {this.props.updatedAt.toString()}</p>
+                  </div>
+                  <div className = "overlay_action">
+                    {
+                      (this.state.highlight) ?
+                      <div>
+                        <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "remove_cat" onClick = {this.handle_remove}>
+                          <i className="material-icons grey-text text-darken-1" id = "remove_cat">close</i><span>Remove</span>
+                        </a>
+                      </div>
+                      :
+                      ""
+                    }
                   </div>
                 </div>
-                <div className = "col s12 m7 l9">
-                  <h5>{this.props.title}</h5>
-                  <p>{this.props.description}</p>
-                  <p>Total number of articles: {this.props.article_count}</p>
-                  <p>Last updated: {this.props.updatedAt.toString()}</p>
-                </div>
-                <div className = "overlay_action">
-                  {
-                    (this.state.highlight) ?
-                    <div>
-                      <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "edit_cat" onClick = {this.handle_edit}>
-                        <i className="material-icons grey-text text-darken-1" id= "edit_cat">edit</i><span>Edit</span>
-                      </a>
-                      <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "remove_cat" onClick = {this.handle_remove}>
-                        <i className="material-icons grey-text text-darken-1" id = "remove_cat">close</i><span>Remove</span>
-                      </a>
-                    </div>
-                    :
-                    ""
-                  }
-                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       }
