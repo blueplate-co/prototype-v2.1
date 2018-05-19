@@ -10,3 +10,9 @@
 .outline_post_text {
   width: 100%;
 }
+
+.post_publish {
+  position: fixed;
+  bottom: 30px;
+  right: 15px;
+}

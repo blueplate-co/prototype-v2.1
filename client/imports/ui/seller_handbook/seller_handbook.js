@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor'
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Session } from 'meteor/session';
 
 export default class SellerHandbook extends Component {
   constructor(props) {
     super(props)
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleClikc = this.handleClick.bind(this);
     this.state = {
       mouseOver: -1,
       categories: [],
@@ -15,6 +18,13 @@ export default class SellerHandbook extends Component {
     this.setState({
       mouseOver: false
     })
+  }
+
+  handleClick = (item, e) => {
+    Session.set('cat_selected', item._id)
+    console.log(Session.get('cat_selected'))
+    const link = '/seller_handbook/category/' + item.cat_title
+    FlowRouter.go(link);
   }
 
   componentDidMount() {
@@ -41,6 +51,7 @@ export default class SellerHandbook extends Component {
               }
             onMouseOver= {(e) => {(this.setState({mouseOver: index}))}}
             onMouseLeave={this.handleMouseLeave}
+            onClick={() => this.handleClick(item)}
           >
             <a href="">
               <div className = "card-image">

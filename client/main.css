@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bp-blue-text {
-  color: #56AACD;
+  color: #56AACD !important;
 }
 
 .bp-blue:hover {

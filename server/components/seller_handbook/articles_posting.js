@@ -52,11 +52,14 @@ Meteor.methods({
       _id: cat_id
     },{
       $inc: {
-        artcile_count: -1
+        article_count: -1
       }
     })
   },
   'article.find' (_id) {
     return Seller_handbook_articles.findOne({_id: _id})
+  },
+  'article.display' (cat_id) {
+    return Seller_handbook_articles.find({cat_id: cat_id, deleted: false}).fetch()
   }
 })
