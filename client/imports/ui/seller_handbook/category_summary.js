@@ -25,6 +25,7 @@ class CategorySummary extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0,0);
     $(document).ready(function(){
       $('ul.tabs').tabs();
     });

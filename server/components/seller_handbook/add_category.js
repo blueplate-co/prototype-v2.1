@@ -34,5 +34,8 @@ Meteor.methods({
   },
   'category.find' (cat_title) {
     return Seller_handbook_category.findOne({cat_title: cat_title});
+  },
+  'category.findById' (cat_id) {
+    return Seller_handbook_category.findOne({_id: cat_id});
   }
 })

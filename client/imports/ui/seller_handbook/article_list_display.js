@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+import Shb_breadcrumb from './shb_breadcrumb.js';
+
 export default class ArticleListDisplay extends Component {
   constructor(props) {
     super(props)
@@ -14,6 +16,7 @@ export default class ArticleListDisplay extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0,0);
     Meteor.call('category.find', FlowRouter.getParam('category') , (error, result) => {
       if (result) {
         this.setState({
@@ -49,7 +52,6 @@ export default class ArticleListDisplay extends Component {
       article.innerHTML = item.post_text
       if (article.getElementsByTagName("img")[0]) {
         var img_link = article.getElementsByTagName("img")[0].src
-        console.log(img_link);
       } else {
         var img_link = ""
       }
@@ -87,12 +89,7 @@ export default class ArticleListDisplay extends Component {
     return (
       <div className = "container">
         <div className = "section">
-          <nav className = "z-depth-0" id = "shb_nav">
-            <div className="nav-wrapper" id = "shb_breadcrumb">
-              <a href="/seller_handbook/" className="breadcrumb bp-blue-text">Seller Handbook</a>
-              <a href="#!" className="breadcrumb bp-blue-text">{this.state.category.cat_title}</a>
-            </div>
-          </nav>
+          <Shb_breadcrumb cat_title = {this.state.category.cat_title} />
           <div className = "row">
             <div className = "col xl2 l2 m2 s2">
               <div className = "shb_icon_display" style = {iconStyle}>

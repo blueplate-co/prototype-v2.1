@@ -28,6 +28,7 @@ export default class SellerHandbook extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0,0);
     Meteor.call('category.display', (error, result) => {
       if (result) {
         this.setState({
