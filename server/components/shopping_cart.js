@@ -8,7 +8,7 @@ Order_record = new Mongo.Collection('order_record');
 Meteor.methods({
   'chargeCard': function(stripeToken, amount, description, buyer_id, seller_id, paymentType) {
     if (paymentType == 'card') {
-      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+      var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
 
       var buyerStripeId = Meteor.users.findOne({ _id: buyer_id }).stripe_id;
       var buyerEmail = Meteor.users.findOne({ _id: buyer_id }).emails[0].address;
@@ -71,7 +71,7 @@ Meteor.methods({
         }
       })
     } else {
-      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+      var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
       // when user choose pay by credits
       var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
       var sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id; // get Stripe id of seller
