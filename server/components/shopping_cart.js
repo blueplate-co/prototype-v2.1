@@ -36,7 +36,7 @@ Meteor.methods({
             transactionID,
             function(err, balanceTransaction) {
               if (!err) {
-                var amount = balanceTransaction.amount;
+                var amount = balanceTransaction.amount / 100; // convert it to dollar
                 console.log('Get amount of transaction: ' + amount);
                 // get balance of current customer seller
                 var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);

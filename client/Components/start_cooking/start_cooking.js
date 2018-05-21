@@ -379,8 +379,8 @@ Template.request_card.events({
         console.log(check)
         if (check) {
           console.log(1)
-          var total_price_of_transaction = parseInt(check.amount) //check the amount in the transaction collection
-          total_price_of_transaction += parseInt(price_of_cart) //add the cart_price into the transaction table
+          var total_price_of_transaction = check.amount //check the amount in the transaction collection
+          total_price_of_transaction += price_of_cart //add the cart_price into the transaction table
           Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
           Meteor.call('order_record.accepted', order_id) //update the order to cooking
         } else {
