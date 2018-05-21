@@ -85,7 +85,7 @@ class IconUpload extends Component {
               hasIcon: true,
               iconLink: "../shIcons_upload/" + fileObj._id + fileObj.extensionWithDot
             })
-          }, 1000)
+          }, 2500)
 
           Meteor._reload.onMigrate(function() {
             return [false];
@@ -129,7 +129,7 @@ class IconUpload extends Component {
           {
             (this.state.hasIcon) ?
               <div>
-                <img className = "iconDisplay" src = {this.state.iconLink} />
+                <img src = {this.state.iconLink} />
                 <div className="file-field input-field icon_change_btn">
                   <div className = "upload_display valign-wrapper center">
                     <i className="material-icons white-text center-align">file_upload</i>

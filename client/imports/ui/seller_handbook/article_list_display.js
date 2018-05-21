@@ -81,6 +81,7 @@ export default class ArticleListDisplay extends Component {
   render() {
     const iconStyle = {
     backgroundImage: `url(${this.state.cat_icon_link})`,
+    backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     height: this.state.height

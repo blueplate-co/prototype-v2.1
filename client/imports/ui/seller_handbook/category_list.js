@@ -23,7 +23,7 @@ export default class CategoryList extends Component {
             link = {item.icon_link.origin}
             article_count = {item.article_count}
             updatedAt = {item.updatedAt}
-            icon_link = {item.icon_link.origin}
+            icon_link = {item.icon_link}
           />
         </div>
       )

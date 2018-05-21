@@ -120,7 +120,7 @@ class CategorySummary extends Component {
           <div>
             <SelectCategory
               handleSelectChange = {this.handleSelectChange}
-              cat_display = {this.state.cat_display}
+              cat_display = {this.props.cat_list}
               cat_selected = {this.state.cat_selected}
             />
             <ArticleList cat_selected = {this.state.cat_selected} />

@@ -50,8 +50,8 @@
   overflow: auto;
   position: absolute;
   top: 26px;
-  left: 26px;
-  width: 194px;
+  left: 38px !important;
+  width: 194px !important;
   padding: 6px;
   height: 194px;
   border-radius: 10px;

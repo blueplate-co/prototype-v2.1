@@ -40,7 +40,10 @@ export default class CategoryCard extends Component {
   handle_edit = (e) => {
     this.setState({
       edit: true,
+      cat_title: this.props.title,
+      cat_description: this.props.description,
     })
+    Session.set('shIcons', this.props.icon_link)
   }
 
   update_cat_title = (e) => {
@@ -62,9 +65,29 @@ export default class CategoryCard extends Component {
   }
 
   handle_remove = (e) => {
+    e.preventDefault();
     Meteor.call('category.remove', this.props.id, (error, result) => {
       if (!error) {
         Materialize.toast('category removed', 4000)
+      } else {
+        Materialize.toast(error.message)
+      }
+    })
+  }
+
+  handle_update = (e) => {
+    const id = this.props.id
+    const cat_title = this.state.cat_title;
+    const cat_description = this.state.cat_description;
+    const createdBy = Meteor.userId();
+    const icon_link = Session.get('shIcons')
+    Meteor.call('category.update', id, cat_title, cat_description, icon_link, createdBy, (error, result) => {
+      if (!error) {
+        Materialize.toast('Category updated', 4000)
+        Session.set('shIcons', {})
+        this.setState({
+          edit: false,
+        })
       } else {
         Materialize.toast(error.message)
       }
@@ -80,20 +103,20 @@ export default class CategoryCard extends Component {
           <div className = "card-content">
             <div className = "row">
               <div className = "col s12 m5 l3">
-                <IconUpload icon_link = {this.props.icon_link} />
+                <IconUpload icon_link = {this.props.icon_link.origin} />
               </div>
               <div className = "col s12 m7 l9">
                 <div className="input-field">
-                  <input id="cat_title" type="text" value={this.props.title} onChange={this.update_cat_title}/>
+                  <input id="cat_title" type="text" value={this.state.cat_title} onChange={this.update_cat_title}/>
                   <label htmlFor="cat_title" className="active">Title</label>
                 </div>
                 <div className="input-field">
-                  <input id="cat_description" type="text" value={this.props.description} onChange={this.update_cat_description} />
+                  <input id="cat_description" type="text" value={this.state.cat_description} onChange={this.update_cat_description} />
                   <label htmlFor="cat_description" className="active">Description</label>
                 </div>
               </div>
               <div className = "row">
-                <a className = "btn right cat_update">update</a>
+                <a className = "btn right cat_update" onClick = {this.handle_update}>update</a>
                 <a className = "btn-flat right waves-effect waves-red" onClick = {this.handle_cancel}>cancel</a>
               </div>
             </div>
@@ -107,7 +130,7 @@ export default class CategoryCard extends Component {
                 <div className = "row">
                   <div className = "col s12 m5 l3">
                     <div className = "cat_icon_uploader grey lighten-2">
-                      <img src = {this.props.link} className = "iconDisplay"/>
+                      <img src = {this.props.link}/>
                     </div>
                   </div>
                   <div className = "col s12 m7 l9">
