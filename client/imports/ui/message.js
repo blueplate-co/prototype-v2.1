@@ -11,6 +11,7 @@ import ProgressiveImages from "./progressive_image";
 class Message extends Component {
   constructor(props) {
     super(props);
+    this.callSupport = this.callSupport.bind(this);
     this.state = {
       display: false,
       conversation: 0,
@@ -51,6 +52,11 @@ class Message extends Component {
       }
     });
     return tempFriends;
+  }
+
+  // call for support, send SMS to him
+  callSupport() {
+    
   }
 
   sendMessage(e) {
@@ -215,7 +221,7 @@ class Message extends Component {
           className="chat-header"
         >
           <span className="chat-header-name">{name}</span>
-          <span id="support-icon" title="Contact support">
+          <span onClick={this.callSupport()} id="support-icon" title="Contact support">
             <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" />
           </span>
         </div>
