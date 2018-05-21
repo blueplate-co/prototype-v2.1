@@ -36,12 +36,18 @@ class Payment extends Component {
                 }
                 if (credits < total) {
                     // not enough money to pay
+                    console.log('Current credits: ' + credits);
+                    console.log('Total to pay: ' + total);
+                    console.log('Not enough credits to pay');
                     Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
                     self.setState({
                         payment: payment
                     });
                 } else {
                     // enough money to pay
+                    console.log('Current credits: ' + credits);
+                    console.log('Total to pay: ' + total);
+                    console.log('Enough credits to pay');
                     var StripeToken = '';
                     var transaction_no = 1;
                     //- add each every product into order collection
@@ -103,6 +109,7 @@ class Payment extends Component {
             } else {
                 // use Stripetoken to add this card into Customer account
                 Meteor.call('payment.addCard', response.id);
+                console.log('Package to choose' + creditPackage);
                 Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function(err, response){
                     if (err) {
                         console.log(err);

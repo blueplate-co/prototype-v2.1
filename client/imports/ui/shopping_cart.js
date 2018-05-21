@@ -274,7 +274,7 @@ class ShoppingCart extends Component {
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0,10);
         for (var i = 0; i < product.length; i++) {
-            subtotal += product[i].total_price_per_dish;
+            subtotal += parseFloat(product[i].product_price);
         }
         return (
             <div key={index}>
@@ -347,7 +347,7 @@ class ShoppingCart extends Component {
     render() {
         var total = 0;
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
-            total += this.props.shoppingCart[i].total_price_per_dish;
+            total += parseFloat(this.props.shoppingCart[i].product_price);
         }
         Session.set('product', '');
         return (
