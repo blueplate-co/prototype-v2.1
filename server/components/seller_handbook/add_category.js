@@ -19,6 +19,18 @@ Meteor.methods({
       deleted: false
     })
   },
+  'category.update' (_id, cat_title, cat_description, icon_link) {
+    Seller_handbook_category.update({
+      _id: _id
+    }, {
+      $set: {
+        cat_title: cat_title,
+        cat_description: cat_description,
+        icon_link: icon_link,
+        updatedAt: new Date()
+      }
+    })
+  },
   'category.remove' (_id) {
     Seller_handbook_category.update({
       _id: _id
