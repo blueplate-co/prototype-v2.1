@@ -66,7 +66,7 @@ Template.display_menu_details.events({
     {
       var order_id = order._id;
       quantity = parseInt(order.quantity) + 1;
-      total_price_per_dish = parseInt(menu_price) * quantity
+      total_price_per_dish = menu_price * quantity
       Meteor.call('shopping_cart.update',
       order_id,
       quantity,

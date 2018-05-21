@@ -32,7 +32,7 @@ class Payment extends Component {
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
                 var total = 0;
                 for (var i = 0; i < shoppingCart.length; i++ ) {
-                    total += parseInt(shoppingCart[i].total_price_per_dish);
+                    total += parseFloat(shoppingCart[i].total_price_per_dish);
                 }
                 if (credits < total) {
                     // not enough money to pay
