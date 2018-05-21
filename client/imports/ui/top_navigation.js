@@ -158,7 +158,13 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Heart.svg" />
         </li>
 
-        <li>
+        <li
+          onClick={() => {
+            this.setState({ sidebarOpen: false }, () => {
+              FlowRouter.go("/orders_tracking");
+            });
+          }}
+        >
           <span>Order Status</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/OrderStatus.svg" />
         </li>
