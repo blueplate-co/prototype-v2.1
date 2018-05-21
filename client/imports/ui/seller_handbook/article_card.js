@@ -35,7 +35,7 @@ class ArticleCard extends Component {
 
   handle_edit = (e) => {
     const article_id = this.props._id
-    const edit_link = '/seller_handbook/edit/articles/' + article_id
+    const edit_link = '/seller-handbook/edit/articles/' + article_id
     FlowRouter.go(edit_link);
   }
 

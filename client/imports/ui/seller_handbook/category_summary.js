@@ -53,7 +53,7 @@ class CategorySummary extends Component {
         add_category: true
       });
     } else {
-      FlowRouter.go('/seller_handbook/post/articles')
+      FlowRouter.go('/seller-handbook/post/articles')
     }
   }
 

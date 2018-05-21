@@ -57,7 +57,7 @@ export default class ArticleListDisplay extends Component {
       }
       const p = article.textContent
       const author = Profile_details.findOne({user_id: item.user_id}).foodie_name
-      const article_link = "/seller_handbook/articles/" + item._id;
+      const article_link = "/seller-handbook/articles/" + item._id;
       return (
         <div className = "articlie_display_list section" key = {index}>
           <div className = "row">

@@ -59,7 +59,7 @@ export default class ArticlePosting extends Component {
 
   close_editor() {
     Session.set('return_shb_tab', "articles")
-    FlowRouter.go('/seller_handbook/admin');
+    FlowRouter.go('/seller-handbook/admin');
   }
 
   handlePublish() {
@@ -75,7 +75,7 @@ export default class ArticlePosting extends Component {
             cat_selected: '',
           })
           Session.set('return_shb_tab', "articles")
-          FlowRouter.go('/seller_handbook/admin');
+          FlowRouter.go('/seller-handbook/admin');
         }
       })
     } else {
@@ -90,7 +90,7 @@ export default class ArticlePosting extends Component {
             cat_selected: '',
           })
           Session.set('return_shb_tab', "articles")
-          FlowRouter.go('/seller_handbook/admin');
+          FlowRouter.go('/seller-handbook/admin');
         }
       })
     }

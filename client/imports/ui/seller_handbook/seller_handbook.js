@@ -23,7 +23,7 @@ export default class SellerHandbook extends Component {
   handleClick = (item, e) => {
     Session.set('cat_selected', item._id)
     console.log(Session.get('cat_selected'))
-    const link = '/seller_handbook/category/' + item.cat_title
+    const link = '/seller-handbook/category/' + item.cat_title
     FlowRouter.go(link);
   }
 
