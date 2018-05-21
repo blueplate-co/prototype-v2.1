@@ -1,0 +1,49 @@
+.breadcrumb:before {
+  color: #56AACD !important;
+}
+
+.breadcrumb {
+  font-size: 14px;
+}
+
+#shb_nav {
+  background-color: transparent;
+  margin-bottom: 0px !important;
+}
+
+#shb_breadcrumb {
+  padding-left: 0px !important;
+}
+
+#article_list_header {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.shb_icon_display {
+  width: 100%;
+}
+
+.shb_article_thumbnails {
+  width: 100%;
+  height: 105px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5%;
+}
+
+.shb_thumbnail {
+  margin-top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.article_display_list {
+  border-radius: 15px;
+  width: 100%;
+}
+
+.post_title_link:hover {
+  text-decoration-line: underline;
+  color: black;
+}
