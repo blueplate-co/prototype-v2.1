@@ -16,9 +16,16 @@ class ArticleCard extends Component {
       highlight: false,
       edit: false,
       cat_title: '',
-      cat_description: '',
       parentElement: ''
     }
+  }
+
+  componentDidMount() {
+    Meteor.call('category.findById', this.props.cat_id, (error, result) => {
+      this.setState({
+        cat_title: result.cat_title,
+      })
+    })
   }
 
   highlight_cat = (e) => {
@@ -37,18 +44,6 @@ class ArticleCard extends Component {
     const article_id = this.props._id
     const edit_link = '/seller-handbook/edit/articles/' + article_id
     FlowRouter.go(edit_link);
-  }
-
-  update_cat_title = (e) => {
-    this.setState({
-      cat_title: e.target.value,
-    });
-  }
-
-  update_cat_description = (e) => {
-    this.setState({
-      cat_description: e.target.value,
-    });
   }
 
   handle_cancel = (e) => {
@@ -75,13 +70,14 @@ class ArticleCard extends Component {
             <div className = "card-content">
               <div className = "row">
                 <div className = "col s12 m5 l3">
-                  <div className = "cat_icon_uploader grey lighten-2">
+                  <div className = "cat_icon_uploader transparent">
                     <img src = {this.props.img} className = "iconDisplay"/>
                   </div>
                 </div>
                 <div className = "col s12 m7 l9">
                   <h5>{this.props.title}</h5>
                   <div className = "outline_post_text truncate" id={this.props._id} dangerouslySetInnerHTML = {{__html: this.props.description}} />
+                  <p>Category: {this.state.cat_title}</p>
                   <p>Author: {this.props.user_details.foodie_name}</p>
                   <p>Last updated: {this.props.updatedAt.toString()}</p>
                 </div>

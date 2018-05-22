@@ -54,10 +54,20 @@ class ArticleList extends Component {
 }
 
 export default withTracker (({cat_selected} , props) => {
-  const art_handle = Meteor.subscribe('shb_articles_display_all', cat_selected);
-
-  return {
-    artListLoading: !art_handle.ready(),
-    article_list: Seller_handbook_articles.find({cat_id: cat_selected, deleted: false}, {sort: {updatedAt: -1}}).fetch()
+  console.log(cat_selected);
+  if (cat_selected === '' || !cat_selected) {
+    console.log('yes')
+    const art_handle = Meteor.subscribe('shb_articles_display_all', cat_selected);
+    return {
+      artListLoading: !art_handle.ready(),
+      article_list: Seller_handbook_articles.find({deleted: false}, {sort: {updatedAt: -1}}).fetch()
+    }
+  } else {
+    console.log('no')
+    const art_handle = Meteor.subscribe('shb_articles_display', cat_selected);
+    return {
+      artListLoading: !art_handle.ready(),
+      article_list: Seller_handbook_articles.find({cat_id: cat_selected, deleted: false}, {sort: {updatedAt: -1}}).fetch()
+    }
   }
 })(ArticleList);

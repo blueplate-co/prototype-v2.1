@@ -2,10 +2,13 @@ import { Meteor } from 'meteor/meteor';
 
 Seller_handbook_articles = new Mongo.Collection('seller_handbook_articles')
 
-Meteor.publish('shb_articles_display_all', function(cat_id) {
-  return Seller_handbook_articles.find({cat_id: cat_id, deleted: false}, {sort: {updatedAt: -1}})
+Meteor.publish('shb_articles_display_all', function() {
+  return Seller_handbook_articles.find({deleted: false}, {sort: {updatedAt: -1}})
 })
 
+Meteor.publish('shb_articles_display', function(cat_id) {
+  return Seller_handbook_articles.find({cat_id: cat_id, deleted: false}, {sort: {updatedAt: -1}})
+})
 
 Meteor.methods({
   'article.add' (cat_id, post_title, post_text) {
