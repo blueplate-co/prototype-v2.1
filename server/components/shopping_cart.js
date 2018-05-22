@@ -18,7 +18,7 @@ Meteor.methods({
       var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
       console.log('BEGINNING CHARGE');
       console.log('Amount: ' + amount);
-      chargeAmount = Math.round(amount + ( amount * 0.034 ) + 2.35);
+      chargeAmount = parseFloat((amount + ( amount * 0.034 ) + 2.35).toFixed(2));
       console.log('Charge amount: ' + chargeAmount);
       charge({
         amount: chargeAmount * 100,
