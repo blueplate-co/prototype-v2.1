@@ -22,11 +22,12 @@ Meteor.methods({
       updatedAt: new Date(),
       deleted: false
     })
+    var article_count = Seller_handbook_articles.find({cat_id: cat_id, deleted: false}).count();
     Seller_handbook_category.update({
       _id: cat_id
     },{
-      $inc:{
-        article_count: 1
+      $set: {
+        article_count: article_count
       }
     })
   },
@@ -41,6 +42,14 @@ Meteor.methods({
         updatedAt: new Date()
       }
     })
+    var article_count = Seller_handbook_articles.find({cat_id: cat_id, deleted: false}).count();
+    Seller_handbook_category.update({
+      _id: cat_id
+    },{
+      $set: {
+        article_count: article_count
+      }
+    })
   },
   'article.remove' (cat_id, _id) {
     Seller_handbook_articles.update({
@@ -51,11 +60,12 @@ Meteor.methods({
         deleted: true
       }
     })
+    var article_count = Seller_handbook_articles.find({cat_id: cat_id, deleted: false}).count();
     Seller_handbook_category.update({
       _id: cat_id
     },{
-      $inc: {
-        article_count: -1
+      $set: {
+        article_count: article_count
       }
     })
   },

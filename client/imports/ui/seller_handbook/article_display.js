@@ -64,7 +64,7 @@ export default class ArticleDisplay extends Component {
               <ReactQuill
                 theme = "bubble"
                 defaultValue={this.state.article_display.post_text}
-                readOnly='true'
+                readOnly={true}
               />
             </div>
           </div>
