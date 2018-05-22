@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
 
 import Shb_breadcrumb from './shb_breadcrumb.js';
 import FoodieAvatar from '../foodie_avatar.js';
@@ -58,7 +60,13 @@ export default class ArticleDisplay extends Component {
             <p>{this.state.article_display.updatedAt.toDateString()} by <span><a className = "black-text author_link" href=""><bold>{this.state.author}</bold></a></span></p>
           </div>
           <div className = "section">
-            <div className = "article_content" dangerouslySetInnerHTML = {{__html: this.state.article_display.post_text}} />
+            <div className = "browser-default article_content">
+              <ReactQuill
+                theme = "bubble"
+                defaultValue={this.state.article_display.post_text}
+                readOnly={true}
+              />
+            </div>
           </div>
           <div className = "divider"></div>
           <div className = "section author_section">
