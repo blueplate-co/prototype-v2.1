@@ -47,3 +47,7 @@
   text-decoration-line: underline;
   color: black;
 }
+
+.author_section {
+  min-height: 105px;
+}

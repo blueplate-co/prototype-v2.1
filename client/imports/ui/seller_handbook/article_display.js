@@ -61,7 +61,7 @@ export default class ArticleDisplay extends Component {
             <div className = "article_content" dangerouslySetInnerHTML = {{__html: this.state.article_display.post_text}} />
           </div>
           <div className = "divider"></div>
-          <div className = "section">
+          <div className = "section author_section">
             <h6>Author</h6>
             <div className = "row">
               <div className = "col xl1 l1 m1 s2 left" style={{ position: 'relative', paddingLeft: '0.75rem'}}>
