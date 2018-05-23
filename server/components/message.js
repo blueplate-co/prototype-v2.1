@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 
 Meteor.publish("theConversations", function() {
   return Conversation.find({
-    participants: Meteor.userId(),
+    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
   });
 });
 
@@ -12,36 +12,21 @@ Meteor.publish("theMessages", function() {
 
 Meteor.methods({
   "message.createConversasion"(buyerId, sellerId) {
-    var conversation = Conversation.find({
+    var conversation = Conversation.insert({
       buyer_id: buyerId,
       seller_id: sellerId,
-    }).fetch();
-
-    if (conversation.length > 0) {
-      Conversation.update({
-        buyer_id: buyerId,
-        seller_id: sellerId,
-      }, {
-        $set: {
-          available: true
-        }
-      });
-    } else {
-      var conversation = Conversation.insert({
-        buyer_id: buyerId,
-        seller_id: sellerId,
-        available: true,
-        createdAt: new Date(),
-      });
-    }
+      available: true,
+      createdAt: new Date(),
+    });
     return conversation;
   },
-  "message.createStatus"(buyerId, sellerId, status, conversationId) {
+  "message.createStatus"(senderId, receiverId, status, conversationId) {
     Messages.insert({
-      buyer_id: buyerId,
-      seller_id: sellerId,
+      sender_id: senderId,
+      receiver_id: receiverId,
       type: "status",
       message: status,
+      available: true,
       conversation_id: conversationId,
       createdAt: new Date(),
     });
@@ -52,9 +37,40 @@ Meteor.methods({
       receiver_id: receiverId,
       type: "message",
       message: status,
+      available: true,
       conversation_id: conversationId,
       createdAt: new Date(),
     });
+  },
+  "message.disableConversation"(conversationId) {
+    var conversation = Conversation.findOne({
+      _id: conversationId,
+    });
+    if (conversation) {
+      Conversation.update(
+        {
+          _id: conversationId,
+        },
+        {
+          $set: {
+            available: false,
+          },
+        }
+      );
+      var messages = Messages.find({ conversation_id: conversationId });
+      messages.forEach(function(mess) {
+        Messages.update(
+          {
+            _id: mess._id,
+          },
+          {
+            $set: {
+              available: false,
+            },
+          }
+        );
+      });
+    }
   },
   "message.sendToSupport"() {
     const accountSid = "AC3807512e0f88d45d2eb403ddbbe071c7";

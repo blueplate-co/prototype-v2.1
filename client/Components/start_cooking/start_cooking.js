@@ -569,7 +569,9 @@ Template.chef_ready_card.events({
 
       }
 
-      Meteor.call('notification.transaction_complete', seller_id, buyer_id)
+      Meteor.call('notification.transaction_complete', seller_id, buyer_id);
+
+      Meteor.call('message.disableConversation', Session.get('current_conservation'));
   }
 
 })

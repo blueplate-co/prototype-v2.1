@@ -33,22 +33,19 @@ class Message extends Component {
   getListJoiner() {
     let tempFriends = [];
     this.props.conversation.map((item, index) => {
-      for (var i = 0; i < item.participants.length; i++) {
-        if (item.participants[i] !== Meteor.userId()) {
-          var profile = Kitchen_details.findOne({
-            user_id: item.participants[i],
-          });
-          if (tempFriends.length == 0) {
-            tempFriends.push(profile);
-          } else {
-            // remove duplicate conversation user
-            for (var m = 0; m < tempFriends.length; m++) {
-              if (profile._id !== tempFriends[m]._id) {
-                tempFriends.push(profile);
-              }
-            }
-          }
-        }
+      // renderlist conversation
+      if (Meteor.userId() == item.buyer_id) {
+        // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
+        var profile = Kitchen_details.findOne({
+          "user_id": item.seller_id
+        });
+        tempFriends.push(profile);
+      } else {
+        // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
+        var profile = Profile_details.findOne({
+          "user_id": item.buyer_id
+        });
+        tempFriends.push(profile);
       }
     });
     return tempFriends;
@@ -60,14 +57,24 @@ class Message extends Component {
   sendMessage(e) {
     if (e.charCode == 13) {
       var message = $("#message-content").val();
+      var receiverId = '';
+
       // get info about current conversation
       var conversation = Conversation.findOne({
         _id: Session.get("current_conservation"),
       });
-      // get userid of receiver id
-      var receiverId = conversation.participants.filter(id => {
-        return id != Meteor.userId();
-      })[0];
+
+      if (Meteor.userId() == conversation.buyer_id) {
+        // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
+        var receiverId = Kitchen_details.findOne({
+          "user_id": conversation.seller_id
+        }).user_id;
+      } else {
+        // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
+        var receiverId = Profile_details.findOne({
+          "user_id": conversation.buyer_id
+        }).user_id;
+      }
 
       Meteor.call(
         "message.createMessage",
@@ -90,11 +97,29 @@ class Message extends Component {
     return (
       <ul className="chat-list-user">
         {tempFriends.map((item, index) => {
+          if (item.chef_name) {
+            // Opponent is chef, current user is foodie
+            var chefId = item.user_id;
+            var foodieId = Meteor.userId();
+            var conversationId = Conversation.findOne({
+              buyer_id: foodieId,
+              seller_id: chefId
+            })._id;
+          } else {
+            // Opponent is foodie, current user is chef
+            var chefId = Meteor.userId();
+            var foodieId = item.user_id;
+            var conversationId = Conversation.findOne({
+              buyer_id: foodieId,
+              seller_id: chefId
+            })._id;
+          }
           return (
             <li
               key={index}
               className="chat-user active"
               title={item.chef_name}
+              onClick={ () => { Session.set('current_conservation', conservationId); Session.set('current_conservation_index', index );  }}
               style={{
                 backgroundImage: `url(${item.profileImg.origin})`,
               }}
@@ -102,15 +127,6 @@ class Message extends Component {
           );
         })}
       </ul>
-    );
-  }
-
-  renderProgress() {
-    return (
-      <div className="progress-bar">
-        <span className="progressing" style={{ width: "85%" }} />
-        <span className="progressing-time">0 hour 5 mins</span>
-      </div>
     );
   }
 
@@ -163,22 +179,40 @@ class Message extends Component {
           placeholder="Type a message here"
           onKeyPress={e => this.sendMessage(e)}
         />
-        <span title="send message" id="send-message">
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/send-message-icon.svg" />
-        </span>
       </div>
     );
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.messages !== this.props.messages) {
-      // make scrollbar always at bottom when receive new message
-      var messageBody = document.querySelector("#list-message-body");
-      messageBody.scrollTop = messageBody.scrollHeight;
+      // signal when new messages has come
       this.setState({ display: true }, () => {
         $("#chat-panel").css("bottom", "0px");
       });
     }
+    // after first chat goes, the support function is run. After 60000 (60s), if no new message come from opponent. CS caller is run
+    // var support = setTimeout(() => {
+    //   var conversation_id = Session.get('current_conservation');
+    //   var conservation = Conversation.find({
+    //     _id: conversation_id,
+    //     available: true
+    //   });
+    //   var buyer_id = conservation.buyer_id;
+    //   var seller_id = conservation.seller_id;
+    //   Meteor.call('message.createStatus', buyer_id, seller_id, 'The conversation is not going smoothly? Our customer service will help you.', conversation_id);
+    //   clearTimeout(support);
+    // }, 5000);
+    // if (this.props.messages && this.props.messages.length > 0) {
+    //   if (this.props.messages[Session.get('current_conservation_index')].length > 2) {
+    //     for (var i = 1; i < this.props.messages[Session.get('current_conservation_index')].length; i++) {
+    //       if (this.props.messages[Session.get('current_conservation_index')][i].sender_id !== this.props.messages[Session.get('current_conservation_index')][i - 1].sender_id ) {
+    //         //current message and previous message not sent by the same people
+    //         //cancel timeout
+    //         clearTimeout(support);
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   componentDidMount() {
@@ -188,28 +222,6 @@ class Message extends Component {
   }
 
   render() {
-    var name = "Chat";
-    if (Session.get("current_conservation")) {
-      var conversation = Conversation.findOne({
-        _id: Session.get("current_conservation"),
-      });
-      // get userid of receiver id
-      var receiverId = conversation.participants.filter(id => {
-        return id != Meteor.userId();
-      })[0];
-
-      var profile = Kitchen_details.findOne({
-        user_id: receiverId,
-      });
-      name = profile.chef_name;
-
-      if (name == "") {
-        var profile = Profile_details.findOne({
-          user_id: receiverId,
-        });
-        name = profile.foodie_name;
-      }
-    }
     return (
       <div className="col chat-panel-wrapper">
         <div
@@ -218,7 +230,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="chat-header-name">{name}</span>
+          <span className="chat-header-name">{this.props.name}</span>
           <span
             onClick={this.callSupport()}
             id="support-icon"
@@ -248,6 +260,7 @@ export default withTracker(props => {
   // get all conversation
   all_conversation = Conversation.find({
     $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
+    available: true
   }).fetch();
 
   if (all_conversation.length > 0) {
@@ -258,13 +271,37 @@ export default withTracker(props => {
   for (var i = 0; i < all_conversation.length; i++) {
     var message = Messages.find({
       conversation_id: all_conversation[i]._id,
+      available: true
     }).fetch();
     all_messages.push(message);
+  }
+
+  var name = "Chat";
+  if (Session.get("current_conservation")) {
+    var conversation = Conversation.findOne({
+      _id: Session.get("current_conservation"),
+      available: true
+    });
+
+    if (Meteor.userId() == conversation.buyer_id) {
+      // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
+      var profile = Kitchen_details.findOne({
+        "user_id": conversation.seller_id
+      });
+      var name = profile.chef_name;
+    } else {
+      // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
+      var profile = Profile_details.findOne({
+        "user_id": conversation.buyer_id
+      });
+      var name = profile.foodie_name;
+    }
   }
 
   return {
     currentUser: Meteor.user(),
     conversation: all_conversation,
     messages: all_messages,
+    name: name
   };
 })(Message);
