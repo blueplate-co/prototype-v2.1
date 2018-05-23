@@ -8,14 +8,18 @@ Order_record = new Mongo.Collection('order_record');
 Meteor.methods({
   'chargeCard': function(stripeToken, amount, description, buyer_id, seller_id, paymentType) {
     if (paymentType == 'card') {
-      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+      console.log('Payment by credits card');
+      var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
 
       var buyerStripeId = Meteor.users.findOne({ _id: buyer_id }).stripe_id;
       var buyerEmail = Meteor.users.findOne({ _id: buyer_id }).emails[0].address;
   
       //- run charge for default payment methods of buyerStripeId
       var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
-      chargeAmount = Math.round(amount + ( amount * 0.034 ) + 2.35);
+      console.log('BEGINNING CHARGE');
+      console.log('Amount: ' + amount);
+      chargeAmount = parseFloat((amount + ( amount * 0.034 ) + 2.35).toFixed(2));
+      console.log('Charge amount: ' + chargeAmount);
       charge({
         amount: chargeAmount * 100,
         currency: "hkd",
@@ -32,7 +36,8 @@ Meteor.methods({
             transactionID,
             function(err, balanceTransaction) {
               if (!err) {
-                var ammount = balanceTransaction.amount;
+                // var amount = balanceTransaction.amount / 100; // convert it to dollar
+                // console.log('Get amount of transaction: ' + amount);
                 // get balance of current customer seller
                 var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
                 customer(
@@ -40,8 +45,10 @@ Meteor.methods({
                   function(err, customer) {
                     if (!err) {
                       var balance = customer.account_balance / 100; //devide for 100 to convert it to dollar
+                      console.log('Get amount of seller in dollar: ' + balance);
                       // update new balance with origin price
                       var newBalance = balance + Math.round(amount / 1.15); // dollar + dollar
+                      console.log('New balance of seller: ' + newBalance);
                       var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                       updatedCustomer(sellerCustomerId, {
                         account_balance: newBalance * 100
@@ -71,31 +78,40 @@ Meteor.methods({
         }
       })
     } else {
-      var stripe = require("stripe")("sk_test_K51exlBQovfRkYAag2TKbzjl");
+      console.log('PAY BY CREDITS');
+      var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
       // when user choose pay by credits
       var customer = Meteor.wrapAsync(stripe.customers.retrieve, stripe.customers);
       var sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id; // get Stripe id of seller
+      console.log('Stripe Id of seller: ' + sellerCustomerId);
       // update balance of seller
       customer(
         sellerCustomerId,
         function(err, customer) {
           if (!err) {
+            console.log('Amount: ' + amount);
             var balance = customer.account_balance; // in cent
+            console.log('Balance of current user: ' + balance);
             var newBalance = balance + ( amount * 100 / 1.15 ); // balance convert into cent
+            console.log('New balance of seller: ' + newBalance);
             var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
             updatedCustomer(sellerCustomerId, {
               account_balance: newBalance
             }, function(err, customer) {
               if (!err) {
+                console.log('Update seller balance');
                 // update credits of buyer
                 var credits = Meteor.users.findOne({ _id: buyer_id }).credits;
                 Meteor.users.update({
                     _id: buyer_id
                 }, {
                     $set: {
-                        'credits': credits - amount
+                        'credits': parseFloat((credits - amount).toFixed(2))
                     }
                 });
+                console.log("Buyer's credits updated: " + credits - amount);
+              } else {
+                console.log(err);
               }
             });
           }

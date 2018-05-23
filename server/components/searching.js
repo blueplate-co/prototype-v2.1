@@ -8,7 +8,7 @@ import {
 
 Meteor.methods({
 
-    'searching'(lat, lng, serving_option, date, time)
+    'searching'(lat, lng, serving_option, date, time, keyword)
     {
         // check(limit, Object)
         let kitchen_id = []
@@ -275,9 +275,40 @@ Meteor.methods({
             ])
 
             //- show results
-            searched_results = _.union(searched_results, kitchen_search, find_kitchen_id)
+            searched_results = _.union(searched_results, kitchen_search, find_kitchen_id);
         }
-        return searched_results;
+
+        if (!keyword) {
+            return searched_results;
+        } else {
+            var keywordDish = [];
+            var keywordMenu = [];
+            var kitchenDish = [];
+            var kitchenMenu = [];
+            for (var i = 0; i < searched_results.length; i++) {
+                var keywords = keyword.toLowerCase().trim().split(" ");
+                var allDish = [];
+                var allMenu = [];
+                var keywordDish = [];
+                var keywordMenu = [];
+                keywords.map((keyword, index) => {
+                    // keyword must has length > 3
+                    if (keyword.length >= 3) {
+                        keywordDish = searched_results[i].Dish.filter((dish) => {
+                            return dish.dish_name.toLowerCase().indexOf(keyword) > -1
+                        });
+                        allDish = allDish.concat(keywordDish);
+                        keywordMenu = searched_results[i].Menu.filter((menu) => {
+                            return menu.menu_name.toLowerCase().indexOf(keyword) > -1
+                        });
+                        allMenu = allMenu.concat(keywordMenu);
+                    }
+                });
+                searched_results[i].Dish = allDish;
+                searched_results[i].Menu = allMenu;
+            }
+            return searched_results;
+        }
 
     },
 

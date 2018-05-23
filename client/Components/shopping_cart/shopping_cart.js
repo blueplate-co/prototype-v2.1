@@ -40,7 +40,7 @@ Template.sc_cost_summary.helpers({
   'total_food_price': function () {
     var total_food_price = 0;
     Shopping_cart.find({ "buyer_id": Meteor.userId() }).map(function (doc) {
-      total_food_price += parseInt(doc.total_price_per_dish);
+      total_food_price += parseFloat(doc.total_price_per_dish);
     });
     return total_food_price;
   },
@@ -61,7 +61,7 @@ Template.sc_cost_summary.helpers({
     var total_price = 0
 
     Shopping_cart.find({ "buyer_id": Meteor.userId() }).map(function (doc) {
-      total_food_price += parseInt(doc.total_price_per_dish);
+      total_food_price += parseFloat(doc.total_price_per_dish);
     });
 
     total_price = no_destination * delivery_cost_per_place + total_food_price

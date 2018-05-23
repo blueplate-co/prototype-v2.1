@@ -190,9 +190,23 @@ class ShoppingCart extends Component {
             }
             if (valid) {
                 Session.set('product', globalCart);
-                FlowRouter.go('/payment');
             }
-        })
+        });
+        if (valid) {
+            globalCart.forEach((item, index) => {
+                Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
+                    if (!err) {
+                        var conversation_id = res;
+                        Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', conversation_id, (err, res) => {
+                            if (!err) {
+                                console.log('Start conversation');
+                            }
+                        });
+                    }
+                })
+            })
+            FlowRouter.go('/payment');
+        }
     }
 
     renderSingleProduct(product) {
@@ -260,7 +274,7 @@ class ShoppingCart extends Component {
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0,10);
         for (var i = 0; i < product.length; i++) {
-            subtotal += parseInt(product[i].total_price_per_dish);
+            subtotal += parseFloat(product[i].product_price);
         }
         return (
             <div key={index}>
@@ -333,7 +347,7 @@ class ShoppingCart extends Component {
     render() {
         var total = 0;
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
-            total += parseInt(this.props.shoppingCart[i].total_price_per_dish);
+            total += parseFloat(this.props.shoppingCart[i].product_price);
         }
         Session.set('product', '');
         return (

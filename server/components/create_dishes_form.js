@@ -149,7 +149,7 @@ Meteor.methods({
       product_name: dish_name,
       quantity: quantity,
       product_price: dish_price,
-      total_price_per_dish: parseInt(quantity) * parseInt(dish_price),
+      total_price_per_dish: parseInt(quantity) * parseFloat(dish_price),
       updatedAt: new Date(),
       createdAt: new Date()
     })
@@ -294,7 +294,7 @@ Meteor.methods({
       hours: hours,
       mins: mins,
       dish_cost: dish_cost,
-      dish_selling_price: dish_selling_price,
+      dish_selling_price: parseFloat(dish_selling_price).toFixed(2),
       dish_profit: dish_profit,
       allergy_tags: allergy_tags,
       dietary_tags: dietary_tags,
