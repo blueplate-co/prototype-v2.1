@@ -585,14 +585,6 @@ class TopNavigation extends Component {
     );
   };
 
-  componentDidMount() {
-    Meteor.call("payment.getCredits", (err, response) => {
-      this.setState({
-        credits: response,
-      });
-    });
-  }
-
   render() {
     var sidebarContent = this.renderSideBar();
 
@@ -643,7 +635,7 @@ class TopNavigation extends Component {
                   >
                     <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
                   </li>
-                  <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                  <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
                 </ul>
               </div>
             </nav>
@@ -656,8 +648,14 @@ class TopNavigation extends Component {
 
 export default withTracker(props => {
   const handle = Meteor.subscribe("getUserShoppingCart");
+  var credits = 0;
+  if (Meteor.user()) {
+    Meteor.subscribe('userData');
+    credits = Meteor.user().credits;
+  }
   return {
     currentUser: Meteor.user(),
+    credits: credits,
     loading: !handle.ready(),
     shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
   };
