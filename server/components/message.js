@@ -11,18 +11,35 @@ Meteor.publish("theMessages", function() {
 });
 
 Meteor.methods({
-  "message.createConversasion"(senderId, receiverId) {
-    var participants = [senderId, receiverId];
-    var conversation = Conversation.insert({
-      participants: participants,
-      createdAt: new Date(),
-    });
+  "message.createConversasion"(buyerId, sellerId) {
+    var conversation = Conversation.find({
+      buyer_id: buyerId,
+      seller_id: sellerId,
+    }).fetch();
+
+    if (conversation.length > 0) {
+      Conversation.update({
+        buyer_id: buyerId,
+        seller_id: sellerId,
+      }, {
+        $set: {
+          available: true
+        }
+      });
+    } else {
+      var conversation = Conversation.insert({
+        buyer_id: buyerId,
+        seller_id: sellerId,
+        available: true,
+        createdAt: new Date(),
+      });
+    }
     return conversation;
   },
-  "message.createStatus"(senderId, receiverId, status, conversationId) {
+  "message.createStatus"(buyerId, sellerId, status, conversationId) {
     Messages.insert({
-      sender_id: senderId,
-      receiver_id: receiverId,
+      buyer_id: buyerId,
+      seller_id: sellerId,
       type: "status",
       message: status,
       conversation_id: conversationId,

@@ -106,7 +106,7 @@ Meteor.methods({
                     _id: buyer_id
                 }, {
                     $set: {
-                        'credits': credits - amount
+                        'credits': parseFloat((credits - amount).toFixed(2))
                     }
                 });
                 console.log("Buyer's credits updated: " + credits - amount);

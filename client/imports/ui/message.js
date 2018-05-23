@@ -55,9 +55,7 @@ class Message extends Component {
   }
 
   // call for support, send SMS to him
-  callSupport() {
-    
-  }
+  callSupport() {}
 
   sendMessage(e) {
     if (e.charCode == 13) {
@@ -175,7 +173,7 @@ class Message extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.messages !== this.props.messages) {
       // make scrollbar always at bottom when receive new message
-      var messageBody = document.querySelector('#list-message-body');
+      var messageBody = document.querySelector("#list-message-body");
       messageBody.scrollTop = messageBody.scrollHeight;
       this.setState({ display: true }, () => {
         $("#chat-panel").css("bottom", "0px");
@@ -185,7 +183,7 @@ class Message extends Component {
 
   componentDidMount() {
     // make scrollbar always at bottom when receive new message
-    var messageBody = document.querySelector('#list-message-body');
+    var messageBody = document.querySelector("#list-message-body");
     messageBody.scrollTop = messageBody.scrollHeight;
   }
 
@@ -221,7 +219,11 @@ class Message extends Component {
           className="chat-header"
         >
           <span className="chat-header-name">{name}</span>
-          <span onClick={this.callSupport()} id="support-icon" title="Contact support">
+          <span
+            onClick={this.callSupport()}
+            id="support-icon"
+            title="Contact support"
+          >
             <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" />
           </span>
         </div>
@@ -245,7 +247,7 @@ export default withTracker(props => {
 
   // get all conversation
   all_conversation = Conversation.find({
-    participants: Meteor.userId(),
+    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
   }).fetch();
 
   if (all_conversation.length > 0) {
