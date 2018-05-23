@@ -84,6 +84,12 @@
   margin-top: 30px;
 }
 
+.card-panel{
+  border:solid #979797;
+  border-radius:15px;
+  box-shadow: none;
+}
+
 .dashboard-totalviews {
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/views-background.svg);
   background-repeat: no-repeat;

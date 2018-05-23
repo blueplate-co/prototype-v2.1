@@ -1,62 +1,96 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
-import { Session } from 'meteor/session';
+import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Session } from 'meteor/session';
 
-import CategoryInput from './add_category.js';
-
-class CategorySummary extends Component {
-
-  constructor (props) {
-    super(props);
-    this.add_cat = this.add_cat.bind(this);
-    this.close_add_cat = this.close_add_cat.bind(this);
+export default class SellerHandbook extends Component {
+  constructor(props) {
+    super(props)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleClikc = this.handleClick.bind(this);
     this.state = {
-      add_category: false
+      mouseOver: -1,
+      categories: [],
     }
   }
 
-  add_cat = () => {
+  handleMouseLeave = (e) => {
     this.setState({
-      add_category: true
-    });
+      mouseOver: false
+    })
   }
 
-  close_add_cat = () => {
-    this.setState({
-      add_category: false
+  handleClick = (item, e) => {
+    Session.set('cat_selected', item._id)
+    console.log(Session.get('cat_selected'))
+    const link = '/seller-handbook/category/' + item.cat_title
+    FlowRouter.go(link);
+  }
+
+  componentDidMount() {
+    window.scrollTo(0,0);
+    Meteor.call('category.display', (error, result) => {
+      if (result) {
+        this.setState({
+          categories: result
+        });
+      }
+    })
+  }
+
+  category_display_list = () => {
+    return this.state.categories.map((item, index) => {
+      return (
+        <div className = "col xl4 l4 m6 s12 center">
+          <div
+            key = {index}
+            className = {
+              this.state.mouseOver === index ?
+                "card hoverable cat_display_container"
+                :
+                "card hoverable cat_display_container z-depth-0"
+              }
+            onMouseOver= {(e) => {(this.setState({mouseOver: index}))}}
+            onMouseLeave={this.handleMouseLeave}
+            onClick={() => this.handleClick(item)}
+          >
+            <a href="">
+              <div className = "card-image">
+                <img className = "iconDisplay" src = {item.icon_link.origin} />
+              </div>
+              <div className = "card-content left-align">
+                <h5>{item.cat_title}</h5>
+                <p>{item.cat_description}</p>
+                <br />
+                <p>see all articles ({item.article_count})</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      )
     })
   }
 
   render() {
     return (
-      <div className = "container seller_handbook_category">
+      <div className = "container">
         <div className = "section">
-          <h5>Seller handbook category list</h5>
-          <div className = "row">
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "add_cat" onClick={ () => this.add_cat() }>
-              <i className="material-icons grey-text text-darken-1">add</i><span>Add</span>
-            </a>
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "edit_cat">
-              <i className="material-icons grey-text text-darken-1" id= "edit_cat">edit</i><span>Edit</span>
-            </a>
-            <a className = "btn-flat waves-effect waves-red z-depth-0 left grey-text text-darken-1 cat_admin_btn" id = "remove_cat">
-              <i className="material-icons grey-text text-darken-1" id = "remove_cat">close</i><span>Remove</span>
-            </a>
-          </div>
+          <h4 className = "center-align">Seller Handbook</h4>
+          <p className = "center-align">This is a business guide for our partner</p>
         </div>
-        <div className = "divider"></div>
         <div className = "section">
-          {
-            (this.state.add_category) ?
-            <CategoryInput close_add_cat={this.close_add_cat} />
-            : ""
-          }
+        <h6 className = "center-align">Categories</h6>
+
+          <div className = "row">
+            {
+              (this.state.categories !== []) ?
+              this.category_display_list()
+              :
+              <p>loading...</p>
+            }
+          </div>
         </div>
       </div>
     )
   }
 }
-
-export default CategorySummary;

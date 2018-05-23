@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+import IconUpload from './icon_upload.js';
 
 export default class CategoryInput extends Component {
 
@@ -12,7 +12,7 @@ export default class CategoryInput extends Component {
     this.state = {
       cat_title: '',
       cat_description: '',
-      incomplete_form: true
+      incomplete_form: true,
     }
   }
 
@@ -25,6 +25,15 @@ export default class CategoryInput extends Component {
     const cat_description = this.state.cat_description;
     const createdAt = new Date();
     const createdBy = Meteor.userId();
+    const icon_link = Session.get('shIcons')
+    Meteor.call('category.add', cat_title, cat_description, icon_link, createdBy, (error, result) => {
+      if (!error) {
+        Materialize.toast('Category added', 4000)
+        Session.set('shIcons', {})
+      } else {
+        Materialize.toast(error.message)
+      }
+    })
     this.props.close_add_cat();
   }
 
@@ -49,8 +58,7 @@ export default class CategoryInput extends Component {
         <div className = "card-content">
           <div className = "row">
             <div className = "col s12 m5 l3">
-             <div className = "cat_icon_uploader center">
-             </div>
+              <IconUpload />
             </div>
             <div className = "col s12 m7 l9">
               <div className="input-field">
@@ -63,7 +71,7 @@ export default class CategoryInput extends Component {
               </div>
             </div>
             <div className = "row">
-              <a className = "btn right cat_save" disabled = {this.state.cat_title.trim().length + this.state.cat_description.trim().length == 0}>save</a>
+              <a className = "btn right cat_save" disabled = {this.state.cat_title.trim().length + this.state.cat_description.trim().length == 0} onClick = {this.save_cat}>save</a>
             </div>
           </div>
         </div>
