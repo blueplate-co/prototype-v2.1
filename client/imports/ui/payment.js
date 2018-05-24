@@ -265,8 +265,11 @@ class Payment extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col s12 m12 l12 xl12">
+                            <div className="col payment-number s12 m12 l12 xl12">
                                 <input id="card_no" type="number" placeholder="your credit card number" />
+                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
+                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
+                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
                             </div>
                         </div>
                         <div className="row">
@@ -309,8 +312,11 @@ class Payment extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col s12 m12 l12 xl12">
+                            <div className="col payment-number s12 m12 l12 xl12">
                                 <input id="card_no" type="number" placeholder="your credit card number" />
+                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
+                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
+                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
                             </div>
                         </div>
                         <div className="row">
@@ -347,7 +353,7 @@ class Payment extends Component {
         for (var i = 0; i < shoppingCart.length; i++ ) {
             total += parseFloat(shoppingCart[i].total_price_per_dish);
         }
-        var fee = (total * 0.034) + 2.35;
+        var fee = parseFloat((total * 0.034) + 2.35).toFixed(2);
         return (
             <div className="container" style={{ marginTop: '50px' }}>
                 <div className="row">
