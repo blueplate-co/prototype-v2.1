@@ -345,11 +345,15 @@ class Payment extends Component {
         return (
             <div className="container" style={{ marginTop: '50px' }}>
                 <div className="row">
+                    <div className="col s12 m12 l12 xl12" style={{ textAlign: 'center', marginBottom: '80px' }}>
+                        <h6>This will be processing free charged by Payment gateway.</h6>
+                        <h6>Let's save it by adding Blueplate credit!</h6>
+                    </div>
                     <div className="col s12 m6 l6 xl6">
                         <div className="payment-wrapper" onClick={ () => this.choosePayment('credits') }>
                             <div className="col s12 payment-method" id="credits"></div>
                             <span className="text">Credits</span>
-                            <span className="sub-text">balance ${ Session.get('credits') }</span>
+                            <span className="sub-text">balance { Session.get('credits') }$</span>
                         </div>
                     </div>
                     <div className="col s12 m6 l6 xl6">
