@@ -25,7 +25,7 @@ export function navbar_find_by(collection){
             var searched_result = Collections[collection].find({
               '_id': {$in: kitchen_id},
               'serving_option': method,
-              'user_id':{$ne: Meteor.userId()},
+              //'user_id':{$ne: Meteor.userId()},
               'kitchen_address_conversion.lng':{$ne: null},
               'kitchen_address_conversion.lat':{$ne: null}
             });
@@ -34,8 +34,8 @@ export function navbar_find_by(collection){
           } else {
             var searched_result =  Collections[collection].find({
               'kitchen_id': {$in: kitchen_id},
-              'serving_option': method,
-              'user_id':{$ne: Meteor.userId()}
+              'serving_option': method
+              //'user_id':{$ne: Meteor.userId()}
             });
             //console.log(searched_result);
             Session.set('searched_result', searched_result.fetch());
@@ -49,7 +49,7 @@ export function navbar_find_by(collection){
           if (collection === "Kitchen_details") {
               var searched_result = Collections[collection].find({
                 '_id': {$in: kitchen_id},
-                'user_id':{$ne: Meteor.userId()},
+                //'user_id':{$ne: Meteor.userId()},
                 'kitchen_address_conversion.lng':{$ne: null},
                 'kitchen_address_conversion.lat':{$ne: null}
               });
@@ -58,7 +58,7 @@ export function navbar_find_by(collection){
           } else {
             var searched_result = Collections[collection].find({
               'kitchen_id': {$in: kitchen_id},
-              'user_id':{$ne: Meteor.userId()}
+              //'user_id':{$ne: Meteor.userId()}
             })
             Session.set('searched_result', searched_result.fetch());
           }
@@ -69,7 +69,7 @@ export function navbar_find_by(collection){
       //console.log(collection + 'location: F, method: T');
       var searched_result = Collections[collection].find({
         'serving_option': method,
-        'user_id':{$ne: Meteor.userId()},
+        //'user_id':{$ne: Meteor.userId()},
         'kitchen_address_conversion.lng':{$ne: null},
         'kitchen_address_conversion.lat':{$ne: null}
       })
@@ -78,7 +78,7 @@ export function navbar_find_by(collection){
       //location: F, method: F
       //console.log(collection + 'location: F, method: F');
       var searched_result = Collections[collection].find({
-        'user_id':{$ne: Meteor.userId()},
+        //'user_id':{$ne: Meteor.userId()},
         'kitchen_address_conversion.lng':{$ne: null},
         'kitchen_address_conversion.lat':{$ne: null}
       })
