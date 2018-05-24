@@ -185,34 +185,7 @@ class Message extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.messages !== this.props.messages) {
-      // signal when new messages has come
-      this.setState({ display: true }, () => {
-        $("#chat-panel").css("bottom", "0px");
-      });
     }
-    // after first chat goes, the support function is run. After 60000 (60s), if no new message come from opponent. CS caller is run
-    // var support = setTimeout(() => {
-    //   var conversation_id = Session.get('current_conservation');
-    //   var conservation = Conversation.find({
-    //     _id: conversation_id,
-    //     available: true
-    //   });
-    //   var buyer_id = conservation.buyer_id;
-    //   var seller_id = conservation.seller_id;
-    //   Meteor.call('message.createStatus', buyer_id, seller_id, 'The conversation is not going smoothly? Our customer service will help you.', conversation_id);
-    //   clearTimeout(support);
-    // }, 5000);
-    // if (this.props.messages && this.props.messages.length > 0) {
-    //   if (this.props.messages[Session.get('current_conservation_index')].length > 2) {
-    //     for (var i = 1; i < this.props.messages[Session.get('current_conservation_index')].length; i++) {
-    //       if (this.props.messages[Session.get('current_conservation_index')][i].sender_id !== this.props.messages[Session.get('current_conservation_index')][i - 1].sender_id ) {
-    //         //current message and previous message not sent by the same people
-    //         //cancel timeout
-    //         clearTimeout(support);
-    //       }
-    //     }
-    //   }
-    // }
   }
 
   componentDidMount() {
@@ -276,6 +249,7 @@ export default withTracker(props => {
     all_messages.push(message);
   }
 
+  // generator name of chat
   var name = "Chat";
   if (Session.get("current_conservation")) {
     var conversation = Conversation.findOne({
