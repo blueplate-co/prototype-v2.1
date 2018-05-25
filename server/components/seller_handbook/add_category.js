@@ -45,7 +45,7 @@ Meteor.methods({
     return Seller_handbook_category.find({deleted: false}, {sort:{cat_title: 1}}).fetch();
   },
   'category.find' (cat_title) {
-    return Seller_handbook_category.findOne({cat_title: cat_title});
+    return Seller_handbook_category.findOne({deleted: false, cat_title: cat_title});
   },
   'category.findById' (cat_id) {
     return Seller_handbook_category.findOne({_id: cat_id});
