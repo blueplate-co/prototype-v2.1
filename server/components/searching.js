@@ -15,7 +15,7 @@ Meteor.methods({
         let dish_id = []
         let searched_results = []
         let searchingQuery = []
-        let radius = 1 / 6378.1
+        let radius = 3949 / 6378.1
         let baseOnLocation = false
 
         //- limit records

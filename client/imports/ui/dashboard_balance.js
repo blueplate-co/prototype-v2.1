@@ -39,13 +39,16 @@ export default class DashboardBalance extends Component {
     return (
       <div className="card dashboard-balance">
         <div className="infor-pane">
-          <h5>
+          {/* <h5>
             Balance amount:{" "}
             <span className="price">{this.state.account_balance}</span>
           </h5>
           <h5>
             Credits amount: <span className="price">{this.state.credits}</span>
-          </h5>
+          </h5> */}
+          <h5>
+            Current balance: <span className="price">{parseFloat(this.state.credits + this.state.account_balance).toFixed()}</span>
+          </h5> 
         </div>
         <div className="action-pane">
           <button>Claim </button>

@@ -131,7 +131,7 @@ Template.menu_creation_content.events({
     var user_id = Meteor.userId();
     var kitchen = Kitchen_details.findOne({'user_id': user_id});
     var kitchen_id = kitchen._id;
-    var menu_selling_price = $('#menu_selling_price').val() + ($('#menu_selling_price').val() * 0.15); // add fee into menu price
+    var menu_selling_price = (parseFloat($('#menu_selling_price').val()) + parseFloat($('#menu_selling_price').val() * 0.15)).toFixed(2); // add fee into menu price
     var min_order = $('#min_order_range').val();
     var lead_hours = $('#lead_time_hours_range').val();
     var lead_days = $('#lead_time_days_range').val();
@@ -347,8 +347,11 @@ Template.edit_content.helpers({
   },
   'menu_retreival_edit': function() {
     var menu_id = Session.get('menu_id');
-    var menu_details = Menu.findOne({"_id": menu_id})
-    return menu_details;
+    var menu_details = Menu.findOne({"_id": menu_id});
+    if (menu_details) {
+      menu_details.menu_selling_price = parseFloat(menu_details.menu_selling_price / 1.15).toFixed(2);
+      return menu_details;
+    }
   },
   'get_serving_option': function() {
     Session.set('serving_option_tags', this.serving_option);
@@ -407,7 +410,7 @@ Template.edit_content.events({
     var menu_id = Session.get('menu_id');
     var menu_name = $('#edit_menu_name').val();
     var menu_description = $('#edit_menu_description').val();
-    var menu_selling_price = $('#edit_menu_selling_price').val();
+    var menu_selling_price = (parseFloat($('#edit_menu_selling_price').val()) + parseFloat($('#edit_menu_selling_price').val() * 0.15)).toFixed(2); // add fee into menu price
     var min_order = $('#edit_min_order_range').val();
     var lead_hours = $('#edit_lead_time_hours_range').val();
     var lead_days = $('#edit_lead_time_days_range').val();

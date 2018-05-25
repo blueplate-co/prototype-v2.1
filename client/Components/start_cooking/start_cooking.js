@@ -429,7 +429,7 @@ Template.request_card.events({
         })
         var stripeToken = transaction.stripeToken
         var amount = transaction.amount
-        var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - #" + seller_id;
+        var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
         Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType);
       }, 3 * 1000)
     }

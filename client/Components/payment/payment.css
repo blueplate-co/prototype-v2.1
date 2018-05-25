@@ -44,8 +44,35 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    color: #55abcd;
+    color: #ccc;
     font-size: 15px;
+}
+
+.payment-number {
+    display: inline-flex;
+    position: relative;
+}
+
+.payment-number img {
+    position: absolute;
+}
+
+.payment-number #visa-icon {
+    right: 5px;
+    top: 0px;
+    width: 50px;
+}
+
+.payment-number #mastercard-icon {
+    right: 55px;
+    top: 0px;
+    width: 50px;
+}
+
+.payment-number #stripe-icon {
+    right: 110px;
+    top: 18px;
+    width: 50px;
 }
 
 #back-payment {

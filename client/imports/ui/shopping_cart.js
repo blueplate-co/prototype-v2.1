@@ -202,6 +202,11 @@ class ShoppingCart extends Component {
                                 console.log('Start conversation');
                             }
                         });
+                        Meteor.call('message.createStatus', item.id , Meteor.userId(), 'Start conversation', conversation_id, (err, res) => {
+                            if (!err) {
+                                console.log('Start conversation');
+                            }
+                        });
                     }
                 })
             })

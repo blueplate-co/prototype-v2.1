@@ -12,12 +12,32 @@ Meteor.publish("theMessages", function() {
 
 Meteor.methods({
   "message.createConversasion"(buyerId, sellerId) {
-    var conversation = Conversation.insert({
+    var existedConversation = Conversation.findOne({
       buyer_id: buyerId,
       seller_id: sellerId,
-      available: true,
-      createdAt: new Date(),
     });
+    if (existedConversation) {
+      if (!existedConversation.available) {
+        Conversation.update(
+          {
+            buyer_id: buyerId,
+            seller_id: sellerId,
+          },
+          {
+            $set: {
+              available: false,
+            },
+          }
+        );
+      }
+    } else {
+      var conversation = Conversation.insert({
+        buyer_id: buyerId,
+        seller_id: sellerId,
+        available: true,
+        createdAt: new Date(),
+      });
+    }
     return conversation;
   },
   "message.createStatus"(senderId, receiverId, status, conversationId) {
@@ -27,6 +47,7 @@ Meteor.methods({
       type: "status",
       message: status,
       available: true,
+      seen: false,
       conversation_id: conversationId,
       createdAt: new Date(),
     });
@@ -38,6 +59,7 @@ Meteor.methods({
       type: "message",
       message: status,
       available: true,
+      seen: false,
       conversation_id: conversationId,
       createdAt: new Date(),
     });

@@ -265,8 +265,11 @@ class Payment extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col s12 m12 l12 xl12">
+                            <div className="col payment-number s12 m12 l12 xl12">
                                 <input id="card_no" type="number" placeholder="your credit card number" />
+                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
+                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
+                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
                             </div>
                         </div>
                         <div className="row">
@@ -309,8 +312,11 @@ class Payment extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col s12 m12 l12 xl12">
+                            <div className="col payment-number s12 m12 l12 xl12">
                                 <input id="card_no" type="number" placeholder="your credit card number" />
+                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
+                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
+                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
                             </div>
                         </div>
                         <div className="row">
@@ -342,6 +348,12 @@ class Payment extends Component {
     }
 
     renderPaymentSelect() {
+        var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+        var total = 0;
+        for (var i = 0; i < shoppingCart.length; i++ ) {
+            total += parseFloat(shoppingCart[i].total_price_per_dish);
+        }
+        var fee = parseFloat((total * 0.034) + 2.35).toFixed(2);
         return (
             <div className="container" style={{ marginTop: '50px' }}>
                 <div className="row">
@@ -353,13 +365,14 @@ class Payment extends Component {
                         <div className="payment-wrapper" onClick={ () => this.choosePayment('credits') }>
                             <div className="col s12 payment-method" id="credits"></div>
                             <span className="text">Credits</span>
-                            <span className="sub-text">balance { Session.get('credits') }$</span>
+                            <span className="sub-text">Processing fee: 0$</span>
                         </div>
                     </div>
                     <div className="col s12 m6 l6 xl6">
                         <div className="payment-wrapper" onClick={ () => this.choosePayment('credit-card') }>
                             <div className="col s12 payment-method" id="card"></div>
                             <span className="text">Credit card</span>
+                            <span className="sub-text">Processing fee: {fee}$</span>
                         </div>
                     </div>
                 </div>
