@@ -139,12 +139,18 @@
     <div class = 'card-content'>
       {{#each ordered_dish}}
         {{#if product_is_dish}}
+          <h6>{{get_dish_serving}} on {{get_serving_time}}</h6>
+          {{#if delivery}}
+            <h6>Address: {{delivery_address}}</h6>
+          {{/if}}
           à la carte order:
           <table>
             <tbody>
-              <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_dish_image}})"></a></td>
-              <td><strong>{{get_dish_name}}</strong></td>
-              <td><strong>x{{get_dish_qty}}</strong></td>
+              <tr>
+                <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_dish_image}})"></a></td>
+                <td><strong>{{get_dish_name}}</strong></td>
+                <td><strong>x{{get_dish_qty}}</strong></td>
+              </tr>
             </tbody>
           </table>
         {{else}}

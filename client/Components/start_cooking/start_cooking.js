@@ -299,6 +299,36 @@ Template.request_card.helpers({
       'buyer_id': this.buyer_id
     }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].quantity
   },
+  'get_dish_serving': function() {
+    return Order_record.find({
+      'product_id': this.product_id,
+      'seller_id': Meteor.userId(),
+      'buyer_id': this.buyer_id
+    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].serving_option
+  },
+  'get_serving_time': function() {
+    var time = Order_record.find({
+      'product_id': this.product_id,
+      'seller_id': Meteor.userId(),
+      'buyer_id': this.buyer_id
+    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].ready_time;
+    var time_string = new Date(time)
+    return time_string.toLocaleString();
+  },
+  'delivery': function() {
+    return Order_record.find({
+      'product_id': this.product_id,
+      'seller_id': Meteor.userId(),
+      'buyer_id': this.buyer_id
+    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].serving_option === 'Delivery';
+  },
+  'delivery_address': function() {
+    return Order_record.find({
+      'product_id': this.product_id,
+      'seller_id': Meteor.userId(),
+      'buyer_id': this.buyer_id
+    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].address;
+  },
   'get_menu_name': function() {
     return Menu.findOne({
       '_id': this.product_id
