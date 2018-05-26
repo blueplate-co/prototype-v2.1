@@ -143,7 +143,7 @@ Template.order_card.helpers({
     return time_string.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   },
   'delivery': function() {
-    Order_record.findOne({
+    return Order_record.findOne({
     '_id': String(this)
   }).serving_option === 'Delivery';
   },
@@ -665,6 +665,19 @@ Template.chef_ready_card.helpers({
   'ordered_dish': function(){
     console.log(String(this))
     return Order_record.find({'_id': String(this),'seller_id': Meteor.userId()});
+  },
+  'get_serving_date': function() {
+    var time = this.ready_time;
+    var time_string = new Date(time)
+    return time_string.toLocaleDateString();
+  },
+  'get_serving_time': function() {
+    var time = this.ready_time;
+    var time_string = new Date(time)
+    return time_string.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  },
+  'delivery': function() {
+    return this.serving_option === 'Delivery';
   },
   'product_is_dish': function() {
     if (Dishes.findOne({'_id': this.product_id})) {

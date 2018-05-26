@@ -74,6 +74,12 @@
       <!-- #: {{get_transaction_no}} -->
     </div>
     <div class = 'card-content'>
+      <h6>Serving Option: {{get_dish_serving}}</h6>
+      <h6>Date: {{get_serving_date}}</h6>
+      <h6>Time: {{get_serving_time}}</h6>
+      {{#if not_delivery}}
+        <h6>Address: {{address}}</h6>
+      {{/if}}
       {{#each ordered_dish}}
         {{#if product_is_dish}}
           à la carte order:
@@ -123,12 +129,18 @@
   {{set_timer}}
   <div class ='card request_card'>
     <div class = 'card-image'>
-      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{foodie_profile_picture}})"></a>
+      <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
       <!--<span id = 'transaction_no' style='line-height: 12px;'><small><strong>Transaction no.:</strong> {{get_transaction_no}}</small></span>-->
       <div class = 'divider'></div>
     </div>
     <div class = 'card-content'>
+      <h6>Serving Option: {{get_dish_serving}}</h6>
+      <h6>Date: {{get_serving_date}}</h6>
+      <h6>Time: {{get_serving_time}}</h6>
+      {{#if not_delivery}}
+        <h6>Address: {{address}}</h6>
+      {{/if}}
       {{#if product_is_dish}}
         <div class = 'row'>
           <table>
@@ -188,6 +200,12 @@
     <div class = 'card-content'>
       {{#each ready_order}}
         {{#each ordered_dish}}
+          <h6>Serving Option: {{get_dish_serving}}</h6>
+          <h6>Date: {{get_serving_date}}</h6>
+          <h6>Time: {{get_serving_time}}</h6>
+          {{#if not_delivery}}
+            <h6>Address: {{address}}</h6>
+          {{/if}}
           {{#if product_is_dish}}
             {{#if transaction_is_complete}}
               <h6 class = 'center-align'>Please review your order:</h6>

@@ -193,6 +193,12 @@
     <div class = 'card-content'>
       {{#each ready_order}}
         {{#each ordered_dish}}
+          <h6>Serving Option: {{this.serving_option}}</h6>
+          <h6>Date: {{get_serving_date}}</h6>
+          <h6>Time: {{get_serving_time}}</h6>
+          {{#if delivery}}
+            <h6>Address: {{this.address}}</h6>
+          {{/if}}
           {{#if product_is_dish}}
             <table>
               <tbody>

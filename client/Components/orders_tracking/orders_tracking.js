@@ -44,8 +44,29 @@ Template.pending_confirmation.helpers({
     var kitchen = Kitchen_details.findOne({'user_id': String(this)})
     return kitchen.kitchen_name;
   },
+  'get_dish_serving': function() {
+    var order = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'})
+    return order.serving_option;
+  },
+  'get_serving_date': function() {
+    var time = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'}).ready_time;
+    return new Date(time).toLocaleDateString();
+  },
+  'get_serving_time': function() {
+    var time = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'}).ready_time;
+    return new Date(time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  },
+  'not_delivery': function() {
+    return Order_record.findOne({
+      'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'}
+    ).serving_option != 'Delivery';
+  },
+  'address': function() {
+    return Order_record.findOne({
+      'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'
+    }).address;
+  },
   'ordered_dish': function(){
-
     var order = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(),'status':'Created'})
     var trans_no = order.transaction_no
     return Order_record.find({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'transaction_no': trans_no,'status': 'Created'})
@@ -81,7 +102,7 @@ Template.pending_confirmation.helpers({
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
     }).dishes_id[0];
-    
+
     var menu_image = Dishes.findOne({
       '_id': dish_image_id
     }).meta.origin
@@ -123,11 +144,31 @@ Template.foodies_confirmed_order.helpers({
     var name = String(this)
     return Session.get(name);
   },
-  'foodie_profile_picture': function(){
-    var order = Order_record.findOne({'_id': String(this)})
-    var buyer_id = order.buyer_id
-    var foodie = Profile_details.findOne({'user_id': buyer_id})
-    return foodie.profileImg.origin;
+  'kitchen_profile_picture': function(){
+    var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
+    var kitchen = Kitchen_details.findOne({'user_id': seller_id})
+    return kitchen.profileImg.origin;
+  },
+  'get_kitchen_name': function() {
+    var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
+    return Kitchen_details.findOne({'user_id': seller_id}).kitchen_name
+  },
+  'get_dish_serving': function() {
+    return Order_record.findOne({'_id': String(this)}).serving_option;
+  },
+  'get_serving_date': function() {
+    var time = Order_record.findOne({'_id': String(this)}).ready_time;
+    return new Date(time).toLocaleDateString();
+  },
+  'get_serving_time': function() {
+    var time = Order_record.findOne({'_id': String(this)}).ready_time;
+    return new Date(time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  },
+  'not_delivery': function() {
+    return Order_record.findOne({'_id': String(this)}).serving_option != 'Delivery';
+  },
+  'address': function() {
+    return Order_record.findOne({'_id': String(this)}).address;
   },
   'product_is_dish': function() {
     var order = Order_record.findOne({'_id': String(this)})
@@ -305,7 +346,7 @@ Template.ready_card.helpers({
     }
   },
   'kitchen_profile_picture': function(){
-    var foodie = Profile_details.findOne({'user_id': this.seller_id})
+    var foodie = Kitchen_details.findOne({'user_id': this.seller_id})
     return foodie.profileImg.origin;
   },
   'get_kitchen_name': function() {
@@ -318,6 +359,23 @@ Template.ready_card.helpers({
 
   'ordered_dish': function(){
     return Order_record.find({'_id': String(this),'buyer_id': Meteor.userId()});
+  },
+  'get_dish_serving': function() {
+    return this.serving_option;
+  },
+  'get_serving_date': function() {
+    var time = this.ready_time;
+    return new Date(time).toLocaleDateString();
+  },
+  'get_serving_time': function() {
+    var time = this.ready_time;
+    return new Date(time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  },
+  'not_delivery': function() {
+    return this.serving_option != 'Delivery';
+  },
+  'address': function() {
+    return this.address;
   },
   'product_is_dish': function() {
     if (Dishes.findOne({'_id': this.product_id})) {
