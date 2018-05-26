@@ -76,6 +76,12 @@
       <div class = 'divider'></div>
     </div>
     <div class = 'card-content'>
+      <h6>Serving Option: {{get_dish_serving}}</h6>
+      <h6>Date: {{get_serving_date}}</h6>
+      <h6>Time: {{get_serving_time}}</h6>
+      {{#if delivery}}
+        <h6>Address: {{delivery_address}}</h6>
+      {{/if}}
       {{#if product_is_dish}}
         <div class = 'row'>
           <table>
@@ -138,11 +144,13 @@
     </div>
     <div class = 'card-content'>
       {{#each ordered_dish}}
-        {{#if product_is_dish}}
-          <h6>{{get_dish_serving}} on {{get_serving_time}}</h6>
-          {{#if delivery}}
-            <h6>Address: {{delivery_address}}</h6>
-          {{/if}}
+        <h6>Serving Option: {{get_dish_serving}}</h6>
+        <h6>Date: {{get_serving_date}}</h6>
+        <h6>Time: {{get_serving_time}}</h6>
+        {{#if delivery}}
+          <h6>Address: {{delivery_address}}</h6>
+        {{/if}}
+          {{#if product_is_dish}}
           à la carte order:
           <table>
             <tbody>
