@@ -44,6 +44,10 @@ export default class Deposit extends Component {
                         })
                     } else {
                         Materialize.toast("Success! Your credits has been added", 4000, 'rounded bp-green');
+                        this.setState({
+                            action: false
+                        });
+                        close();
                     }
                 })
             }
