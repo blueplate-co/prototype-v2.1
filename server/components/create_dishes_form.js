@@ -158,7 +158,7 @@ Meteor.methods({
   'shopping_cart.update' (
     order_id,
     quantity,
-    total_price_per_dish
+    total_price_per_dish,
   ) {
 
     check(order_id, String);
