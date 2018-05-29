@@ -225,7 +225,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="chat-header-name">{name}</span>
+          <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
           <span
             onClick={this.callSupport()}
             id="support-icon"
@@ -263,6 +263,7 @@ export default withTracker(props => {
     Session.set("current_conservation_index", 0);
   }
 
+  // get all messages
   for (var i = 0; i < all_conversation.length; i++) {
     var message = Messages.find({
       conversation_id: all_conversation[i]._id,
@@ -271,9 +272,26 @@ export default withTracker(props => {
     all_messages.push(message);
   }
 
+  // get total number of unread message
+  var total_unread = 0;
+  all_messages.map((item, index) => {
+    if (item.length > 0) {
+      item.map((itm, idx) => {
+        if (itm.type == 'message') {
+          if (!itm.seen && itm.receiver_id == Meteor.userId()) {
+            total_unread++;
+          }
+        }
+      })
+    }
+  })
+
+
   return {
     currentUser: Meteor.user(),
     conversation: all_conversation,
-    messages: all_messages
+    messages: all_messages,
+    name: name,
+    total_unread: total_unread
   };
 })(Message);
