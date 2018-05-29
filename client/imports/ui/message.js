@@ -195,6 +195,28 @@ class Message extends Component {
   }
 
   render() {
+    // generator name of chat
+    var name = "Chat";
+    if (Session.get("current_conservation")) {
+      var conversation = Conversation.findOne({
+        _id: Session.get("current_conservation"),
+        available: true
+      });
+
+      if (Meteor.userId() == conversation.buyer_id) {
+        // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
+        var profile = Kitchen_details.findOne({
+          "user_id": conversation.seller_id
+        });
+        var name = profile.chef_name;
+      } else {
+        // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
+        var profile = Profile_details.findOne({
+          "user_id": conversation.buyer_id
+        });
+        var name = profile.foodie_name;
+      }
+    }
     return (
       <div className="col chat-panel-wrapper">
         <div
@@ -203,7 +225,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="chat-header-name">{this.props.name}</span>
+          <span className="chat-header-name">{name}</span>
           <span
             onClick={this.callSupport()}
             id="support-icon"
@@ -249,33 +271,9 @@ export default withTracker(props => {
     all_messages.push(message);
   }
 
-  // generator name of chat
-  var name = "Chat";
-  if (Session.get("current_conservation")) {
-    var conversation = Conversation.findOne({
-      _id: Session.get("current_conservation"),
-      available: true
-    });
-
-    if (Meteor.userId() == conversation.buyer_id) {
-      // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-      var profile = Kitchen_details.findOne({
-        "user_id": conversation.seller_id
-      });
-      var name = profile.chef_name;
-    } else {
-      // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-      var profile = Profile_details.findOne({
-        "user_id": conversation.buyer_id
-      });
-      var name = profile.foodie_name;
-    }
-  }
-
   return {
     currentUser: Meteor.user(),
     conversation: all_conversation,
-    messages: all_messages,
-    name: name
+    messages: all_messages
   };
 })(Message);

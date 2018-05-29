@@ -16,6 +16,7 @@ Meteor.methods({
       buyer_id: buyerId,
       seller_id: sellerId,
     });
+    console.log(existedConversation);
     if (existedConversation) {
       if (!existedConversation.available) {
         Conversation.update(
@@ -25,7 +26,7 @@ Meteor.methods({
           },
           {
             $set: {
-              available: false,
+              available: true,
             },
           }
         );
