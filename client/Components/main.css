@@ -40,9 +40,9 @@ input, textarea {
   background-color: #B1DBBE;
 }
 
-.input-field.col label {
+/**.input-field.col label {
     left: 0rem !important;
-}
+} **/
 
 html {
   height: 70vh;
