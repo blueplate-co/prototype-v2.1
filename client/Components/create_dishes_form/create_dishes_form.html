@@ -5,12 +5,14 @@
             {{> uploadForm }}
           <br>
           <br>
+          <p>Fields are marked * are compulsory</p>
+          <br>
           <div class="row">
             <div class = "col l3 m12 s12 valign">
               <h6>Dish descriptions</h6>
             </div>
             <div class = "input-field col l9 m12 s12">
-                <input placeholder="Type your dish name" name="dish_name" id="dish_name" type="text" value = "{{dish_name}}">
+                <input placeholder="Type your dish name *" name="dish_name" id="dish_name" type="text" value = "{{dish_name}}">
             </div>
           </div>
           <div class ="row">
@@ -21,7 +23,7 @@
           </div>
           <div class="row">
             <div class = "col l3 m12 s12">
-              <h6>Serving options</h6>
+              <h6>Serving options *</h6>
             </div>
             <div class="col l9 m12 s12">
               {{> serving_option_display}}
@@ -204,7 +206,7 @@
                   </div>
                 {{else}}
                   <i class="material-icons white-text">file_upload</i>
-                  <p class = "white-text center-align">upload dish picture</p>
+                  <p class = "white-text center-align">upload dish picture *</p>
                 {{/with}}
               </div>
               <input id="file_input" type="file">
@@ -281,7 +283,7 @@
     <thead>
       <tr>
           <th>Cost</th>
-          <th>Expected selling price</th>
+          <th>Selling price *</th>
           <th>Expected profit</th>
       </tr>
     </thead>
