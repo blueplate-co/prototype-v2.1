@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 
 import PaymentGenerator from '../ui/util_payment_generator';
+import SellingPriceGenerator from '../ui/util_selling_price_generator';
 
 export default class Util extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export default class Util extends Component {
     return (
       <div>
           <PaymentGenerator />
+          <SellingPriceGenerator />
       </div>
     );
   }
