@@ -27,6 +27,11 @@ class Message extends Component {
     this.setState({
       display: !this.state.display,
     });
+    Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+      if (!err) {
+        console.log(res);
+      }
+    })
   }
 
   // get list user joining chat
@@ -216,6 +221,14 @@ class Message extends Component {
         });
         var name = profile.foodie_name;
       }
+    }
+
+    if (this.state.display) {
+      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        if (!err) {
+          console.log(res);
+        }
+      })
     }
     return (
       <div className="col chat-panel-wrapper">

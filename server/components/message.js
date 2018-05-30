@@ -108,4 +108,47 @@ Meteor.methods({
       .then(message => console.log(message.sid))
       .done();
   },
+  "message.seenMessage"(conversation_id, receiver_id) {
+    const conversation = Conversation.findOne({
+      _id: conversation_id,
+    });
+
+    var sender_id = "";
+    if (conversation.buyer_id == receiver_id) {
+      sender_id = conversation.seller_id;
+    } else {
+      sender_id = conversation.buyer_id;
+    }
+
+    var allunseen = Messages.find({
+      sender_id: sender_id,
+      receiver_id: receiver_id,
+      seen: false,
+    });
+
+    console.log("Sender: " + sender_id);
+    console.log("Receiver: " + receiver_id);
+
+    let error = false;
+
+    try {
+      Messages.update(
+        {
+          sender_id: sender_id,
+          receiver_id: receiver_id,
+        },
+        {
+          $set: {
+            seen: true,
+          },
+        },
+        { multi: true }
+      );
+    } catch (error) {
+      return new Error(error);
+      error = true;
+    }
+
+    return true;
+  },
 });
