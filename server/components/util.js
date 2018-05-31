@@ -72,7 +72,7 @@ Meteor.methods({
         },
         {
           $set: {
-            dish_selling_price: selling_price * 1.15,
+            dish_selling_price: parseFloat(selling_price * 1.15).toFixed(2),
           },
         }
       );
