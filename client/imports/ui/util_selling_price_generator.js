@@ -18,7 +18,6 @@ class SellingPriceGenerator extends Component {
           $lt: selectDate,
         },
       }).fetch();
-      debugger
       validDishes.map((item, index) => {
         Meteor.call(
           "util.generateSellingPrice",
