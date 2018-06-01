@@ -29,11 +29,13 @@ class Message extends Component {
     this.setState({
       display: !this.state.display,
     });
-    Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
-      if (!err) {
-        console.log(res);
-      }
-    })
+    if (this.props.conversation.length > 0) {
+      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        if (!err) {
+          console.log(res);
+        }
+      })
+    }
   }
 
   // get list user joining chat
