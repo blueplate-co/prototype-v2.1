@@ -19,7 +19,8 @@ export default class Modal extends Component {
             item: {},
             qty: 1,
             ingredients: [],
-            menu: []
+            menu: [],
+            
         }
     }
 
