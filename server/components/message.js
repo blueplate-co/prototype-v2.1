@@ -126,9 +126,6 @@ Meteor.methods({
       seen: false,
     });
 
-    console.log("Sender: " + sender_id);
-    console.log("Receiver: " + receiver_id);
-
     let error = false;
 
     try {

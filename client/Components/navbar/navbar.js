@@ -15,6 +15,6 @@ Template.navbar.onRendered(function(){
 
 
   render(<TopNavigation />, document.getElementById('top-navigation-container'));
-  // render(<Message />, document.getElementById('chat-panel'));
+  render(<Message />, document.getElementById('chat-panel'));
 
 });

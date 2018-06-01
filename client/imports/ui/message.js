@@ -15,6 +15,8 @@ class Message extends Component {
     this.state = {
       display: false,
       conversation: 0,
+      current_conservation: '',
+      current_conservation_index: 0
     };
   }
 
@@ -66,7 +68,7 @@ class Message extends Component {
 
       // get info about current conversation
       var conversation = Conversation.findOne({
-        _id: Session.get("current_conservation"),
+        _id: Session.get('current_conservation'),
       });
 
       if (Meteor.userId() == conversation.buyer_id) {
@@ -86,7 +88,7 @@ class Message extends Component {
         Meteor.userId(),
         receiverId,
         message,
-        Session.get("current_conservation"),
+        this.state.current_conservation,
         (err, res) => {
           if (!err) {
             $("#message-content").val("");
@@ -96,35 +98,49 @@ class Message extends Component {
     }
   }
 
+  // switch chat conversation
+  switchConversation(item, index) {
+    if (item.chef_name) {
+      // Opponent is chef, current user is foodie
+      var chefId = item.user_id;
+      var foodieId = Meteor.userId();
+      var conversationId = Conversation.findOne({
+        buyer_id: foodieId,
+        seller_id: chefId
+      })._id;
+      this.setState({
+        current_conservation: conversationId,
+        current_conservation_index: index
+      })
+    } else {
+      // Opponent is foodie, current user is chef
+      var chefId = Meteor.userId();
+      var foodieId = item.user_id;
+      var conversationId = Conversation.findOne({
+        buyer_id: foodieId,
+        seller_id: chefId
+      })._id;
+      this.setState({
+        current_conservation: conversationId,
+        current_conservation_index: index
+      });
+      Session.set('current_conservation', this.state.current_conservation);
+      Session.set('current_conservation_index', this.state.current_conservation_index);
+    }
+  }
+
   // render list of user are joining into chat panel
   renderListJoiner() {
     let tempFriends = this.getListJoiner();
     return (
       <ul className="chat-list-user">
         {tempFriends.map((item, index) => {
-          if (item.chef_name) {
-            // Opponent is chef, current user is foodie
-            var chefId = item.user_id;
-            var foodieId = Meteor.userId();
-            var conversationId = Conversation.findOne({
-              buyer_id: foodieId,
-              seller_id: chefId
-            })._id;
-          } else {
-            // Opponent is foodie, current user is chef
-            var chefId = Meteor.userId();
-            var foodieId = item.user_id;
-            var conversationId = Conversation.findOne({
-              buyer_id: foodieId,
-              seller_id: chefId
-            })._id;
-          }
           return (
             <li
               key={index}
-              className="chat-user active"
+              className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
               title={item.chef_name}
-              onClick={ () => { Session.set('current_conservation', conservationId); Session.set('current_conservation_index', index );  }}
+              onClick={ () => this.switchConversation(item, index) }
               style={{
                 backgroundImage: `url(${item.profileImg.origin})`,
               }}
@@ -146,7 +162,7 @@ class Message extends Component {
       return (
         <div id="list-message-body" className="list-message">
           <ul style={{ height: "225px" }}>
-            {this.props.messages[Session.get("current_conservation_index")].map(
+            {this.props.messages[this.state.current_conservation_index].map(
               (item, index) => {
                 switch (item.type) {
                   case "status":
@@ -197,14 +213,18 @@ class Message extends Component {
     // make scrollbar always at bottom when receive new message
     var messageBody = document.querySelector("#list-message-body");
     messageBody.scrollTop = messageBody.scrollHeight;
+    this.setState({
+      current_conservation: this.props.current_conservation,
+      current_conservation_index: this.props.current_conservation_index
+    })
   }
 
   render() {
     // generator name of chat
     var name = "Chat";
-    if (Session.get("current_conservation")) {
+    if (this.state.current_conservation) {
       var conversation = Conversation.findOne({
-        _id: Session.get("current_conservation"),
+        _id: this.state.current_conservation,
         available: true
       });
 
@@ -224,9 +244,9 @@ class Message extends Component {
     }
 
     if (this.state.display) {
-      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+      Meteor.call('message.seenMessage', this.state.current_conservation, Meteor.userId(), (err, res) => {
         if (!err) {
-          console.log(res);
+          // console.log(res);
         }
       })
     }
@@ -305,6 +325,8 @@ export default withTracker(props => {
     conversation: all_conversation,
     messages: all_messages,
     name: name,
-    total_unread: total_unread
+    total_unread: total_unread,
+    current_conservation: Session.get("current_conservation"),
+    current_conservation_index: 0
   };
 })(Message);
