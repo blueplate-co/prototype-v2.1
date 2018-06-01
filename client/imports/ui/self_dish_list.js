@@ -89,7 +89,6 @@ class SelfDishList extends Component {
         </div>
 
         {/* list items */}
-        <div className = "section">
           <div className="row">
             {
               (this.props.listLoading)
@@ -99,7 +98,6 @@ class SelfDishList extends Component {
                 this.renderList()
             }
           </div>
-        </div>
       </div>
     );
   }

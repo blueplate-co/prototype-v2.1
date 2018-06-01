@@ -85,16 +85,14 @@ class DishList extends Component {
         </div>
 
         {/* list items */}
-        <div className = "section">
-          <div className="row">
-            {
-              (this.props.listLoading)
-              ?
-                <span>...loading</span>
-              :
-                this.renderList()
-            }
-          </div>
+        <div className="row">
+          {
+            (this.props.listLoading)
+            ?
+              <span>...loading</span>
+            :
+              this.renderList()
+          }
         </div>
       </div>
     );
