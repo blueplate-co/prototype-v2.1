@@ -267,6 +267,15 @@ class Message extends Component {
         });
       }
     }
+
+    const header = parseInt(this.props.total_unread) > 0 ? (
+      <div>
+        <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
+      </div>
+    ) : (
+      <span className="chat-header-name">{name}</span>
+    );
+
     return (
       <div className="col chat-panel-wrapper">
         <div
@@ -275,7 +284,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
+          {header}
           <span
             onClick={this.callSupport()}
             id="support-icon"
