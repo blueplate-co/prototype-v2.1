@@ -12,7 +12,7 @@ export default class ProgressiveImages extends Component {
     componentDidMount = () => {
         var placeholder = document.querySelector('.placeholder');
         var that = this;
-        
+
         // 1: load small image and show it
         var img = new Image();
         img.src = this.props.small;
@@ -23,11 +23,11 @@ export default class ProgressiveImages extends Component {
                 // loaded
             })
         };
-        
+
         // 2: load large image
         if (placeholder.dataset) {
             var imgLarge = new Image();
-            imgLarge.src = placeholder.dataset.large; 
+            imgLarge.src = placeholder.dataset.large;
             imgLarge.onload = function () {
                 setTimeout(() => {
                     that.setState({
