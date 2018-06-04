@@ -34,7 +34,7 @@ class Message extends Component {
         if (!err) {
           console.log(res);
         }
-      })
+      });
     }
   }
 
@@ -90,13 +90,25 @@ class Message extends Component {
         Meteor.userId(),
         receiverId,
         message,
-        this.state.current_conservation,
+        Session.get('current_conservation'),
         (err, res) => {
           if (!err) {
             $("#message-content").val("");
+          } else {
+            console.log(err);
           }
         }
       );
+    }
+  }
+
+  seenMessage() {
+    if (this.props.conversation.length > 0) {
+      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        if (!err) {
+          console.log(res);
+        }
+      });
     }
   }
 
@@ -201,6 +213,7 @@ class Message extends Component {
           id="message-content"
           placeholder="Type a message here"
           onKeyPress={e => this.sendMessage(e)}
+          onClick={ () => { this.seenMessage() } }
         />
       </div>
     );
@@ -246,11 +259,13 @@ class Message extends Component {
     }
 
     if (this.state.display) {
-      Meteor.call('message.seenMessage', this.state.current_conservation, Meteor.userId(), (err, res) => {
-        if (!err) {
-          // console.log(res);
-        }
-      })
+      if (this.props.conversation.length > 0) {
+        Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+          if (!err) {
+            console.log(res);
+          }
+        });
+      }
     }
     return (
       <div className="col chat-panel-wrapper">
@@ -312,10 +327,8 @@ export default withTracker(props => {
   all_messages.map((item, index) => {
     if (item.length > 0) {
       item.map((itm, idx) => {
-        if (itm.type == 'message') {
-          if (!itm.seen && itm.receiver_id == Meteor.userId()) {
-            total_unread++;
-          }
+        if (!itm.seen && itm.receiver_id == Meteor.userId()) {
+          total_unread++;
         }
       })
     }

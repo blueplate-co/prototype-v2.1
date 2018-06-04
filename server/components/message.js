@@ -109,25 +109,20 @@ Meteor.methods({
       .done();
   },
   "message.seenMessage"(conversation_id, receiver_id) {
-    const conversation = Conversation.findOne({
+    let conversation = [];
+    conversation = Conversation.find({
       _id: conversation_id,
-    });
+    }).fetch();
 
     var sender_id = "";
-    if (conversation.buyer_id == receiver_id) {
-      sender_id = conversation.seller_id;
+    // console.log(conversation[0]);
+    if (conversation[0].buyer_id == receiver_id) {
+      sender_id = conversation[0].seller_id;
     } else {
-      sender_id = conversation.buyer_id;
+      sender_id = conversation[0].buyer_id;
     }
 
-    var allunseen = Messages.find({
-      sender_id: sender_id,
-      receiver_id: receiver_id,
-      seen: false,
-    });
-
     let error = false;
-
     try {
       Messages.update(
         {
