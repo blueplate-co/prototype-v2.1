@@ -61,7 +61,7 @@ class Message extends Component {
   }
 
   // call for support, send SMS to him
-  callSupport() {}
+  callSupport() { }
 
   sendMessage(e) {
     if (e.charCode == 13) {
@@ -154,7 +154,7 @@ class Message extends Component {
               key={index}
               className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
               title={item.chef_name}
-              onClick={ () => this.switchConversation(item, index) }
+              onClick={() => this.switchConversation(item, index)}
               style={{
                 backgroundImage: `url(${item.profileImg.origin})`,
               }}
@@ -192,10 +192,10 @@ class Message extends Component {
                         {item.message}
                       </li>
                     ) : (
-                      <li key={index} className="message receiver">
-                        {item.message}
-                      </li>
-                    );
+                        <li key={index} className="message receiver">
+                          {item.message}
+                        </li>
+                      );
                 }
               }
             )}
@@ -213,7 +213,7 @@ class Message extends Component {
           id="message-content"
           placeholder="Type a message here"
           onKeyPress={e => this.sendMessage(e)}
-          onClick={ () => { this.seenMessage() } }
+          onClick={() => { this.seenMessage() }}
         />
       </div>
     );
@@ -267,6 +267,15 @@ class Message extends Component {
         });
       }
     }
+
+    const header = parseInt(this.props.total_unread > 0) ? (
+      <div>
+        <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
+      </div>
+    ) : (
+        <span className="chat-header-name">{name}</span>
+    );
+
     return (
       <div className="col chat-panel-wrapper">
         <div
@@ -275,7 +284,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
+          {header}
           <span
             onClick={this.callSupport()}
             id="support-icon"
