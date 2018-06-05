@@ -81,7 +81,6 @@ class KitchenAllList extends Component {
         </div>
 
         {/* list items */}
-        <div className = "section">
           <div className="row">
             {
               (this.props.listLoading)
@@ -91,7 +90,6 @@ class KitchenAllList extends Component {
                 this.renderList()
             }
           </div>
-        </div>
       </div>
     );
   }

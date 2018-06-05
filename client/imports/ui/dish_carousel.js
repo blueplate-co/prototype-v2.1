@@ -305,7 +305,7 @@ export default class DishCarousel extends Component {
                     </div>
                     <div className="row">
                         <div className="col l12 s12 m12">
-                            <span className="descrition">{ Session.get('selectedMenu').menu_description }</span>
+                            <span className="description">{ Session.get('selectedMenu').menu_description }</span>
                         </div>
                     </div>
                 </div>

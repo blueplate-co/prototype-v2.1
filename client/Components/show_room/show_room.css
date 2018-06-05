@@ -210,7 +210,7 @@
 .dish-title {
   font-size: 15px;
   margin: 10px 0 0 0;
-  padding-right: 35%;
+  padding-right: 2%;
   max-height: 35px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -292,7 +292,7 @@
 .dish-preview-information {
   overflow-y: auto;
   min-height: 35vh;
-  max-height: 40vh;
+  max-height: 65vh;
 }
 
 .dish-preview-banner {
@@ -301,16 +301,17 @@
 
 .dish-preview-content {
   min-height: 100vh!important;
-  padding: 30px 50px!important;
+  padding: 56px 89px!important;
 }
 
 .dish-preview-navigation .title {
-  font-size: 3em;
-  font-weight: bold;
+  font-size: 34px;
+  margin-bottom: 0px !important;
+  overflow-x: auto;
 }
 
 .dish-preview-navigation .price {
-  font-size: 28px;
+  font-size: 20px;
   color: #56AACD;
 }
 
@@ -318,6 +319,10 @@
   font-size: 25px;
   color: #56AACD;
   margin-left: 100px;
+}
+
+.dish-preview-navigation .headline {
+  margin-bottom: 0px !important;
 }
 
 .dish-preview-navigation .qty .decreaseQty {
@@ -341,19 +346,19 @@
 }
 
 .dish-preview-navigation .rating-container {
-  margin-left: 40px;
+  width: 150px;
 }
 
 .dish-preview-navigation .rating-container .fa-star {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .dish-preview-navigation .order-count {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 400;
 }
 
-.dish-preview-navigation .descrition {
+.dish-preview-navigation .description {
   font-size: 17px;
   font-weight: 300;
 }
@@ -361,8 +366,8 @@
 .close-modal {
   font-size: 30px;
   position: absolute;
-  top: 30px;
-  right: 20px;
+  top: 12px;
+  right: 0px;
   cursor: pointer;
 }
 
@@ -385,7 +390,6 @@
   list-style: none;
   padding: 0px;
   margin: 0px;
-  font-size: 18px;
   margin: 10px 0px;
 }
 
@@ -556,8 +560,6 @@
 }
 
 .dish-preview-navigation .title {
-  font-size: 3em;
-  font-weight: bold;
   text-align: left;
   color: black;
 }
@@ -645,9 +647,6 @@
     margin-left: 10px;
     cursor: pointer;
   }
-  .dish-preview-navigation .rating-container {
-    margin-left: 20px;
-  }
   .dish-preview-navigation .rating-container .fa-star {
     font-size: 20px;
   }
@@ -704,10 +703,11 @@
 
 .like-container {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 24px;
+  left: 24px;
   cursor: pointer;
   z-index: 10;
+  font-size: 24px;
 }
 
 .like-container.unlike path {
@@ -716,8 +716,14 @@
 }
 
 .like-container.like path {
-  fill: red;
-  fill-opacity: 0.8;
+  fill: #56AACD;
+  stroke: none;
+  fill-opacity: 1;
+}
+
+.like-modal-container {
+  padding: 14px;
+  display: block;
 }
 
 [type="checkbox"] + label {

@@ -71,7 +71,6 @@ class KitchenSearchList extends Component {
         </div>
 
         {/* list items */}
-        <div className="section">
           <div className="row">
             {this.props.listLoading ? (
               <span>...loading</span>
@@ -79,7 +78,6 @@ class KitchenSearchList extends Component {
               this.renderList()
             )}
           </div>
-        </div>
       </div>
     );
   }

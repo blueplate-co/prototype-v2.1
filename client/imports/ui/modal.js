@@ -19,12 +19,14 @@ export default class Modal extends Component {
             item: {},
             qty: 1,
             ingredients: [],
-            menu: []
+            menu: [],
+            isMobile: false,
         }
     }
 
     closeModal = () => {
         $('#dish-modal').modal('close');
+        $('.modal-overlay').remove();
     }
 
     decreaseQty = () => {
@@ -41,6 +43,22 @@ export default class Modal extends Component {
         })
     }
 
+    componentDidMount = () => {
+      window.addEventListener('resize', () => {
+          this.setState({
+              isMobile: window.innerWidth < 601
+          });
+      }, false);
+    }
+
+    componentWillUnmount = () => {
+      window.removeEventListener('resize', () => {
+        this.setState({
+          isMobile: false
+        })
+      }, false);
+    }
+
     componentWillReceiveProps = () => {
         this.setState({
             qty: 1
@@ -51,7 +69,7 @@ export default class Modal extends Component {
         }
 
         if (Session.get('selectedDish')) {
-          if (Session.get('selectedDish').online_status) {
+          if (Session.get('selectedDish').online_status === true) {
               this.setState({
                   status: true
               })
@@ -85,6 +103,16 @@ export default class Modal extends Component {
         }
     }
 
+    renderServingOptions = (option) => {
+      if (option) {
+        return option.map((item, index) => {
+          return (
+            <span key = {index}>{item} </span>
+          )
+        })
+      }
+    }
+
     renderIngredients = (ingredient) => {
         if (ingredient) {
             return ingredient.map((item, index) => {
@@ -114,10 +142,6 @@ export default class Modal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
-        } else {
-            return (
-                <span className="row none no-padding">No Allergies</span>
-            )
         }
     }
 
@@ -128,135 +152,19 @@ export default class Modal extends Component {
                     <li key={index}>{ item }</li>
                 )
             })
-        } else {
-            return (
-                <span className="row none no-padding">No Dietary</span>
-            )
         }
     }
 
-    renderCuisinesTagList = (cuisines) => {
-        if (cuisines) {
-            return cuisines.map((item, index) => {
+    renderDishTagList = (tag) => {
+        if (tag) {
+            return tag.map((item, index) => {
                 return(
-                    <li key={index}>{ item }</li>
+                    <li key={index}>{ item.tag }</li>
                 )
             })
         } else {
             return (
-                <span className="row none no-padding">No Cuisines Tag</span>
-            )
-        }
-    }
-
-    renderProteinsTagList = (proteins) => {
-        if (proteins) {
-            return proteins.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Proteins Tags</span>
-            )
-        }
-    }
-
-    renderCaterogiesTagList = (categories) => {
-        if (categories) {
-            return categories.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Categories Tags</span>
-            )
-        }
-    }
-
-    renderCookingMethodsTagList = (cooking_methods) => {
-        if (cooking_methods) {
-            return cooking_methods.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Cooking Methods Tag</span>
-            )
-        }
-    }
-
-    renderTasteTagList = (tastes) => {
-        if (tastes) {
-            return tastes.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Taste Tags</span>
-            )
-        }
-    }
-
-    renderTexturesTagList = (textures) => {
-        if (textures) {
-            return textures.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Textures Tag</span>
-            )
-        }
-    }
-
-    renderVegetablesTagList = (vegetables) => {
-        if (vegetables) {
-            return vegetables.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Vegetables Tags</span>
-            )
-        }
-    }
-
-    renderCondimentsTagList = (condiments) => {
-        if (condiments) {
-            return condiments.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Condiments Tags</span>
-            )
-        }
-    }
-
-    renderServingTemperatureTagList = (serving_temperature) => {
-        if (serving_temperature) {
-            return serving_temperature.map((item, index) => {
-                return(
-                    <li key={index}>{ item }</li>
-                )
-            })
-        } else {
-            return (
-                <span className="row none no-padding">No Temperature Tags</span>
+                <span className="row none no-padding">No Tags</span>
             )
         }
     }
@@ -399,23 +307,37 @@ export default class Modal extends Component {
     }
 
     renderDish = () => {
+        const alignMobile = this.state.isMobile ? '' : 'right';
         return (
             <div className="row no-margin">
                 <div className="col l4 m12 s12 dish-preview-banner no-padding" style={{backgroundImage: "url(" + this.state.origin + ")"}}>
+                  <div className = "like-modal-container">
                     <Like type="dish" id={this.state.item._id} />
+                  </div>
                 </div>
 
                 <div className="col l8 m12 s12 dish-preview-content">
-                    <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
+                    <a className = "btn-floating waves-effect waves-red z-depth-0 transparent black-text close-modal" onClick={ this.closeModal }>
+                      <i className="material-icons black-text text-darken-1">close</i>
+                    </a>
+                    <div className = "row show-on-small hide-on-med-and-up">
+                      <div className="col s12 ">
+                          {
+                              (this.state.status == false) ?
+                                  <button disabled className="btn">Offline</button>
+                              :   <button className="btn" onClick={ this.order } >Order</button>
+                          }
+                      </div>
+                    </div>
                     <div className="row dish-preview-navigation">
-                        <div className="row">
+                        <div className="row headline">
                             <div className="col l1 s2 m2 no-padding float-left" style={{ position: 'relative' }}>
                                 <ChefAvatar userId={Session.get('selectedDish').user_id} />
                             </div>
-                            <div className="col l11 s10 m10">
-                                <h1 className="title">{ this.state.item.dish_name }</h1>
+                            <div className="col l8 s10 m6">
+                                <h2 className="title">{ this.state.item.dish_name }</h2>
                             </div>
-                            <div className="col l4 s12 m4 m-visible">
+                            <div className="col l3 s12 m4 hide-on-small-only">
                                 {
                                     (this.state.status == false) ?
                                         <button disabled className="btn">Offline</button>
@@ -424,28 +346,34 @@ export default class Modal extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col l8 s12 m8">
-                                <span className="price">$ { this.state.item.dish_selling_price }</span>
-                                <span className="qty">
+                            <div className="col l8 s10 m8 offset-l1 offset-m2 offset-s2">
+                                <Rating rating={ this.state.item.average_rating } />
+                                <span className="order-count">{ this.state.item.order_count }</span>
+                                <p className="price">$ { this.state.item.dish_selling_price }</p>
+                                {/**<span className="qty">
                                     <span className="decreaseQty" onClick={ this.decreaseQty } >-</span>
                                     <span className="number">{ this.state.qty }</span>
                                     <span className="increaseQty" onClick={ this.increaseQty }>+</span>
-                                </span>
-                                <Rating rating={ this.state.item.average_rating } />
-                                <span className="order-count">{ this.state.item.order_count }</span>
-                            </div>
-                            <div className="col l4 s12 m4 m-hidden">
-                                {
-                                    (this.state.status == false) ?
-                                        <button disabled className="btn">Offline</button>
-                                    :   <button className="btn" onClick={ this.order } >Order</button>
-                                }
+                                </span>**/}
                             </div>
                         </div>
                         <div className="row">
                             <div className="col l12 s12 m12">
-                                <span className="descrition">"{ this.state.item.dish_description }"</span>
+                                <span className="description">{ this.state.item.dish_description }</span>
                             </div>
+                        </div>
+                        <div className = "row">
+                          <div className = "col l12 s12 m12">
+                            <span><b>Serving Options: </b>{this.renderServingOptions(this.state.item.serving_option)}</span>
+                          </div>
+                        </div>
+                        <div className = "row">
+                          <div className = "col l12 s12 m12">
+                            <span><b>Advanced Order: </b>{!this.state.item.days || this.state.item.days === "0" ? " " :this.state.item.days + "days "}
+                                {!this.state.item.hours || this.state.item.hours === "0" ? " " :this.state.item.hours + "hours "}
+                                {!this.state.item.minutes || this.state.item.minutes === "0" ? " " :this.state.item.minutes + "minutes "}
+                            </span>
+                          </div>
                         </div>
                     </div>
                     <div className="row dish-preview-information no-padding">
@@ -456,7 +384,7 @@ export default class Modal extends Component {
                                     {
                                         (this.state.ingredients.length == 0)
                                         ?
-                                            <span>...loading</span>
+                                            <span>No ingredients details</span>
                                         :
                                             <ul className="dish-preview-list-ingredient">
                                                 { this.renderIngredients(this.state.ingredients) }
@@ -466,42 +394,36 @@ export default class Modal extends Component {
                             </div>
                         </div>
                         <div className="col l6 m6 s12">
-                            <div className="row dish-preview-ingredients no-padding">
-                                <div className="col l12 m12 s12 no-padding">
-                                    <h5>Allergies &amp; Dietary preference </h5>
-                                    {
-                                        (this.state.ingredients.length == 0)
-                                        ?
-                                            <span>...loading</span>
-                                        :
-                                            <ul className="dish-preview-list-allergies">
-                                                { this.renderAllergiesList(this.state.item.allergy_tags) }
-                                                { this.renderDietaryList(this.state.item.dietary_tags) }
-                                            </ul>
-                                    }
-                                </div>
-                            </div>
-                            <div className="row dish-preview-tags no-padding">
-                                <div className="col l12 m12 s12 no-padding">
-                                    <h5>Tags </h5>
-                                    {
-                                        (this.state.ingredients.length == 0)
-                                        ?
-                                            <span>...loading</span>
-                                        :
-                                            <ul className="dish-preview-list-tags">
-                                                { this.renderCuisinesTagList(this.state.item.cuisines_tags) }
-                                                { this.renderProteinsTagList(this.state.item.proteins_tags) }
-                                                { this.renderCaterogiesTagList(this.state.item.categories_tags) }
-                                                { this.renderCookingMethodsTagList(this.state.item.cooking_methods_tags) }
-                                                { this.renderTasteTagList(this.state.item.tastes_tags) }
-                                                { this.renderTexturesTagList(this.state.item.textures_tags) }
-                                                { this.renderVegetablesTagList(this.state.item.vegetables_tags) }
-                                                { this.renderCondimentsTagList(this.state.item.condiments_tags) }
-                                                { this.renderServingTemperatureTagList(this.state.item.serving_temperature_tags) }
-                                            </ul>
-                                    }
-                                </div>
+                          <div className = {alignMobile}>
+                              <div className="row dish-preview-ingredients no-padding">
+                                  <div className="col l12 m12 s12 no-padding">
+                                      <h5>Allergies &amp; Dietary preference </h5>
+                                      {
+                                          (this.state.ingredients.length == 0)
+                                          ?
+                                              <span>No allergies and dietary details</span>
+                                          :
+                                              <ul className="dish-preview-list-allergies">
+                                                  { this.renderAllergiesList(this.state.item.allergy_tags) }
+                                                  { this.renderDietaryList(this.state.item.dietary_tags) }
+                                              </ul>
+                                      }
+                                  </div>
+                              </div>
+                              <div className="row dish-preview-tags no-padding">
+                                  <div className="col l12 m12 s12 no-padding">
+                                      <h5>Tags </h5>
+                                      {
+                                          (this.state.ingredients.length == 0)
+                                          ?
+                                              <span>No Tags available</span>
+                                          :
+                                              <ul className="dish-preview-list-tags">
+                                                  { this.renderDishTagList(this.state.item.dish_tags) }
+                                              </ul>
+                                      }
+                                  </div>
+                              </div>
                             </div>
                         </div>
                     </div>

@@ -86,7 +86,6 @@ class DishSearchList extends Component {
         </div>
 
         {/* list items */}
-        <div className = "section">
           <div className="row">
             {
               (this.props.listLoading)
@@ -96,7 +95,6 @@ class DishSearchList extends Component {
                 this.renderList()
             }
           </div>
-        </div>
       </div>
     );
   }

@@ -89,7 +89,7 @@ class MenuSearchList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-            "" 
+            ""
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -120,7 +120,6 @@ class MenuSearchList extends Component {
         </div>
 
         {/* list items */}
-        <div className = "section">
           <div className="row">
             {
               (this.props.listLoading)
@@ -130,7 +129,6 @@ class MenuSearchList extends Component {
                 this.renderList()
             }
           </div>
-        </div>
       </div>
     );
   }
