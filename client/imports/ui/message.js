@@ -61,7 +61,16 @@ class Message extends Component {
   }
 
   // call for support, send SMS to him
-  callSupport() {}
+  callSupport(e) {
+    e.stopPropagation();
+    Meteor.call('message.sendToSupport', (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        alert('Clicked support');
+      }
+    })
+  }
 
   sendMessage(e) {
     if (e.charCode == 13) {
@@ -286,7 +295,7 @@ class Message extends Component {
         >
           {header}
           <span
-            onClick={this.callSupport()}
+            onClick={(e) => this.callSupport(e)}
             id="support-icon"
             title="Contact support"
           >
