@@ -159,15 +159,28 @@ class Message extends Component {
       <ul className="chat-list-user">
         {tempFriends.map((item, index) => {
           return (
-            <li
-              key={index}
-              className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
-              title={item.chef_name}
-              onClick={ () => this.switchConversation(item, index) }
-              style={{
-                backgroundImage: `url(${item.profileImg.origin})`,
-              }}
-            />
+            (item.profileImg == null) ?
+            (
+              <li
+                key={index}
+                className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
+                title={item.chef_name}
+                onClick={ () => this.switchConversation(item, index) }
+                style={{
+                  backgroundImage: `url(${item.profileImg.origin})`,
+                }}
+              />
+            ) : (
+              <li
+                key={index}
+                className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
+                title={item.chef_name}
+                onClick={ () => this.switchConversation(item, index) }
+                style={{
+                  backgroundImage: `url(${item.profileImg.origin})`,
+                }}
+              />
+            )
           );
         })}
       </ul>
