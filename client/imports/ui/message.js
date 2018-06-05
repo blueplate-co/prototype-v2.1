@@ -178,7 +178,9 @@ class Message extends Component {
     if (this.props.messages.length == 0) {
       return (
         <div id="list-message-body" className="list-message">
-          <ul style={{ height: "225px" }} />
+          <ul style={{ height: "225px" }}>
+            <li className="status">You have no chef to chat, let's check out your cart or leave us messages if you need any help.</li>
+          </ul>
         </div>
       );
     } else {
