@@ -33,8 +33,8 @@ Meteor.methods({
   },
   "util.generateUserPayment"(email, id) {
     if (!Meteor.users.find({ _id: id }).fetch()[0].stripe_id) {
-        console.log(email);
-        console.log(id);
+      console.log(email);
+      console.log(id);
       var createCustomer = Meteor.wrapAsync(
         stripe.customers.create.bind(stripe.customers)
       );
@@ -62,5 +62,24 @@ Meteor.methods({
         console.log(result);
       }
     }
+  },
+  "util.generateSellingPrice"(dish_id, selling_price) {
+    var result = true;
+    try {
+      Dishes.update(
+        {
+          _id: dish_id,
+        },
+        {
+          $set: {
+            dish_selling_price: parseFloat(selling_price * 1.15).toFixed(2),
+          },
+        }
+      );
+    } catch (error) {
+      var result = error;
+    }
+
+    return result;
   },
 });

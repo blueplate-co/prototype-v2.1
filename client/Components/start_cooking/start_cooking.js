@@ -567,6 +567,7 @@ Template.request_card.events({
         }
       }, 100 * index)
       Meteor.call('notification.reject_order', seller_id, buyer_id);
+      Meteor.call('message.disableConversation', Session.get('current_conservation'));
     }
   }
 })

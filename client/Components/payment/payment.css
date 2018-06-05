@@ -1,131 +1,153 @@
 #wish_list_container {
-    /** margin-top: 60px; **/
+  /** margin-top: 60px; **/
 }
 
 .payment-wrapper {
-    text-align: center;
-    position: relative;
-    margin-bottom: 30px;
-    cursor: pointer;
+  text-align: center;
+  position: relative;
+  margin-bottom: 30px;
+  cursor: pointer;
 }
 
 .payment-method {
-    height: 200px;
+  height: 200px;
 }
 
 #credits {
-    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits.svg') no-repeat;
-    background-position: center center;
-    background-size: contain;
+  background: url("https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits.svg")
+    no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 #card {
-    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/card.svg') no-repeat;
-    background-position: center center;
-    background-size: contain;
+  background: url("https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/card.svg")
+    no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 .payment-wrapper .text {
-    bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    color: #55abcd;
-    font-size: 29px;
-    font-weight: bold;
-    width: 100%;
-    display: block;
+  bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  color: #55abcd;
+  font-size: 29px;
+  font-weight: bold;
+  width: 100%;
+  display: block;
 }
 
 .payment-wrapper .sub-text {
-    bottom: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    color: #ccc;
-    font-size: 15px;
+  bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  color: #ccc;
+  font-size: 15px;
 }
 
 .payment-number {
-    display: inline-flex;
-    position: relative;
+  display: inline-flex;
+  position: relative;
 }
 
 .payment-number img {
-    position: absolute;
+  position: absolute;
 }
 
 .payment-number #visa-icon {
-    right: 5px;
-    top: 0px;
-    width: 50px;
+  right: 15px;
+  top: -7px;
+  width: 70px;
 }
 
 .payment-number #mastercard-icon {
-    right: 55px;
-    top: 0px;
-    width: 50px;
+  right: 80px;
+  top: -5px;
+  width: 60px;
 }
 
 .payment-number #stripe-icon {
-    right: 110px;
-    top: 18px;
+  right: 147px;
+  top: 15px;
+  width: 90px;
+}
+
+@media only screen and (max-width: 550px) {
+  .payment-number #visa-icon {
+    right: 10px;
+    top: -2px;
+    width: 55px;
+  }
+
+  .payment-number #mastercard-icon {
+    right: 65px;
+    top: 0px;
     width: 50px;
+  }
+
+  .payment-number #stripe-icon {
+    right: 125px;
+    top: 17px;
+    width: 65px;
+  }
 }
 
 #back-payment {
-    font-size: 25px;
-    display: block;
+  font-size: 25px;
+  display: block;
 }
 
 .credit-title {
-    font-size: 19px;
-    font-weight: bold;
-    margin: 10px 0px;
+  font-size: 19px;
+  font-weight: bold;
+  margin: 10px 0px;
 }
 
 .credit-option {
-    margin: 20px 0px;
-    text-align: center;
+  margin: 20px 0px;
+  text-align: center;
 }
 
 .credit-wrapper {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: block;
-    margin: 0px auto;
-    text-align: center;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: block;
+  margin: 0px auto;
+  text-align: center;
 }
 
 .credit-wrapper.active {
-    width: 100px;
-    height: 100px;
-    border: 2px solid #56AACD;
-    border-radius: 5px;
-    display: block;
-    margin: 0px auto;
-    text-align: center;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #56aacd;
+  border-radius: 5px;
+  display: block;
+  margin: 0px auto;
+  text-align: center;
 }
 
-.credit-wrapper p{
-    font-size: 23px;
-    font-weight: bold;
-    margin-top: 30%;
+.credit-wrapper p {
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 30%;
 }
 
-.credit-wrapper.active p{
-    font-size: 23px;
-    font-weight: bold;
-    margin-top: 30%;
-    color: #56AACD;
+.credit-wrapper.active p {
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 30%;
+  color: #56aacd;
 }
 
 .bonus {
-    margin: 10px 0px;
-    display: block;
-    width: 100%;
+  margin: 10px 0px;
+  display: block;
+  width: 100%;
 }

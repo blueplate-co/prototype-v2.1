@@ -83,6 +83,7 @@ class TopNavigation extends Component {
       lat: null,
       lng: null,
       time: "",
+      width: window.innerWidth,
       status: "Search",
       multiSelect: [
         { id: 1, label: "Delivery", value: "Delivery" },
@@ -585,6 +586,14 @@ class TopNavigation extends Component {
     );
   };
 
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange);
+  }
+
   render() {
     var sidebarContent = this.renderSideBar();
 
@@ -635,7 +644,12 @@ class TopNavigation extends Component {
                   >
                     <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
                   </li>
-                  <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
+                  {
+                    (this.state.width <= 450) ?
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
+                    :
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
+                  }
                 </ul>
               </div>
             </nav>

@@ -16,6 +16,7 @@ Meteor.methods({
       buyer_id: buyerId,
       seller_id: sellerId,
     });
+    console.log(existedConversation);
     if (existedConversation) {
       if (!existedConversation.available) {
         Conversation.update(
@@ -25,7 +26,7 @@ Meteor.methods({
           },
           {
             $set: {
-              available: false,
+              available: true,
             },
           }
         );
@@ -106,5 +107,40 @@ Meteor.methods({
       })
       .then(message => console.log(message.sid))
       .done();
+  },
+  "message.seenMessage"(conversation_id, receiver_id) {
+    let conversation = [];
+    conversation = Conversation.find({
+      _id: conversation_id,
+    }).fetch();
+
+    var sender_id = "";
+    // console.log(conversation[0]);
+    if (conversation[0].buyer_id == receiver_id) {
+      sender_id = conversation[0].seller_id;
+    } else {
+      sender_id = conversation[0].buyer_id;
+    }
+
+    let error = false;
+    try {
+      Messages.update(
+        {
+          sender_id: sender_id,
+          receiver_id: receiver_id,
+        },
+        {
+          $set: {
+            seen: true,
+          },
+        },
+        { multi: true }
+      );
+    } catch (error) {
+      return new Error(error);
+      error = true;
+    }
+
+    return true;
   },
 });

@@ -15,6 +15,8 @@ class Message extends Component {
     this.state = {
       display: false,
       conversation: 0,
+      current_conservation: '',
+      current_conservation_index: 0
     };
   }
 
@@ -27,6 +29,13 @@ class Message extends Component {
     this.setState({
       display: !this.state.display,
     });
+    if (this.props.conversation.length > 0) {
+      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        if (!err) {
+          console.log(res);
+        }
+      });
+    }
   }
 
   // get list user joining chat
@@ -61,7 +70,7 @@ class Message extends Component {
 
       // get info about current conversation
       var conversation = Conversation.findOne({
-        _id: Session.get("current_conservation"),
+        _id: Session.get('current_conservation'),
       });
 
       if (Meteor.userId() == conversation.buyer_id) {
@@ -81,13 +90,56 @@ class Message extends Component {
         Meteor.userId(),
         receiverId,
         message,
-        Session.get("current_conservation"),
+        Session.get('current_conservation'),
         (err, res) => {
           if (!err) {
             $("#message-content").val("");
+          } else {
+            console.log(err);
           }
         }
       );
+    }
+  }
+
+  seenMessage() {
+    if (this.props.conversation.length > 0) {
+      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        if (!err) {
+          console.log(res);
+        }
+      });
+    }
+  }
+
+  // switch chat conversation
+  switchConversation(item, index) {
+    if (item.chef_name) {
+      // Opponent is chef, current user is foodie
+      var chefId = item.user_id;
+      var foodieId = Meteor.userId();
+      var conversationId = Conversation.findOne({
+        buyer_id: foodieId,
+        seller_id: chefId
+      })._id;
+      this.setState({
+        current_conservation: conversationId,
+        current_conservation_index: index
+      })
+    } else {
+      // Opponent is foodie, current user is chef
+      var chefId = Meteor.userId();
+      var foodieId = item.user_id;
+      var conversationId = Conversation.findOne({
+        buyer_id: foodieId,
+        seller_id: chefId
+      })._id;
+      this.setState({
+        current_conservation: conversationId,
+        current_conservation_index: index
+      });
+      Session.set('current_conservation', this.state.current_conservation);
+      Session.set('current_conservation_index', this.state.current_conservation_index);
     }
   }
 
@@ -97,29 +149,12 @@ class Message extends Component {
     return (
       <ul className="chat-list-user">
         {tempFriends.map((item, index) => {
-          if (item.chef_name) {
-            // Opponent is chef, current user is foodie
-            var chefId = item.user_id;
-            var foodieId = Meteor.userId();
-            var conversationId = Conversation.findOne({
-              buyer_id: foodieId,
-              seller_id: chefId
-            })._id;
-          } else {
-            // Opponent is foodie, current user is chef
-            var chefId = Meteor.userId();
-            var foodieId = item.user_id;
-            var conversationId = Conversation.findOne({
-              buyer_id: foodieId,
-              seller_id: chefId
-            })._id;
-          }
           return (
             <li
               key={index}
-              className="chat-user active"
+              className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
               title={item.chef_name}
-              onClick={ () => { Session.set('current_conservation', conservationId); Session.set('current_conservation_index', index );  }}
+              onClick={ () => this.switchConversation(item, index) }
               style={{
                 backgroundImage: `url(${item.profileImg.origin})`,
               }}
@@ -141,7 +176,7 @@ class Message extends Component {
       return (
         <div id="list-message-body" className="list-message">
           <ul style={{ height: "225px" }}>
-            {this.props.messages[Session.get("current_conservation_index")].map(
+            {this.props.messages[this.state.current_conservation_index].map(
               (item, index) => {
                 switch (item.type) {
                   case "status":
@@ -178,6 +213,7 @@ class Message extends Component {
           id="message-content"
           placeholder="Type a message here"
           onKeyPress={e => this.sendMessage(e)}
+          onClick={ () => { this.seenMessage() } }
         />
       </div>
     );
@@ -192,9 +228,54 @@ class Message extends Component {
     // make scrollbar always at bottom when receive new message
     var messageBody = document.querySelector("#list-message-body");
     messageBody.scrollTop = messageBody.scrollHeight;
+    this.setState({
+      current_conservation: this.props.current_conservation,
+      current_conservation_index: this.props.current_conservation_index
+    })
   }
 
   render() {
+    // generator name of chat
+    var name = "Chat";
+    if (this.state.current_conservation) {
+      var conversation = Conversation.findOne({
+        _id: this.state.current_conservation,
+        available: true
+      });
+
+      if (Meteor.userId() == conversation.buyer_id) {
+        // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
+        var profile = Kitchen_details.findOne({
+          "user_id": conversation.seller_id
+        });
+        var name = profile.chef_name;
+      } else {
+        // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
+        var profile = Profile_details.findOne({
+          "user_id": conversation.buyer_id
+        });
+        var name = profile.foodie_name;
+      }
+    }
+
+    if (this.state.display) {
+      if (this.props.conversation.length > 0) {
+        Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+          if (!err) {
+            console.log(res);
+          }
+        });
+      }
+    }
+
+    const header = parseInt(this.props.total_unread) > 0 ? (
+      <div>
+        <span className="badge">{this.props.total_unread}</span><span className="chat-header-name">{name}</span>
+      </div>
+    ) : (
+      <span className="chat-header-name">{name}</span>
+    );
+
     return (
       <div className="col chat-panel-wrapper">
         <div
@@ -203,7 +284,7 @@ class Message extends Component {
           }}
           className="chat-header"
         >
-          <span className="chat-header-name">{this.props.name}</span>
+          {header}
           <span
             onClick={this.callSupport()}
             id="support-icon"
@@ -241,6 +322,7 @@ export default withTracker(props => {
     Session.set("current_conservation_index", 0);
   }
 
+  // get all messages
   for (var i = 0; i < all_conversation.length; i++) {
     var message = Messages.find({
       conversation_id: all_conversation[i]._id,
@@ -249,33 +331,26 @@ export default withTracker(props => {
     all_messages.push(message);
   }
 
-  // generator name of chat
-  var name = "Chat";
-  if (Session.get("current_conservation")) {
-    var conversation = Conversation.findOne({
-      _id: Session.get("current_conservation"),
-      available: true
-    });
-
-    if (Meteor.userId() == conversation.buyer_id) {
-      // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-      var profile = Kitchen_details.findOne({
-        "user_id": conversation.seller_id
-      });
-      var name = profile.chef_name;
-    } else {
-      // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-      var profile = Profile_details.findOne({
-        "user_id": conversation.buyer_id
-      });
-      var name = profile.foodie_name;
+  // get total number of unread message
+  var total_unread = 0;
+  all_messages.map((item, index) => {
+    if (item.length > 0) {
+      item.map((itm, idx) => {
+        if (!itm.seen && itm.receiver_id == Meteor.userId()) {
+          total_unread++;
+        }
+      })
     }
-  }
+  })
+
 
   return {
     currentUser: Meteor.user(),
     conversation: all_conversation,
     messages: all_messages,
-    name: name
+    name: name,
+    total_unread: total_unread,
+    current_conservation: Session.get("current_conservation"),
+    current_conservation_index: 0
   };
 })(Message);

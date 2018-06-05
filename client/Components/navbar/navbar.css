@@ -11,7 +11,18 @@ nav {
 }
 
 .navbar_logo {
-  margin-right: 44px;
+  /* margin-right: 44px; */
+}
+
+@media only screen and (max-width: 350px) {
+  nav ul a {
+    transition: background-color .3s;
+    font-size: 1rem;
+    color: #fff;
+    display: block;
+    padding: 0 0px;
+    cursor: pointer;
+  }
 }
 
 .nav-wrapper{
@@ -223,15 +234,51 @@ ul.right .icon {
   background-color: #56AACD;
   border-radius: 10px 10px 0px 0px;
   cursor: pointer;
+  display: inline-block;
 }
 
 .chat-panel-wrapper .chat-header .chat-header-name {
   color: #fff;
   line-height: 40px;
   vertical-align: middle;
-  padding-left: 15px;
+  padding-left: 5px;
   font-weight: 400;
   font-size: 1.3rem;
+}
+
+.chat-panel-wrapper .chat-header .badge {
+  color: #fff;
+  line-height: 20px;
+  font-weight: 400;
+  font-size: 1rem;
+  float: left;
+  height: 20px;
+  background: #EA6055;
+  margin-top: 10px;
+  display: block;
+  width: 20px;
+  min-width: 1rem;
+  margin-left: 10px;
+  border-radius: 4px;
+  -webkit-animation-name: spaceboots;
+	-webkit-animation-duration: 0.8s;
+	-webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes spaceboots {
+	0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+	10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); }
+	20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); }
+	30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+	40% { -webkit-transform: translate(1px, -1px) rotate(1deg); }
+	50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); }
+	60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+	70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); }
+	80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); }
+	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+	100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
 }
 
 .chat-panel-wrapper .chat-content-wrapper {
@@ -300,7 +347,7 @@ ul.right .icon {
 }
 
 .chat-panel-wrapper .chat-content-wrapper .chat-list-user .chat-user.active {
-  border: 2px solid #56AACD;
+  border: 3px solid #56AACD;
 }
 
 .chat-panel-wrapper .chat-content-wrapper .chat-list-user .chat-user:first-child {
