@@ -169,11 +169,13 @@ export default class Modal extends Component {
         }
     }
 
+    /*
     setQty = (qty) => {
         this.setState({
             qty: qty
         })
     }
+    */
 
     // when click order button
     order = () => {
@@ -255,10 +257,12 @@ export default class Modal extends Component {
             var ready_time = parseInt(menu_details.lead_days) * 24 * 60 + parseInt(menu_details.lead_hours) * 60;
             var quantity = menu_details.min_order;
 
+            /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu
+
             if (this.state.qty < quantity) {
                 Materialize.toast('Oops! Your quantities must not less than minium order of this menu. Please set at least ' + quantity + ' item.', 'rounded bp-green');
                 return true;
-            }
+            } */
 
 
             var serving_option = Session.get('method')
@@ -269,7 +273,7 @@ export default class Modal extends Component {
 
             if (order) {
                 var order_id = order._id;
-                quantity = parseInt(order.quantity) + this.state.qty;
+                quantity = menu_details.min_order; /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
                 total_price_per_dish = parseInt(menu_price) * quantity
                 Meteor.call('shopping_cart.update',
                     order_id,
@@ -280,7 +284,7 @@ export default class Modal extends Component {
                     }
                 )
             } else {
-                quantity = this.state.qty;
+                quantity = menu_details.min_order; /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
                 Meteor.call('shopping_cart.insert',
                     foodie_id,
                     homecook_id,
@@ -414,7 +418,7 @@ export default class Modal extends Component {
                                   <div className="col l12 m12 s12 no-padding">
                                       <h5>Tags </h5>
                                       {
-                                          (this.state.item.dish_tags.length == 0)
+                                          (this.state.item.dish_tags.length == 0 || !this.state.item.dish_tags)
                                           ?
                                               <span>No Tags available</span>
                                           :
@@ -440,7 +444,7 @@ export default class Modal extends Component {
                     ?
                         this.renderDish()
                     :
-                        <DishCarousel order={ this.order } qty={ this.setQty }/>
+                        <DishCarousel order={ this.order } />
                 }
             </div>
         );

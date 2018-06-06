@@ -17,7 +17,8 @@ export default class DishCarousel extends Component {
         item: {},
         qty: 1,
         ingredients: [],
-        menus: []
+        menus: [],
+        isMobile: false,
     }
   }
 
@@ -26,6 +27,7 @@ export default class DishCarousel extends Component {
     $('.modal-overlay').remove();
   }
 
+/*
   decreaseQty = () => {
     if (this.state.qty > 1) {
         this.setState({
@@ -43,7 +45,7 @@ export default class DishCarousel extends Component {
         this.props.qty(this.state.qty);
     })
   }
-
+*/
   componentWillReceiveProps = () => {
 
     if (Session.get('selectedMenu')) {
@@ -155,6 +157,7 @@ export default class DishCarousel extends Component {
   }
 
   renderDish = (item, ingredients, index) => {
+    const alignMobile = this.state.isMobile ? '' : 'right';
     return (
         <div className="row no-margin" key={index}>
             <div className="col l4 m12 s12 dish-preview-banner no-padding">
@@ -271,6 +274,7 @@ export default class DishCarousel extends Component {
                         </div>
                     </div>
                     <div className="col l6 m6 s12">
+                      <div className = {alignMobile}>
                         <div className="row dish-preview-ingredients no-padding">
                             <div className="col l12 m12 s12 no-padding">
                                 <h6>Allergies &amp; Dietary preference </h6>
@@ -286,6 +290,7 @@ export default class DishCarousel extends Component {
                                 }
                             </div>
                         </div>
+                      </div>
                     </div>
                 </div>
             </div>
