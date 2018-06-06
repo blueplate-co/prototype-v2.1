@@ -46,6 +46,23 @@ export default class DishCarousel extends Component {
     })
   }
 */
+
+  componentDidMount = () => {
+    window.addEventListener('resize', () => {
+        this.setState({
+            isMobile: window.innerWidth < 601
+        });
+    }, false);
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', () => {
+      this.setState({
+        isMobile: false
+      })
+    }, false);
+  }
+
   componentWillReceiveProps = () => {
 
     if (Session.get('selectedMenu')) {
