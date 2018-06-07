@@ -399,7 +399,7 @@ export default withTracker(props => {
   // get total number of unread message
   var total_unread = 0;
   all_messages.map((item, index) => {
-    if (item.length > 2) {
+    if (item.length > 1) {
       item.map((itm, idx) => {
         if (!itm.seen && itm.receiver_id == Meteor.userId()) {
           total_unread++;
