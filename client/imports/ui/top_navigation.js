@@ -528,14 +528,13 @@ class TopNavigation extends Component {
     var date = curr.toISOString().substr(0, 10);
     return (
       <div className="search-page-container">
-        <span
-          className="fa fa-times close-modal"
-          onClick={() => {
-            this.setState({ search: false });
-            $("html").css("overflow", "auto");
-            $("[role=navigation]").height("65px");
-          }}
-        />
+        <a className = "btn-floating waves-effect waves-red z-depth-0 transparent black-text close-modal" onClick={() => {
+          this.setState({ search: false });
+          $("html").css("overflow", "auto");
+          $("[role=navigation]").height("65px");
+        }}>
+          <i className="material-icons black-text text-darken-1">close</i>
+        </a>
         <div className="container">
           <div className="row">
             <div

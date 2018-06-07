@@ -117,13 +117,13 @@ export default withTracker(props => {
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }).fetch(),
+        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {createdAt: -1}}).fetch(),
     };
   } else {
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }, { limit: 8 }).fetch(),
+        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {createdAt: -1}, limit: 8 }).fetch(),
     };
   }
 })(DishList);
