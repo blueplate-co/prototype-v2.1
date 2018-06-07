@@ -193,6 +193,7 @@ class ShoppingCart extends Component {
             }
         });
         if (valid) {
+            console.log(globalCart);
             globalCart.forEach((item, index) => {
                 Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
                     if (!err) {

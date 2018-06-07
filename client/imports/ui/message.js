@@ -73,6 +73,10 @@ class Message extends Component {
   sendMessage(e) {
     if (e.charCode == 13) {
       var message = $("#message-content").val();
+      if (message.trim().length <= 1) {
+        Materialize.toast('Your message must at least 2 characters.', 4000, 'rounded bp-green');
+        return false;
+      }
       var receiverId = '';
 
       // get info about current conversation
@@ -294,8 +298,8 @@ class Message extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.messages !== this.props.messages) {
-    }
+    var messageBody = document.querySelector('#list-message-body');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
   }
 
   render() {
