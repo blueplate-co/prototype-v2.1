@@ -39,6 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 html {
   height: 70vh;
   font-family: 'Montserrat', sans-serif;
+  overflow-y: auto;
 }
 
 body p {
