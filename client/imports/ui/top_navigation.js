@@ -621,6 +621,13 @@ class TopNavigation extends Component {
                     height="40"
                     width="40"
                   />
+                  <i className =
+                    {this.state.sidebarOpen
+                      ?
+                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow rotate"
+                      :
+                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow"}
+                  >keyboard_arrow_down</i>
                 </a>
                 <ul className="right">
                   <li className="icon" onClick={() => this.openProfile()}>
