@@ -6,8 +6,6 @@ Order_ratings = new Mongo.Collection('order_ratings');
 
 Meteor.methods({
   'rating.insert'(rating, order_id) {
-    check(order_id, Match.Any);
-    check(rating, Number);
 
     Order_ratings.insert({
       order_id: order_id,

@@ -14,9 +14,7 @@ class Message extends Component {
     this.callSupport = this.callSupport.bind(this);
     this.state = {
       display: false,
-      conversation: 0,
-      current_conservation: '',
-      current_conservation_index: 0
+      index: 0,
     };
   }
 
@@ -30,7 +28,7 @@ class Message extends Component {
       display: !this.state.display,
     });
     if (this.props.conversation.length > 0) {
-      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+      Meteor.call('message.seenMessage', this.props.conversation[this.state.index]._id, Meteor.userId(), (err, res) => {
         if (!err) {
           console.log(res);
         }
@@ -49,7 +47,7 @@ class Message extends Component {
           "user_id": item.seller_id
         });
         tempFriends.push(profile);
-      } else {
+      } else if (Meteor.userId() == item.seller_id) {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
         var profile = Profile_details.findOne({
           "user_id": item.buyer_id
@@ -79,7 +77,7 @@ class Message extends Component {
 
       // get info about current conversation
       var conversation = Conversation.findOne({
-        _id: Session.get('current_conservation'),
+        _id: this.props.conversation[this.state.index]._id,
       });
 
       if (Meteor.userId() == conversation.buyer_id) {
@@ -99,7 +97,7 @@ class Message extends Component {
         Meteor.userId(),
         receiverId,
         message,
-        Session.get('current_conservation'),
+        this.props.conversation[this.state.index]._id,
         (err, res) => {
           if (!err) {
             $("#message-content").val("");
@@ -113,7 +111,7 @@ class Message extends Component {
 
   seenMessage() {
     if (this.props.conversation.length > 0) {
-      Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+      Meteor.call('message.seenMessage', this.props.conversation[this.state.index]._id, Meteor.userId(), (err, res) => {
         if (!err) {
           console.log(res);
         }
@@ -123,6 +121,7 @@ class Message extends Component {
 
   // switch chat conversation
   switchConversation(item, index) {
+    console.log(item);
     if (item.chef_name) {
       // Opponent is chef, current user is foodie
       var chefId = item.user_id;
@@ -132,8 +131,7 @@ class Message extends Component {
         seller_id: chefId
       })._id;
       this.setState({
-        current_conservation: conversationId,
-        current_conservation_index: index
+        index: index
       })
     } else {
       // Opponent is foodie, current user is chef
@@ -144,11 +142,8 @@ class Message extends Component {
         seller_id: chefId
       })._id;
       this.setState({
-        current_conservation: conversationId,
-        current_conservation_index: index
+        index: index
       });
-      Session.set('current_conservation', this.state.current_conservation);
-      Session.set('current_conservation_index', this.state.current_conservation_index);
     }
   }
 
@@ -157,38 +152,93 @@ class Message extends Component {
     let tempFriends = this.getListJoiner();
     return (
       <ul className="chat-list-user">
-        {tempFriends.map((item, index) => {
-          return (
-            (item.profileImg == null) ?
-            (
-              <li
-                key={index}
-                className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
-                title={item.chef_name}
-                onClick={ () => this.switchConversation(item, index) }
-                style={{
-                  backgroundImage: `url(${item.profileImg.origin})`,
-                }}
-              />
-            ) : (
-              <li
-                key={index}
-                className={(this.state.current_conservation_index == index) ? 'chat-user active' : 'chat-user'}
-                title={item.chef_name}
-                onClick={ () => this.switchConversation(item, index) }
-                style={{
-                  backgroundImage: `url(${item.profileImg.origin})`,
-                }}
-              />
-            )
-          );
-        })}
+        {
+          <span title='Customer Service' style={{position: 'relative'}}>
+            <li
+              title='Customer Service'
+              className={(this.state.index == -1) ? 'chat-user active' : 'chat-user'}
+              // onClick={() => this.switchConversation(item, -1)}
+              style={{
+                backgroundColor: `#56AACD`,
+              }}
+            />
+            <img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" />
+          </span>
+        }
+        {
+          tempFriends.map((item, index) => {
+            // get unread message from friends
+            // get conversation id of friends with current user
+            var name = '';
+            if (item.chef_name) {
+              name = item.chef_name;
+            } else {
+              name = item.foodie_name;
+            }
+            var unread;
+            let user_id = item.user_id;
+            let conversation = Conversation.findOne({
+              $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
+              available: true
+            });
+            let conversation_id = conversation._id;
+            // get all unseen messages in available conversation
+            if (conversation_id) {
+              let count = Messages.find({
+                conversation_id: conversation_id,
+                receiver_id: Meteor.userId(),
+                sender_id: user_id,
+                seen: false,
+                available: true
+              }).count();
+              unread = count > 0 ?
+              (
+                <span className="unread-badge">{count}</span>
+              ) : (
+                ''
+              );
+            }
+            if (item.profileImg == null) {
+              return (
+                <span title={name} key={index} style={{position: 'relative'}}>
+                  <li
+                    key={index}
+                    title={name}
+                    className={(this.state.index == index) ? 'chat-user active' : 'chat-user'}
+                    title={item.chef_name}
+                    onClick={() => this.switchConversation(item, index)}
+                    style={{
+                      backgroundColor: `#ccc`,
+                    }}
+                  />
+                  {unread}
+                </span>
+              )
+            } else {
+              return (
+                <span title={name} key={index} style={{position: 'relative'}}>
+                  <li
+                    key={index}
+                    title={name}
+                    className={(this.state.index == index) ? 'chat-user active' : 'chat-user'}
+                    title={item.chef_name}
+                    onClick={() => this.switchConversation(item, index)}
+                    style={{
+                      backgroundImage: `url(${item.profileImg.origin})`,
+                    }}
+                  />
+                  {unread}
+                </span>
+              )
+            }
+          })
+        }
       </ul>
     );
   }
 
   renderListMessage() {
-    if (this.props.messages.length == 0) {
+    if (this.props.conversation.length == 0) {
       return (
         <div id="list-message-body" className="list-message">
           <ul style={{ height: "225px" }}>
@@ -200,7 +250,7 @@ class Message extends Component {
       return (
         <div id="list-message-body" className="list-message">
           <ul style={{ height: "225px" }}>
-            {this.props.messages[this.state.current_conservation_index].map(
+            {this.props.messages[this.state.index].map(
               (item, index) => {
                 switch (item.type) {
                   case "status":
@@ -216,10 +266,10 @@ class Message extends Component {
                         {item.message}
                       </li>
                     ) : (
-                      <li key={index} className="message receiver">
-                        {item.message}
-                      </li>
-                    );
+                        <li key={index} className="message receiver">
+                          {item.message}
+                        </li>
+                      );
                 }
               }
             )}
@@ -237,7 +287,7 @@ class Message extends Component {
           id="message-content"
           placeholder="Type a message here"
           onKeyPress={e => this.sendMessage(e)}
-          onClick={ () => { this.seenMessage() } }
+          onClick={() => { this.seenMessage() }}
         />
       </div>
     );
@@ -248,22 +298,13 @@ class Message extends Component {
     }
   }
 
-  componentDidMount() {
-    // make scrollbar always at bottom when receive new message
-    var messageBody = document.querySelector("#list-message-body");
-    messageBody.scrollTop = messageBody.scrollHeight;
-    this.setState({
-      current_conservation: this.props.current_conservation,
-      current_conservation_index: this.props.current_conservation_index
-    })
-  }
-
   render() {
     // generator name of chat
-    var name = "Chat";
-    if (this.state.current_conservation) {
+    var name = 'Chat';
+    // get detail info of current conservation
+    if (this.props.conversation[this.state.index]) {
       var conversation = Conversation.findOne({
-        _id: this.state.current_conservation,
+        _id: this.props.conversation[this.state.index]._id,
         available: true
       });
 
@@ -272,19 +313,19 @@ class Message extends Component {
         var profile = Kitchen_details.findOne({
           "user_id": conversation.seller_id
         });
-        var name = profile.chef_name;
+        name = profile.chef_name
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
         var profile = Profile_details.findOne({
           "user_id": conversation.buyer_id
         });
-        var name = profile.foodie_name;
+        name = profile.foodie_name
       }
     }
 
     if (this.state.display) {
       if (this.props.conversation.length > 0) {
-        Meteor.call('message.seenMessage', Session.get('current_conservation'), Meteor.userId(), (err, res) => {
+        Meteor.call('message.seenMessage', this.props.conversation[this.state.index]._id, Meteor.userId(), (err, res) => {
           if (!err) {
             console.log(res);
           }
@@ -314,7 +355,7 @@ class Message extends Component {
             id="support-icon"
             title="Contact support"
           >
-            <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" />
+            {/* <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/support-icon.svg" /> */}
           </span>
         </div>
         <div className="chat-content-wrapper">
@@ -341,40 +382,37 @@ export default withTracker(props => {
     available: true
   }).fetch();
 
-  if (all_conversation.length > 0) {
-    Session.set("current_conservation", all_conversation[0]._id);
-    Session.set("current_conservation_index", 0);
-  }
-
   // get all messages
   for (var i = 0; i < all_conversation.length; i++) {
     var message = Messages.find({
       conversation_id: all_conversation[i]._id,
       available: true
     }).fetch();
+    if (message.length > 2) {
+      if ((message[0].message == message[1].message) && (message[0].message == 'Start conversation')) {
+        message.shift();
+      }
+    }
     all_messages.push(message);
   }
 
   // get total number of unread message
   var total_unread = 0;
   all_messages.map((item, index) => {
-    if (item.length > 0) {
+    if (item.length > 2) {
       item.map((itm, idx) => {
         if (!itm.seen && itm.receiver_id == Meteor.userId()) {
           total_unread++;
         }
       })
     }
-  })
+  });
 
 
   return {
     currentUser: Meteor.user(),
     conversation: all_conversation,
     messages: all_messages,
-    name: name,
-    total_unread: total_unread,
-    current_conservation: Session.get("current_conservation"),
-    current_conservation_index: 0
+    total_unread: total_unread
   };
 })(Message);

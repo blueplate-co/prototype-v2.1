@@ -10,6 +10,23 @@ Template.orders_tracking.helpers({
   'order_sent': function() {
     var order = search_distinct_order_record_orders_tracking('seller_id', 'Created')
     console.log(order);
+    console.log('Order sent. Start send  to chef.');
+    var kitchen_number = Kitchen_details.findOne({
+      user_id: order[0]
+    }).kitchen_contact;
+    if (kitchen_number[0] == "0") {
+      kitchen_number = '+84' + kitchen_number.slice(1, kitchen_number.length);
+    } else {
+      kitchen_number = '+84' + kitchen_number;
+    }
+    if (kitchen_number) {
+      let content = 'Hey! You got new order.  Foodie is waiting for you to confirm it. Let’s check it out now at https://www.blueplate.co/';
+      Meteor.call('message.sms', kitchen_number, content, (err, res) => {
+        if (!err) {
+          console.log('Message sent');
+        }
+      });
+    }
     return order
   },
   'cooking': function() {
@@ -325,6 +342,16 @@ Template.pending_confirmation.events({
         }
       }, 100 * index)
       Meteor.call('notification.cancel_order', seller_id, buyer_id);
+      // get conversation_id between seller and buyer
+      let conversation = Conversation.findOne({
+        buyer_id: buyer_id,
+        seller_id: seller_id
+      });
+      Meteor.call('message.disableConversation', conversation._id, (err, res) => {
+        if (!err) {
+          console.log('Disabled conversation');
+        }
+      })
     }
   },
 })

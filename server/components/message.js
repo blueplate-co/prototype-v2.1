@@ -95,27 +95,34 @@ Meteor.methods({
       });
     }
   },
-  "message.sendToSupport"() {
-    const accountSid = "AC3807512e0f88d45d2eb403ddbbe071c7";
-    const authToken = "dfe3e83e75dd5f7cb737929d8c087136";
-    const client = require("twilio")(accountSid, authToken);
-    client.messages
-      .create({
-        body: "Hello Tan",
-        from: "Blueplate",
-        to: "+841683145401",
-      })
-      .then(message => console.log(message.sid))
-      .done();
+  "message.sms"(phonenumber, content) {
+    // console.log('Phone number receive: ' + phonenumber);
+    // console.log('Content to sent: ' + content);
+    // // real devices
+    // const accountSid = "ACa1eff75c106b95b3b3cc55e0bc09ca30";
+    // const authToken = "39ba5c8a8293447d3adf434b558818c4";
+    // // testing
+    // // const accountSid = "ACdee9d52a82e9321cd35c065153cdfdd2";
+    // // const authToken = "2c175d8aed982e1baf0b5d74dbe48a20";
+    // const client = require("twilio")(accountSid, authToken);
+    // client.messages
+    //   .create({
+    //     body: content,
+    //     from: "+85264507389",
+    //     to: phonenumber,
+    //   })
+    //   .then(message => console.log(message.sid))
+    //   .done();
   },
   "message.seenMessage"(conversation_id, receiver_id) {
     let conversation = [];
     conversation = Conversation.find({
       _id: conversation_id,
     }).fetch();
+    console.log('Current conservation: ' + conversation_id)
 
     var sender_id = "";
-    // console.log(conversation[0]);
+    console.log(conversation[0]);
     if (conversation[0].buyer_id == receiver_id) {
       sender_id = conversation[0].seller_id;
     } else {

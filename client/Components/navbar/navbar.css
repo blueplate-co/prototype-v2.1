@@ -335,6 +335,27 @@ ul.right .icon {
   white-space: nowrap;
 }
 
+.chat-panel-wrapper .chat-content-wrapper .chat-list-user .unread-badge {
+  width: 17px;
+  height: 17px;
+  border-radius: 20%;
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: red;
+  right: 0px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.support-icon {
+  position: absolute;
+  left: 10px;
+  top: -22px;
+  cursor: pointer;
+  width: 25px;
+}
+
 .chat-panel-wrapper .chat-content-wrapper .chat-list-user .chat-user {
   width: 45px;
   height: 45px;
@@ -344,6 +365,7 @@ ul.right .icon {
   margin: 0px 7px;
   cursor: pointer;
   display: inline-block;
+  position: relative;
 }
 
 .chat-panel-wrapper .chat-content-wrapper .chat-list-user .chat-user.active {

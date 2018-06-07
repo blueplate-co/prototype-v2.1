@@ -31,7 +31,7 @@ Meteor.subscribe('listAllOrdersBuyer');
 Meteor.subscribe('listAllTransactions');
 
 Template.start_cooking.helpers({
-  'cooking': function() {
+  'cooking': function () {
     var cooking = Order_record.find({
       'seller_id': Meteor.userId(),
       'status': "Cooking"
@@ -40,13 +40,13 @@ Template.start_cooking.helpers({
     return cooking
   },
 
-  'order_cooking': function() {
+  'order_cooking': function () {
     var cooking = search_distinct_in_order_record('_id', 'Cooking')
     console.log(cooking)
     return cooking
   },
 
-  'order': function() {
+  'order': function () {
     var order = Order_record.find({
       'seller_id': Meteor.userId(),
       'status': 'Created'
@@ -55,13 +55,13 @@ Template.start_cooking.helpers({
     return order
   },
 
-  'order_received': function() {
+  'order_received': function () {
     var order = search_distinct_in_order_record('buyer_id', 'Created')
     console.log(order)
     return order
   },
 
-  'ready_to_serve': function() {
+  'ready_to_serve': function () {
     var ready_to_serve = Transactions.find({
       'seller_id': Meteor.userId(),
       'status': "Ready"
@@ -70,19 +70,19 @@ Template.start_cooking.helpers({
     return ready_to_serve
   },
 
-  'order_ready': function() {
-    return Transactions.find({'seller_id': Meteor.userId(),'status': 'Ready'})
+  'order_ready': function () {
+    return Transactions.find({ 'seller_id': Meteor.userId(), 'status': 'Ready' })
   },
 
 })
 
-Template.order_card.onDestroyed(function() {
+Template.order_card.onDestroyed(function () {
   var name = String(this);
   Session.delete(name);
 })
 
 Template.order_card.helpers({
-  'set_timer': function() {
+  'set_timer': function () {
     var name = String(this);
     var initial_value = [];
     Session.set(name, initial_value);
@@ -92,13 +92,13 @@ Template.order_card.helpers({
     var date_time = order.ready_time;
     console.log(date_time);
 
-    countdown = Meteor.setInterval(function() {
+    countdown = Meteor.setInterval(function () {
       var time_remaining = date_time_conversion(date_time, new Date().getTime());
       Session.set(name, time_remaining)
     }, 1000)
   },
 
-  'time_is_up': function() {
+  'time_is_up': function () {
     var time = Session.get(this);
     if (parseInt(time.days) < 0 || parseInt(time.hours) < 0 || parseInt(time.minutes) < 0) {
       Meteor.clearInterval(this.countdown);
@@ -108,12 +108,12 @@ Template.order_card.helpers({
     }
   },
 
-  'getCountdown': function(template) {
+  'getCountdown': function (template) {
     var name = String(this)
     return Session.get(name);
   },
 
-  'foodie_profile_picture': function() {
+  'foodie_profile_picture': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -123,49 +123,49 @@ Template.order_card.helpers({
     });
     return foodie.profileImg.origin;
   },
-  'get_dish_serving': function() {
+  'get_dish_serving': function () {
     return Order_record.findOne({
       '_id': String(this)
     }).serving_option
   },
-  'get_serving_date': function() {
+  'get_serving_date': function () {
     var time = Order_record.findOne({
       '_id': String(this)
     }).ready_time;
     var time_string = new Date(time)
     return time_string.toLocaleDateString();
   },
-  'get_serving_time': function() {
+  'get_serving_time': function () {
     var time = Order_record.findOne({
       '_id': String(this)
     }).ready_time;
     var time_string = new Date(time)
-    return time_string.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return time_string.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
-  'delivery': function() {
+  'delivery': function () {
     return Order_record.findOne({
-    '_id': String(this)
-  }).serving_option === 'Delivery';
+      '_id': String(this)
+    }).serving_option === 'Delivery';
   },
-  'delivery_address': function() {
+  'delivery_address': function () {
     return Order_record.findOne({
-        '_id': String(this)
-      }).address;
+      '_id': String(this)
+    }).address;
   },
-  'product_is_dish': function() {
+  'product_is_dish': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
     var product_id = order.product_id;
     if (Dishes.findOne({
-        '_id': product_id
-      })) {
+      '_id': product_id
+    })) {
       return true;
     } else {
       return false;
     }
   },
-  'dishes_in_menu': function() {
+  'dishes_in_menu': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -173,22 +173,22 @@ Template.order_card.helpers({
       '_id': order.product_id
     });
   },
-  'get_menu_dish_name': function() {
+  'get_menu_dish_name': function () {
     return Dishes.findOne({
       '_id': String(this)
     }).dish_name;
   },
-  'get_menu_dish_image': function() {
+  'get_menu_dish_image': function () {
     var dish_image = Dishes.findOne({
       '_id': String(this)
     }).meta.origin
 
     return dish_image;
   },
-  'get_menu_qty': function() {
+  'get_menu_qty': function () {
     return dish_qty;
   },
-  'get_foodie_name': function() {
+  'get_foodie_name': function () {
     console.log(this);
     var order = Order_record.findOne({
       '_id': String(this)
@@ -200,14 +200,14 @@ Template.order_card.helpers({
     return foodie.foodie_name;
   },
 
-  'get_transaction_no': function() {
+  'get_transaction_no': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
     return order.buyer_id + order.transaction_no
   },
 
-  'get_dish_image': function() {
+  'get_dish_image': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -219,7 +219,7 @@ Template.order_card.helpers({
     return dish_image;
   },
 
-  'get_dish_name': function() {
+  'get_dish_name': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -229,7 +229,7 @@ Template.order_card.helpers({
     }).dish_name
   },
 
-  'get_dish_qty': function() {
+  'get_dish_qty': function () {
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -238,10 +238,10 @@ Template.order_card.helpers({
       'product_id': dish_id,
       'buyer_id': order.buyer_id,
       'seller_id': order.seller_id
-    }, {sort: {createdAt: -1}, limit: 1}).fetch()[0].quantity
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].quantity
     return dish_qty;
   },
-  'ready_to_serve': function() {
+  'ready_to_serve': function () {
     var ready_to_serve = Order_record.find({
       'seller_id': Meteor.userId(),
       'status': "Ready"
@@ -252,7 +252,7 @@ Template.order_card.helpers({
 })
 
 Template.request_card.events({
-  'click .cooking_card_profile_picture': function() {
+  'click .cooking_card_profile_picture': function () {
     var route = '/foodies/' + String(this);
     FlowRouter.go(window.open(route, '_blank'));
   }
@@ -262,22 +262,22 @@ Template.request_card.events({
 
 Template.request_card.helpers({
 
-  'foodie_profile_picture': function() {
+  'foodie_profile_picture': function () {
     var foodie = Profile_details.findOne({
       'user_id': String(this)
     });
-    return  foodie.profileImg.origin;
+    return foodie.profileImg.origin;
 
   },
 
-  'get_foodie_name': function() {
+  'get_foodie_name': function () {
     var foodie = Profile_details.findOne({
       'user_id': String(this)
     })
     return foodie.foodie_name;
   },
 
-  'get_transaction_no': function() {
+  'get_transaction_no': function () {
     var order = Order_record.findOne({
       'buyer_id': String(this),
       'seller_id': Meteor.userId(),
@@ -286,7 +286,7 @@ Template.request_card.helpers({
     return order.transaction_no
   },
 
-  'ordered_dish': function() {
+  'ordered_dish': function () {
 
     var order = Order_record.findOne({
       'buyer_id': String(this),
@@ -301,78 +301,78 @@ Template.request_card.helpers({
       'status': 'Created'
     })
   },
-  'product_is_dish': function() {
+  'product_is_dish': function () {
     if (Dishes.findOne({
-        '_id': this.product_id
-      })) {
+      '_id': this.product_id
+    })) {
       return true;
     } else {
       return false;
     }
   },
-  'get_dish_name': function() {
+  'get_dish_name': function () {
     return Dishes.findOne({
       '_id': this.product_id
     }).dish_name;
   },
-  'get_dish_image': function() {
+  'get_dish_image': function () {
     var dish_image = Dishes.findOne({
       '_id': this.product_id
     }).meta.origin
     return dish_image;
   },
-  'get_dish_qty': function() {
+  'get_dish_qty': function () {
     return Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].quantity
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].quantity
   },
-  'get_dish_serving': function() {
+  'get_dish_serving': function () {
     return Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].serving_option
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].serving_option
   },
-  'get_serving_date': function() {
+  'get_serving_date': function () {
     var time = Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].ready_time;
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].ready_time;
     var time_string = new Date(time)
     return time_string.toLocaleDateString();
   },
-  'get_serving_time': function() {
+  'get_serving_time': function () {
     var time = Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].ready_time;
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].ready_time;
     var time_string = new Date(time)
-    return time_string.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return time_string.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
-  'delivery': function() {
+  'delivery': function () {
     return Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].serving_option === 'Delivery';
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].serving_option === 'Delivery';
   },
-  'delivery_address': function() {
+  'delivery_address': function () {
     return Order_record.find({
       'product_id': this.product_id,
       'seller_id': Meteor.userId(),
       'buyer_id': this.buyer_id
-    }, {sort: {createdAt: -1}, limit: 1} ).fetch()[0].address;
+    }, { sort: { createdAt: -1 }, limit: 1 }).fetch()[0].address;
   },
-  'get_menu_name': function() {
+  'get_menu_name': function () {
     return Menu.findOne({
       '_id': this.product_id
     }).menu_name;
   },
-  'get_menu_image': function() {
+  'get_menu_image': function () {
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
     }).dishes_id[0];
@@ -383,7 +383,7 @@ Template.request_card.helpers({
 
     return dish_image;
   },
-  'get_menu_qty': function() {
+  'get_menu_qty': function () {
     return Order_record.findOne({
       'product_id': this.product_id
     }).quantity
@@ -393,7 +393,7 @@ Template.request_card.helpers({
 
 Template.request_card.events({
 
-  'click #accept': function() {
+  'click #accept': function () {
 
     var buyer_id = String(this)
     var seller_id = Meteor.userId()
@@ -419,7 +419,7 @@ Template.request_card.events({
 
     function add_order_to_transaction(array_value, index) {
 
-      setTimeout(function() {
+      setTimeout(function () {
         var order = array_value
         var trans_no = parseInt(String(order.transaction_no))
         var order_id = String(order._id)
@@ -464,7 +464,7 @@ Template.request_card.events({
               Materialize.toast("Order has been accepted", 4000, 'rounded bp-green');
             }
           }) //insert to transaction
-          Meteor.call('order_record.accepted', order_id, function(){
+          Meteor.call('order_record.accepted', order_id, function () {
             if (err) {
               Materialize.toast("An error has occurred: " + err.message.message, 4000, 'rounded bp-green');
             } else {
@@ -474,7 +474,7 @@ Template.request_card.events({
         }
         console.log('quantity:' + parseInt(quantity));
         // update order counts for either dishes or menu collection
-        if (Dishes.findOne({_id: product_id})) {
+        if (Dishes.findOne({ _id: product_id })) {
           Meteor.call('dish.order_count_update', product_id, seller_id, parseInt(quantity))
         } else {
           Meteor.call('menu.order_count_update', product_id, seller_id, parseInt(quantity))
@@ -484,7 +484,7 @@ Template.request_card.events({
     }
 
     function charge_card(buyer_id, seller_id, trans_no, paymentType) {
-      setTimeout(function() {
+      setTimeout(function () {
         console.log(buyer_id, seller_id, trans_no)
         var transaction = Transactions.findOne({
           'buyer_id': buyer_id,
@@ -502,9 +502,30 @@ Template.request_card.events({
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);
+    console.log('Order confirm. Start send to foodie.');
+    var foodie = Profile_details.findOne({
+      user_id: buyer_id
+    });
+    var country_code = "+" + foodie.mobile_dial_code.split('+').pop().trim();
+    var mobile_number = '';
+    if (foodie.mobile[0] == '0') {
+      mobile_number = foodie.mobile.slice(1, foodie.mobile.length);
+    } else {
+      mobile_number = foodie.mobile;
+    }
+    var full_number = country_code + mobile_number;
+    console.log('Full number' + full_number);
+    if (full_number.length > 0) {
+      let content = 'Hey! Your homechef has just confirmed your order!';
+      Meteor.call('message.sms', full_number, content, (err, res) => {
+        if (!err) {
+          console.log('Message sent');
+        }
+      });
+    }
   },
 
-  'click #reject': function() {
+  'click #reject': function () {
 
     var buyer_id = String(this)
     var seller_id = Meteor.userId()
@@ -525,7 +546,7 @@ Template.request_card.events({
 
     function reject_order(array_value, index) {
 
-      setTimeout(function() {
+      setTimeout(function () {
         var order = array_value
         var trans_no = parseInt(String(order.transaction_no))
         var order_id = String(order._id)
@@ -567,36 +588,45 @@ Template.request_card.events({
         }
       }, 100 * index)
       Meteor.call('notification.reject_order', seller_id, buyer_id);
-      Meteor.call('message.disableConversation', Session.get('current_conservation'));
+      // get conversation_id between seller and buyer
+      let conversation = Conversation.findOne({
+        buyer_id: buyer_id,
+        seller_id: seller_id
+      });
+      Meteor.call('message.disableConversation', conversation._id, (err, res) => {
+        if (!err) {
+          console.log('Disabled conversation');
+        }
+      })
     }
   }
 })
 
 Template.order_card.events({
 
-  'click #ready': function() {
+  'click #ready': function () {
     var order_id = String(this)
     Meteor.call('order_record.ready', order_id)
     //console.log(order_id)
-    var transactions = Transactions.findOne({'order': order_id}).order
+    var transactions = Transactions.findOne({ 'order': order_id }).order
     //console.log(transactions);
 
     Session.set('transaction_ready', 0)
 
     transactions.forEach(food_ready)
 
-    function food_ready(array_value, index){
+    function food_ready(array_value, index) {
 
-      setTimeout(function(){
+      setTimeout(function () {
         var order_id = array_value
-        var order = Order_record.findOne({'_id': order_id})
+        var order = Order_record.findOne({ '_id': order_id })
         var status = order.status
         var check_digit = parseInt(Session.get('transaction_ready'))
 
 
-        if(status === 'Ready'){
+        if (status === 'Ready') {
           check_digit += 1
-        }else{
+        } else {
           check_digit = check_digit
         }
 
@@ -606,103 +636,135 @@ Template.order_card.events({
         var check_digit = parseInt(Session.get('transaction_ready'))
         var buyer_id = order.buyer_id
         var seller_id = order.seller_id
-        var trans_id = Transactions.findOne({'order':order_id})._id
+        var trans_id = Transactions.findOne({ 'order': order_id })._id
 
-        if(check_digit === check){
+        if (check_digit === check) {
           Meteor.call('transactions.ready', trans_id)
           Meteor.call('notification.transaction_ready', seller_id, buyer_id)
           console.log("Transactions Ready")
-        }}, 1000)
+        }
+      }, 1000)
     }
   },
 })
 
 Template.chef_ready_card.events({
 
-  'click #order_complete': function(){
-      var trans_id = this._id
-      var seller_id = this.seller_id
-      var buyer_id = this.buyer_id
+  'click #order_complete': function () {
+    var trans_id = this._id
+    var seller_id = this.seller_id
+    var buyer_id = this.buyer_id
 
-      Meteor.call('transactions.complete', trans_id)
+    Meteor.call('transactions.complete', trans_id)
 
-      var order = Transactions.findOne({_id: trans_id}).order
+    var order = Transactions.findOne({ _id: trans_id }).order
 
-      order.forEach(order_complete)
+    order.forEach(order_complete)
 
 
-      function order_complete(array_value, index){
-        var order_id = array_value
+    function order_complete(array_value, index) {
+      var order_id = array_value
 
-        Meteor.call('order_record.complete', order_id)
+      Meteor.call('order_record.complete', order_id)
 
+    }
+
+    Meteor.call('notification.transaction_complete', seller_id, buyer_id);
+
+    // get conversation_id between seller and buyer
+    let conversation = Conversation.findOne({
+      buyer_id: buyer_id,
+      seller_id: seller_id
+    });
+    Meteor.call('message.disableConversation', conversation._id, (err, res) => {
+      if (!err) {
+        console.log('Disabled conversation');
       }
+    });
+    console.log('Order completed. Start send to foodie.');
+    var foodie = Profile_details.findOne({
+      user_id: buyer_id
+    });
+    var country_code = "+" + foodie.mobile_dial_code.split('+').pop().trim();
+    var mobile_number = '';
+    if (foodie.mobile[0] == '0') {
+      mobile_number = foodie.mobile.slice(1, foodie.mobile.length);
+    } else {
+      mobile_number = foodie.mobile;
+    }
+    var full_number = country_code + mobile_number;
+    console.log('Full number' + full_number);
+    if (full_number.length > 0) {
+      let content = 'Hey! Your homechef has just confirmed your order!';
+      Meteor.call('message.sms', full_number, content, (err, res) => {
+        if (!err) {
+          console.log('Message sent');
+        }
+      });
+    }
 
-      Meteor.call('notification.transaction_complete', seller_id, buyer_id);
-
-      Meteor.call('message.disableConversation', Session.get('current_conservation'));
   }
 
 })
 
 Template.chef_ready_card.helpers({
-  'foodie_profile_picture': function() {
+  'foodie_profile_picture': function () {
     var foodie = Profile_details.findOne({
       'user_id': this.buyer_id
     });
-    return  foodie.profileImg.origin;
+    return foodie.profileImg.origin;
 
   },
 
-  'get_foodie_name': function() {
+  'get_foodie_name': function () {
     var foodie = Profile_details.findOne({
       'user_id': this.buyer_id
     })
     return foodie.foodie_name;
   },
-  'ready_order': function() {
+  'ready_order': function () {
     return this.order;
   },
-  'ordered_dish': function(){
+  'ordered_dish': function () {
     console.log(String(this))
-    return Order_record.find({'_id': String(this),'seller_id': Meteor.userId()});
+    return Order_record.find({ '_id': String(this), 'seller_id': Meteor.userId() });
   },
-  'get_serving_date': function() {
+  'get_serving_date': function () {
     var time = this.ready_time;
     var time_string = new Date(time)
     return time_string.toLocaleDateString();
   },
-  'get_serving_time': function() {
+  'get_serving_time': function () {
     var time = this.ready_time;
     var time_string = new Date(time)
-    return time_string.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return time_string.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
-  'delivery': function() {
+  'delivery': function () {
     return this.serving_option === 'Delivery';
   },
-  'product_is_dish': function() {
-    if (Dishes.findOne({'_id': this.product_id})) {
+  'product_is_dish': function () {
+    if (Dishes.findOne({ '_id': this.product_id })) {
       return true;
     } else {
       return false;
     }
   },
-  'get_dish_name': function(){
-    return Dishes.findOne({'_id': this.product_id}).dish_name;
+  'get_dish_name': function () {
+    return Dishes.findOne({ '_id': this.product_id }).dish_name;
   },
-  'get_dish_image': function(){
+  'get_dish_image': function () {
     var dish_image_id = Dishes.findOne({
       '_id': this.product_id
     }).meta.origin;
     return dish_image_id;
   },
-  'get_dish_qty': function(){
-    return Order_record.findOne({'product_id': this.product_id}).quantity
+  'get_dish_qty': function () {
+    return Order_record.findOne({ 'product_id': this.product_id }).quantity
   },
-  'get_menu_name': function(){
-    return Menu.findOne({'_id': this.product_id}).menu_name;
+  'get_menu_name': function () {
+    return Menu.findOne({ '_id': this.product_id }).menu_name;
   },
-  'get_menu_image': function(){
+  'get_menu_image': function () {
     var dish_image_id = Menu.findOne({
       '_id': this.product_id
     }).dishes_id[0]
@@ -712,7 +774,7 @@ Template.chef_ready_card.helpers({
     }).meta.origin
     return images;
   },
-  'get_menu_qty': function(){
-    return Order_record.findOne({'product_id': this.product_id}).quantity
+  'get_menu_qty': function () {
+    return Order_record.findOne({ 'product_id': this.product_id }).quantity
   }
 })
