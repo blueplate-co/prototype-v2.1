@@ -418,7 +418,7 @@ export default class Modal extends Component {
                                   <div className="col l12 m12 s12 no-padding">
                                       <h5>Tags </h5>
                                       {
-                                          (this.state.item.dish_tags.length == 0 || !this.state.item.dish_tags)
+                                          (!this.state.item.dish_tags || this.state.item.dish_tags.length == 0)
                                           ?
                                               <span>No Tags available</span>
                                           :
