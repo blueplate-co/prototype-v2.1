@@ -17,14 +17,17 @@ export default class DishCarousel extends Component {
         item: {},
         qty: 1,
         ingredients: [],
-        menus: []
+        menus: [],
+        isMobile: false,
     }
   }
 
   closeModal = () => {
     $('#dish-modal').modal('close');
+    $('.modal-overlay').remove();
   }
 
+/*
   decreaseQty = () => {
     if (this.state.qty > 1) {
         this.setState({
@@ -41,6 +44,23 @@ export default class DishCarousel extends Component {
     },() => {
         this.props.qty(this.state.qty);
     })
+  }
+*/
+
+  componentDidMount = () => {
+    window.addEventListener('resize', () => {
+        this.setState({
+            isMobile: window.innerWidth < 601
+        });
+    }, false);
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', () => {
+      this.setState({
+        isMobile: false
+      })
+    }, false);
   }
 
   componentWillReceiveProps = () => {
@@ -76,6 +96,16 @@ export default class DishCarousel extends Component {
                 $('#dish-modal').modal('open');
             })
         }
+    }
+  }
+
+  renderServingOptions = (option) => {
+    if (option) {
+      return option.map((item, index) => {
+        return (
+          <span key = {index}>{item}, </span>
+        )
+      })
     }
   }
 
@@ -129,133 +159,22 @@ export default class DishCarousel extends Component {
     }
   }
 
-  renderCuisinesTagList = (cuisines) => {
-    if (cuisines) {
-        return cuisines.map((item, index) => {
+  renderTagList = (tag) => {
+    if (tag) {
+        return tag.map((item, index) => {
             return(
-                <li key={index}>{ item }</li>
+                <li key={index}>{ item.tag }</li>
             )
         })
     } else {
         return (
-            <span className="row none no-padding">No Cuisines Tags</span>
-        )
-    }
-  }
-
-  renderProteinsTagList = (proteins) => {
-    if (proteins) {
-        return proteins.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Proteins Tags</span>
-        )
-    }
-  }
-
-  renderCaterogiesTagList = (categories) => {
-    if (categories) {
-        return categories.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Caterogies Tag</span>
-        )
-    }
-  }
-
-  renderCookingMethodsTagList = (cooking_methods) => {
-    if (cooking_methods) {
-        return cooking_methods.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    }  else {
-        return (
-            <span className="row none no-padding">No Cooking Methods Tags</span>
-        )
-    }
-  }
-
-  renderTasteTagList = (tastes) => {
-    if (tastes) {
-        return tastes.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Taste Tags</span>
-        )
-    }
-  }
-
-  renderTexturesTagList = (textures) => {
-    if (textures) {
-        return textures.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Textures Tag</span>
-        )
-    }
-  }
-
-  renderVegetablesTagList = (vegetables) => {
-    if (vegetables) {
-        return vegetables.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Vegetables Tags</span>
-        )
-    }
-  }
-
-  renderCondimentsTagList = (condiments) => {
-    if (condiments) {
-        return condiments.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Condiments Tags</span>
-        )
-    }
-  }
-
-  renderServingTemperatureTagList = (serving_temperature) => {
-    if (serving_temperature) {
-        return serving_temperature.map((item, index) => {
-            return(
-                <li key={index}>{ item }</li>
-            )
-        })
-    } else {
-        return (
-            <span className="row none no-padding">No Serving Temperatures Tags</span>
+            <span className="row none no-padding">No Tags</span>
         )
     }
   }
 
   renderDish = (item, ingredients, index) => {
+    const alignMobile = this.state.isMobile ? '' : 'right';
     return (
         <div className="row no-margin" key={index}>
             <div className="col l4 m12 s12 dish-preview-banner no-padding">
@@ -267,16 +186,27 @@ export default class DishCarousel extends Component {
             </div>
 
             <div className="col l8 m12 s12 dish-preview-content">
-                <span className="fa fa-times close-modal" onClick={ this.closeModal }></span>
+              <a className = "btn-floating waves-effect waves-red z-depth-0 transparent black-text close-modal" onClick={ this.closeModal }>
+                <i className="material-icons black-text text-darken-1">close</i>
+              </a>
+              <div className = "row show-on-small hide-on-med-and-up">
+                <div className="col s12 ">
+                    {
+                        (this.state.status == false) ?
+                            <button disabled className="btn">Offline</button>
+                        :   <button className="btn" onClick={ this.order } >Order</button>
+                    }
+                </div>
+              </div>
                 <div className="row dish-preview-navigation">
-                    <div className="row">
+                    <div className="row headline">
                         <div className="col l1 s2 m2 no-padding float-left" style={{ position: 'relative' }}>
                             <ChefAvatar userId={Session.get('selectedMenu').user_id} />
                         </div>
-                        <div className="col l10 s10 m10">
+                        <div className="col l8 s10 m6">
                             <h1 className="title">{ Session.get('selectedMenu').menu_name }</h1>
                         </div>
-                        <div className="col l4 s12 m4 m-visible">
+                        <div className="col l3 s12 m4 hide-on-small-only">
                             {
                                 (this.state.status == false) ?
                                     <button disabled className="btn">Offline</button>
@@ -285,22 +215,15 @@ export default class DishCarousel extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col l8 s12 m8">
-                            <span className="price">$ { Session.get('selectedMenu').menu_selling_price }</span>
-                            <span className="qty">
+                        <div className="col l8 s10 m8 offset-l1 offset-m2 offset-s2">
+                            <Rating rating={  Session.get('selectedMenu').average_rating } />
+                            <span className="order-count">{ Session.get('selectedMenu').order_count }</span>
+                            <p className="price">$ { Session.get('selectedMenu').menu_selling_price }</p>
+                            {/**<span className="qty">
                                 <span className="decreaseQty" onClick={ this.decreaseQty } >-</span>
                                 <span className="number">{ this.state.qty }</span>
                                 <span className="increaseQty" onClick={ this.increaseQty }>+</span>
-                            </span>
-                            <Rating rating={ item.average_rating } />
-                            <span className="order-count">{ item.order_count }</span>
-                        </div>
-                        <div className="col l4 s4 m4 m-hidden">
-                            {
-                                (this.state.status == false) ?
-                                    <button disabled className="btn">Offline</button>
-                                :   <button className="btn" onClick={ this.props.order } >Order</button>
-                            }
+                            </span>**/}
                         </div>
                     </div>
                     <div className="row">
@@ -308,21 +231,57 @@ export default class DishCarousel extends Component {
                             <span className="description">{ Session.get('selectedMenu').menu_description }</span>
                         </div>
                     </div>
+                    <div className = "row">
+                      <div className = "col l12 s12 m12">
+                        <span><b>Serving Options: </b>{this.renderServingOptions(Session.get('selectedMenu').serving_option)}</span>
+                      </div>
+                    </div>
+                    <div className = "row">
+                      <div className = "col l12 s12 m12">
+                        <span><b>Advanced Order: </b>{!Session.get('selectedMenu').lead_days || Session.get('selectedMenu').lead_days === "0" ? " " :Session.get('selectedMenu').lead_days + "days "}
+                            {!Session.get('selectedMenu').lead_hours || Session.get('selectedMenu').lead_hours === "0" ? " " :Session.get('selectedMenu').lead_hours + "hours "}
+                        </span>
+                      </div>
+                    </div>
+                    <div className = "row">
+                      <div className = "col l12 s12 m12">
+                        <span><b>Minimum order: </b>{Session.get('selectedMenu').min_order}</span>
+                      </div>
+                    </div>
+                    <div className="row">
+                        <div className="col l12 m12 s12">
+                            <h6>Tags</h6>
+                            {
+                                (Session.get('selectedMenu').menu_tags.length == 0)
+                                ?
+                                    <span>No Tags available</span>
+                                :
+                                    <ul className="dish-preview-list-tags">
+                                        { this.renderTagList(Session.get('selectedMenu').menu_tags) }
+                                    </ul>
+                            }
+                        </div>
+                    </div>
+                    <div className ="row">
+                      <div className = "col l12 m12 s12">
+                        <span><b>Dish details</b> - Swipe left / right to view more details about the dishes</span>
+                      </div>
+                    </div>
                 </div>
                 <div className="row dish-preview-information no-padding">
                     <div className="row">
                         <div className="col l12 s12 m12">
-                            <span className="dish_name">{ item.dish_name }</span>
+                            <h6>{ item.dish_name }</h6>
                         </div>
                     </div>
                     <div className="col l6 m6 s12">
                         <div className="row dish-preview-ingredients no-padding">
                             <div className="col l12 m12 s12 no-padding">
-                                <h5>Ingredients</h5>
+                                <h6>Ingredients</h6>
                                 {
                                     (ingredients.length == 0)
                                     ?
-                                        <span>...loading</span>
+                                        <span>No ingredients details</span>
                                     :
                                         <ul className="dish-preview-list-ingredient">
                                             { this.renderIngredients(ingredients) }
@@ -332,13 +291,14 @@ export default class DishCarousel extends Component {
                         </div>
                     </div>
                     <div className="col l6 m6 s12">
+                      <div className = {alignMobile}>
                         <div className="row dish-preview-ingredients no-padding">
                             <div className="col l12 m12 s12 no-padding">
-                                <h5>Allergies &amp; Dietary preference </h5>
+                                <h6>Allergies &amp; Dietary preference </h6>
                                 {
                                     (ingredients.length == 0)
                                     ?
-                                        <span>...loading</span>
+                                        <span>No allergies and dietary details</span>
                                     :
                                         <ul className="dish-preview-list-allergies">
                                             { this.renderAllergiesList(item.allergy_tags) }
@@ -347,28 +307,7 @@ export default class DishCarousel extends Component {
                                 }
                             </div>
                         </div>
-                        <div className="row dish-preview-tags no-padding">
-                            <div className="col l12 m12 s12 no-padding">
-                                <h5>Tags </h5>
-                                {
-                                    (ingredients.length == 0)
-                                    ?
-                                        <span>...loading</span>
-                                    :
-                                        <ul className="dish-preview-list-tags">
-                                            { this.renderCuisinesTagList(item.cuisines_tags) }
-                                            { this.renderProteinsTagList(item.proteins_tags) }
-                                            { this.renderCaterogiesTagList(item.categories_tags) }
-                                            { this.renderCookingMethodsTagList(item.cooking_methods_tags) }
-                                            { this.renderTasteTagList(item.tastes_tags) }
-                                            { this.renderTexturesTagList(item.textures_tags) }
-                                            { this.renderVegetablesTagList(item.vegetables_tags) }
-                                            { this.renderCondimentsTagList(item.condiments_tags) }
-                                            { this.renderServingTemperatureTagList(item.serving_temperature_tags) }
-                                        </ul>
-                                }
-                            </div>
-                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
