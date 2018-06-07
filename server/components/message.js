@@ -16,10 +16,10 @@ Meteor.methods({
       buyer_id: buyerId,
       seller_id: sellerId,
     });
-    console.log(existedConversation);
+    // console.log(existedConversation);
     if (existedConversation) {
       if (!existedConversation.available) {
-        Conversation.update(
+        var conversation = Conversation.update(
           {
             buyer_id: buyerId,
             seller_id: sellerId,
@@ -30,6 +30,7 @@ Meteor.methods({
             },
           }
         );
+        return existedConversation._id;
       }
     } else {
       var conversation = Conversation.insert({
@@ -119,10 +120,10 @@ Meteor.methods({
     conversation = Conversation.find({
       _id: conversation_id,
     }).fetch();
-    console.log('Current conservation: ' + conversation_id)
+    // console.log('Current conservation: ' + conversation_id)
 
     var sender_id = "";
-    console.log(conversation[0]);
+    // console.log(conversation[0]);
     if (conversation[0].buyer_id == receiver_id) {
       sender_id = conversation[0].seller_id;
     } else {

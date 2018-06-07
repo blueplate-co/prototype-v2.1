@@ -207,6 +207,8 @@ class ShoppingCart extends Component {
                                 console.log('Start conversation');
                             }
                         });
+                    } else {
+                        console.log(err);
                     }
                 })
             })
