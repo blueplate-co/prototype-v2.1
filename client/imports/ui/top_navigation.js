@@ -653,9 +653,9 @@ class TopNavigation extends Component {
                   </li>
                   {
                     (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
                     :
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
                   }
                 </ul>
               </div>
