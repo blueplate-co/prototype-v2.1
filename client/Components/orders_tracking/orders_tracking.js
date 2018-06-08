@@ -15,9 +15,9 @@ Template.orders_tracking.helpers({
       user_id: order[0]
     }).kitchen_contact;
     if (kitchen_number[0] == "0") {
-      kitchen_number = '+84' + kitchen_number.slice(1, kitchen_number.length);
+      kitchen_number = '+85' + kitchen_number.slice(1, kitchen_number.length);
     } else {
-      kitchen_number = '+84' + kitchen_number;
+      kitchen_number = '+85' + kitchen_number;
     }
     if (kitchen_number) {
       let content = 'Hey! You got new order.  Foodie is waiting for you to confirm it. Let’s check it out now at https://www.blueplate.co/';

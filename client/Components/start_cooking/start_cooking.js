@@ -695,7 +695,7 @@ Template.chef_ready_card.events({
     var full_number = country_code + mobile_number;
     console.log('Full number' + full_number);
     if (full_number.length > 0) {
-      let content = 'Hey! Your homechef has just confirmed your order!';
+      let content = 'Thanks for eating with Blueplate. Your order is ready now. Let’s enjoy it and rate for your chef';
       Meteor.call('message.sms', full_number, content, (err, res) => {
         if (!err) {
           console.log('Message sent');
