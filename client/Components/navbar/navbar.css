@@ -34,6 +34,24 @@ nav {
   height: 40px;
 }
 
+.nav_logo_arrow {
+  line-height: 40px !important;
+  height: 40px !important;
+  margin-left: 0px !important;
+  vertical-align: middle;
+
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+.nav_logo_arrow.rotate{
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
 .search_bar > div {
   height: 40px;
 }

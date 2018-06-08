@@ -147,6 +147,6 @@ export default withTracker(props => {
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false, online_status: true }).fetch(),
+      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false}, {sort: {createdAt: -1}}).fetch(),
   };
 })(MenuAllList);

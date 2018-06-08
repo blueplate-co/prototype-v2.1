@@ -528,14 +528,13 @@ class TopNavigation extends Component {
     var date = curr.toISOString().substr(0, 10);
     return (
       <div className="search-page-container">
-        <span
-          className="fa fa-times close-modal"
-          onClick={() => {
-            this.setState({ search: false });
-            $("html").css("overflow", "auto");
-            $("[role=navigation]").height("65px");
-          }}
-        />
+        <a className = "btn-floating waves-effect waves-red z-depth-0 transparent black-text close-modal" onClick={() => {
+          this.setState({ search: false });
+          $("html").css("overflow", "auto");
+          $("[role=navigation]").height("65px");
+        }}>
+          <i className="material-icons black-text text-darken-1">close</i>
+        </a>
         <div className="container">
           <div className="row">
             <div
@@ -621,6 +620,13 @@ class TopNavigation extends Component {
                     height="40"
                     width="40"
                   />
+                  <i className =
+                    {this.state.sidebarOpen
+                      ?
+                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow rotate"
+                      :
+                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow"}
+                  >keyboard_arrow_down</i>
                 </a>
                 <ul className="right">
                   <li className="icon" onClick={() => this.openProfile()}>
@@ -646,9 +652,9 @@ class TopNavigation extends Component {
                   </li>
                   {
                     (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
                     :
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li style={{ color: '#717171', cursor: 'pointer', marginTop: '-7px', marginRight: '20px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
                   }
                 </ul>
               </div>
