@@ -75,7 +75,8 @@ export default class SellerHandbook extends Component {
     return (
       <div className = "container">
         <div className = "section">
-          <h4 className = "center-align">Seller Handbook</h4>
+          <img className = "shb_logo center-align" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BPLogo_sysmbol.svg" />
+          <h4 className = "center-align bp-blue-text">Seller Handbook</h4>
           <p className = "center-align">This is a business guide for our partner</p>
         </div>
         <div className = "section">
