@@ -108,7 +108,7 @@ Meteor.methods({
     const client = require("twilio")(accountSid, authToken);
     let sender = '+85264507389';
     // if phonenumber come from HK
-    if (phonenumber.indexOf('+85') > -1) {
+    if (phonenumber.indexOf('+852') > -1) {
       sender = 'Blueplate';
     }
     client.messages
