@@ -193,7 +193,7 @@ class Message extends Component {
                 backgroundColor: `#56AACD`,
               }}
             />
-            <img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" />
+            <a href="mailto:account.admin@blueplate.co"><img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" /></a>
           </span>
         }
         {
