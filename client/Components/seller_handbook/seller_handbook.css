@@ -16,3 +16,9 @@
   bottom: 30px;
   right: 15px;
 }
+
+.shb_logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
