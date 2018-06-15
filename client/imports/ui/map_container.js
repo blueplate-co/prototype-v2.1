@@ -17,7 +17,7 @@ export class MapContainer extends Component {
         >
           {this.props.kitchens.map((kitchen, index)=> {
             return (
-              (kitchen.kitchen_address_conversion.lat === null || kitchen.kitchen_address_conversion === null) ?
+              (kitchen.kitchen_address_conversion === null) ?
               ""
               :
               <Marker
