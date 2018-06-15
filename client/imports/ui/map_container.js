@@ -2,6 +2,29 @@ import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 export class MapContainer extends Component {
+  state = {
+    showingInfoWindow: false,
+    activeMarker: {},
+    selectedPlace: {},
+  };
+
+  onMarkerClick = (props, marker, e) => {
+    this.setState({
+        selectedPlace: props,
+        activeMarker: marker,
+        showingInfoWindow: true
+    });
+  }
+
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      })
+    }
+  };
+
   render() {
     const style = { // MUST specify dimensions of the Google map or it will not work. Also works best when style is specified inside the render function and created as an object
       width: '100vw', // 90vw basically means take up 90% of the width screen. px also works.
@@ -14,6 +37,7 @@ export class MapContainer extends Component {
           zoom = {11}
           style = {style}
           initialCenter= {{lat: 22.3964, lng: 114.1095}}
+          onClick = {this.onMapClicked}
         >
           {this.props.kitchens.map((kitchen, index)=> {
             return (
@@ -24,10 +48,18 @@ export class MapContainer extends Component {
                 key = {index}
                 name = {kitchen.kitchen_name}
                 position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
+                onClick = {this.onMarkerClick}
               />
             )
           })
         }
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}>
+            <div>
+              <h1>{this.state.selectedPlace.name}</h1>
+            </div>
+        </InfoWindow>
       </Map>
     );
   }
