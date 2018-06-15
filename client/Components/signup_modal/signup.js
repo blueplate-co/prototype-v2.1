@@ -41,6 +41,13 @@ Template.signup_modal.events({
       var password = trimInput($('#signup_password').val());
       var cpassword = trimInput($('#signup_cpassword').val());
       var chef_signup = Session.get('chef_signup');
+
+      if (email.indexOf('@blueplate.co') == -1) {
+        // login with outer email from blueplate
+        Bert.alert('Only email from Blueplate can be register' , 'danger', 'fixed-top');
+        return false;
+      }
+
     //  var last_name = trimInput(event.target.last_name.value);
     //  var first_name = trimInput(event.target.first_name.value);
       if( isNotEmpty(email)      &&

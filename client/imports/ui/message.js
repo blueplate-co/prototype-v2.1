@@ -78,6 +78,7 @@ class Message extends Component {
         return false;
       }
       var receiverId = '';
+      var receiver = {};
 
       // get info about current conversation
       var conversation = Conversation.findOne({
@@ -86,14 +87,16 @@ class Message extends Component {
 
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-        var receiverId = Kitchen_details.findOne({
+        var receiver = Kitchen_details.findOne({
           "user_id": conversation.seller_id
-        }).user_id;
+        });
+        var receiverId = receiver.user_id;
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-        var receiverId = Profile_details.findOne({
+        var receiver = Profile_details.findOne({
           "user_id": conversation.buyer_id
-        }).user_id;
+        });
+        var receiverId = receiver.user_id;
       }
 
       Meteor.call(
@@ -110,6 +113,30 @@ class Message extends Component {
           }
         }
       );
+
+
+      // if setting sms is turn on, send sms into receiver
+      // if (setting turn on) {
+        let rawPhoneNumber = receiver.kitchen_contact;
+        let phonenumber;
+        if (rawPhoneNumber.indexOf('+') > -1) {
+          // full format phonenumber +852xxxxxxxx
+          phonenumber = rawPhoneNumber;
+        } else {
+          if (rawPhoneNumber[0] !== '0') {
+            // for number is not have 0 at first 123xxxxxx
+            phonenumber = '+852' + rawPhoneNumber;
+          } else {
+            // for number is have 0 at first 0123xxxxx
+            phonenumber = '+852' + rawPhoneNumber.slice(1, rawPhoneNumber.length);
+          }
+        }
+        // Meteor.call("message.sms", phonenumber, message, (err, res) => {
+        //   if (!err) {
+        //     console.log('Chatting message sent');
+        //   }
+        // });
+      // }
     }
   }
 
@@ -166,7 +193,7 @@ class Message extends Component {
                 backgroundColor: `#56AACD`,
               }}
             />
-            <img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" />
+            <a href="mailto:account.admin@blueplate.co"><img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" /></a>
           </span>
         }
         {

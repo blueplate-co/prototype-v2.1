@@ -44,6 +44,12 @@ Template.login_modal.events({
       var email = $('#login_email').val().trim();
       var password = $('#login_password').val().trim();
 
+      /** if (email.indexOf('@blueplate.co') == -1) {
+        // login with outer email from blueplate
+        Bert.alert('Only account login with Blueplate email can be logged in!' , 'danger', 'fixed-top');
+        return false;
+      } **/
+
 
       //- basic validation
       var isOK = false;
@@ -90,7 +96,7 @@ Template.login_modal.events({
             if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
               FlowRouter.go("/followup");
             } else {
-              Bert.alert('Login successfully!' , 'success', 'fixed-top');  
+              Bert.alert('Login successfully!' , 'success', 'fixed-top');
               FlowRouter.go("/main");
             }
 

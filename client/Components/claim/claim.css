@@ -1,0 +1,42 @@
+.transfer-icon {
+    margin: 0px auto;
+    width: 300px;
+    display: block;
+}
+
+.available-price {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8em;
+}
+
+.form-section {
+    padding: 0px 20px;
+    margin: 10px 0px;
+}
+
+.btn.secondary {
+    background: #fff;
+    color: #56AACD;
+}
+
+.tips-icon {
+    cursor: pointer;
+}
+
+.shadow-wrapper {
+    width: 100%;
+    height: 100vh;
+}
+
+.tips-wrapper {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    background-color: #56AACD;
+}
