@@ -4,9 +4,8 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 export class MapContainer extends Component {
   render() {
     const style = { // MUST specify dimensions of the Google map or it will not work. Also works best when style is specified inside the render function and created as an object
-      width: '91vw', // 90vw basically means take up 90% of the width screen. px also works.
+      width: '100vw', // 90vw basically means take up 90% of the width screen. px also works.
       height: '85vh', // 75vh similarly will take up roughly 75% of the height of the screen. px also works.
-      borderRadius: '10px'
     }
 
     return (
@@ -18,10 +17,14 @@ export class MapContainer extends Component {
         >
           {this.props.kitchens.map((kitchen, index)=> {
             return (
+              (kitchen.kitchen_address_conversion.lat && kitchen.kitchen_address_conversion) ?
               <Marker
-                name={kitchen.kitchen_name}
-                position={{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
+                key = {index}
+                name = {kitchen.kitchen_name}
+                position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
               />
+              :
+              ""
             )
           })
         }
