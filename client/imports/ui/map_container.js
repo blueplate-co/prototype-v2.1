@@ -17,14 +17,14 @@ export class MapContainer extends Component {
         >
           {this.props.kitchens.map((kitchen, index)=> {
             return (
-              (kitchen.kitchen_address_conversion.lat && kitchen.kitchen_address_conversion) ?
+              (kitchen.kitchen_address_conversion.lat === null || kitchen.kitchen_address_conversion === null) ?
+              ""
+              :
               <Marker
                 key = {index}
                 name = {kitchen.kitchen_name}
                 position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
               />
-              :
-              ""
             )
           })
         }
