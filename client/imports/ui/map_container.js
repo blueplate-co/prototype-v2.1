@@ -59,7 +59,7 @@ export class MapContainer extends Component {
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}>
             <div>
-              <img src = {this.state.selectedPlace.url} />
+              <img className ='map_thumbnail' src = {this.state.selectedPlace.url} />
               <h6>{this.state.selectedPlace.name}</h6>
               <a href={"/kitchen/" + this.state.selectedPlace.kitchen_id}>more info</a>
             </div>
