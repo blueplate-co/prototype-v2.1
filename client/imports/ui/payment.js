@@ -37,9 +37,9 @@ class Payment extends Component {
                 }
                 // get Stripe balance
                 Meteor.call('payment.getStripeBalance', function (err, res) {
-                    console.log(res);
-                    return false;
-                    if (credits < total) {
+                    let balance = parseFloat(res.account_balance / 100).toFixed(2);
+                    // sum of two wallet is not enough to pay
+                    if ((parseFloat(credits) + parseFloat(balance)) < total) {
                         // not enough money to pay
                         Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
                         self.setState({

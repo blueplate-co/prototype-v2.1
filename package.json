@@ -31,7 +31,7 @@
     "react-sidebar": "^2.3.2",
     "rimraf": "^2.6.2",
     "stripe": "^5.10.0",
-    "twilio": "^3.17.1",
+    "twilio": "^3.17.3",
     "uniqid": "^4.1.1"
   }
 }
