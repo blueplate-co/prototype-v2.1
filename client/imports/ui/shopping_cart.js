@@ -321,8 +321,8 @@ class ShoppingCart extends Component {
                 </div>
                 <div className="row">
                     <div className="input-field col s12">
-                        <label id={"label_" + seller_id}></label>
-                        <input id={"address_" + seller_id} name={"address_" + seller_id} className="address validate" placeholder="address" type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                        <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label>
+                        <input id={"address_" + seller_id} name={"address_" + seller_id} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
                     </div>
                 </div>
                 { this.renderSingleProduct(product) }
