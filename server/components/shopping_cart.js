@@ -89,13 +89,16 @@ Meteor.methods({
           var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
           var newBalance = parseFloat(balance - amount).toFixed(2);
           updatedCustomer(buyerCustomerId, {
-            account_balance: newBalance
+            account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
           }, function(err, customer) {
             if (!err) {
               console.log(customer);
+            } else {
+              console.log(err);
             }
           });
         } else if (parseFloat(amount) >= parseFloat(balance)){
+          console.log('Balance is NOT enough to pay');
           console.log('Balance of user: ' + parseFloat(balance));
           console.log('Amount of order: ' + parseFloat(amount));
           // if balance is NOT enough to pay amount
