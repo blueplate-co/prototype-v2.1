@@ -117,20 +117,20 @@ class Message extends Component {
 
       // if setting sms is turn on, send sms into receiver
       // if (setting turn on) {
-        let rawPhoneNumber = receiver.kitchen_contact;
-        let phonenumber;
-        if (rawPhoneNumber.indexOf('+') > -1) {
-          // full format phonenumber +852xxxxxxxx
-          phonenumber = rawPhoneNumber;
-        } else {
-          if (rawPhoneNumber[0] !== '0') {
-            // for number is not have 0 at first 123xxxxxx
-            phonenumber = '+852' + rawPhoneNumber;
-          } else {
-            // for number is have 0 at first 0123xxxxx
-            phonenumber = '+852' + rawPhoneNumber.slice(1, rawPhoneNumber.length);
-          }
-        }
+        // let rawPhoneNumber = receiver.kitchen_contact;
+        // let phonenumber;
+        // if (rawPhoneNumber.indexOf('+') > -1) {
+        //   // full format phonenumber +852xxxxxxxx
+        //   phonenumber = rawPhoneNumber;
+        // } else {
+        //   if (rawPhoneNumber[0] !== '0') {
+        //     // for number is not have 0 at first 123xxxxxx
+        //     phonenumber = '+852' + rawPhoneNumber;
+        //   } else {
+        //     // for number is have 0 at first 0123xxxxx
+        //     phonenumber = '+852' + rawPhoneNumber.slice(1, rawPhoneNumber.length);
+        //   }
+        // }
         // Meteor.call("message.sms", phonenumber, message, (err, res) => {
         //   if (!err) {
         //     console.log('Chatting message sent');
