@@ -1,0 +1,20 @@
+<template name="admin_screen">
+  <header>
+    {{> notifications}}
+    {{> navbar}}
+  </header>
+  {{#if logging_in}}
+    {{> spinner}}
+  {{else}}
+    {{> render_mainscreen}}
+    {{>footer}}
+  {{/if}}
+</template>
+
+<template name = "render_mainscreen">
+  <main>
+    <div class = "render_component">
+      {{> Template.dynamic template = admin_component}}
+    </div>
+  </main>
+</template>

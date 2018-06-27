@@ -51,8 +51,7 @@ html {
 
 body p {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(0,0,0,0.54);
-  opacity: 0.87;
+  color: rgba(0,0,0,0.87);
   margin:0;
   padding:0;
 }

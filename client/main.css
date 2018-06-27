@@ -36,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #B1DBBE;
 }
 
+.bp-red {
+  background: #EB5F55;
+}
+
 html {
   height: 70vh;
   font-family: 'Montserrat', sans-serif;
@@ -44,10 +48,15 @@ html {
 
 body p {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(0,0,0,0.54);
+  color: rgba(0,0,0);
   opacity: 0.87;
   margin:0;
   padding:0;
+}
+
+.no-side-padding {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .card {

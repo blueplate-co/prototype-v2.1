@@ -7,7 +7,7 @@ export default class SellerHandbook extends Component {
   constructor(props) {
     super(props)
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
-    this.handleClikc = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
       mouseOver: -1,
       categories: [],

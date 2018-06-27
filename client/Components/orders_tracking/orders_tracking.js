@@ -8,7 +8,7 @@ Template.orders_tracking.helpers({
     return order
   },
   'order_sent': function() {
-    var order = search_distinct_order_record_orders_tracking('seller_id', 'Created')
+    var order = search_distinct_order_record_orders_tracking('seller_id', 'Created');
     console.log(order);
     console.log('Order sent. Start send  to chef.');
     var kitchen_number = Kitchen_details.findOne({
@@ -16,17 +16,48 @@ Template.orders_tracking.helpers({
     }).kitchen_contact;
     if (kitchen_number[0] == "0") {
       kitchen_number = '+852' + kitchen_number.slice(1, kitchen_number.length);
+    } else if (kitchen_number[0] == '+') {
+      kitchen_number = kitchen_number;
     } else {
       kitchen_number = '+852' + kitchen_number;
     }
-    if (kitchen_number) {
-      let content = 'Hey! You got new order.  Foodie is waiting for you to confirm it. Let’s check it out now at https://www.blueplate.co/';
-      Meteor.call('message.sms', kitchen_number, content, (err, res) => {
-        if (!err) {
-          console.log('Message sent');
-        }
+    var product_id = search_distinct_order_record_orders_tracking('product_id', 'Created');
+    
+    var buyer_id = search_distinct_order_record_orders_tracking('buyer_id', 'Created');
+    var buyer_name = Profile_details.findOne({
+      user_id: buyer_id[0]
+    }).foodie_name;
+    var list_product_sms_content = '';
+    for (var i = 0; i < product_id.length; i++) {
+      var dish = Dishes.findOne({
+        _id: product_id[i]
       });
+      if (!dish) {
+        // send SMS when is a menu
+        var menu_name = Menu.findOne({
+          _id: product_id[i]
+        }).menu_name;
+        if (i == product_id.length - 1) {
+          list_product_sms_content += ' ' + menu_name;
+        } else {
+          list_product_sms_content += ' ' + menu_name + ', ';
+        }
+      } else {
+        // send SMS when is a dish
+        if (i == product_id.length - 1) {
+          list_product_sms_content += ' ' + dish.dish_name;
+        } else {
+          list_product_sms_content += ' ' + dish.dish_name + ', ';
+        }
+      }
     }
+
+    var content = 'New incoming order! ' + buyer_name + ' has just placed ' + list_product_sms_content + ' from you.'
+    Meteor.call('message.sms', kitchen_number, content.trim(), (err, res) => {
+      if (!err) {
+        console.log('Message sent');
+      }
+    });
     return order
   },
   'cooking': function() {

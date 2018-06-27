@@ -21,6 +21,7 @@ export default class Modal extends Component {
             ingredients: [],
             menu: [],
             isMobile: false,
+            location: [],
         }
     }
 
@@ -61,7 +62,7 @@ export default class Modal extends Component {
 
     componentWillReceiveProps = () => {
         this.setState({
-            qty: 1
+            qty: 1,
         })
 
         if (this.props.dish == {}) {
@@ -99,6 +100,11 @@ export default class Modal extends Component {
                 this.setState({
                     item: Session.get('selectedMenu'),
                 })
+            }
+            if (this.state.item.user_id) {
+              this.setState({
+                location: Kitchen_details.findOne({ user_id: this.state.item.user_id}).kitchen_address_conversion
+              })
             }
         }
     }

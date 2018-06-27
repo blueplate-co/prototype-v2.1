@@ -33,7 +33,7 @@ export default class Conversions extends Component {
       <div className="card dashboard-conversion">
         <div className="totalview-content">
           <h6>Conversions Funnel</h6>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+          <p>This display identifies the chance of viewers purchase your food. The higher the better!</p>
           <ul className="list-fields">
             <li>search</li>
             <li>views</li>

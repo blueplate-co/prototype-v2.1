@@ -84,6 +84,7 @@ class ShoppingCart extends Component {
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
+                    $("#address_" + seller_id).removeClass('invalid');
                 } else if (event.target.value == "Delivery") {
                     $("#label_" + seller_id).text('Your dishes will be delivered to...');
                     $("#address_" + seller_id).removeAttr('disabled');
@@ -95,6 +96,7 @@ class ShoppingCart extends Component {
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
+                    $("#address_" + seller_id).removeClass('invalid');
                 }
             }
         }
@@ -133,9 +135,12 @@ class ShoppingCart extends Component {
 
             for (var i = 0; i < readytime.length; i++) {
                 if (globalCart[i].timeStamp < readytime[i]) {
-                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', 'rounded bp-green');
+                    $('.rc-time-picker-input').addClass('invalid');
+                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
                     globalCart[i].timeStamp = '';
                     return true;
+                } else {
+                    $('.rc-time-picker-input').removeClass('invalid');
                 }
             }
 
@@ -158,7 +163,6 @@ class ShoppingCart extends Component {
                 globalCart[i].timeStamp = serve_date;
             }
 
-            debugger
             var readytime = [];
             this.props.shoppingCart.map(function(item, index){
                 var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
@@ -167,9 +171,12 @@ class ShoppingCart extends Component {
 
             for (var i = 0; i < readytime.length; i++) {
                 if (globalCart[i].timeStamp < readytime[i]) {
-                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', 'rounded bp-green');
+                    $('#date').addClass('invalid');
+                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
                     globalCart[i].timeStamp = '';
                     return true;
+                } else {
+                    $('#date').removeClass('invalid');
                 }
             }
         }
@@ -184,8 +191,11 @@ class ShoppingCart extends Component {
         globalCart.forEach((item, index) => {
             for( var key in item ) {
                 if (item[key] == '') {
-                    Materialize.toast('Oops! Please complete all information in your order.', 'rounded bp-green');
+                    $('#address_' + item.id).addClass('invalid');
+                    Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
                     valid = false;
+                } else {
+                    $('#address_' + item.id).removeClass('invalid');
                 }
             }
             if (valid) {
@@ -310,9 +320,9 @@ class ShoppingCart extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col s12">
-                        <label id={"label_" + seller_id}></label>
-                        <input id={"address_" + seller_id} className="address" placeholder="address" type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                    <div className="input-field col s12">
+                        <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label>
+                        <input id={"address_" + seller_id} name={"address_" + seller_id} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
                     </div>
                 </div>
                 { this.renderSingleProduct(product) }

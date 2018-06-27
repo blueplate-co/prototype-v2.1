@@ -516,8 +516,35 @@ Template.request_card.events({
     var full_number = country_code + mobile_number;
     console.log('Full number' + full_number);
     if (full_number.length > 0) {
-      let content = 'Hey! Your homechef has just confirmed your order!';
-      Meteor.call('message.sms', full_number, content, (err, res) => {
+      var seller_name = Kitchen_details.findOne({
+        user_id: seller_id
+      }).chef_name;
+      var product_string = '';
+      for (var i = 0; i < product.length; i++) {
+        var dish = Dishes.findOne({
+          _id: product[i].product_id
+        });
+        if (!dish) {
+          // if product is a menu
+          var menu = Menu.findOne({
+            _id: product[i].product_id
+          });
+          if (i == product.length - 1) {
+            product_string += ' ' + menu.menu_name;
+          } else {
+            product_string += ' ' + menu.menu_name + ', ';
+          }
+        } else {
+          // if product is a dish
+          if (i == product.length - 1) {
+            product_string += ' ' + dish.dish_name;
+          } else {
+            product_string += ' ' + dish.dish_name + ', ';
+          }
+        }
+      }
+      let content = seller_name + ' has just confirmed your order:'+ product_string +'. Please get ready!';
+      Meteor.call('message.sms', full_number, content.trim(), (err, res) => {
         if (!err) {
           console.log('Message sent');
           // add new profit to current cycle for chef

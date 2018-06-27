@@ -119,5 +119,9 @@ Meteor.methods({
   async "payment.getStripeBalance"() {
     var stripe_id = await Meteor.users.findOne({ _id: Meteor.userId() }).stripe_id;
     return await stripe.customers.retrieve(stripe_id);
+  },
+  async "payment.getStripeBalanceOfSpecific"(user_id) {
+    var stripe_id = await Meteor.users.findOne({ _id: user_id }).stripe_id;
+    return await stripe.customers.retrieve(stripe_id);
   }
 });
