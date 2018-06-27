@@ -520,6 +520,8 @@ Template.request_card.events({
       Meteor.call('message.sms', full_number, content, (err, res) => {
         if (!err) {
           console.log('Message sent');
+          // add new profit to current cycle for chef
+          console.log('All product for this transaction: ' + product);
         }
       });
     }
