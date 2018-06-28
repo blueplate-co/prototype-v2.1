@@ -1,33 +1,115 @@
 import React, { Component } from 'react';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
-class Popup extends React.Component {
-    render() {
-        return (
-        <div className='popup'>
-            <div className='popup_inner'>
-            <h1>{this.props.text}</h1>
-            <button onClick={this.props.closePopup}>close me</button>
-            </div>
-        </div>
-        );
-    }
+class Modal extends React.Component {
+
+	static propTypes = {
+		isModalOpen: React.PropTypes.bool.isRequired,
+		closeModal: React.PropTypes.func.isRequired,
+		style: React.PropTypes.shape({
+			modal: React.PropTypes.object,
+			overlay: React.PropTypes.object
+		})
+	};
+
+	constructor(props) {
+		super(props);
+
+		this.outerStyle = {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			width: "100%",
+			height: "100%",
+			overflow: "auto",
+			height: "100%",
+			zIndex: 999
+		};
+
+		// default style
+		this.style = {
+			modal: {
+				position: "relative",
+				width: 500,
+				padding: 20,
+				boxSizing: 'border-box',
+                backgroundColor: '#56AACD',
+                color: '#fff',
+				margin: '40px auto',
+				borderRadius: 3,
+				zIndex: 998,
+				textAlign: 'left',
+				boxShadow: '0 20px 30px rgba(0, 0, 0, 0.2)',
+				...this.props.style.modal,
+			},
+			overlay: {
+				position: 'fixed',
+				top: 0,
+				bottom: 0,
+				left: 0,
+				right: 0,
+				width: "100%",
+				height: "100%",
+				backgroundColor: 'rgba(0,0,0,0.5)',
+				...this.props.style.overlay
+			}
+		}
+	}
+
+	// render modal
+	render() {
+		return (<div style={{...this.outerStyle, display: this.props.isModalOpen ? 'block' : 'none'}}>
+						<div style={this.style.overlay} onClick={this.props.closeModal}></div>
+												<div onClick={this.props.closeModal}></div>
+                <div style={this.style.modal}>
+                    {this.props.children}
+                </div>
+            </div>)
+	}
 }
+
+// overwrite style
+const modalStyle = {
+	overlay: {
+		backgroundColor: 'rgba(0, 0, 0,0.5)'
+	}
+};
+
+const mainStyle = {
+	app: {
+		margin: '120px 0'
+	},
+	button: {
+		backgroundColor: '#408cec',
+		border: 0,
+		padding: '12px 20px',
+		color: '#fff',
+		margin: '0 auto',
+		width: 150,
+		display: 'block',
+		borderRadius: 3
+	}
+};
 
 // Claim component
 export default class Claim extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            screen: 'history',
+            screen: 'info',
             amount: 0,
             placeholder_name: '',
             bank_info: '',
             bank_account_number: '',
             validProfit: 0,
             currentProfit: 0,
-            history: []
+            history: [],
+            isModalOpen: false,
+			isInnerModalOpen: false
         }
+        // bind functions
+		this.closeModal = this.closeModal.bind(this);
+		this.openModal = this.openModal.bind(this);
         this.getprofit = this.getprofit.bind(this);
     }
 
@@ -41,6 +123,20 @@ export default class Claim extends Component {
             }
         })
     }
+
+    // close modal (set isModalOpen, true)
+	closeModal() {
+		this.setState({
+			isModalOpen: false
+		})
+	}
+
+	// open modal (set isModalOpen, false)
+	openModal() {
+		this.setState({
+			isModalOpen: true
+		})
+	}
 
     renderTips() {
         switch (this.state.screen) {
@@ -127,9 +223,16 @@ export default class Claim extends Component {
             case 'info':
                 return (
                     <div>
+                        <Modal
+                            isModalOpen={this.state.isModalOpen}
+                            closeModal={this.closeModal}
+                            style={modalStyle}>
+                                <h4 style={{ color: '#fff', textAlign: 'center', fontSize: '4.5em' }}>${this.state.validProfit}</h4>
+                                <span>Earning can only be claim on or after 15th of every month. Please come back later.</span>
+                        </Modal>
                         <div className="row">
                             <div className="col s6"><h5>Available deposit credits</h5></div>
-                            <div className="col s6" style={{ textAlign: 'right' }}><img title="Tips & info" className="tips-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Infoh.svg" /></div>
+                            <div onClick={this.openModal} className="col s6" style={{ textAlign: 'right' }}><img title="Tips & info" className="tips-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Infoh.svg" /></div>
                         </div>
                         <div className="container-claim">
                             <div className="row">
@@ -198,9 +301,16 @@ export default class Claim extends Component {
                 var payday = midNextMonth.format('ddd Do MMMM YYYY');
                 return (
                     <div>
+                        <Modal
+                            isModalOpen={this.state.isModalOpen}
+                            closeModal={this.closeModal}
+                            style={modalStyle}>
+                                <img style={{ display: 'block', margin: '0px auto', marginBottom: '50px'}} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/info+copy.svg" />
+                                <span>Earning will automaticlly transfer to balance, but you have the option to tranfer earnings to your bank account on 15th of every month.</span>
+                        </Modal>
                         <div className="row">
                             <div className="col s6"><h5>Transfered date</h5></div>
-                            <div className="col s6" style={{ textAlign: 'right' }}><img title="Tips & info" className="tips-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Infoh.svg" /></div>
+                            <div onClick={this.openModal} className="col s6" style={{ textAlign: 'right' }}><img title="Tips & info" className="tips-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Infoh.svg" /></div>
                         </div>
                         <img className="transfer-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Transfer.svg" />
                         <span className="amount-price">${this.state.amount}</span>
