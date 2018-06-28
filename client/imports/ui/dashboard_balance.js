@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 export default class DashboardBalance extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ export default class DashboardBalance extends Component {
           </h5> 
         </div>
         <div className="action-pane">
-          <button>Claim </button>
+          <button onClick={() => { FlowRouter.go('/claim') }}>Claim </button>
           <button onClick={ () => window.open('/deposit','_blank')} >Add credits </button>
         </div>
       </div>
