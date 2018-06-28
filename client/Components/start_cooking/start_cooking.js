@@ -548,7 +548,37 @@ Template.request_card.events({
         if (!err) {
           console.log('Message sent');
           // add new profit to current cycle for chef
-          console.log('All product for this transaction: ' + product);
+          var profit = 0;
+          for(var i = 0; i < product.length; i++) {
+            let product_id = product[i].product_id;
+            var dish = Dishes.findOne({
+              _id: product_id
+            })
+            if (!dish) {
+              // product is menu
+              let menu = Menu.findOne({
+                _id: product_id
+              });
+              profit = (parseFloat(profit) + parseFloat(menu.menu_selling_price)).toFixed(2);
+            } else {
+              // product is dish
+              profit = (parseFloat(profit) + parseFloat(dish.dish_selling_price)).toFixed(2);
+            }
+          }
+          // get current profit for this chef in this month
+          var current_profit = Kitchen_details.findOne({
+            user_id: seller_id
+          }).current_profit;
+          // update with new profit
+          profit = (parseFloat(profit) + parseFloat(current_profit)).toFixed(2);
+          profit = parseFloat(parseFloat(profit) / 1.15).toFixed(2);
+          Meteor.call('claim.updateprofit', seller_id, profit, function(err, res){
+            if (!err) {
+              console.log(res);
+            } else {
+              console.log(err);
+            }
+          })
         }
       });
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 class Popup extends React.Component {
     render() {
@@ -18,15 +19,27 @@ export default class Claim extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            screen: 'info',
+            screen: 'history',
+            amount: 0,
+            placeholder_name: '',
+            bank_info: '',
+            bank_account_number: '',
             validProfit: 0,
-            currentProfit: 0
+            currentProfit: 0,
+            history: []
         }
         this.getprofit = this.getprofit.bind(this);
     }
 
     componentDidMount() {
         this.getprofit();
+        Meteor.call('claim.getListRequest', (err, res) => {
+            if (!err) {
+                this.setState({
+                    history: res
+                })
+            }
+        })
     }
 
     renderTips() {
@@ -63,13 +76,50 @@ export default class Claim extends Component {
             Materialize.toast('Please choose your bank name', 3000, "rounded bp-red");
         } else if (bank_account_number.trim().length < 9 || bank_account_number.trim().length > 12) {
             Materialize.toast('Invalid card number format', 3000, "rounded bp-red");
-        } else if (amount == 0){    
+        } else if (amount == 0 || amount > this.state.validProfit){    
             Materialize.toast('Invalid amount to claim', 3000, "rounded bp-red");
+        } else if (this.state.validProfit == 0) {
+            Materialize.toast('No have available amount to claim', 3000, "rounded bp-red");
         } else {
-            Meteor.call('claim.request', Meteor.userId(), placeholder_name, bank_info, bank_account_number, amount, function(err, res) {
-                // success a response for request a claim request
-            });
+            this.setState({
+                screen: 'claim',
+                amount: amount,
+                placeholder_name: placeholder_name,
+                bank_info: bank_info,
+                bank_account_number: bank_account_number
+            })
         }
+    }
+
+    claim() {
+        Meteor.call('claim.request', Meteor.userId(), this.state.placeholder_name, this.state.bank_info, this.state.bank_account_number, this.state.amount, (err, res) => {
+            // success a response for request a claim request
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Claim successful');
+                FlowRouter.go('/cooking/dashboard');
+            }
+        });
+    }
+
+    showHistory() {
+        this.setState({
+            screen: 'history'
+        })
+    }
+
+    renderListHistory() {
+        return this.state.history.map((item, index) => {
+            var dateFormat = moment(item.createdAt).format('ddd Do MMMM YYYY');
+            return (
+                <tr key={index}>
+                    <td>{dateFormat}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.status}</td>
+                </tr>
+            )
+        })
     }
 
     renderScreen() {
@@ -143,6 +193,9 @@ export default class Claim extends Component {
                     </div>
                 )
             case 'claim':
+                var endMonth = moment().endOf("month");
+                var midNextMonth = endMonth.add(15, 'days');
+                var payday = midNextMonth.format('ddd Do MMMM YYYY');
                 return (
                     <div>
                         <div className="row">
@@ -150,21 +203,17 @@ export default class Claim extends Component {
                             <div className="col s6" style={{ textAlign: 'right' }}><img title="Tips & info" className="tips-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Infoh.svg" /></div>
                         </div>
                         <img className="transfer-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Transfer.svg" />
-                        <span className="available-price">$700.00</span>
+                        <span className="amount-price">${this.state.amount}</span>
+                        <h6 className="time-transfer">will be transfered to your account on <b>{payday}</b></h6>
                         <div className="row" style={{ marginTop: '100px' }}>
-                            <div className="col s12 m6 l6 form-section"><button className="btn">Claim</button></div>
-                            <div className="col s12 m6 l6 form-section"><button className="btn secondary">History</button></div>
+                            <div className="col s12 m6 l6 form-section"><button className="btn" onClick={() => this.claim()}>Claim</button></div>
+                            <div className="col s12 m6 l6 form-section"><button className="btn secondary" onClick={() => this.showHistory()}>History</button></div>
                         </div>
                     </div>
                 )
             case 'history':
                 return (
                     <div>
-                        <div className="row">
-                            <div className="col s6 no-padding">
-                                <i className="small material-icons black-text text-darken-1">arrow_back</i>
-                            </div>
-                        </div>
                         <div className="row">
                             <div className="col s6 no-padding"><h5>History</h5></div>
                         </div>
@@ -174,28 +223,15 @@ export default class Claim extends Component {
                                     <tr>
                                         <th>Transfer date</th>
                                         <th>Amount</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>Alvin</td>
-                                        <td>$0.87</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alan</td>
-                                        <td>$3.76</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jonathan</td>
-                                        <td>$7.00</td>
-                                    </tr>
-                                </tbody>
+                                <tbody>{ this.renderListHistory() }</tbody>
                             </table>
                         </div>
                         <div className="row" style={{ marginTop: '100px' }}>
-                            <div className="col s12 m6 l6 form-section"><button className="btn">Done</button></div>
-                            <div className="col s12 m6 l6 form-section"><button className="btn secondary">History</button></div>
+                            <div className="col s12 m6 l6 form-section"><button className="btn" onClick={() => { FlowRouter.go('/cooking/dashboard') }}>Done</button></div>
+                            <div className="col s12 m6 l6 form-section"><button className="btn secondary" onClick={() => { this.setState({ screen: 'claim' }) }} >Back</button></div>
                         </div>
                     </div>
                 )

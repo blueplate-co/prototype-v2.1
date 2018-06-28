@@ -7,7 +7,7 @@
 
 .available-price {
     display: block;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     font-size: 1.5em;
 }
@@ -76,4 +76,18 @@
     bottom: 25%;
     margin: auto;
     background: white;
+}
+
+.claim-wrapper {
+    text-align: center;
+}
+
+.amount-price {
+    text-align: center;
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+.time-transfer {
+    font-size: 1.5em;
 }
