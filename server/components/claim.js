@@ -48,6 +48,11 @@ Meteor.methods({
             user_id: Meteor.userId()
         }).fetch();
     },
+    'claim.getListRequestForCS' () {
+        return Claim_Request.find({
+            status: 'pending'
+        }).fetch();
+    },
     "claim.summaryProfit" () {
         var all_request = Profile_details.find({}).fetch();
         for (var i = 0; i < all_request.length; i++) {
@@ -61,5 +66,17 @@ Meteor.methods({
                 multi: true
             });
         }
+    },
+    "claim.confirmPay" (id, user_id) {
+        Claim_Request.update({
+            _id: id,
+            user_id: user_id
+        }, {
+            $set: {
+                status: 'paid'
+            }
+        }, {
+            multi: true
+        });
     }
 });
