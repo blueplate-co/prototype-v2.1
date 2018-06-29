@@ -16,7 +16,7 @@ class KitchenSearchList extends Component {
     };
   }
 
-  renderList = () =>
+  renderList = () => {
     return this.props.kitchens.map((item, index) => {
       return (
         <div key = {index}>
