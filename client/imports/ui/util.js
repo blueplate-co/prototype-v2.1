@@ -3,6 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 
 import PaymentGenerator from '../ui/util_payment_generator';
 import SellingPriceGenerator from '../ui/util_selling_price_generator';
+import PaymentForClaim from '../ui/util_payment_for_claim';
 
 export default class Util extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class Util extends Component {
       <div>
           <PaymentGenerator />
           <SellingPriceGenerator />
+          <PaymentForClaim />
       </div>
     );
   }

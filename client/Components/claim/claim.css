@@ -1,6 +1,7 @@
 .transfer-icon {
     margin: 0px auto;
-    width: 300px;
+    width: 100%;
+    max-width: 200px;
     display: block;
 }
 
@@ -8,7 +9,7 @@
     display: block;
     text-align: center;
     font-weight: bold;
-    font-size: 1.8em;
+    font-size: 1.5em;
 }
 
 .form-section {
@@ -39,4 +40,54 @@
     margin-top: -9em; /*set to a negative number 1/2 of your height*/
     margin-left: -15em; /*set to a negative number 1/2 of your width*/
     background-color: #56AACD;
+}
+
+#bank_name {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    font-size: 16px !important;
+    color: inherit;
+    outline: none;
+}
+
+.container-claim {
+    margin: 0 auto;
+    max-width: 540px;
+}
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: rgba(0,0,0, 0.5);
+}
+
+.popup_inner {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    top: 25%;
+    bottom: 25%;
+    margin: auto;
+    background: white;
+}
+
+.claim-wrapper {
+    text-align: center;
+}
+
+.amount-price {
+    text-align: center;
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+.time-transfer {
+    font-size: 1.5em;
 }
