@@ -161,7 +161,6 @@
 .kitchen-images-thumbnail {
   width: 100%;
   height: 300px;
-  background-color: #ccc;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
@@ -729,4 +728,39 @@
 
 [type="checkbox"] + label {
   display: inline-flex!important;
+}
+
+.cls-10 .cls-3 {
+  mix-blend-mode:multiply;
+}
+
+.cls-3 {
+  font-size:36px;
+  font-family: Montserrat-Bold Montserrat;
+  font-weight:700;
+}
+.cls-4 {
+  letter-spacing:-0.01em;
+}
+.cls-5 {
+  letter-spacing:-0.02em;
+}
+.cls-6 {
+  letter-spacing:0em;
+}
+.cls-7 {
+  letter-spacing:0.01em;
+}
+.cls-8 {
+  letter-spacing:0em;
+}
+.cls-9 {
+  letter-spacing:0.01em;
+}
+.cls-11 {
+  fill:none;
+
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:6px;
 }

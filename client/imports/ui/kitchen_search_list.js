@@ -3,10 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Mongo } from "meteor/mongo";
 import { Session } from "meteor/session";
 
-import Rating from "./rating";
-import ProgressiveImages from "./progressive_image";
-import ChefAvatar from "./chef_avatar";
-import Like from "./like_button";
+import KitchenCard from './kitchen_card';
 
 import { navbar_find_by } from "./../../../imports/functions/find_by";
 
@@ -19,41 +16,21 @@ class KitchenSearchList extends Component {
     };
   }
 
-  renderList = () => {
-    if (this.props.kitchens.length == 0) {
-      return <p>Has no dishes to be displayed</p>;
-    }
-    let hasThumbnail;
+  renderList = () =>
     return this.props.kitchens.map((item, index) => {
-      if (item.banner.length > 0) {
-        hasThumbnail = true;
-      }
       return (
-        <a key={index} href={'/kitchen/' + item.id} target="_blank">
-          <div
-            className="col xl2 l2 m3 s6 modal-trigger dish-wrapper"
-            onClick={() => this.handleClick(item)}
-          >
-            <div className="images-thumbnail" style={{ background: "#ccc" }}>
-              <Like type="dish" id={item._id} />
-              {hasThumbnail ? (
-                <ProgressiveImages
-                  large={item.banner}
-                  small={item.banner}
-                />
-              ) : (
-                ""
-              )}
-            </div>
-            <div
-              className="row no-margin text-left"
-              style={{ position: "relative" }}
-            >
-              <h5 className="dish-title">{item.kitchen_name}</h5>
-            </div>
-          </div>
-        </a>
-      );
+        <div key = {index}>
+          <KitchenCard
+            bannerProfileImg = {item.bannerProfileImg}
+            kitchenId = {item._id}
+            userId = {item.user_id}
+            kitchenName = {item.kitchen_name}
+            chefName = {item.chef_name}
+            averageRating = {item.average_rating}
+            orderCount = {item.order_count}
+          />
+        </div>
+      )
     });
   };
 
