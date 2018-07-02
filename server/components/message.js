@@ -97,28 +97,28 @@ Meteor.methods({
     }
   },
   "message.sms"(phonenumber, content) {
-    // console.log('Phone number receive: ' + phonenumber);
-    // console.log('Content to sent: ' + content);
-    // // real devices
-    // const accountSid = "ACa1eff75c106b95b3b3cc55e0bc09ca30";
-    // const authToken = "39ba5c8a8293447d3adf434b558818c4";
-    // // testing
-    // // const accountSid = "ACdee9d52a82e9321cd35c065153cdfdd2";
-    // // const authToken = "2c175d8aed982e1baf0b5d74dbe48a20";
-    // const client = require("twilio")(accountSid, authToken);
-    // let sender = '+85264507389';
-    // // if phonenumber come from HK
-    // if (phonenumber.indexOf('+852') > -1) {
-    //   sender = 'Blueplate';
-    // }
-    // client.messages
-    //   .create({
-    //     body: content,
-    //     from: sender,
-    //     to: phonenumber,
-    //   })
-    //   .then(message => console.log(message.sid))
-    //   .done();
+    console.log('Phone number receive: ' + phonenumber);
+    console.log('Content to sent: ' + content);
+    // real devices
+    const accountSid = "ACa1eff75c106b95b3b3cc55e0bc09ca30";
+    const authToken = "39ba5c8a8293447d3adf434b558818c4";
+    // testing
+    // const accountSid = "ACdee9d52a82e9321cd35c065153cdfdd2";
+    // const authToken = "2c175d8aed982e1baf0b5d74dbe48a20";
+    const client = require("twilio")(accountSid, authToken);
+    let sender = '+85264507389';
+    // if phonenumber come from HK
+    if (phonenumber.indexOf('+852') > -1) {
+      sender = 'Blueplate';
+    }
+    client.messages
+      .create({
+        body: content,
+        from: sender,
+        to: phonenumber,
+      })
+      .then(message => console.log(message.sid))
+      .done();
   },
   "message.seenMessage"(conversation_id, receiver_id) {
     let conversation = [];
