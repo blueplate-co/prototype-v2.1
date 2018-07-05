@@ -597,11 +597,15 @@ class TopNavigation extends Component {
   componentDidMount() {
     var credits = 0;
     Meteor.call('payment.getStripeBalance', (err, res) => {
-      var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
+      if (err) {
+        var stripebalance = 0;
+      } else {
+        var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
+      }
       credits = parseFloat(parseFloat(this.props.credits) + parseFloat(stripebalance)).toFixed(2);
       this.setState({
         credits: credits
-      })
+      });
     });
   }
 
