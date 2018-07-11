@@ -382,6 +382,26 @@ Template.pending_confirmation.events({
         if (!err) {
           console.log('Disabled conversation');
         }
+        // send SMS for cancel
+        var kitchen_number = Kitchen_details.findOne({
+          user_id: seller_id
+        }).kitchen_contact;
+        if (kitchen_number[0] == "0") {
+          kitchen_number = '+852' + kitchen_number.slice(1, kitchen_number.length);
+        } else if (kitchen_number[0] == '+') {
+          kitchen_number = kitchen_number;
+        } else {
+          kitchen_number = '+852' + kitchen_number;
+        }
+        var buyer_name = Profile_details.findOne({
+          user_id: buyer_id
+        }).foodie_name;
+        var message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
+        Meteor.call('message.sms', kitchen_number, content.trim(), (err, res) => {
+          if (!err) {
+            console.log('Message sent');
+          }
+        });
       })
     }
   },

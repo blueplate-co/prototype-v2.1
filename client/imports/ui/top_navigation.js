@@ -90,6 +90,7 @@ class TopNavigation extends Component {
         { id: 2, label: "Dine-in", value: "Dine-in" },
         { id: 3, label: "Pick-up", value: "Pick-up" },
       ],
+      credits: 0
     };
   }
 
@@ -593,6 +594,21 @@ class TopNavigation extends Component {
     window.addEventListener('resize', this.handleWindowSizeChange);
   }
 
+  componentDidMount() {
+    var credits = 0;
+    Meteor.call('payment.getStripeBalance', (err, res) => {
+      if (err) {
+        var stripebalance = 0;
+      } else {
+        var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
+      }
+      credits = parseFloat(parseFloat(this.props.credits) + parseFloat(stripebalance)).toFixed(2);
+      this.setState({
+        credits: credits
+      });
+    });
+  }
+
   render() {
     var sidebarContent = this.renderSideBar();
 
@@ -652,9 +668,9 @@ class TopNavigation extends Component {
                   </li>
                   {
                     (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits}</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
                     :
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.props.credits} credits</li></a>
+                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
                   }
                 </ul>
               </div>
@@ -668,10 +684,9 @@ class TopNavigation extends Component {
 
 export default withTracker(props => {
   const handle = Meteor.subscribe("getUserShoppingCart");
-  var credits = 0;
   if (Meteor.user()) {
     Meteor.subscribe('userData');
-    credits = Meteor.user().credits;
+    var credits = Meteor.user().credits;
   }
   return {
     currentUser: Meteor.user(),

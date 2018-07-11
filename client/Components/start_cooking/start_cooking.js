@@ -655,6 +655,28 @@ Template.request_card.events({
       Meteor.call('message.disableConversation', conversation._id, (err, res) => {
         if (!err) {
           console.log('Disabled conversation');
+          // send SMS when reject order
+          var foodie_country_code = Profile_details.findOne({
+            user_id: buyer_id
+          }).mobile_dial_code;
+          foodie_country_code = '+' + foodie_country_code.split('+')[1];
+          var foodie_mobile_number = Profile_details.findOne({
+            user_id: buyer_id
+          }).mobile;
+          if (foodie_mobile_number[0] == "0") {
+            foodie_number = foodie_country_code + foodie_mobile_number.slice(1, foodie_mobile_number.length);
+          } else {
+            foodie_number = foodie_country_code + foodie_mobile_number;
+          }
+          var seller_name = Kitchen_details.findOne({
+            user_id: seller_id
+          }).chef_name;
+          var message = 'Unfortunately, ' + seller_name + ' has just rejected your order.';
+          Meteor.call('message.sms', foodie_number, message.trim(), (err, res) => {
+            if (!err) {
+              console.log('Message sent');
+            }
+          });
         }
       })
     }
@@ -701,6 +723,29 @@ Template.order_card.events({
           Meteor.call('transactions.ready', trans_id)
           Meteor.call('notification.transaction_ready', seller_id, buyer_id)
           console.log("Transactions Ready")
+          // send SMS when dish/menu complete
+          // send SMS when reject order
+          var foodie_country_code = Profile_details.findOne({
+            user_id: buyer_id
+          }).mobile_dial_code;
+          foodie_country_code = '+' + foodie_country_code.split('+')[1];
+          var foodie_mobile_number = Profile_details.findOne({
+            user_id: buyer_id
+          }).mobile;
+          if (foodie_mobile_number[0] == "0") {
+            foodie_number = foodie_country_code + foodie_mobile_number.slice(1, foodie_mobile_number.length);
+          } else {
+            foodie_number = foodie_country_code + foodie_mobile_number;
+          }
+          var buyer_name = Profile_details.findOne({
+            user_id: buyer_id
+          }).foodie_name;
+          var message = buyer_name + ', your food is ready. Please enjoy!';
+          Meteor.call('message.sms', foodie_number, message.trim(), (err, res) => {
+            if (!err) {
+              console.log('Message sent');
+            }
+          });
         }
       }, 1000)
     }
@@ -754,7 +799,7 @@ Template.chef_ready_card.events({
     var full_number = country_code + mobile_number;
     console.log('Full number' + full_number);
     if (full_number.length > 0) {
-      let content = 'Thanks for eating with Blueplate. Your order is ready now. Let’s enjoy it and rate for your chef';
+      let content = 'Thanks for eating with Blueplate. Your order is ready now. Please rate for chef if your dish is good.';
       Meteor.call('message.sms', full_number, content, (err, res) => {
         if (!err) {
           console.log('Message sent');
