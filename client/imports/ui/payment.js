@@ -2,6 +2,98 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+
+class Modal extends React.Component {
+
+	static propTypes = {
+		isModalOpen: React.PropTypes.bool.isRequired,
+		closeModal: React.PropTypes.func.isRequired,
+		style: React.PropTypes.shape({
+			modal: React.PropTypes.object,
+			overlay: React.PropTypes.object
+		})
+	};
+
+	constructor(props) {
+		super(props);
+
+		this.outerStyle = {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			width: "100%",
+			height: "100%",
+			overflow: "auto",
+			height: "100%",
+			zIndex: 999
+		};
+
+		// default style
+		this.style = {
+			modal: {
+				position: "relative",
+				width: 500,
+				padding: 20,
+				boxSizing: 'border-box',
+                backgroundColor: '#fff',
+                color: '#000',
+				margin: '40px auto',
+				borderRadius: 3,
+				zIndex: 998,
+				textAlign: 'left',
+				boxShadow: '0 20px 30px rgba(0, 0, 0, 0.2)',
+				...this.props.style.modal,
+			},
+			overlay: {
+				position: 'fixed',
+				top: 0,
+				bottom: 0,
+				left: 0,
+				right: 0,
+				width: "100%",
+				height: "100%",
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                textAlign: 'center',
+				...this.props.style.overlay
+			}
+		}
+	}
+
+	// render modal
+	render() {
+		return (<div style={{...this.outerStyle, display: this.props.isModalOpen ? 'block' : 'none'}}>
+						<div style={this.style.overlay} onClick={this.props.closeModal}></div>
+												<div onClick={this.props.closeModal}></div>
+                <div style={this.style.modal}>
+                    {this.props.children}
+                </div>
+            </div>)
+	}
+}
+
+// overwrite style
+const modalStyle = {
+	overlay: {
+        backgroundColor: 'rgba(0, 0, 0,0.5)'
+	}
+};
+
+const mainStyle = {
+	app: {
+		margin: '120px 0'
+	},
+	button: {
+		backgroundColor: '#408cec',
+		border: 0,
+		padding: '12px 20px',
+		color: '#fff',
+		margin: '0 auto',
+		width: 150,
+		display: 'block',
+		borderRadius: 3
+	}
+};
+
 // Shopping cart component
 class Payment extends Component {
     constructor(props) {
@@ -10,12 +102,31 @@ class Payment extends Component {
         this.choosePayment = this.choosePayment.bind(this);
         this.validationCardAndCharge = this.validationCardAndCharge.bind(this);
         this.validationAndCredits = this.validationAndCredits.bind(this);
+		this.closeModal = this.closeModal.bind(this);
+		this.openModal = this.openModal.bind(this);
         this.state = {
             payment: "",
             creditPackage: "",
-            action: false
+            action: false,
+            isModalOpen: false,
+            isInnerModalOpen: false,
+            pendingCost: 0
         }
     }
+
+        // close modal (set isModalOpen, true)
+	closeModal() {
+		this.setState({
+			isModalOpen: false
+		})
+	}
+
+	// open modal (set isModalOpen, false)
+	openModal() {
+		this.setState({
+			isModalOpen: true
+		})
+	}
 
     componentDidMount() {
         if (!Session.get('product')) {
@@ -29,22 +140,37 @@ class Payment extends Component {
         var self = this;
         if (payment == 'credits') {
             // get current credits of user
-            Meteor.call('payment.getCredits', function (err, credits) {
+            Meteor.call('payment.getCredits', (err, credits) => {
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
                 var total = 0;
                 for (var i = 0; i < shoppingCart.length; i++) {
                     total += parseFloat(shoppingCart[i].total_price_per_dish);
                 }
                 // get Stripe balance
-                Meteor.call('payment.getStripeBalance', function (err, res) {
+                Meteor.call('payment.getStripeBalance', (err, res) => {
                     let balance = parseFloat(res.account_balance / 100).toFixed(2);
+                    // check pending order of buyer
+                    var pendingOrder = Order_record.find({
+                        buyer_id: Meteor.userId(),
+                        status: 'Created'
+                    }).fetch();
+                    var pendingCost = 0;
+                    for (var i = 0; i < pendingOrder.length; i++) {
+                        pendingCost += pendingOrder[i].total_price;
+                    }
+                    var trueBalance = (parseFloat(credits) + parseFloat(balance)) - parseFloat(pendingCost);
                     // sum of two wallet is not enough to pay
-                    if ((parseFloat(credits) + parseFloat(balance)) < total) {
+                    if (trueBalance < total) {
                         // not enough money to pay
-                        Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
-                        self.setState({
-                            payment: payment
-                        });
+                        this.setState({
+                            pendingCost: pendingCost
+                        },() => {
+                            this.openModal();
+                        })
+                        // Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
+                        // self.setState({
+                        //     payment: payment
+                        // });
                     } else {
                         // enough money to pay
                         var StripeToken = '';
@@ -81,6 +207,7 @@ class Payment extends Component {
                 });
             });
         } else {
+            // if choose credit card is payment method
             this.setState({
                 payment: payment
             });
@@ -356,6 +483,21 @@ class Payment extends Component {
         var fee = parseFloat((total * 0.034) + 2.35).toFixed(2);
         return (
             <div className="container" style={{ marginTop: '50px' }}>
+                <Modal
+                    isModalOpen={this.state.isModalOpen}
+                    closeModal={this.closeModal}
+                    style={modalStyle}>
+                        <span>You currently have ${this.state.pendingCost} pending order.</span><br/>
+                        <span>Therefore there is no credits left for this order.</span>
+                        <div className="row" style={{marginTop: '50px'}}>
+                            <div className="col l6" style={{width: '50%'}}>
+                                <button className="btn" onClick={ () => this.setState({ payment: 'credits' }) }>Topup</button>
+                            </div>
+                            <div className="col l6" style={{width: '50%'}}>
+                                <button className="btn" onClick={ () => this.setState({ payment: 'credit-card' }) }>Credit Card</button>
+                            </div>
+                        </div>
+                </Modal>
                 <div className="row">
                     <div className="col s12 m12 l12 xl12" style={{ textAlign: 'center', marginBottom: '80px' }}>
                         <h6>This will be processing free charged by Payment gateway.</h6>
