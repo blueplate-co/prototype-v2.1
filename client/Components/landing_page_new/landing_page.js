@@ -38,6 +38,19 @@ Template.landing_page.onRendered(function () {
   //     console.log('loading...');
   //   }, 1000);
   // }
+  setTimeout(() => {
+    $('#marketing_popup2_container').modal('open', {
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      },
+      complete: function() {} // Callback for Modal close
+    });
+  }, 4000);
 
   setTimeout(() => {
     $('body').css('overflow-y', 'scroll');
@@ -88,7 +101,7 @@ Template.landing_page.events({
   'click .logo': function() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
+  },
 })
 
 Template.landing_page.helpers({

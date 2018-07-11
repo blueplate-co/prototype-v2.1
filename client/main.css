@@ -20,6 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .bp-blue-text {
   color: #56AACD !important;
+  opacity: 1;
 }
 
 .bp-blue:hover {
@@ -38,6 +39,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .bp-red {
   background: #EB5F55;
+}
+
+.bp-red-text {
+  color: #EB5F55;
+  opacity: 1;
 }
 
 html {
@@ -77,6 +83,7 @@ body p {
   .modal {
     top: 15% !important;
     width: 70%;
+    border-radius: 20px !important;
   }
 }
 /* iPad and below */
