@@ -34,7 +34,7 @@ export default class MarketingPopup2 extends Component {
   }
 
   handleYes = () => {
-    if (this.state.foodiesYes < 2 || this.state.chefsYes < 2) {
+    if (this.state.foodiesYes < 1 || this.state.chefsYes < 1) {
       this.setState({
         foodiesYes: this.state.foodiesYes + 1,
         chefsYes: this.state.chefsYes + 1,
@@ -99,40 +99,40 @@ export default class MarketingPopup2 extends Component {
   render() {
     const chefsYes = [
       {
-        description: "Would you like to earn money while cooking?",
+        description: "Blueplate is a platform that allows you to earn money while cooking. Would you like that?",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/655_jja06gsa.png"
       },
       {
-        description: "Would you like to save the world with your food?",
+        description: "Blueplate also lets you save the world while cooking great food. Would you like to be a part of this too? ",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/796_jj9m8wkd.png"
       },
-      {
-        description: "Would you like to do both at the same time?",
+{/**      {
+        description: "Awesome! Then let’s have the best of both worlds!",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/39_jj9lx222.png"
       },
       {
         description: "If you said yes 3 times, then lets have the best of both worlds!",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/655_jja06gsa.png"
-      }
+      }**/}
     ];
 
     const foodiesYes = [
       {
-        description: "Would you like to eat delicious homemade food all the time?",
+        description: "Blueplate is a platform that allows you to eat delicious homemade food all the time. Would you like that?",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/193_jj9p3opu.png"
       },
       {
-        description: "Would you like to save the world?",
+        description: "Blueplate also lets you save the world while eating great food. Would you like to be a part of this?",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/796_jj9m8wkd.png"
       },
-      {
-        description: "Would you like to do the two things together?",
+{/**      {
+        description: "Awesome! Then let’s have the best of both worlds! ",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/831_jj9p0f5j.png"
       },
       {
         description: "If you said yes 3 times, then lets have the best of both worlds!",
         img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/655_jja06gsa.png"
-      },
+      }, **/}
     ];
 
     const reject = [
@@ -284,7 +284,7 @@ export default class MarketingPopup2 extends Component {
         return (
           <div className = "modal-content marketing_modal_content valign-wrapper">
             <div className = "container">
-              <h4 className = "bp-red-text center-align">If you said yes 3 times, then lets have the best of both worlds!</h4>
+              <h4 className = "bp-red-text center-align">Awesome! Then let’s have the best of both worlds!</h4>
               <div className = "row add-margin-top">
                 <div className = "col l12 m12 s12 center">
                   <button className = "btn bp-red marketing_popup_btn" onClick = {this.handleNextStep}>go!</button>
