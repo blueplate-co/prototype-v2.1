@@ -5,11 +5,6 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import "rc-time-picker/assets/index.css";
 
 import Sidebar from "react-sidebar";
-import MultiSelectReact from "multi-select-react";
-import PlacesAutocomplete from "react-places-autocomplete";
-import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
-import TimePicker from "rc-time-picker";
-import moment from "moment";
 
 const styles = {
   root: {
@@ -72,24 +67,11 @@ class TopNavigation extends Component {
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     this.renderSideBar = this.renderSideBar.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.renderMultiSelect = this.renderMultiSelect.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handlePress = this.handlePress.bind(this);
-    this.onChange = address => this.setState({ address });
     this.state = {
       sidebarOpen: false,
       search: false,
-      address: "",
-      lat: null,
-      lng: null,
-      time: "",
       width: window.innerWidth,
       status: "Search",
-      multiSelect: [
-        { id: 1, label: "Delivery", value: "Delivery" },
-        { id: 2, label: "Dine-in", value: "Dine-in" },
-        { id: 3, label: "Pick-up", value: "Pick-up" },
-      ],
       credits: 0
     };
   }
@@ -293,297 +275,10 @@ class TopNavigation extends Component {
     );
   };
 
-  searching = () => {
-    this.setState(
-      {
-        search: !this.state.search,
-        sidebarOpen: false,
-      },
-      () => {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-        setTimeout(() => {
-          $("html").css("overflow", "hidden");
-        }, 200);
-        $("[role=navigation]").height("100%");
-      }
-    );
-  };
-
-  optionClicked = optionsList => {
-    this.setState({ multiSelect: optionsList });
-  };
-
-  selectedBadgeClicked = optionsList => {
-    this.setState({ multiSelect: optionsList });
-  };
-
-  changeTime = value => {
-    this.setState({
-      time: value._d,
-    });
-  };
-
-  renderMultiSelect = () => {
-    const selectedOptionsStyles = {
-      color: "#444343",
-      backgroundColor: "#fff",
-    };
-    const optionsListStyles = {
-      backgroundColor: "#fff",
-      color: "#444343",
-    };
-    return (
-      <MultiSelectReact
-        options={this.state.multiSelect}
-        optionClicked={this.optionClicked.bind(this)}
-        selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
-        selectedOptionsStyles={selectedOptionsStyles}
-        optionsListStyles={optionsListStyles}
-      />
-    );
-  };
-
-  handleSearch = () => {
-    var self = this;
-    let service = [];
-
-    //- limit the records
-    let limit = {};
-    limit.from = 0;
-    limit.to = 2;
-
-    this.setState({
-      status: "Searching",
-    });
-
-    self.state.multiSelect.map((item, index) => {
-      if (item.value !== false) {
-        service.push(item.label);
-      }
-    });
-    let date = document.getElementById("date").value;
-    let keyword = document.getElementById("keyword").value;
-    if (this.state.address.trim().length > 0) {
-      geocodeByAddress(this.state.address)
-        .then(results => results[0])
-        .then(place => {
-          self.setState(
-            {
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-            },
-            () => {
-              // debugger
-              Meteor.call(
-                "searching",
-                self.state.lat,
-                self.state.lng,
-                service,
-                date,
-                this.state.time,
-                keyword,
-                (error, result) => {
-                  if (!error) {
-                    Session.set("advanced_search_results", result);
-                    this.setState(
-                      {
-                        search: false,
-                      },
-                      () => {
-                        $("html").css("overflow", "auto");
-                        this.setState({
-                          status: "Search",
-                        });
-                        FlowRouter.go("/search");
-                      }
-                    );
-                  } else {
-                    console.log("location found");
-
-                    Materialize.toast("Error! " + error, "rounded bp-green");
-                  }
-                }
-              );
-            }
-          );
-        })
-        .catch(error => console.error("Error", error));
-    } else {
-      if ("geolocation" in navigator) {
-        var etimeout = setTimeout(() => {
-          // when user not enter location, block geolocation
-          clearTimeout(etimeout);
-          Meteor.call(
-            "searching",
-            null,
-            null,
-            service,
-            date,
-            this.state.time,
-            keyword,
-            (error, result) => {
-              if (!error) {
-                Session.set("advanced_search_results", result);
-                $("html").css("overflow", "auto");
-                this.setState({
-                  status: "Search",
-                });
-                FlowRouter.go("/search");
-              } else {
-                Materialize.toast("Error! " + error, "rounded bp-green");
-              }
-            }
-          );
-        }, 8000);
-
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            // when user not enter location, allow geolocation
-            clearTimeout(etimeout);
-            Meteor.call(
-              "searching",
-              position.coords.latitude,
-              position.coords.longitude,
-              service,
-              date,
-              this.state.time,
-              (error, result) => {
-                if (!error) {
-                  Session.set("advanced_search_results", result);
-                  this.setState(
-                    {
-                      search: false,
-                    },
-                    () => {
-                      $("html").css("overflow", "auto");
-                      FlowRouter.go("/search");
-                      this.setState({
-                        status: "Search",
-                      });
-                    }
-                  );
-                } else {
-                  Materialize.toast("Error! " + error, "rounded bp-green");
-                }
-              }
-            );
-          },
-          () => {
-            // when user not enter location, block geolocation
-            clearTimeout(etimeout);
-            Meteor.call(
-              "searching",
-              null,
-              null,
-              service,
-              date,
-              this.state.time,
-              (error, result) => {
-                if (!error) {
-                  Session.set("advanced_search_results", result);
-                  this.setState(
-                    {
-                      search: false,
-                    },
-                    () => {
-                      $("html").css("overflow", "auto");
-                      FlowRouter.go("/search");
-                      this.setState({
-                        status: "Search",
-                      });
-                    }
-                  );
-                } else {
-                  Materialize.toast("Error! " + error, "rounded bp-green");
-                }
-              }
-            );
-          },
-          { timeout: 5000 }
-        );
-      } else {
-        // when browser not support geolocation
-        Materialize.toast(
-          "Geolocation is not supported by this browser.",
-          "rounded bp-green"
-        );
-        debugger;
-      }
-    }
-  };
-
   handlePress = event => {
     if (event.which == 13) {
       this.handleSearch();
     }
-  };
-
-  renderSearchPage = () => {
-    const inputProps = {
-      value: this.state.address,
-      onChange: this.onChange,
-    };
-    var curr = new Date();
-    curr.setDate(curr.getDate());
-    var date = curr.toISOString().substr(0, 10);
-    return (
-      <div className="search-page-container">
-        <a className = "btn-floating waves-effect waves-red z-depth-0 transparent black-text close-modal" onClick={() => {
-          this.setState({ search: false });
-          $("html").css("overflow", "auto");
-          $("[role=navigation]").height("65px");
-        }}>
-          <i className="material-icons black-text text-darken-1">close</i>
-        </a>
-        <div className="container">
-          <div className="row">
-            <div
-              onKeyPress={this.handlePress}
-              className="search-form col l6 offset-l3 m10 offset-m1 s12"
-            >
-              <div className="col s12">
-                <input
-                  id="keyword"
-                  type="text"
-                  placeholder="Keyword"
-                />
-              </div>
-              <div className="col s12">
-                <PlacesAutocomplete inputProps={inputProps} />
-              </div>
-              <div className="input-field col s12">
-                {this.renderMultiSelect()}
-              </div>
-              <div className="input-field col s12">
-                <input
-                  defaultValue={date}
-                  id="date"
-                  type="date"
-                  placeholder="date"
-                />
-              </div>
-              <div className="input-field col s12">
-                <TimePicker
-                  showSecond={true}
-                  className=""
-                  onChange={this.changeTime}
-                />
-              </div>
-              <div className="input-field col s12 text-center">
-                <button
-                  disabled={this.state.status == "Searching"}
-                  onClick={this.handleSearch}
-                  id="search-btn"
-                >
-                  {this.state.status}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   handleWindowSizeChange = () => {
@@ -644,6 +339,12 @@ class TopNavigation extends Component {
                       "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow"}
                   >keyboard_arrow_down</i>
                 </a>
+                <ul className="left">
+                  <li>
+                    <input className="searchinput" placeholder="Try 'Muffin'" type="text" />
+                    <button className="btn nearby">Nearby</button>
+                  </li>
+                </ul>
                 <ul className="right">
                   <li className="icon" onClick={() => this.openProfile()}>
                     <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
@@ -659,18 +360,11 @@ class TopNavigation extends Component {
                     </span>
                     <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
                   </li>
-                  <li
-                    onClick={() => this.searching()}
-                    className="icon"
-                    id="search-icon"
-                  >
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
-                  </li>
                   {
                     (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
                     :
-                      <a style={{ display: 'inline-block' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
                   }
                 </ul>
               </div>
