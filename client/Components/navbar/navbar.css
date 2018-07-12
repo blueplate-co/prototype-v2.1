@@ -523,6 +523,9 @@ ul.right .icon {
   margin-left: 10px!important;
   margin-top: -5px!important;
   font-size: 1rem!important;
+  background-color: #fff!important;
+  color: #000!important;
+  border-radius: 5px!important;
 }
 
 @media screen and (max-width: 992px) {
