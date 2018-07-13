@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-
-import "rc-time-picker/assets/index.css";
-
 import Sidebar from "react-sidebar";
+import { Index, MinimongoEngine } from 'meteor/easy:search';
 
 const styles = {
   root: {
@@ -275,6 +273,55 @@ class TopNavigation extends Component {
     );
   };
 
+  searching(e) {
+    if (e.keyCode == 13) {
+      var queryString = $('#searchQuery').val();
+      // excute searching when keyword longer than 2 characters
+      if (queryString.length > 2) {
+        // create index search for dish_name
+        const dishIndex = new Index({
+            collection: Dishes,
+            fields: ['dish_name'],
+            name: 'dishIndex',
+            engine: new MinimongoEngine({
+                sort: () => { score: 1 }, // sort by score
+            }),
+        });
+        // create index search for menu_name
+        const menuIndex = new Index({
+            collection: Menu,
+            fields: ['menu_name'],
+            name: 'menuIndex',
+            engine: new MinimongoEngine({
+                sort: () => { score: 1 }, // sort by score
+            }),
+        });
+        // create index search for kitchen_name
+        const kitchenIndex = new Index({
+            collection: Kitchen_details,
+            fields: ['kitchen_name'],
+            name: 'kitchenIndex',
+            engine: new MinimongoEngine({
+                sort: () => { score: 1 }, // sort by score
+            }),
+        });
+        // forming the result object
+        var result = {
+          dish: [],
+          menu: [],
+          kitchen: []
+        }
+        result.dish = dishIndex.search(queryString).mongoCursor.fetch();
+        result.menu = menuIndex.search(queryString).mongoCursor.fetch();
+        result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
+        Session.set('search_result', result);
+        FlowRouter.go('/search');
+      } else {
+        Materialize.toast('Your keyword must longer than 2 characters',4000,"rounded bp-green");
+      }
+    }
+  }
+
   handlePress = event => {
     if (event.which == 13) {
       this.handleSearch();
@@ -341,7 +388,7 @@ class TopNavigation extends Component {
                 </a>
                 <ul className="left">
                   <li>
-                    <input className="searchinput" placeholder="Try 'Muffin'" type="text" />
+                    <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
                     <button className="btn nearby">Nearby</button>
                   </li>
                 </ul>

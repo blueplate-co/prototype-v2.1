@@ -764,3 +764,30 @@
   stroke-linejoin:round;
   stroke-width:6px;
 }
+
+.filter-list {
+  display: inline-block;
+  margin: 25px 0px;
+}
+
+.filter-list li:hover {
+  cursor: pointer;
+  background-color: #56AACD;
+  color: #fff;
+}
+
+.filter-list li:first-child {
+  border-radius: 5px;
+  padding: 10px 25px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  margin: 0px 10px 0px 0px;
+}
+
+.filter-list li {
+  border-radius: 5px;
+  padding: 10px 25px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  margin: 0px 10px;
+}

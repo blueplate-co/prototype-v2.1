@@ -70,10 +70,10 @@ export default withTracker(props => {
         kitchen_name: "",
         banner: "",
       };
-      kitchen.id = Session.get("advanced_search_results")[i]._id;
-      kitchen.kitchen_name = Session.get("advanced_search_results")[i].kitchen_name;
-      if (Session.get("advanced_search_results")[i].bannerProfileImg) {
-        kitchen.banner = Session.get("advanced_search_results")[i].bannerProfileImg.origin;
+      kitchen.id = Session.get("search_result")[i]._id;
+      kitchen.kitchen_name = Session.get("search_result")[i].kitchen_name;
+      if (Session.get("search_result")[i].bannerProfileImg) {
+        kitchen.banner = Session.get("search_result")[i].bannerProfileImg.origin;
       } else {
         kitchen.banner = "";
       }

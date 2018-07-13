@@ -12,6 +12,7 @@ import MenuSearchList from './menu_search_list';
 import KitchenSearchList from './kitchen_search_list';
 import WishDishList from './wish_dish_list';
 import WishMenuList from './wish_menu_list';
+import ListFilter from './list_filter';
 import Modal from './modal';
 
 import ProgressiveImages from './progressive_image';
@@ -104,15 +105,15 @@ export default class ShowRoom extends Component {
       case 'search':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
+            <div className="row" style={{padding: '20px 30px'}}>
+              <div className="col lg-12">
+                <ListFilter />
               </div>
+              <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
+              <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
+              {/* <KitchenSearchList title="Kitchens" seemore=""/> */}
+              <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
             </div>
-            <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
-            <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
-            <KitchenSearchList title="Kitchens" seemore=""/>
-            <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
           </div>
         )
         break;

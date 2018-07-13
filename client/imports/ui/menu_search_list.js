@@ -89,7 +89,6 @@ class MenuSearchList extends Component {
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.menu_name }</h5>
-            ""
           </div>
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
@@ -137,11 +136,9 @@ class MenuSearchList extends Component {
 export default withTracker(props => {
   const handle = Meteor.subscribe('theMenu');
   var menu_results = [];
-  if (Session.get('advanced_search_results')) {
-    for (var i = 0; i < Session.get('advanced_search_results').length; i++) {
-      for (var j = 0; j < Session.get('advanced_search_results')[i].Menu.length; j++) {
-        menu_results.push(Session.get('advanced_search_results')[i].Menu[j]);
-      }
+  if (Session.get('search_result')) {
+    for (var i = 0; i < Session.get('search_result').menu.length; i++) {
+        menu_results.push(Session.get('search_result').menu[i]);
     }
   }
   return {
