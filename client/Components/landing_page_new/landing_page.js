@@ -14,7 +14,11 @@ import {
 import './landing_page.html';
 
 Template.landing_page.onRendered(function () {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   $('body').css('overflow-y', 'hidden');
+  Session.set('login_clicked', false);
+  Session.set('popup_appeared', false);
 
   // everything is loaded
   // window.onload = function () {
@@ -39,9 +43,46 @@ Template.landing_page.onRendered(function () {
   //   }, 1000);
   // }
 
+
+  setTimeout(() => {
+      if (Session.get('login_clicked') == false) {
+        $('#marketing_popup2_container').modal('open', {
+          dismissible: false, // Modal can be dismissed by clicking outside of the modal
+          opacity: .5, // Opacity of modal background
+          inDuration: 300, // Transition in duration
+          outDuration: 200, // Transition out duration
+          startingTop: '4%', // Starting top style attribute
+          endingTop: '10%', // Ending top style attribute
+          ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+          },
+          complete: function() {} // Callback for Modal close
+        });
+        Session.set('popup_appeared', true);
+      }
+    }, 10000);
+
+    $(window).scroll(function(){
+      setTimeout(() => {
+          if (Session.get('popup_appeared') == false) {
+            $('#marketing_popup2_container').modal('open', {
+              dismissible: false, // Modal can be dismissed by clicking outside of the modal
+              opacity: .5, // Opacity of modal background
+              inDuration: 300, // Transition in duration
+              outDuration: 200, // Transition out duration
+              startingTop: '4%', // Starting top style attribute
+              endingTop: '10%', // Ending top style attribute
+              ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+              },
+              complete: function() {} // Callback for Modal close
+            });
+            Session.set('popup_appeared', true);
+          }
+        }, 2000);
+    })
+
+
   setTimeout(() => {
     $('body').css('overflow-y', 'scroll');
-    $(document).scrollTop(0);
     $('.loader-wrapper').fadeOut('slow');
     $('.slogan').removeClass('notloaded');
 
@@ -56,6 +97,7 @@ Template.landing_page.onRendered(function () {
     $('.vet_photo .changing').click(function(){
       alert('asfhsdjfg');
     });
+    window.scrollTo(0,0);
   }, 1000);
 
   var options = [{
@@ -83,12 +125,15 @@ Template.landing_page.onRendered(function () {
 
 Template.landing_page.events({
   'click .chef_signup': function() {
-    Session.set('chef_signup',true);
+
+  },
+  'click .login_icon': function() {
+    Session.set('login_clicked', true);
   },
   'click .logo': function() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
+  },
 })
 
 Template.landing_page.helpers({

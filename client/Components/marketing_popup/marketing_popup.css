@@ -1,0 +1,302 @@
+#marketing_popup_container {
+  width: 30vw;
+  border-radius: 20px;
+  min-height: 445px;
+  min-width: 664px;
+}
+
+#marketing_popup2_container {
+  width: 55vw;
+  height: 90%;
+  border-radius: 20px;
+}
+
+#marketing_modal_container {
+  height: 100%;
+}
+
+.marketing_popup_btn {
+  width: 120px !important;
+}
+
+.marketing_image_wrapper {
+  background-color: #DAECF3;
+}
+
+
+
+@media(min-width: 600px) {
+  .marketing_image_wrapper {
+    background-color: #DAECF3;
+    height: 100%;
+  }
+
+  .marketing_modal_content {
+    height: 100%;
+  }
+
+  .marketing_modal {
+    height: 100%;
+  }
+}
+
+.add_padding {
+  padding: 20%;
+  width: 100%
+}
+
+.add-margin-top {
+  margin-top: 37px !important;
+}
+
+.image_wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+#imgchefs0 {
+  top: -100vh;
+  -webkit-animation: tomato 0.6s ease-out 0.8s; /* Safari 4.0 - 8.0 */
+  animation: tomato 0.6s ease-out 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width:600px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+
+  @keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+}
+
+
+@media (min-width:601px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 20vh }
+  }
+
+  @keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 20vh }
+  }
+}
+
+@media (min-width:1024px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 10vh }
+  }
+
+  @keyframes tomato {
+    0%   { top: -100vh }
+    100% { top: 10vh }
+  }
+}
+
+#imgchefs1, #imgfoodies1 {
+  top: -100vh;
+  -webkit-animation: earth 0.6s ease-out 0.8s; /* Safari 4.0 - 8.0 */
+  animation: earth 0.6s ease-out 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width:600px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+
+  @keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+}
+
+
+@media (min-width:601px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 15vh }
+  }
+
+  @keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 15vh }
+  }
+}
+
+@media (min-width:1024px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 2vh }
+  }
+
+  @keyframes earth {
+    0%   { top: -100vh }
+    100% { top: 2vh }
+  }
+}
+
+#imgfoodies0 {
+  top: -100vh;
+  -webkit-animation: banana 0.6s ease-out 0.8s; /* Safari 4.0 - 8.0 */
+  animation: banana 0.6s ease-out 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width:600px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+
+  @keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+}
+
+
+@media (min-width:601px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 19vh }
+  }
+
+  @keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 19vh }
+  }
+}
+
+@media (min-width:1024px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 7vh }
+  }
+
+  @keyframes banana {
+    0%   { top: -100vh }
+    100% { top: 7vh }
+  }
+}
+
+#imgchefs2 {
+  top: -100vh;
+  -webkit-animation: orange 0.6s ease-out 0.8s; /* Safari 4.0 - 8.0 */
+  animation: orange 0.6s ease-out 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width:600px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+
+  @keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 0vh }
+  }
+}
+
+
+@media (min-width:601px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 19vh }
+  }
+
+  @keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 19vh }
+  }
+}
+
+@media (min-width:1024px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 7vh }
+  }
+
+  @keyframes orange {
+    0%   { top: -100vh }
+    100% { top: 7vh }
+  }
+}
+
+#imgfoodies2 {
+  bottom: -100%;
+  height: auto;
+  width: 100%;
+  -webkit-animation: flower 0.6s ease-out 0.8s; /* Safari 4.0 - 8.0 */
+  animation: flower 0.6s ease-out 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width:600px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes flower {
+    0%   { bottom: 100vh }
+    100% { bottom: 0vh }
+  }
+
+  @keyframes flower {
+    0%   { bottom: 100vh }
+    100% { bottom: 0vh }
+  }
+}
+
+
+@media (min-width:601px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes flower {
+    0%   { bottom: 100vh }
+    100% { bottom: 19vh }
+  }
+
+  @keyframes flower {
+    0%   { bottom: 100vh }
+    100% { bottom: 19vh }
+  }
+}
+
+@media (min-width:1024px) {
+  /* Safari 4.0 - 8.0 */
+  @-webkit-keyframes flower {
+    0%   { bottom: 100% }
+    100% { bottom: 0%}
+  }
+
+  @keyframes flower {
+    0%   { bottom: 100% }
+    100% { bottom: 0%}
+  }
+}
+
+#district_selection {
+  border-radius: 20px !important;
+  border-color: #EB5F55;
+  font-size: 18px;
+  background-color: transparent;
+  padding-left: 10px;
+  padding-right: 10px;
+}
