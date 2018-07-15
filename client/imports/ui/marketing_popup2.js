@@ -15,6 +15,8 @@ export default class MarketingPopup2 extends Component {
     this.handleChooseFoodie = this.handleChooseFoodie.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDistrictChange =this.handleDistrictChange.bind(this);
+    this.handleDistrictConfirm = this.handleDistrictConfirm.bind(this);
+    this.handleSignUpBack = this.handleSignUpBack.bind(this);
     this.state = {
       foodiesYes: 0,
       chefsYes: 0,
@@ -92,7 +94,18 @@ export default class MarketingPopup2 extends Component {
   handleDistrictChange = (event) => {
     this.setState({
       district: event.target.value,
-      stage: 'signUp',
+    })
+  }
+
+  handleDistrictConfirm = () => {
+    this.setState({
+      stage: 'signUp'
+    })
+  }
+
+  handleSignUpBack() {
+    this.setState({
+      stage: 'chooseDistrict',
     })
   }
 
@@ -219,7 +232,8 @@ export default class MarketingPopup2 extends Component {
     switch (this.state.stage) {
       case 'popup':
         return (
-          <div id="marketing_modal_container" >
+          <div id="marketing_modal_container">
+            <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i className="black-text medium material-icons">close</i></button>
               <div className = "no-margin row marketing_modal">
                 <div className = "marketing_image_wrapper col l6 m6 s12 hide-on-large-only">
                   <img
@@ -283,6 +297,7 @@ export default class MarketingPopup2 extends Component {
       case 'callToAction':
         return (
           <div className = "modal-content marketing_modal_content valign-wrapper">
+            <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i className="black-text medium material-icons">close</i></button>
             <div className = "container">
               <h4 className = "bp-red-text center-align">Awesome! Then let’s have the best of both worlds!</h4>
               <div className = "row add-margin-top">
@@ -297,6 +312,7 @@ export default class MarketingPopup2 extends Component {
       case 'chooseRole':
         return (
           <div className = "modal-content marketing_modal_content valign-wrapper">
+            <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i className="black-text medium material-icons">close</i></button>
             <div className = "container">
               <div className = "row">
                 <h5 className = "bp-red-text center-align">Thanks for showing your interest to join the food revolution! Lets make Blueplate a reality in your district!</h5>
@@ -305,7 +321,7 @@ export default class MarketingPopup2 extends Component {
                 <h2 className = "bp-red-text center-align">Do you love making food, or you rather prefer eating?</h2>
               </div>
               <div className = "row">
-                <h5 className = "bp-red-text center-align">I am</h5>
+                <h5 className = "bp-red-text center-align">I am a</h5>
               </div>
               <div className = "row">
                 <div className = "col l6 m6 s6">
@@ -322,6 +338,7 @@ export default class MarketingPopup2 extends Component {
       case 'chooseDistrict':
         return (
           <div className = "modal-content marketing_modal_content valign-wrapper">
+          <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i className="black-text medium material-icons">close</i></button>
             <div className = "container">
               <div className = "row">
                 <h5 className = "bp-red-text center-align">Get Blueplate to your district</h5>
@@ -329,8 +346,8 @@ export default class MarketingPopup2 extends Component {
               <div className = "row">
                 <h2 className = "bp-red-text center-align">Which district do you live in?</h2>
               </div>
-              <div>
-                <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={this.props.cat_selected}>
+              <div className = "row">
+                <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={(this.state.district)?this.state.district:""}>
                   <option value="">Choose a district</option>
                   {
                     districts.map((item, index) => {
@@ -341,17 +358,26 @@ export default class MarketingPopup2 extends Component {
                   }
                 </select>
               </div>
+              <div className = "row">
+                <div className = "col s12 m12 l12 center">
+                  <button className = "btn bp-red marketing_popup_btn center-align" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
+                </div>
+              </div>
             </div>
           </div>
         )
         break;
       case 'signUp':
         return (
-          <SignUp
-            title = "One last step! Just fill your information to sign up now."
-            district = {this.state.district}
-            role = {this.state.chooseRole}
-          />
+          <div className = "modal-content marketing_modal_content valign-wrapper">
+            <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i className="black-text medium material-icons">close</i></button>
+            <SignUp
+              title = "One last step! Just fill your information to sign up now."
+              district = {this.state.district}
+              role = {this.state.chooseRole}
+              handleBack = {this.handleSignUpBack}
+            />
+          </div>
         )
         break;
     }
