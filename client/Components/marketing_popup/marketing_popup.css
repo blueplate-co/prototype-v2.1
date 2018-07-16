@@ -16,18 +16,18 @@
 }
 
 .marketing_popup_btn {
-  width: 120px !important;
+  width: 148px !important;
 }
 
 .marketing_image_wrapper {
-  background-color: #DAECF3;
+  background-color: #56AACD;
 }
 
 
 
 @media(min-width: 600px) {
   .marketing_image_wrapper {
-    background-color: #DAECF3;
+    background-color: #56AACD;
     height: 100%;
   }
 

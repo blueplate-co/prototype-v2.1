@@ -13,6 +13,7 @@ Order_ratings = new Mongo.Collection('order_ratings');
 DishesViews = new Mongo.Collection('dishes_views');
 MenusViews = new Mongo.Collection('menu_views');
 KitchenViews = new Mongo.Collection('kitchen_views');
+Popup_tracking = new Mongo.Collection('popup_tracking');
 
 Images = new FilesCollection({
   collectionName: 'Images',

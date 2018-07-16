@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Accounts } from 'meteor/accounts-base';
 
@@ -45,8 +46,6 @@ export default class SignUp extends Component {
   }
 
   handleSignUp = () => {
-    this.setState({stage: 'verification'});
-
     var trimInput = function(value){
       return value.replace(/^\s*|\s*$/g,"");
     }
@@ -126,7 +125,10 @@ export default class SignUp extends Component {
               Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                 if (!err) {
                   //- create Stripe user id for that user register
+                  this.setState({stage: 'verification'});
                   Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+                } else {
+                  Bert.alert(err.reason,"danger", "growl-top-right");
                 }
               });
             }
@@ -164,12 +166,22 @@ export default class SignUp extends Component {
                   <input id="signup_cpassword" name="cpassword" type="password" className="validate" value = {this.state.confirmPassword} onChange = {this.confirmPassword}/>
                   <label htmlFor="signup_cpassword">Confirm your Password</label>
                 </div>
-              </div>
-
-              <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a>, <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</small></p>
-              <div className="right">
-                <div className="modal_buttons">
-                  <button className="waves-effect waves-red btn right bp-red signup_submit_btn" id="signup" type="submit" onClick = {this.handleSignUp}>Sign up</button>
+                <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a>, <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</small></p>
+                <div className = "col l6 m6 s12 center">
+                  <button className="btn bp-red marketing_popup_btn add-margin-top" onClick = {this.props.handleBack}>back</button>
+                </div>
+                <div className = "col l6 m6 s12 center">
+                  <button
+                    className="btn bp-red marketing_popup_btn add-margin-top"
+                    type="submit"
+                    onClick = {this.handleSignUp}
+                    disabled = {
+                      (this.state.fullName && this.state.email && this.state.password && this.state.confirmPassword)?
+                        false
+                      :
+                        true
+                      }
+                  >Sign up</button>
                 </div>
               </div>
             </div>
@@ -178,13 +190,11 @@ export default class SignUp extends Component {
         break;
       case 'verification':
         return (
-          <div className = "marketing_modal_content valign-wrapper">
-            <div className = "container">
-              <h4 className = "bp-red-text center-align">Thanks for signing up!</h4>
-              <h6 className = "bp-red-text center-align">A verification email has been sent to your email address. Please verify your account by clicking the link in the email.</h6>
-              <h6 className = "bp-red-text center-align">If you don't see our verification email coming in, don't forget to check your junk/spam mailbox.</h6>
-              <p className = "bp-red-text center-align"><small>Haven't received our verification email yet? Click <a href="#" onClick = {this.handleResend}>here</a> to resend.</small></p>
-            </div>
+          <div className = "container">
+            <h5 className = "bp-red-text center-align">Thanks for signing up!</h5>
+            <h5 className = "bp-red-text center-align">A verification email has been sent to your email address. Please verify your account by clicking the link in the email.</h5>
+            <h5 className = "bp-red-text center-align">If you don't see our verification email coming in, don't forget to check your junk/spam mailbox.</h5>
+            <p className = "bp-red-text center-align"><small>Haven't received our verification email yet? Click <a href="#" onClick = {this.handleResend}>here</a> to resend.</small></p>
           </div>
         )
         break;
