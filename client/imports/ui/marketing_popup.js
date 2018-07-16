@@ -27,6 +27,7 @@ export default class MarketingPopup extends Component {
       stage: 'popup',
       chooseRole: '',
       district: '',
+      startTime: new Date(),
     }
   }
 
@@ -43,11 +44,7 @@ export default class MarketingPopup extends Component {
         chefsYes: this.state.chefsYes + 1,
         No: 0
       })
-    } else {
       this.setState({
-        foodiesYes: 0,
-        chefsYes: 0,
-        No: 0,
         stage: 'callToAction',
       })
     }
@@ -90,6 +87,11 @@ export default class MarketingPopup extends Component {
   }
 
   handleClose = () => {
+    this.setState({
+      foodiesYes: 0,
+      chefsYes: 0,
+      No: 0,
+    })
     $('#marketing_popup2_container').modal('close');
     Meteor.call(
       'popup_tracking.insert',
@@ -99,7 +101,8 @@ export default class MarketingPopup extends Component {
       this.state.path,
       this.state.stage,
       this.state.chooseRole,
-      this.state.district
+      this.state.district,
+      this.state.startTime
     )
   }
 

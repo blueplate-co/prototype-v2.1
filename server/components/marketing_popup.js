@@ -8,9 +8,10 @@ import {
 Popup_tracking = new Mongo.Collection('popup_tracking');
 
 Meteor.methods({
-  'popup_tracking.insert'(foodiesYes, chefsYes, No, path, stage, role, district) {
+  'popup_tracking.insert'(foodiesYes, chefsYes, No, path, stage, role, district, startTime) {
     var clientIP = this.connection.clientAddress;
     Popup_tracking.insert({
+      ip: clientIP,
       foodiesYes: foodiesYes,
       chefsYes: chefsYes,
       No: No,
@@ -18,7 +19,8 @@ Meteor.methods({
       stage: stage,
       role: role,
       district: district,
-      createdAt: new Date()
+      createdAt: startTime,
+      exitedAt: new Date()
     });
   }
 })
