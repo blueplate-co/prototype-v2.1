@@ -405,7 +405,7 @@ export default class MarketingPopup extends Component {
                   <button className = "btn bp-red marketing_popup_btn center-align" onClick = {this.handleDistrictBack}>back</button>
                 </div>
                 <div className = "col s12 m6 l6 center">
-                  <button className = "btn bp-red marketing_popup_btn center-align" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
+                  <button className = "btn bp-red marketing_popup_btn center-align add-margin-top" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
                 </div>
               </div>
             </div>
