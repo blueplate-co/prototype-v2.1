@@ -798,7 +798,7 @@
   margin: 0px;
   line-height: 1.9rem;
   vertical-align: middle;
-  padding: 5px;
+  padding: 10px 20px;
   display: inline-flex;
 }
 
@@ -812,7 +812,13 @@
 
 .list-filter-content-location li:hover {
   cursor: pointer;
-  background-color: transparent;
+  background-color: rgba(74, 159, 195, 0.28);
+  color: #000;
+}
+
+.list-filter-content-location li.active {
+  cursor: pointer;
+  background-color: rgba(74, 159, 195, 0.28);
   color: #000;
 }
 

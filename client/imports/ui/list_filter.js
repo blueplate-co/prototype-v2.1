@@ -11,10 +11,15 @@ export default class ListFilter extends Component {
         super(props);
     }
 
+    // filter all with criteria
+    filter() {
+        console.log('Run filter now');
+    }
+
     render() {
         return (
             <div className="filter-list">
-                <LocationFilter />
+                <LocationFilter actionFilter={this.filter}/>
                 {/* <DateFilter />
                 <TimeFilter />
                 <ServingOptionFilter /> */}

@@ -315,6 +315,7 @@ class TopNavigation extends Component {
         result.menu = menuIndex.search(queryString).mongoCursor.fetch();
         result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
         Session.set('search_result', result);
+        Session.set('search_result_origin', result);
         FlowRouter.go('/search');
       } else {
         Materialize.toast('Your keyword must longer than 2 characters',4000,"rounded bp-green");
