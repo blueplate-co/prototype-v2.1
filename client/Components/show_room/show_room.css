@@ -776,7 +776,7 @@
   color: #fff;
 }
 
-.filter-list li:first-child {
+.filter-list > li:first-child {
   border-radius: 5px;
   padding: 10px 25px;
   border: 1px solid #ccc;
@@ -790,4 +790,42 @@
   border: 1px solid #ccc;
   display: inline-block;
   margin: 0px 10px;
+}
+
+.list-filter-content-location li {
+  border: none;
+  width: 100%;
+  margin: 0px;
+  line-height: 1.9rem;
+  vertical-align: middle;
+  padding: 5px;
+  display: inline-flex;
+}
+
+.list-filter-content-location li:before {
+  content:url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg');
+  position:relative;
+  height: 30px;
+  top: 1px;
+  left: -5px;
+}
+
+.list-filter-content-location li:hover {
+  cursor: pointer;
+  background-color: transparent;
+  color: #000;
+}
+
+#PlacesAutocomplete__root {
+  width: 100%;
+}
+
+#PlacesAutocomplete__root input {
+  padding: 0px!important;
+  margin: 0px;
+  height: 30px;
+}
+
+#PlacesAutocomplete_autocomplete-container {
+  top: 175%!important;
 }

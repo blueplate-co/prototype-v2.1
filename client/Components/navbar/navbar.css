@@ -225,12 +225,6 @@ ul.right .icon {
   font-size: 18px;
 }
 
-#PlacesAutocomplete__autocomplete-container {
-  z-index: 999 !important;
-  background-color: #fff;
-  margin-top: -20px;
-}
-
 #chat-panel {
   position: fixed;
   bottom: -350px;
