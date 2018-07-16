@@ -17,6 +17,7 @@ export default class MarketingPopup extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleDistrictChange =this.handleDistrictChange.bind(this);
     this.handleDistrictConfirm = this.handleDistrictConfirm.bind(this);
+    this.handleDistrictBack = this.handleDistrictBack.bind(this);
     this.handleSignUpBack = this.handleSignUpBack.bind(this);
     this.state = {
       foodiesYes: 0,
@@ -44,6 +45,7 @@ export default class MarketingPopup extends Component {
         chefsYes: this.state.chefsYes + 1,
         No: 0
       })
+    } else {
       this.setState({
         stage: 'callToAction',
       })
@@ -118,6 +120,12 @@ export default class MarketingPopup extends Component {
     })
   }
 
+  handleDistrictBack() {
+    this.setState({
+      stage: 'chooseRole',
+    })
+  }
+
   handleSignUpBack() {
     this.setState({
       stage: 'chooseDistrict',
@@ -164,9 +172,18 @@ export default class MarketingPopup extends Component {
     ];
 
     const reject = [
-      "Are you sure? Let's do it again.",
-      "Are you really sure? Let's try one more time.",
-      "Very well! Have a nice day. Come back and visit when you want to join the food revolution."
+      {
+        description: "Are you sure? Let's do it again.",
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/962_jjnsixom.png"
+      },
+      {
+        description: "Are you really sure? Let's try one more time.",
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/14_jjnspwhu.png"
+      },
+      {
+        description: "Very well! Have a nice day. Come back and visit when you want to join the food revolution.",
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/911_jjnst0ap.png"
+      },
     ];
 
     const districts = [
@@ -251,17 +268,22 @@ export default class MarketingPopup extends Component {
             <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup" onClick={this.handleClose}><i className="black-text medium material-icons">close</i></button>
               <div className = "no-margin row marketing_modal">
                 <div className = "marketing_image_wrapper col l6 m6 s12 hide-on-large-only">
+                {
+                  (this.state.restart) ?
+                  <img className = "image_wrapper" src = {reject[this.state.No - 1].img_link} />
+                  :
                   <img
                     className = "image_wrapper image_drop"
                     id= { (this.state.path == "chefs") ? "img" + this.state.path + this.state.chefsYes : "img" + this.state.path + this.state.foodiesYes }
                     src={ (this.state.path == "chefs") ? chefsYes[this.state.chefsYes].img_link : foodiesYes[this.state.foodiesYes].img_link }
                   />
+                }
                 </div>
                 <div className = "col l6 m6 s12 marketing_modal_content valign-wrapper">
                   <div className = "modal-content">
                   {
                     (this.state.restart) ?
-                      <h4 className = "bp-red-text center-align">{reject[this.state.No - 1]}</h4>
+                      <h4 className = "bp-red-text center-align">{reject[this.state.No - 1].description}</h4>
                       :
                       <h4 className = "bp-red-text center-align">
                         {
@@ -299,11 +321,16 @@ export default class MarketingPopup extends Component {
                 </div>
               </div>
               <div className = "marketing_image_wrapper col l6 m6 s12 hide-on-med-and-down">
-                <img
-                  className = "image_wrapper image_drop"
-                  id= { (this.state.path == "chefs") ? "img" + this.state.path + this.state.chefsYes : "img" + this.state.path + this.state.foodiesYes }
-                  src={ (this.state.path == "chefs") ? chefsYes[this.state.chefsYes].img_link : foodiesYes[this.state.foodiesYes].img_link }
-                />
+              {
+                (this.state.restart) ?
+                  <img className = "image_wrapper" src = {reject[this.state.No - 1].img_link} />
+                :
+                  <img
+                    className = "image_wrapper image_drop"
+                    id= { (this.state.path == "chefs") ? "img" + this.state.path + this.state.chefsYes : "img" + this.state.path + this.state.foodiesYes }
+                    src={ (this.state.path == "chefs") ? chefsYes[this.state.chefsYes].img_link : foodiesYes[this.state.foodiesYes].img_link }
+                  />
+                }
               </div>
             </div>
           </div>
@@ -374,7 +401,10 @@ export default class MarketingPopup extends Component {
                 </select>
               </div>
               <div className = "row">
-                <div className = "col s12 m12 l12 center">
+                <div className = "col s12 m6 l6 center">
+                  <button className = "btn bp-red marketing_popup_btn center-align" onClick = {this.handleDistrictBack}>back</button>
+                </div>
+                <div className = "col s12 m6 l6 center">
                   <button className = "btn bp-red marketing_popup_btn center-align" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
                 </div>
               </div>

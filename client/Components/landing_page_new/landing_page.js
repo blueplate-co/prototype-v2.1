@@ -59,7 +59,7 @@ Template.landing_page.onRendered(function () {
         });
         Session.set('popup_appeared', true);
       }
-    }, 10000);
+    }, 5000);
 
     $(window).scroll(function(){
       setTimeout(() => {
