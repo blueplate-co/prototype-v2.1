@@ -46,6 +46,7 @@ export default class SignUp extends Component {
   }
 
   handleSignUp = () => {
+    const self = this;
     var trimInput = function(value){
       return value.replace(/^\s*|\s*$/g,"");
     }
@@ -124,8 +125,8 @@ export default class SignUp extends Component {
             } else {
               Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                 if (!err) {
+                  self.setState({stage: 'verification'});
                   //- create Stripe user id for that user register
-                  this.setState({stage: 'verification'});
                   Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                 } else {
                   Bert.alert(err.reason,"danger", "growl-top-right");
