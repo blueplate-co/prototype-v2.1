@@ -21,6 +21,9 @@
 
 .marketing_image_wrapper {
   background-color: #56AACD;
+  display: table-cell!important;
+  vertical-align: middle;
+  text-align: center;
 }
 
 
@@ -29,6 +32,9 @@
   .marketing_image_wrapper {
     background-color: #56AACD;
     height: 100%;
+    display: table-cell!important;
+    vertical-align: middle;
+    text-align: center;
   }
 
   .marketing_modal_content {
@@ -53,6 +59,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
+  margin-top: 35%;
 }
 
 #imgchefs0 {

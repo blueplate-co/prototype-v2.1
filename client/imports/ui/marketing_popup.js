@@ -137,11 +137,11 @@ export default class MarketingPopup extends Component {
     const chefsYes = [
       {
         description: "Blueplate is a platform that allows you to earn money while cooking. Would you like that?",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/655_jja06gsa.png"
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/original/original/655_jja06gsa.png"
       },
       {
         description: "Blueplate also lets you save the world while cooking great food. Would you like to be a part of this too? ",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/796_jj9m8wkd.png"
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/original/original/796_jj9m8wkd.png"
       },
 {/**      {
         description: "Awesome! Then let’s have the best of both worlds!",
@@ -156,11 +156,11 @@ export default class MarketingPopup extends Component {
     const foodiesYes = [
       {
         description: "Blueplate is a platform that allows you to eat delicious homemade food all the time. Would you like that?",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/193_jj9p3opu.png"
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/193_jj9p3opu.png"
       },
       {
         description: "Blueplate also lets you save the world while eating great food. Would you like to be a part of this?",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/796_jj9m8wkd.png"
+        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/796_jj9m8wkd.png"
       },
 {/**      {
         description: "Awesome! Then let’s have the best of both worlds! ",
