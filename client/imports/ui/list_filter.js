@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import LocationFilter from './location_filter';
+import LocationFilter from './location_filter';
 // import DateFilter from './date_filter';
 // import TimeFilter from './time_filter';
 // import ServingOptionFilter from './serving_option_filter';
@@ -9,6 +9,7 @@ export default class ListFilter extends Component {
 
     constructor(props) {
         super(props);
+        this.filter = this.filter.bind(this);
     }
 
     // check the location of point is near
@@ -25,14 +26,39 @@ export default class ListFilter extends Component {
 
     // filter all with criteria
     filter() {
+        let dishes = Session.get('search_result_origin').dish;
+        let result_dish = [];
+        let result_menu = [];
+        let result_kitchen = [];
+        if (Session.get('filterGeolocation')) {
+            // filter geolocation for dish
+            for (var i = 0 ; i < dishes.length; i++) {
+                let user_kitchen_id = dishes[i].user_id;
+                let dish_location = Kitchen_details.findOne({ user_id: 'dtEXaueTAWdTJj9Ys' }).kitchen_address_conversion;
+                // nearby 10km
+                if (this.arePointsNear(dish_location, Session.get('filterGeolocation'), 1000)) {
+                    result_dish.push(dishes[i]);
+                }
+            }
+        }
 
-        console.log('Run filter now');
+        // collection all filtered data after run search filter
+        let result = {
+            dish: [],
+            menu: [],
+            kitchen: []
+        }
+        result.dish = result_dish;
+        result.menu = result_menu;
+        result.kitchen = result_kitchen;
+        // immutability for search_result_origin, use this filter effect for session search_result
+        Session.set('search_result', result);
     }
 
     render() {
         return (
             <div className="filter-list">
-                {/* <LocationFilter actionFilter={this.filter}/> */}
+                <LocationFilter actionFilter={this.filter}/>
                 {/* <DateFilter />
                 <TimeFilter />
                 <ServingOptionFilter /> */}
