@@ -18,6 +18,7 @@ export default class SignUp extends Component {
       password:'',
       confirmPassword: '',
       stage: 'sign up',
+      signUpLoading: false,
     }
   }
 
@@ -47,6 +48,9 @@ export default class SignUp extends Component {
 
   handleSignUp = () => {
     const self = this;
+    self.setState({
+      signUpLoading: true
+    })
     var trimInput = function(value){
       return value.replace(/^\s*|\s*$/g,"");
     }
@@ -126,7 +130,7 @@ export default class SignUp extends Component {
             } else {
               Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                 if (!err) {
-                  self.setState({stage: 'verification'});
+                  self.setState({stage: 'verification', signUpLoading: false,});
                   //- create Stripe user id for that user register
                   Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                 } else {
@@ -170,7 +174,16 @@ export default class SignUp extends Component {
                 </div>
                 <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a>, <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</small></p>
                 <div className = "col l6 m6 s12 center">
-                  <button className="btn bp-red marketing_popup_btn add-margin-top" onClick = {this.props.handleBack}>back</button>
+                  <button
+                    className="btn bp-red marketing_popup_btn add-margin-top"
+                    onClick = {this.props.handleBack}
+                    disabled = {
+                      (this.state.signUpLoading)?
+                        true
+                      :
+                        false
+                    }
+                  >back</button>
                 </div>
                 <div className = "col l6 m6 s12 center">
                   <button
@@ -179,11 +192,14 @@ export default class SignUp extends Component {
                     onClick = {this.handleSignUp}
                     disabled = {
                       (this.state.fullName && this.state.email && this.state.password && this.state.confirmPassword)?
-                        false
+                        (this.state.signUpLoading) ?
+                          true
+                        :
+                          false
                       :
                         true
                       }
-                  >Sign up</button>
+                  >{(this.state.signUpLoading)?"Loading...":"Sign up"}</button>
                 </div>
               </div>
             </div>
