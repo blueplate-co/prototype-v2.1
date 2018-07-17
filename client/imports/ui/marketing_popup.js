@@ -62,8 +62,9 @@ export default class MarketingPopup extends Component {
 
   handleRestart = () => {
     this.setState({
-      chefsYes: 1,
-      foodiesYes: 1,
+      // chefsYes: 1,
+      // foodiesYes: 1,
+      stage: 'popup',
       restart: false,
     })
   }
