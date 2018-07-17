@@ -9,6 +9,40 @@ export default class ProgressiveImages extends Component {
         }
     }
 
+    componentWillReceiveProps = () => {
+        var placeholder = document.querySelector('.placeholder');
+        var that = this;
+
+        // 1: load small image and show it
+        var img = new Image();
+        img.src = this.props.small;
+        img.onload = function () {
+            that.setState({
+                background: that.props.small
+            },() => {
+                // loaded
+            })
+        };
+
+        // 2: load large image
+        if (placeholder.dataset) {
+            var imgLarge = new Image();
+            imgLarge.src = placeholder.dataset.large;
+            imgLarge.onload = function () {
+                setTimeout(() => {
+                    that.setState({
+                        background: that.props.large
+                    },() => {
+                        that.setState({
+                            loaded: true
+                        })
+                        // loaded
+                    })
+                }, 1000);
+            };
+        }
+    }
+
     componentDidMount = () => {
         var placeholder = document.querySelector('.placeholder');
         var that = this;
