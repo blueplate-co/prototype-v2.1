@@ -315,6 +315,7 @@ class TopNavigation extends Component {
         result.menu = menuIndex.search(queryString).mongoCursor.fetch();
         result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
         Session.set('search_result', result);
+        Session.set('search_result_origin', result);
         FlowRouter.go('/search');
       } else {
         Materialize.toast('Your keyword must longer than 2 characters',4000,"rounded bp-green");
@@ -389,7 +390,7 @@ class TopNavigation extends Component {
                 <ul className="left">
                   <li>
                     <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
-                    <button className="btn nearby">Nearby</button>
+                    {/* <button className="btn nearby">Nearby</button> */}
                   </li>
                 </ul>
                 <ul className="right">
