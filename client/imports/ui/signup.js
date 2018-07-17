@@ -118,6 +118,7 @@ export default class SignUp extends Component {
               name: full_name,
               chef_signup: chef_signup,
               foodie_signup: foodie_signup,
+              district: district,
             }
           }, function(err){
             if(err){
@@ -138,7 +139,7 @@ export default class SignUp extends Component {
         return false;
       }
 
-  handleResend() {
+  handleResend = () => {
     Meteor.call('sendVerificationEmail', Meteor.userId());
   }
 
