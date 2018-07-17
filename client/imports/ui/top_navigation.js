@@ -390,7 +390,7 @@ class TopNavigation extends Component {
                 <ul className="left">
                   <li>
                     <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
-                    <button className="btn nearby">Nearby</button>
+                    {/* <button className="btn nearby">Nearby</button> */}
                   </li>
                 </ul>
                 <ul className="right">

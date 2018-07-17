@@ -150,6 +150,9 @@ export default class LocationFilter extends Component {
             }
             Session.set('filterGeolocation', geolocation);
             this.props.actionFilter();
+            this.setState({
+                popup: false
+            })
         }
     }
 
