@@ -21,7 +21,6 @@
 
 .marketing_image_wrapper {
   background-color: #56AACD;
-  display: table-cell!important;
   vertical-align: middle;
   text-align: center;
 }
@@ -32,7 +31,6 @@
   .marketing_image_wrapper {
     background-color: #56AACD;
     height: 100%;
-    display: table-cell!important;
     vertical-align: middle;
     text-align: center;
   }

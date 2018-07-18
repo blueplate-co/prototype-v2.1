@@ -22,7 +22,7 @@ Meteor.methods({
           {
             $set: {
               stripe_id: result.id,
-              credits: 0,
+              credits: 50,
             },
           }
         );
