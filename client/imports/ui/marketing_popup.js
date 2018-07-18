@@ -137,11 +137,11 @@ export default class MarketingPopup extends Component {
     const chefsYes = [
       {
         description: "Blueplate is a platform that allows you to earn money while cooking. Would you like that?",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/original/original/655_jja06gsa.png"
+        img_link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/original/655_jja06gsa.png"
       },
       {
         description: "Blueplate also lets you save the world while cooking great food. Would you like to be a part of this too? ",
-        img_link: "https://blueplate-images.s3.ap-southeast-1.amazonaws.com/original/original/796_jj9m8wkd.png"
+        img_link: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/original/796_jj9m8wkd.png"
       },
 {/**      {
         description: "Awesome! Then let’s have the best of both worlds!",
