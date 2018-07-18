@@ -25,7 +25,7 @@ Accounts.emailTemplates.verifyEmail = {
  text(user,url) {
    let  emailAddress   = user.emails[0].address,
         urlWithoutHash = url.replace( '#/', '' ),
-        emailBody      = `Hi there,\n\n Thank you for joining us. Greeting present to give you is 50 credits. To verify your email address (${emailAddress}), visit the following link:\n\n${urlWithoutHash}\n\n See you around! \n\n Best,\nAlan`;
+        emailBody      = `Hi there,\n\n Thank you for joining us. To verify your email address (${emailAddress}), visit the following link:\n\n${urlWithoutHash}\n\n See you around! \n\n Best,\nAlan`;
 
  return emailBody;
  }
