@@ -341,7 +341,7 @@ export default class MarketingPopup extends Component {
         return (
           <div className = "modal-content marketing_modal_content valign-wrapper">
             <button className="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup" onClick={this.handleClose}><i className="black-text medium material-icons">close</i></button>
-            <div className = "container" style={{ transform: 'translateY(45%)'}}>
+            <div className = "container">
               <h4 className = "bp-red-text center-align">Awesome! Then let’s have the best of both worlds!</h4>
               <div className = "row add-margin-top">
                 <div className = "col l12 m12 s12 center">
