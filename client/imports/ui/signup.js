@@ -60,6 +60,7 @@ export default class SignUp extends Component {
         return true;
       }
       Bert.alert("Email or password fields cannot be blank", "danger", "growl-top-right");
+      self.setState({signUpLoading: false});
       return false;
     }
     //Email Validation
@@ -69,12 +70,14 @@ export default class SignUp extends Component {
         return true;
       }
       Bert.alert("Please use a valid email address","danger","growl-top-right")
+      self.setState({signUpLoading: false});
       return false;
     }
     //Check Password fields
     isValidPassword=function(password){
       if(password.length < 8){
-      Bert.alert("Password must be greater than 8 charaters", "danger","growl-top-right");
+        Bert.alert("Password must be greater than 8 charaters", "danger","growl-top-right");
+        self.setState({signUpLoading: false});
         return false;
       }
         return true;
@@ -86,6 +89,7 @@ export default class SignUp extends Component {
       }
       if(password !== cpassword){
         Bert.alert("Password and confirm password mismatch. Please try again !","danger","growl-top-right");
+        self.setState({signUpLoading: false});
         return false;
       }
         return true;
@@ -126,6 +130,7 @@ export default class SignUp extends Component {
             }
           }, function(err){
             if(err){
+              self.setState({signUpLoading: false});
               Bert.alert(err.reason,"danger", "growl-top-right");
             } else {
               Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
@@ -134,6 +139,7 @@ export default class SignUp extends Component {
                   //- create Stripe user id for that user register
                   Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                 } else {
+                  self.setState({signUpLoading: false});
                   Bert.alert(err.reason,"danger", "growl-top-right");
                 }
               });
