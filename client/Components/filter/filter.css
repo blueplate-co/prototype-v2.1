@@ -95,7 +95,6 @@
 }
 
 .time-filter {
-    margin-left: 0px!important;
     position: relative;
 }
 
@@ -105,9 +104,10 @@
 }
 
 .time-popup-wrapper {
-    margin-top: 0px;
+    margin-top: 10px;
     width: 250px!important;
     min-width: 250px!important;
+    left: 0px;
 }
 
 .time-popup-wrapper input {
@@ -117,8 +117,42 @@
     display: block;
 }
 
+.date-popup-wrapper {
+    margin-top: 10px;
+    width: 250px!important;
+    min-width: 250px!important;
+    left: 0px;
+}
+
 .filter-popup .btn {
     margin: 5px 0px 5px 0px;
+}
+
+.DayPicker_weekHeader_ul {
+    display: none!important;
+}
+
+.DayPickerKeyboardShortcuts_buttonReset {
+    display: none!important;
+}
+
+.DayPicker_transitionContainer {
+    min-height: 400px!important;
+}
+
+.date-popup-wrapper input {
+    text-align: center;
+    width: 100%!important;
+    margin: 20px auto!important;
+    display: block;
+}
+
+.SingleDatePicker {
+    width: 100%;
+}
+
+.SingleDatePickerInput {
+    width: 100%;
 }
 
 @media only screen and (max-width: 768px) {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import TimePicker from 'rc-time-picker';
-import 'rc-time-picker/assets/index.css';
-const format = 'h:mm a';
 const now = moment().hour(0).minute(0);
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+import 'react-dates/initialize';
 
 // App component - represents the whole app
 export default class DateFilter extends Component {
@@ -12,9 +12,12 @@ export default class DateFilter extends Component {
         super(props);
         this.datePopup = this.datePopup.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.updateDimensions = this.updateDimensions.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.state = {
             popup: false,
+            date: now,
+            focused: false
         }
     }
 
@@ -64,6 +67,20 @@ export default class DateFilter extends Component {
                 {
                     (this.state.popup) ? (
                         <div ref={this.setWrapperRef} className="filter-popup date-popup-wrapper">
+                            <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
+                            <SingleDatePicker
+                                date={this.state.date} // momentPropTypes.momentObj or null
+                                onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
+                                focused={this.state.focused} // PropTypes.bool
+                                onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+                                numberOfMonths={1}
+                                noBorder={true}
+                                id="date-picker-filter" // PropTypes.string.isRequired,
+                            />
+                            <div className="row">
+                                <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
+                                <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
+                            </div>
                         </div>
                     ) : (
                         ""
