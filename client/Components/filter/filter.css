@@ -155,6 +155,41 @@
     width: 100%;
 }
 
+.DateInput {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.list-serving-option li {
+    padding: 15px 20px;
+    width: 100%;
+    margin: 0px;
+    min-height: 40px;
+    border-radius: 0px;
+    border: none;
+    display: inline-flex;
+}
+
+.list-serving-option li:hover {
+    background-color: rgba(74, 159, 195, 0.56);
+}
+
+.serving-option-popup-wrapper {
+    margin-top: 10px;
+    width: 550px!important;
+    min-width: 550px!important;
+    left: 0px;
+}
+
+.serving-option-popup-wrapper .serving-option-title {
+    display: block;
+}
+
 @media only screen and (max-width: 768px) {
     .filter-popup {
         position: absolute;
@@ -176,5 +211,11 @@
         margin-top: 0px;
         width: 100vw!important;
         min-width: 100vw!important;
+    }
+    .serving-option-popup-wrapper {
+        margin-top: 10px;
+        width: 100%!important;
+        min-width: 100%!important;
+        left: 0px;
     }
 }
