@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LocationFilter from './location_filter';
-// import DateFilter from './date_filter';
-// import TimeFilter from './time_filter';
+import DateFilter from './date_filter';
+import TimeFilter from './time_filter';
 // import ServingOptionFilter from './serving_option_filter';
 
 // App component - represents the whole app
@@ -27,19 +27,21 @@ export default class ListFilter extends Component {
     // filter all with criteria
     filter() {
         let dishes = Session.get('search_result_origin').dish;
-        let result_dish = [];
+        let result_dish = []; //init for all dishes in search result from keywords
         let result_menu = [];
         let result_kitchen = [];
+        let number_of_filter = 0;
         if (Session.get('filterGeolocation')) {
             // filter geolocation for dish
             for (var i = 0 ; i < dishes.length; i++) {
                 let user_kitchen_id = dishes[i].user_id;
-                let dish_location = Kitchen_details.findOne({ user_id: 'dtEXaueTAWdTJj9Ys' }).kitchen_address_conversion;
+                let dish_location = Kitchen_details.findOne({ user_id: user_kitchen_id }).kitchen_address_conversion;
                 // nearby 10km
-                if (this.arePointsNear(dish_location, Session.get('filterGeolocation'), 1000)) {
+                if (this.arePointsNear(dish_location, Session.get('filterGeolocation'), 10)) {
                     result_dish.push(dishes[i]);
                 }
             }
+            number_of_filter += 1;
         }
 
         // collection all filtered data after run search filter
@@ -47,6 +49,9 @@ export default class ListFilter extends Component {
             dish: [],
             menu: [],
             kitchen: []
+        }
+        if (number_of_filter == 0) {
+            result_dish = dishes;
         }
         result.dish = result_dish;
         result.menu = result_menu;
@@ -59,9 +64,9 @@ export default class ListFilter extends Component {
         return (
             <div className="filter-list">
                 <LocationFilter actionFilter={this.filter}/>
-                {/* <DateFilter />
+                <DateFilter />
                 <TimeFilter />
-                <ServingOptionFilter /> */}
+                {/* <ServingOptionFilter /> */}
             </div>
         );
     }

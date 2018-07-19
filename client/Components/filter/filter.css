@@ -1,19 +1,146 @@
+.filter_wrapper_span_mobile {
+    position: initial;
+}
+
+.filter_wrapper_span_dekstop {
+    position: relative;
+}
+
+.filter-list {
+    display: inline-block;
+    margin: 25px 0px;
+    width: 100%;
+}
+
+.filter-list li:hover {
+    cursor: pointer;
+    background-color: #56AACD;
+    color: #fff;
+}
+
+.filter-list li {
+    border-radius: 5px;
+    padding: 10px 25px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+.list-filter-content-location li {
+    border: none;
+    width: 100%;
+    margin: 0px;
+    line-height: 1.9rem;
+    vertical-align: middle;
+    padding: 10px 20px;
+    display: inline-flex;
+}
+
+.list-filter-content-location li:before {
+    content: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg');
+    position: relative;
+    height: 30px;
+    top: 1px;
+    left: -5px;
+}
+
+.list-filter-content-location li:hover {
+    cursor: pointer;
+    background-color: rgba(74, 159, 195, 0.28);
+    color: #000;
+}
+
+.list-filter-content-location li.active {
+    cursor: pointer;
+    background-color: rgba(74, 159, 195, 0.28);
+    color: #000;
+}
+
+#PlacesAutocomplete__root {
+    width: 100%;
+}
+
+#PlacesAutocomplete__root input {
+    padding: 0px !important;
+    margin: 0px;
+    height: 30px;
+}
+
+#PlacesAutocomplete_autocomplete-container {
+    top: 175% !important;
+}
+
 .filter-popup {
     position: absolute;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     margin-top: 10px;
-    min-width: 300px;
     min-height: 200px;
     z-index: 100;
-    min-width: 400px;
-    max-width: 800px;
+    min-width: 580px;
+    max-width: 650px;
     word-wrap: break-word;
+    left: 0px;
+}
+
+.location-filter {
+    margin-left: 0px!important;
 }
 
 .location-filter.active {
     background-color: #56AACD;
     color: #fff;
+}
+
+.time-filter {
+    margin-left: 0px!important;
+    position: relative;
+}
+
+.time-filter.active {
+    background-color: #56AACD;
+    color: #fff;
+}
+
+.time-popup-wrapper {
+    margin-top: 0px;
+    width: 250px!important;
+    min-width: 250px!important;
+}
+
+.time-popup-wrapper input {
+    text-align: center;
+    width: 150px;
+    margin: 20px auto;
+    display: block;
+}
+
+.filter-popup .btn {
+    margin: 5px 0px 5px 0px;
+}
+
+@media only screen and (max-width: 768px) {
+    .filter-popup {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        word-wrap: break-word;
+        z-index: 999;
+        left: 0px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        top: 0px;
+        margin: 0px;
+        height: 100vh;
+    }
+    .date-popup-wrapper {
+        margin-top: 0px;
+        width: 100vw!important;
+        min-width: 100vw!important;
+    }
 }

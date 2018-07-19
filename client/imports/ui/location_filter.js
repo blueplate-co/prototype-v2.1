@@ -77,6 +77,8 @@ export default class LocationFilter extends Component {
 
     getCurrentLatLng() {
         this.setState({
+            lat: 0,
+            lng: 0,
             chooseIndex: 1
         });
         if( navigator.geolocation ) {
@@ -138,21 +140,28 @@ export default class LocationFilter extends Component {
             lat: 0,
             lng: 0,
             chooseIndex: 0,
-            address: ''
-        })
+            address: '',
+            popup: false
+        });
+        Session.set('filterGeolocation', null);
+        this.props.actionFilter();
     }
 
     apply() {
-        if (this.state.lat !== 0 && this.state.lng !== 0) {
-            let geolocation = {
-                lat: this.state.lat,
-                lng: this.state.lng
+        if (Session.get('search_result')) {
+            if (this.state.lat !== 0 && this.state.lng !== 0) {
+                let geolocation = {
+                    lat: this.state.lat,
+                    lng: this.state.lng
+                }
+                Session.set('filterGeolocation', geolocation);
+                this.props.actionFilter();
+                this.setState({
+                    popup: false
+                })
             }
-            Session.set('filterGeolocation', geolocation);
-            this.props.actionFilter();
-            this.setState({
-                popup: false
-            })
+        } else {
+            Materialize.toast('No data for filter.', 4000, 'rounded bp-green');
         }
     }
 
@@ -163,7 +172,7 @@ export default class LocationFilter extends Component {
             onSelect: this.handleSelect
         };      
         return (
-            <div>
+            <span>
                 <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.popup) ? 'location-filter active' : 'location-filter' }>
                     <span>Location</span>
                 </li>
@@ -173,21 +182,25 @@ export default class LocationFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>Where you like to enjoy your food?</span>
                             <ul className="list-filter-content-location">
                                 <li onClick={ () => this.getCurrentLatLng() } className={ (this.state.chooseIndex == 1) ? 'active' : '' }>Current location</li>
-                                <li onClick={ () => this.getLatLngFromAddress() } className={ (this.state.chooseIndex == 2) ? 'active' : '' }>Your provided address: {this.state.userAddress}</li>
+                                {
+                                    (this.state.userAddress) ?
+                                        <li onClick={ () => this.getLatLngFromAddress() } className={ (this.state.chooseIndex == 2) ? 'active' : '' }>Your provided address: {this.state.userAddress}</li>
+                                    : ""
+                                }
                                 <li onClick={ () => this.transferLocation() } className={ (this.state.chooseIndex == 3) ? 'active' : '' }>
                                     <PlacesAutocomplete inputProps={inputProps} />
                                 </li>
                             </ul>
                             <div className="row">
-                                <div className="col l2 m2 s2"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
-                                <div className="col l3 offset-l7 m3 offset-m7 s3 offset-s7"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
+                                <div className="col l3 m3 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
+                                <div className="col l3 offset-l6 m3 offset-m6 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
                             </div>
                         </div>
                     ) : (
                         ""
                     )
                 }
-            </div>
+            </span>
         );
     }
 }
