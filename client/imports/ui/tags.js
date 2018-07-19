@@ -5,9 +5,12 @@ export default class TagsUtil extends Component {
   constructor(props) {
     super(props);
     this.handleRun = this.handleRun.bind(this);
+    this.handleTransfer = this.handleTransfer.bind(this)
     this.state = {
       stage: 'check tags',
       loading: false,
+      errorMessages: [],
+      resultMessages: [],
       tags: []
     }
   }
@@ -15,17 +18,52 @@ export default class TagsUtil extends Component {
   handleRun = () => {
     const self = this
     self.setState({
-      stage: 'show tags',
       loading: true
     })
     Meteor.call('check_tags', (error, result) => {
       if (result) {
         self.setState({
           loading: false,
+          stage: 'show tags',
           tags: result,
+        })
+      } else {
+        self.setState({
+          loading: false,
+          errorMessages: error
         })
       }
     });
+  }
+
+  handleTransfer = () => {
+    const self = this
+    self.setState({
+      loading: true
+    })
+    var request = 0;
+    for (var i = 0; i < this.state.tags.length; i++) {
+      Meteor.call('tags.insert', this.state.tags[i], (error, result) => {
+        if (result) {
+          this.setState(prevState => ({
+            resultMessages: [...prevState.resultMessages, result]
+          }))
+          request ++
+        }
+        if (error) {
+          this.setState(prevState => ({
+            errorMessages: [...prevState.errorMessages, error]
+          }))
+          request ++
+        }
+      })
+      if (request == i) {
+        self.setState({
+          loading: false,
+          stage: 'transfer success'
+        })
+      }
+    };
   }
 
   mapTags = () => {
@@ -36,27 +74,75 @@ export default class TagsUtil extends Component {
     })
   }
 
+  resultMsg = () => {
+    return this.state.resultMessages.map((item, index) => {
+      return (
+        <p key = {index}>{item}</p>
+      )
+    })
+  }
+
+  errorMsg = () => {
+    return this.state.errorMessages.map((item, index) => {
+      return (
+        <p key = {index} className = "white-text">{item}</p>
+      )
+    })
+  }
+
   renderStep() {
     switch (this.state.stage) {
       case 'check tags':
       return (
-        <h6>let us check out what are the available tags</h6>
-        <a className = "add-margin-top btn" onClick = {this.handleRun}>run</a>
+        <div>
+          <h6>let us check out what are the available tags</h6>
+          <a
+            className = "add-margin-top btn"
+            onClick = {this.handleRun}
+            disabled={(this.state.loading) ? true : false}
+          >
+            {(this.state.loading)?"loading":"run"}
+          </a>
+        </div>
       );
       break;
       case 'show tags':
       return (
-        <h6>here are the tags we have</h6>
-        {this.mapTags()}
+        <div>
+          <h6>Here are the tags we have:</h6>
+          {this.mapTags()}
+          <h6>Shall we transfer these tags to the collection?</h6>
+          <a
+            className = "add-margin-top btn"
+            onClick = {this.handleTransfer}
+          >
+            {(this.state.loading)?"loading":"transfer"}
+          </a>
+        </div>
       );
       break;
+      case 'transfer success':
+      return (
+        <div>
+          <h6>Here are the transfer results:</h6>
+          {this.resultMsg()}
+          <a className = "add-margin-top btn" href="/main">close</a>
+        </div>
+      )
     }
   }
 
   render() {
     return (
-      <div className = "container">
-        {this.renderStep()}
+      <div className = "container center">
+        <div className = "card">
+          <div className = "card-content">
+            <div className = "card bp-red">
+              {this.errorMsg()}
+            </div>
+            {this.renderStep()}
+          </div>
+        </div>
       </div>
     )
   }
