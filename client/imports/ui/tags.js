@@ -6,7 +6,9 @@ export default class TagsUtil extends Component {
     super(props);
     this.handleRun = this.handleRun.bind(this);
     this.handleTransfer = this.handleTransfer.bind(this)
+    this.handleRestart = this.handleRestart.bind(this)
     this.state = {
+      collection: '',
       stage: 'check tags',
       loading: false,
       errorMessages: [],
@@ -20,7 +22,7 @@ export default class TagsUtil extends Component {
     self.setState({
       loading: true
     })
-    Meteor.call('check_tags', (error, result) => {
+    Meteor.call('check_tags', this.state.collection, (error, result) => {
       if (result) {
         self.setState({
           loading: false,
@@ -90,12 +92,35 @@ export default class TagsUtil extends Component {
     })
   }
 
+  handleCollectionChange = (event) => {
+    this.setState({
+      collection: event.target.value,
+    })
+  }
+
+  handleRestart() {
+    this.setState({
+      collection: '',
+      stage: 'check tags',
+      loading: false,
+      errorMessages: [],
+      resultMessages: [],
+      tags: []
+    })
+  }
+
   renderStep() {
     switch (this.state.stage) {
       case 'check tags':
       return (
         <div>
           <h6>let us check out what are the available tags</h6>
+          <select ref="dropdown" className="browser-default" id="collection_selection" onChange={this.handleCollectionChange} value={(this.state.collection)?this.state.collection:""}>
+            <option value="">Choose a collection</option>
+            <option value = "Dishes">Dishes</option>
+            <option value = "Menus">Menus</option>
+            <option value = "Kitchens">Kitchens</option>
+          </select>
           <a
             className = "add-margin-top btn"
             onClick = {this.handleRun}
@@ -126,7 +151,14 @@ export default class TagsUtil extends Component {
         <div>
           <h6>Here are the transfer results:</h6>
           {this.resultMsg()}
-          <a className = "add-margin-top btn" href="/main">close</a>
+          <div className = "row">
+            <div className = "col l6 m6 s6">
+              <a className = "add-margin-top btn" href="/main">close</a>
+            </div>
+            <div className = "col l6 m6 s6">
+              <a className = "add-margin-top btn" onClick={this.handleRestart}>restart</a>
+            </div>
+          </div>
         </div>
       )
     }
