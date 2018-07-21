@@ -113,6 +113,6 @@ export default withTracker(props => {
   return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false}, {sort: {createdAt: -1}}).fetch(),
+      dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false}, {sort: {online_status: -1, createdAt: -1}}).fetch(),
   };
 })(DishAllList);
