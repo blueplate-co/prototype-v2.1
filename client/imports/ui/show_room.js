@@ -14,6 +14,7 @@ import WishDishList from './wish_dish_list';
 import WishMenuList from './wish_menu_list';
 import ListFilter from './list_filter';
 import Modal from './modal';
+import TagsDisplay from './tags_display';
 
 import ProgressiveImages from './progressive_image';
 
@@ -129,17 +130,22 @@ export default class ShowRoom extends Component {
       default:
         return (
           <div>
+            <TagsDisplay />
             <div className="row">
               <div className="col xl12 l12 m12 s12 categories_navigation">
                 { this.renderCategories() }
               </div>
             </div>
-            <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
+              <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
-            <ShowroomBanner />
+              <ShowroomBanner />
             </div>
-            <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
-            <KitchenList title="Kitchens" seemore="see all"/>
+            <div className = "row">
+              <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
+            </div>
+            <div className = "row">
+              <KitchenList title="Kitchens" seemore="see all"/>
+            </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )

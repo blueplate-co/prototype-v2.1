@@ -29,8 +29,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .bp-green {
   background-color: #B1DBBE;
-  opacity: 0.87;
   color: #000000;
+  opacity: 1;
 }
 
 .bp-green:hover {
@@ -47,7 +47,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 html {
-  height: 70vh;
   font-family: 'Montserrat', sans-serif;
   overflow-y: auto;
 }

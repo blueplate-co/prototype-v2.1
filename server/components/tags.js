@@ -39,5 +39,8 @@ Meteor.methods({
     } else {
       return tag_name + " is already existed.";
     }
+  },
+  'tags.display'() {
+    return Tags.find({}, {sort: {count: -1}, limit: 30}).fetch()
   }
 })
