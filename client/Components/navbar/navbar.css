@@ -503,7 +503,7 @@ ul.right .icon {
   margin-left: 20px!important;
   width: 600px !important;
   color: #000;
-  border-radius: 3px!important;
+  border-radius: 15px!important;
   border: 1px solid #ccc!important;
   padding: 0px 10px!important;
   padding-right: 45px!important;
@@ -531,6 +531,7 @@ ul.right .icon {
     left: 100px;
     width: 400px !important;
     padding: 0px 10px!important;
+    border-radius: 15px!important;
   }
   .nearby {
     width: 130px!important;
@@ -551,6 +552,7 @@ ul.right .icon {
     left: 100px;
     width: 300px !important;
     padding: 0px 10px!important;
+    border-radius: 15px!important;
   }
   .nearby {
     width: 130px!important;
@@ -571,6 +573,7 @@ ul.right .icon {
     left: 100px;
     width: 300px !important;
     padding: 0px 10px!important;
+    border-radius: 15px!important;
   }
   .nearby {
     width: 130px!important;
@@ -593,6 +596,7 @@ ul.right .icon {
     padding: 0px 10px;
     margin-left: 0px!important;
     margin-top: 15px!important;
+    border-radius: 15px!important;
   }
   .nearby {
     display: none;
