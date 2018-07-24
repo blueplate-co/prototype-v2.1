@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 const format = 'h:mm a';
-const now = moment().hour(0).minute(0);
 
 // App component - represents the whole app
 export default class TimeFilter extends Component {
@@ -17,7 +15,8 @@ export default class TimeFilter extends Component {
         this.state = {
             popup: false,
             width: 0,
-            height: 0
+            height: 0,
+            time: null
         }
     }
 
@@ -67,7 +66,27 @@ export default class TimeFilter extends Component {
     }
 
     onChange(value) {
-        console.log(value && value.format(format));
+        this.setState({
+            time: value
+        })
+    }
+
+    clearCriteria() {
+        this.props.actionFilter(null);
+        this.setState({
+            popup: false
+        })
+    }
+
+    apply() {
+        if (Session.get('search_result')) {
+            this.props.actionFilter(this.state.time);
+            this.setState({
+                popup: false
+            })
+        } else {
+            Materialize.toast('No data for filter.', 4000, 'rounded bp-green');
+        }
     }
 
     render() {   
@@ -82,7 +101,7 @@ export default class TimeFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
                             <TimePicker
                                 showSecond={false}
-                                defaultValue={now}
+                                defaultValue={null}
                                 className="xxx"
                                 onChange={this.onChange}
                                 format={format}
@@ -90,7 +109,7 @@ export default class TimeFilter extends Component {
                             />
                             <div className="row">
                                 <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
-                                <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
+                                <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.time) ? true : false}>Apply</button></div>
                             </div>
                         </div>
                     ) : (

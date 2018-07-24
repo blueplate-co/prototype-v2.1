@@ -143,8 +143,7 @@ export default class LocationFilter extends Component {
             address: '',
             popup: false
         });
-        Session.set('filterGeolocation', null);
-        this.props.actionFilter();
+        this.props.actionFilter(null);
     }
 
     apply() {
@@ -154,8 +153,7 @@ export default class LocationFilter extends Component {
                     lat: this.state.lat,
                     lng: this.state.lng
                 }
-                Session.set('filterGeolocation', geolocation);
-                this.props.actionFilter();
+                this.props.actionFilter(geolocation);
                 this.setState({
                     popup: false
                 })

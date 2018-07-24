@@ -61,16 +61,14 @@ export default class DateFilter extends Component {
             popup: false,
             date: null
         });
-        Session.set('filterDate', null);
-        this.props.actionFilter();
+        this.props.actionFilter(null);
     }
 
     apply() {
-        Session.set('filterDate', this.state.date.format('DD/MM/YYYY'));
         this.setState({
             popup: false
         });
-        this.props.actionFilter();
+        this.props.actionFilter(this.state.date);
     }
 
     render() {   

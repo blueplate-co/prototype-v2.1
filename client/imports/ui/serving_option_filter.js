@@ -10,7 +10,8 @@ export default class ServingOptionFilter extends Component {
         this.updateDimensions = this.updateDimensions.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.state = {
-            popup: false
+            popup: false,
+            options: []
         }
     }
 
@@ -51,6 +52,50 @@ export default class ServingOptionFilter extends Component {
         })
     }
 
+    clearCriteria() {
+        this.setState({
+            options: []
+        }, () => {
+            this.props.actionFilter(null);
+        });
+    }
+
+    apply() {
+        if (Session.get('search_result')) {
+            this.props.actionFilter(this.state.options);
+            this.setState({
+                popup: false
+            })
+        } else {
+            Materialize.toast('No data for filter.', 4000, 'rounded bp-green');
+        }
+    }
+
+    updateOptions(options) {
+        var existedOptions = this.state.options;
+        // options has already this options
+        if (this.state.options.indexOf(options)!== -1) {
+            var index = existedOptions.indexOf(options);
+            existedOptions.splice(index, 1);
+            this.setState({
+                options: existedOptions
+            })
+        } else {
+            existedOptions.push(options);
+            this.setState({
+                options: existedOptions
+            })
+        }
+    }
+
+    checkOptions(options) {
+        if (this.state.options.indexOf(options)!== -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     render() {   
         return (
             <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
@@ -62,7 +107,7 @@ export default class ServingOptionFilter extends Component {
                         <div ref={this.setWrapperRef} className="filter-popup serving-option-popup-wrapper">
                             <span style={{ padding: '20px', display: 'block' }}>How would you like to get for food?</span>
                             <ul className="list-serving-option">
-                                <li className="row">
+                                <li className={(this.checkOptions('Delivery') ? 'row active' : 'row')} onClick={() => this.updateOptions('Delivery')}>
                                     <div className="col l1 m2 s2">
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Delivery_sq24px.svg" />
                                     </div>
@@ -71,7 +116,7 @@ export default class ServingOptionFilter extends Component {
                                         <span className="serving-option-description">Your food will be delivered to your chosen location </span>
                                     </div>
                                 </li>
-                                <li className="row">
+                                <li className={(this.checkOptions('Dine-in') ? 'row active' : 'row')} onClick={() => this.updateOptions('Dine-in')}>
                                     <div className="col l1 m2 s2">
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eatin_sq24px.svg" />
                                     </div>
@@ -80,7 +125,7 @@ export default class ServingOptionFilter extends Component {
                                         <span className="serving-option-description">You will eat in chef’s place</span>
                                     </div>
                                 </li>
-                                <li className="row">
+                                <li className={(this.checkOptions('Pick-up') ? 'row active' : 'row')} onClick={() => this.updateOptions('Pick-up')}>
                                     <div className="col l1 m2 s2">
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Pickup_sq24px.svg" />
                                     </div>
@@ -92,7 +137,7 @@ export default class ServingOptionFilter extends Component {
                             </ul>
                             <div className="row">
                                 <div className="col l3 m3 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
-                                <div className="col l3 offset-l6 m3 offset-m6 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
+                                <div className="col l3 offset-l6 m3 offset-m6 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.options.length == 0) ? true : false}>Apply</button></div>
                             </div>
                         </div>
                     ) : (
