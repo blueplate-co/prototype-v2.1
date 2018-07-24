@@ -157,13 +157,13 @@
 }
 
 .DateInput {
-    margin: 0;
-    padding: 0;
-    background: #fff;
+    margin: 0!important;
+    padding: 0!important;
+    background: #fff!important;
     position: relative;
-    display: inline-block;
-    width: 100%;
-    vertical-align: middle;
+    display: inline-block!important;
+    width: 100%!important;
+    vertical-align: middle!important;
 }
 
 .list-serving-option li {

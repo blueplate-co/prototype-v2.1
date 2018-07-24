@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-const now = moment().hour(0).minute(0);
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-dates/initialize';
@@ -16,7 +14,7 @@ export default class DateFilter extends Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.state = {
             popup: false,
-            date: now,
+            date: null,
             focused: false
         }
     }
@@ -58,6 +56,23 @@ export default class DateFilter extends Component {
         })
     }
 
+    clearCriteria() {
+        this.setState({
+            popup: false,
+            date: null
+        });
+        Session.set('filterDate', null);
+        this.props.actionFilter();
+    }
+
+    apply() {
+        Session.set('filterDate', this.state.date.format('DD/MM/YYYY'));
+        this.setState({
+            popup: false
+        });
+        this.props.actionFilter();
+    }
+
     render() {   
         return (
             <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
@@ -79,7 +94,7 @@ export default class DateFilter extends Component {
                             />
                             <div className="row">
                                 <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
-                                <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(this.state.lat == 0 && this.state.lng == 0) ? true : false}>Apply</button></div>
+                                <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.date) ? true : false}>Apply</button></div>
                             </div>
                         </div>
                     ) : (
