@@ -109,6 +109,22 @@ export default class ListFilter extends Component {
                 number_of_filter += 1;
             }
 
+            // ***** FILTER FOR DATE ***** //
+            if (this.state.date) {
+                if (result_dish.length > 0) {
+                    dish_data = result_dish;
+                } else {
+                    dish_data = dishes;
+                }
+                if (result_menu.length > 0) {
+                    menu_data = result_menu;
+                } else {
+                    menu_data = menus;
+                }
+                // filter for date
+                
+            }
+
             // ***** FILTER FOR TIME ***** //
             if (this.state.time) {
                 if (result_dish.length > 0) {
@@ -145,6 +161,17 @@ export default class ListFilter extends Component {
                     return cooking_completed_time < this.state.time;
                 });
                 // filter time cooking for menu
+                result_menu = menu_data.filter((element) => {
+                    var cooking_time = 0;
+                    // cooking time with no minutes
+                    cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
+                    var now = moment(moment(), "hh:mm:ss A");
+                    // cooking time is less than request time, OK to serve
+                    var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
+                    return cooking_completed_time < this.state.time;
+                });
+                // marked for number for filter
+                number_of_filter += 1;
             }
 
             // **** FILTER FOR SERVING OPTIONS **** //
@@ -169,6 +196,8 @@ export default class ListFilter extends Component {
                     let found = this.state.serving_option.some(r => element.serving_option.includes(r))
                     return found;
                 });
+                // marked for number for filter
+                number_of_filter += 1;
             }
     
             // collection all filtered data after run search filter
