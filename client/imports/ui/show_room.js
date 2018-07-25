@@ -105,8 +105,8 @@ export default class ShowRoom extends Component {
       case 'search':
         return (
           <div>
-            <div className="row" style={{padding: '20px 30px'}}>
-              <div className="col lg-12">
+            <div className="row" style={{padding: '20px 10px'}}>
+              <div className="col l12" style={{padding: '0px'}}>
                 <ListFilter />
               </div>
               <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
