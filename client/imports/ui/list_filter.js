@@ -3,6 +3,8 @@ import LocationFilter from './location_filter';
 import DateFilter from './date_filter';
 import TimeFilter from './time_filter';
 import ServingOptionFilter from './serving_option_filter';
+// const now = moment().hour(0).minute(0);
+const default_time = moment().add(1, 'hours');
 
 // App component - represents the whole app
 export default class ListFilter extends Component {
@@ -17,7 +19,7 @@ export default class ListFilter extends Component {
         this.state = {
             geolocation: null,
             date: null,
-            time: null,
+            time: default_time,
             serving_option: []
         }
     }
@@ -92,6 +94,9 @@ export default class ListFilter extends Component {
                     let user_kitchen_id = dish_data[i].user_id;
                     let dish_location = Kitchen_details.findOne({ user_id: user_kitchen_id }).kitchen_address_conversion;
                     // nearby 10km
+                    console.log('Dish location: ' + JSON.stringify(dish_location));
+                    console.log('Location for query: ' + JSON.stringify(this.state.geolocation));
+                    console.log('Inrange, dish name: ' + dish_data[i].dish_name + ' - ' + this.arePointsNear(dish_location, this.state.geolocation, 10));
                     if (this.arePointsNear(dish_location, this.state.geolocation, 10)) {
                         result_dish.push(dish_data[i]);
                     }
@@ -107,26 +112,10 @@ export default class ListFilter extends Component {
                 }
                 // marked for number for filter
                 number_of_filter += 1;
-            }
+            }                       
 
-            // ***** FILTER FOR DATE ***** //
-            if (this.state.date) {
-                if (result_dish.length > 0) {
-                    dish_data = result_dish;
-                } else {
-                    dish_data = dishes;
-                }
-                if (result_menu.length > 0) {
-                    menu_data = result_menu;
-                } else {
-                    menu_data = menus;
-                }
-                // filter for date
-                
-            }
-
-            // ***** FILTER FOR TIME ***** //
-            if (this.state.time) {
+            // ***** FILTER FOR DATETIME ***** //
+            if (this.state.time && this.state.date) {
                 if (result_dish.length > 0) {
                     dish_data = result_dish;
                 } else {
@@ -156,9 +145,13 @@ export default class ListFilter extends Component {
                         cooking_time += 0;
                     }
                     var now = moment(moment(), "hh:mm:ss A");
+                    var requested_time_hours = this.state.time.hour();
+                    var requested_time_mins = this.state.time.minutes();
+                    // get current date when user pick add to hours and mins expected
+                    var requested_time = this.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
                     // cooking time is less than request time, OK to serve
                     var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
-                    return cooking_completed_time < this.state.time;
+                    return cooking_completed_time < requested_time;
                 });
                 // filter time cooking for menu
                 result_menu = menu_data.filter((element) => {
@@ -176,28 +169,30 @@ export default class ListFilter extends Component {
 
             // **** FILTER FOR SERVING OPTIONS **** //
             if (this.state.serving_option) {
-                if (result_dish.length > 0) {
-                    dish_data = result_dish;
-                } else {
-                    dish_data = dishes;
+                if (this.state.serving_option.length > 0) {
+                    if (result_dish.length > 0) {
+                        dish_data = result_dish;
+                    } else {
+                        dish_data = dishes;
+                    }
+                    if (result_menu.length > 0) {
+                        menu_data = result_menu;
+                    } else {
+                        menu_data = menus;
+                    }
+                    // filter time cooking for dish
+                    result_dish = dish_data.filter((element) => {
+                        let found = this.state.serving_option.some(r => element.serving_option.includes(r))
+                        return found;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        let found = this.state.serving_option.some(r => element.serving_option.includes(r))
+                        return found;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
                 }
-                if (result_menu.length > 0) {
-                    menu_data = result_menu;
-                } else {
-                    menu_data = menus;
-                }
-                // filter time cooking for dish
-                result_dish = dish_data.filter((element) => {
-                    let found = this.state.serving_option.some(r => element.serving_option.includes(r))
-                    return found;
-                });
-                // filter time cooking for menu
-                result_menu = menu_data.filter((element) => {
-                    let found = this.state.serving_option.some(r => element.serving_option.includes(r))
-                    return found;
-                });
-                // marked for number for filter
-                number_of_filter += 1;
             }
     
             // collection all filtered data after run search filter

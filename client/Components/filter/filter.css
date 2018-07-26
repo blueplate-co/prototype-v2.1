@@ -14,17 +14,23 @@
 
 .filter-list li:hover {
     cursor: pointer;
-    background-color: #56AACD;
+    background-color: #efefef;
+    color: #000;
+    border: 1px solid transparent;
+}
+
+.filter-list li.active {
+    background-color: #32abd1;
     color: #fff;
 }
 
 .filter-list li {
-    border-radius: 5px;
-    padding: 10px 25px;
+    padding: 5px 15px;
     border: 1px solid #ccc;
     display: inline-block;
-    margin: 0px 10px;
+    margin: 5px 10px;
     border-radius: 15px;
+    font-size: 1rem;
 }
 
 .list-filter-content-location li {
@@ -177,7 +183,9 @@
 }
 
 .list-serving-option li:hover {
-    background-color: rgba(74, 159, 195, 0.56);
+    background-color: rgb(226, 226, 226)!important;
+    color: #000!important;
+    border: 1px solid transparent;
 }
 
 .list-serving-option li.active {
@@ -195,6 +203,42 @@
     display: block;
 }
 
+.searchinput {
+    margin-left: 20px!important;
+    width: 600px !important;
+    color: #000;
+    border-radius: 15px!important;
+    border: 1px solid #ccc!important;
+    padding: 0px 10px!important;
+    padding-right: 45px!important;
+    background-color: #fff!important;
+    background-image: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg');
+    background-position: 97% 50%;
+    background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1024px) {
+    .searchinput {
+      position: absolute;
+      top: 21px;
+      left: 100px;
+      width: 400px !important;
+      padding: 0px 10px!important;
+      border-radius: 15px!important;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    .searchinput {
+      position: absolute;
+      top: 21px;
+      left: 100px;
+      width: 300px !important;
+      padding: 0px 10px!important;
+      border-radius: 15px!important;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .filter-popup {
         position: absolute;
@@ -205,7 +249,7 @@
         word-wrap: break-word;
         z-index: 999;
         left: 0px;
-        width: 100%;
+        width: 100%!important;
         max-width: 100%;
         min-width: 100%;
         top: 0px;
@@ -223,4 +267,37 @@
         min-width: 100%!important;
         left: 0px;
     }
+    .searchinput {
+        position: absolute;
+        top: 21px;
+        left: 100px;
+        width: 60% !important;
+        padding: 0px 10px!important;
+        border-radius: 15px!important;
+    }
+    #cart-icon {
+        display: none!important;
+    }
+    ul.right > a {
+        display: none!important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .searchinput {
+        position: absolute;
+        top: 7px;
+        left: 85px;
+        width: 45%!important;
+        padding: 0px 10px;
+        margin-left: 0px!important;
+        margin-top: 15px!important;
+        border-radius: 15px!important;
+    }
+}
+
+
+/* TEMP HIDE SEARCHBAR */
+#top-navigation-container > div > div:nth-child(3) > div > div > nav > div > ul.left {
+    display: none;
 }

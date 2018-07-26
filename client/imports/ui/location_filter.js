@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PlacesAutocomplete from "react-places-autocomplete";
-import { geocodeByAddress, geocodeByPlaceId, getLatLng } from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
   
 
@@ -67,6 +67,7 @@ export default class LocationFilter extends Component {
         geocodeByAddress(address.target.value)
           .then(results => getLatLng(results[0]))
           .then(latLng => {
+              console.log('Latlng: ' + JSON.stringify(latLng));
               this.setState({
                   customLat: latLng.lat,
                   customLng: latLng.lng
@@ -171,7 +172,7 @@ export default class LocationFilter extends Component {
         };      
         return (
             <span>
-                <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.popup) ? 'location-filter active' : 'location-filter' }>
+                <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.lat !== 0 && this.state.lng !== 0) ? 'location-filter active' : 'location-filter' }>
                     <span>Location</span>
                 </li>
                 {
