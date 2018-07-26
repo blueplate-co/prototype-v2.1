@@ -295,3 +295,9 @@
         border-radius: 15px!important;
     }
 }
+
+
+/* TEMP HIDE SEARCHBAR */
+#top-navigation-container > div > div:nth-child(3) > div > div > nav > div > ul.left {
+    display: none;
+}
