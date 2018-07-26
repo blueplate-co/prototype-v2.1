@@ -43,7 +43,7 @@ Template.landing_page.onRendered(function () {
   //   }, 1000);
   // }
 
-
+/**
   setTimeout(() => {
       if (Session.get('login_clicked') == false) {
         $('#marketing_popup2_container').modal('open', {
@@ -60,6 +60,7 @@ Template.landing_page.onRendered(function () {
         Session.set('popup_appeared', true);
       }
     }, 5000);
+
 
     $(window).scroll(function(){
       setTimeout(() => {
@@ -79,6 +80,8 @@ Template.landing_page.onRendered(function () {
           }
         }, 2000);
     })
+
+    **/
 
 
   setTimeout(() => {
