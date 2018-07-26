@@ -183,7 +183,9 @@
 }
 
 .list-serving-option li:hover {
-    background-color: rgba(74, 159, 195, 0.56);
+    background-color: rgb(226, 226, 226)!important;
+    color: #000!important;
+    border: 1px solid transparent;
 }
 
 .list-serving-option li.active {
