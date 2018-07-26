@@ -75,7 +75,7 @@ export default class DateFilter extends Component {
     render() {   
         return (
             <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
-                <li ref={this.setWrapperRef} onClick={() => this.datePopup()} className={ (this.state.popup) ? 'date-filter active' : 'date-filter' }>
+                <li ref={this.setWrapperRef} onClick={() => this.datePopup()} className={ (this.state.date) ? 'date-filter active' : 'date-filter' }>
                     <span>Date</span>
                 </li>
                 {

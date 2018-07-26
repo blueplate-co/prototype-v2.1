@@ -14,7 +14,13 @@
 
 .filter-list li:hover {
     cursor: pointer;
-    background-color: #56AACD;
+    background-color: #efefef;
+    color: #000;
+    border: 1px solid transparent;
+}
+
+.filter-list li.active {
+    background-color: #32abd1;
     color: #fff;
 }
 

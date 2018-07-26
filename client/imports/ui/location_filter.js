@@ -172,7 +172,7 @@ export default class LocationFilter extends Component {
         };      
         return (
             <span>
-                <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.popup) ? 'location-filter active' : 'location-filter' }>
+                <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.lat !== 0 && this.state.lng !== 0) ? 'location-filter active' : 'location-filter' }>
                     <span>Location</span>
                 </li>
                 {

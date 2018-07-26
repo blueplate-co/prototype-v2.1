@@ -100,7 +100,7 @@ export default class ServingOptionFilter extends Component {
     render() {   
         return (
             <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
-                <li ref={this.setWrapperRef} onClick={() => this.servingOptionPopup()} className={ (this.state.popup) ? 'date-filter active' : 'date-filter' }>
+                <li ref={this.setWrapperRef} onClick={() => this.servingOptionPopup()} className={ (this.state.options.length > 0) ? 'date-filter active' : 'date-filter' }>
                     <span>Serving Option</span>
                 </li>
                 {

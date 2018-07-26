@@ -4,7 +4,7 @@ import DateFilter from './date_filter';
 import TimeFilter from './time_filter';
 import ServingOptionFilter from './serving_option_filter';
 // const now = moment().hour(0).minute(0);
-// const default_time = moment().add(1, 'hours');
+const default_time = moment().add(1, 'hours');
 
 // App component - represents the whole app
 export default class ListFilter extends Component {
@@ -19,7 +19,7 @@ export default class ListFilter extends Component {
         this.state = {
             geolocation: null,
             date: null,
-            time: null,
+            time: default_time,
             serving_option: []
         }
     }
@@ -168,29 +168,31 @@ export default class ListFilter extends Component {
             }
 
             // **** FILTER FOR SERVING OPTIONS **** //
-            if (this.state.serving_option.length > 0) {
-                if (result_dish.length > 0) {
-                    dish_data = result_dish;
-                } else {
-                    dish_data = dishes;
+            if (this.state.serving_option) {
+                if (this.state.serving_option.length > 0) {
+                    if (result_dish.length > 0) {
+                        dish_data = result_dish;
+                    } else {
+                        dish_data = dishes;
+                    }
+                    if (result_menu.length > 0) {
+                        menu_data = result_menu;
+                    } else {
+                        menu_data = menus;
+                    }
+                    // filter time cooking for dish
+                    result_dish = dish_data.filter((element) => {
+                        let found = this.state.serving_option.some(r => element.serving_option.includes(r))
+                        return found;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        let found = this.state.serving_option.some(r => element.serving_option.includes(r))
+                        return found;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
                 }
-                if (result_menu.length > 0) {
-                    menu_data = result_menu;
-                } else {
-                    menu_data = menus;
-                }
-                // filter time cooking for dish
-                result_dish = dish_data.filter((element) => {
-                    let found = this.state.serving_option.some(r => element.serving_option.includes(r))
-                    return found;
-                });
-                // filter time cooking for menu
-                result_menu = menu_data.filter((element) => {
-                    let found = this.state.serving_option.some(r => element.serving_option.includes(r))
-                    return found;
-                });
-                // marked for number for filter
-                number_of_filter += 1;
             }
     
             // collection all filtered data after run search filter

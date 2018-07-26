@@ -93,7 +93,7 @@ export default class TimeFilter extends Component {
     render() {   
         return (
             <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
-                <li ref={this.setWrapperRef} onClick={() => this.timePopup()} className={ (this.state.popup) ? 'time-filter active' : 'time-filter' }>
+                <li ref={this.setWrapperRef} onClick={() => this.timePopup()} className={ (this.state.time) ? 'time-filter active' : 'time-filter' }>
                     <span>Time</span>
                 </li>
                 {
