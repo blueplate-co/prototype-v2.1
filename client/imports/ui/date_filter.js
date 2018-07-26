@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-dates/initialize';
+const now = moment().hour(0).minute(0);
 
 // App component - represents the whole app
 export default class DateFilter extends Component {
@@ -14,7 +15,7 @@ export default class DateFilter extends Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.state = {
             popup: false,
-            date: null,
+            date: now,
             focused: false
         }
     }

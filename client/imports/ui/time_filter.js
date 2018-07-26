@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 const format = 'h:mm a';
+const now = moment().add(1, 'hours');
 
 // App component - represents the whole app
 export default class TimeFilter extends Component {
@@ -16,7 +17,7 @@ export default class TimeFilter extends Component {
             popup: false,
             width: 0,
             height: 0,
-            time: null
+            time: now
         }
     }
 
@@ -101,7 +102,7 @@ export default class TimeFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
                             <TimePicker
                                 showSecond={false}
-                                defaultValue={null}
+                                defaultValue={now}
                                 className="xxx"
                                 onChange={this.onChange}
                                 format={format}
