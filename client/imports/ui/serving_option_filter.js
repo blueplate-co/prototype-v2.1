@@ -54,7 +54,8 @@ export default class ServingOptionFilter extends Component {
 
     clearCriteria() {
         this.setState({
-            options: []
+            options: [],
+            popup: false
         }, () => {
             this.props.actionFilter(null);
         });

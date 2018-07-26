@@ -241,7 +241,7 @@
         word-wrap: break-word;
         z-index: 999;
         left: 0px;
-        width: 100%;
+        width: 100%!important;
         max-width: 100%;
         min-width: 100%;
         top: 0px;
