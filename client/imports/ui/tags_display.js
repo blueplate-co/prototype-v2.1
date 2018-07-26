@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
+import ReactDOM from 'react-dom';
 
 export default class TagsDisplay extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class TagsDisplay extends React.Component {
     this.state = {
       tags: [],
       move: 0,
-      color: []
+      color: [],
+      tagListWidth: 0,
     }
     this.style = {
       tagWrapper: {
@@ -38,13 +40,6 @@ export default class TagsDisplay extends React.Component {
         position: 'absolute',
         right: '0px',
         bottom: '-9px'
-      },
-      mask: {
-        width: 'calc(100% - 64px - 64px)',
-        overflowX: 'hidden',
-        position: 'relative',
-        display: 'inline-block',
-        cursor: 'pointer',
       }
     }
   }
@@ -52,8 +47,10 @@ export default class TagsDisplay extends React.Component {
   componentDidMount() {
     const self = this;
     Meteor.call('tags.display', (error, result) => {
+      var tagListWidth = ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
       self.setState({
         tags: result,
+        tagListWidth: tagListWidth,
       })
     });
   }
@@ -97,7 +94,6 @@ export default class TagsDisplay extends React.Component {
     this.setState({
       move: this.state.move - 300,
     })
-    console.log(this.tagListWidth)
   }
 
   handleMoveRight = (document) => {
@@ -117,6 +113,13 @@ export default class TagsDisplay extends React.Component {
         transform: 'translateX(' + this.state.move + 'px)',
         transition: 'transform 200ms ease-in-out',
       },
+      mask: {
+        width: this.state.move == 0 ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
+        overflowX: 'hidden',
+        position: 'relative',
+        display: 'inline-block',
+        cursor: 'pointer',
+      }
     }
     return (
       <div style = {this.style.tagWrapper}>
@@ -128,19 +131,23 @@ export default class TagsDisplay extends React.Component {
           >
             <i className="black-text medium material-icons">chevron_left</i>
           </button>
-          <span style = {this.style.mask}>
+          <span style = {styles.mask} ref="the_mask">
             <span style = {styles.tagList}>
               {this.listTags()}
             </span>
           </span>
-          <button
-            className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
-            style = {this.style.chevronRight}
-            onClick={this.handleMoveRight}
-            disabled={(this.state.move == 0) ? true : false}
-          >
-            <i className="black-text medium material-icons">chevron_right</i>
-          </button>
+          {
+            (this.state.move == 0) ?
+              ""
+            :
+              <button
+                className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
+                style = {this.style.chevronRight}
+                onClick={this.handleMoveRight}
+              >
+                <i className="black-text medium material-icons">chevron_right</i>
+              </button>
+          }
       </div>
     )
   }

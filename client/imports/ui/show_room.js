@@ -67,11 +67,6 @@ export default class ShowRoom extends Component {
       case 'all_dish':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
             <DishAllList title="All dishes" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
@@ -80,11 +75,6 @@ export default class ShowRoom extends Component {
       case 'all_menu':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
             <MenuAllList title="All Menus" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
@@ -93,11 +83,6 @@ export default class ShowRoom extends Component {
       case 'all_kitchen':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
             <KitchenAllList title="All Kitchens" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
@@ -131,11 +116,6 @@ export default class ShowRoom extends Component {
         return (
           <div>
             <TagsDisplay />
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
               <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
               <ShowroomBanner />
