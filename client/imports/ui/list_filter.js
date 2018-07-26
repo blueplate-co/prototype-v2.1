@@ -94,6 +94,9 @@ export default class ListFilter extends Component {
                     let user_kitchen_id = dish_data[i].user_id;
                     let dish_location = Kitchen_details.findOne({ user_id: user_kitchen_id }).kitchen_address_conversion;
                     // nearby 10km
+                    console.log('Dish location: ' + JSON.stringify(dish_location));
+                    console.log('Location for query: ' + JSON.stringify(this.state.geolocation));
+                    console.log('Inrange, dish name: ' + dish_data[i].dish_name + ' - ' + this.arePointsNear(dish_location, this.state.geolocation, 10));
                     if (this.arePointsNear(dish_location, this.state.geolocation, 10)) {
                         result_dish.push(dish_data[i]);
                     }
