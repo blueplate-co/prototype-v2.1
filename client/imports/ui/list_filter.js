@@ -83,12 +83,20 @@ export default class ListFilter extends Component {
                 if (result_dish.length > 0) {
                     dish_data = result_dish;
                 } else {
-                    dish_data = dishes;
+                    if (number_of_filter > 0) {
+                        dish_data = result_dish;
+                    } else {
+                        dish_data = dishes;
+                    }
                 }
                 if (result_menu.length > 0) {
                     menu_data = result_menu;
                 } else {
-                    menu_data = menus;
+                    if (number_of_filter > 0) {
+                        menu_data = result_menu;
+                    } else {
+                        menu_data = menus;
+                    }
                 }
                 // filter geolocation for dish
                 for (var i = 0 ; i < dish_data.length; i++) {
@@ -120,12 +128,20 @@ export default class ListFilter extends Component {
                 if (result_dish.length > 0) {
                     dish_data = result_dish;
                 } else {
-                    dish_data = dishes;
+                    if (number_of_filter > 0) {
+                        dish_data = result_dish;
+                    } else {
+                        dish_data = dishes;
+                    }
                 }
                 if (result_menu.length > 0) {
                     menu_data = result_menu;
                 } else {
-                    menu_data = menus;
+                    if (number_of_filter > 0) {
+                        menu_data = result_menu;
+                    } else {
+                        menu_data = menus;
+                    }
                 }
                 // filter time cooking for dish
                 var self = this;
@@ -175,12 +191,20 @@ export default class ListFilter extends Component {
                     if (result_dish.length > 0) {
                         dish_data = result_dish;
                     } else {
-                        dish_data = dishes;
+                        if (number_of_filter > 0) {
+                            dish_data = result_dish;
+                        } else {
+                            dish_data = dishes;
+                        }
                     }
                     if (result_menu.length > 0) {
                         menu_data = result_menu;
                     } else {
-                        menu_data = menus;
+                        if (number_of_filter > 0) {
+                            menu_data = result_menu;
+                        } else {
+                            menu_data = menus;
+                        }
                     }
                     // filter time cooking for dish
                     result_dish = dish_data.filter((element) => {
