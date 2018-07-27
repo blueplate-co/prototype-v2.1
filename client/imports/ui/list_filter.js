@@ -3,8 +3,9 @@ import LocationFilter from './location_filter';
 import DateFilter from './date_filter';
 import TimeFilter from './time_filter';
 import ServingOptionFilter from './serving_option_filter';
-// const now = moment().hour(0).minute(0);
-const default_time = moment().add(1, 'hours');
+const now = moment().hour(0).minute(0);
+// const default_time = moment().add(1, 'hours');
+const default_time = null;
 
 // App component - represents the whole app
 export default class ListFilter extends Component {
@@ -18,7 +19,7 @@ export default class ListFilter extends Component {
         this.updateServingOption = this.updateServingOption.bind(this);
         this.state = {
             geolocation: null,
-            date: null,
+            date: now,
             time: default_time,
             serving_option: []
         }
@@ -127,6 +128,7 @@ export default class ListFilter extends Component {
                     menu_data = menus;
                 }
                 // filter time cooking for dish
+                var self = this;
                 result_dish = dish_data.filter((element) => {
                     var cooking_time = 0;
                     if (element.days) {
@@ -145,10 +147,10 @@ export default class ListFilter extends Component {
                         cooking_time += 0;
                     }
                     var now = moment(moment(), "hh:mm:ss A");
-                    var requested_time_hours = this.state.time.hour();
-                    var requested_time_mins = this.state.time.minutes();
+                    var requested_time_hours = self.state.time.hour();
+                    var requested_time_mins = self.state.time.minutes();
                     // get current date when user pick add to hours and mins expected
-                    var requested_time = this.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
+                    var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
                     // cooking time is less than request time, OK to serve
                     var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
                     return cooking_completed_time < requested_time;
@@ -161,7 +163,7 @@ export default class ListFilter extends Component {
                     var now = moment(moment(), "hh:mm:ss A");
                     // cooking time is less than request time, OK to serve
                     var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
-                    return cooking_completed_time < this.state.time;
+                    return cooking_completed_time < self.state.time;
                 });
                 // marked for number for filter
                 number_of_filter += 1;

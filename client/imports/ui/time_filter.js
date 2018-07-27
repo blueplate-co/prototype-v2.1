@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 const format = 'h:mm a';
-const now = moment().add(1, 'hours');
+// const now = moment().add(1, 'hours');
+const now = null;
 
 // App component - represents the whole app
 export default class TimeFilter extends Component {
@@ -103,10 +104,12 @@ export default class TimeFilter extends Component {
                             <TimePicker
                                 showSecond={false}
                                 defaultValue={now}
+                                value={this.state.time}
                                 className="xxx"
                                 onChange={this.onChange}
                                 format={format}
                                 use12Hours
+                                inputReadOnly
                             />
                             <div className="row">
                                 <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
