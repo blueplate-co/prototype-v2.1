@@ -76,7 +76,8 @@ export default class TimeFilter extends Component {
     clearCriteria() {
         this.props.actionFilter(null);
         this.setState({
-            popup: false
+            popup: false,
+            time: null
         })
     }
 
