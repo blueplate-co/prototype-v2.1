@@ -21,6 +21,7 @@
 
 .filter-list li.active {
     background-color: #32abd1;
+    border: 1px solid transparent!important;
     color: #fff;
 }
 

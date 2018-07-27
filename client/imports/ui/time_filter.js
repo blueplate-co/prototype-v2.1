@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 const format = 'h:mm a';
-// const now = moment().add(1, 'hours');
-const now = null;
+const now = moment().add(5, 'hours');
+// const now = null;
 
 // App component - represents the whole app
 export default class TimeFilter extends Component {
@@ -113,7 +113,7 @@ export default class TimeFilter extends Component {
                                 inputReadOnly
                             />
                             <div className="row">
-                                <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
+                                {/* <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div> */}
                                 <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.time) ? true : false}>Apply</button></div>
                             </div>
                         </div>

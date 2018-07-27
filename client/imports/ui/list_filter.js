@@ -4,8 +4,8 @@ import DateFilter from './date_filter';
 import TimeFilter from './time_filter';
 import ServingOptionFilter from './serving_option_filter';
 const now = moment().hour(0).minute(0);
-// const default_time = moment().add(1, 'hours');
-const default_time = null;
+const default_time = moment().add(5, 'hours');
+// const default_time = null;
 
 // App component - represents the whole app
 export default class ListFilter extends Component {
@@ -102,7 +102,7 @@ export default class ListFilter extends Component {
                 for (var i = 0 ; i < dish_data.length; i++) {
                     let user_kitchen_id = dish_data[i].user_id;
                     let dish_location = Kitchen_details.findOne({ user_id: user_kitchen_id }).kitchen_address_conversion;
-                    // nearby 10km
+                    // nearby 5km
                     // console.log('Dish location: ' + JSON.stringify(dish_location));
                     // console.log('Location for query: ' + JSON.stringify(this.state.geolocation));
                     // console.log('Inrange, dish name: ' + dish_data[i].dish_name + ' - ' + this.arePointsNear(dish_location, this.state.geolocation, 5));
@@ -114,7 +114,7 @@ export default class ListFilter extends Component {
                 for (var i = 0 ; i < menu_data.length; i++) {
                     let user_kitchen_id = menu_data[i].user_id;
                     let dish_location = Kitchen_details.findOne({ user_id: user_kitchen_id }).kitchen_address_conversion;
-                    // nearby 10km
+                    // nearby 5km
                     if (this.arePointsNear(dish_location, this.state.geolocation, 5)) {
                         result_menu.push(menu_data[i]);
                     }
@@ -168,7 +168,7 @@ export default class ListFilter extends Component {
                     // get current date when user pick add to hours and mins expected
                     var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
                     // cooking time is less than request time, OK to serve
-                    var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
+                    var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
                     return cooking_completed_time < requested_time;
                 });
                 // filter time cooking for menu
@@ -245,8 +245,8 @@ export default class ListFilter extends Component {
         return (
             <div className="filter-list">
                 <LocationFilter actionFilter={this.updateGeoLocation}/>
-                <DateFilter actionFilter={this.updateDate}/>
-                <TimeFilter actionFilter={this.updateTime}/>
+                {/* <DateFilter actionFilter={this.updateDate}/>
+                <TimeFilter actionFilter={this.updateTime}/> */}
                 <ServingOptionFilter actionFilter={this.updateServingOption}/>
             </div>
         );
