@@ -1,53 +1,5 @@
 <template name = "signup_modal">
   <div id="signup_modal" class="modal" style="width: 600px; border-radius: 20px;">
-    <div class = "modal-content" id="signup_content">
-      <div class="signup_form col l12 m12 s12">
-      <div class = "title_wrapper">
-        <h4 class = "center">Sign up</h4>
-        <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i class="black-text medium material-icons">close</i></button>
-      </div>
-      <!-- Row No.2 - Email Address -->
-        <div class="row">
-          <div class="input-field">
-          <input id="signup_email" name="email" type="email" class="validate">
-          <label for="signup_email">Email</label>
-          </div>
-        </div>
-      <!-- Row No.3 - Password -->
-        <div class="row">
-          <div class="input-field">
-          <input id="signup_password" name="password" type="password" class="validate">
-          <label for="signup_password">Create a Password</label>
-          </div>
-        </div>
-      <!-- Row No.4 - Password -->
-        <div class="row">
-          <div class="input-field">
-          <input id="signup_cpassword" name="cpassword" type="password" class="validate">
-          <label for="signup_cpassword">Confirm your Password</label>
-          </div>
-        </div>
-        <div class = "row">
-          <!-- <p>Already a member? <a id="login_redirect">Log in </a> here.</p> -->
-          <p><small>By submitting your email and password, you have agreed our website <a href="#" onClick="window.open('/terms_of_use', '_blank')">terms of use</a>, <a href="#" onClick="window.open('/terms_conditions', '_blank')">terms and conditions</a> and <a href="#" onClick="window.open('/privacy_policy', '_blank')">privacy policy</a>.</small></p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="right">
-        <div class="modal_buttons">
-          <button class="waves-effect waves-red btn right signup_submit_btn" id="signup" type="submit">Submit</button>
-        </div>
-      </div>
-    </div>
+
   </div>
-</template>
-
-
-<template name = "verification">
-  <p>Thanks for signing up! A verification email has been sent to your email address. Please verify your account by clicking the link in the email.</p>
-  <br>
-  <p>If you don't see our verification email coming in, don't forget to check your junk/spam mailbox.</p>
-  <br>
-  <p><small>Haven't received our verification email yet? Click <a id="resend_verification" href="#">here</a> to resend.</small></p>
 </template>
