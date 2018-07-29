@@ -1,0 +1,197 @@
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700,900" rel="stylesheet" />
+</head>
+
+<template name="landing_page">
+  <header>
+    <div class = "navbar-fixed">
+      <nav class ="transparent z-depth-0">
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo"><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/logo.svg" alt="logo" class="logo"></a>
+          <ul class="right">
+            <li>
+              <a class = "modal-trigger" href="#login_modal">
+                <img class="login_icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/login_icon_new.svg">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  {{> login_modal}}
+  {{> signup_modal}}
+  <!--{{> marketing_popup}} -->
+
+  <div class="loader-wrapper">
+    <div class="loader">
+      <div class="loader__figure"></div>
+      <p class="loader__label">loading</p>
+    </div>
+  </div>
+
+  <div class = "landing_page_wrapper">
+    <div class="landing_1">
+      <div class="row navigation">
+      </div>
+      <div class="row slogan notloaded">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <p>Food lovers wanted</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <a class = "modal-trigger" href="#signup_modal">
+            <button class="button chef_signup signup">Sign up</button>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class = "row dishes_highlight">
+      <div class = "container">
+        <h4 class = "hide-on-med-and-down bp-blue-text center-align" id="intro_text">Blueplate is the first food sharing platform that connects chefs with foodies and foodies with chefs, to share the most delicious homemade food.</h4>
+        <h5 class = "hide-on-large-only bp-blue-text center-align" id="intro_text_small">Blueplate is the first food sharing platform that connects chefs with foodies and foodies with chefs, to share the most delicious homemade food.</h5>
+      </div>
+      <div class = "container">
+        <h5 class = "hide-on-mide-and-down bp-blue-text center-align">Let's see what your neighbours are sharing.</h5>
+        <div id = "landing_dishes_list">
+          <!-- React Component for dishes list -->
+        </div>
+      </div>
+    </div>
+
+    <div class = "row section how_it_works bp-red valign-wrapper">
+      <div class = "container">
+        <div class = "row">
+          <h4 class = "white-text center-align how_title">How does it work?</h4>
+        </div>
+        <div class = "row">
+          <div class = "col l4 m4 s12 how_descriptions">
+            <div class = "center svg_wrapper valign-wrapper">
+              <svg width="73px" height="70px" viewBox="0 0 73 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <title>blueplate/icons/ToChef</title>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+                      <g id="Mobile" transform="translate(-123.000000, -1696.000000)" stroke="#ffffff" stroke-width="4">
+                          <g id="icons/ToChef/red" transform="translate(111.000000, 1679.000000)">
+                              <path d="M56.2861714,85 L32.1339407,85 C29.734399,85 27.7890034,83.0614044 27.7890034,80.67025 L27.7890034,58.9641691 C27.7890034,56.8195882 26.3883797,54.8683088 24.3055184,54.3279779 C18.1989824,52.7440221 13.7389811,47.0936324 14.0118762,40.4523824 C14.2980087,33.4879485 19.991129,27.7188382 26.9743913,27.3124485 C28.8749832,27.2018456 30.6941138,27.4813971 32.3661052,28.0729706 C33.832407,28.5919926 35.4702864,27.9902721 36.1708528,26.6051985 C38.4385293,22.1217206 43.0899644,19.0441176 48.4725139,19.0441176 C53.8550634,19.0441176 58.5064985,22.1217206 60.7736658,26.6051985 C61.4742322,27.9902721 63.1121117,28.5919926 64.5789226,28.0729706 C66.2509139,27.4813971 68.0700446,27.2018456 69.9706365,27.3124485 C76.9533896,27.7188382 82.6470191,33.4879485 82.9331516,40.4523824 C83.2060466,47.0936324 78.7455362,52.7440221 72.6395094,54.3279779 C70.556648,54.8683088 69.1560244,56.8195882 69.1560244,58.9641691 L69.1560244,80.67025 C69.1560244,83.0614044 67.2106288,85 64.811087,85 L64.5595756,85" id="icons/chefHat/bk"></path>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </div>
+            <h4 class = "white-text center-align">CHEFS</h4>
+            <p class = "white-text center-align role_text">Who love cooking can join the commnity and start selling their signature dishes</p>
+          </div>
+          <div class = "col l4 m4 s12 how_descriptions">
+            <div class = "center svg_wrapper valign-wrapper">
+              <svg width="94px" height="94px" viewBox="0 0 94 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <title>blueplate/icons/ToTable</title>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+                      <g id="Mobile" transform="translate(-113.000000, -1875.000000)" stroke="#ffffff">
+                          <g id="icons/ToTable/red" transform="translate(110.000000, 1837.000000)">
+                              <g id="icons/service/bk" transform="translate(5.000000, 40.000000)">
+                                  <path d="M0,44.4375 L90,44.4375" id="bottom" stroke-width="4"></path>
+                                  <path d="M22.2174529,39.0937765 L76.1443941,39.0937765 C77.7575118,39.0937765 79.0413353,37.7173059 78.9063353,36.1100118 C77.5473353,19.9454824 65.2475118,6.89971765 49.4382176,4.38554118 C48.6621,4.26218824 48.0935118,3.58771765 48.0935118,2.80154118 C48.0935118,1.26095294 46.8329824,-0.000105882353 45.2918647,-0.000105882353 L42.4579235,-0.000105882353 C40.9168059,-0.000105882353 39.6562765,1.26095294 39.6562765,2.80154118 C39.6562765,3.58771765 39.0882176,4.26218824 38.3115706,4.38554118 C22.5022765,6.89971765 10.2024529,19.9454824 8.84345294,36.1100118 C8.70845294,37.7173059 9.99227647,39.0937765 11.6053941,39.0937765 L14.9046882,39.0937765" id="Top" stroke-width="4"></path>
+                              </g>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </div>
+            <h4 class = "white-text center-align">FOODIES</h4>
+            <p class = "white-text center-align role_text">Who love eating can order and receive delicious homemade food straight to their door</p>
+          </div>
+          <div class = "col l4 m4 s12 how_descriptions">
+            <div class = "center svg_wrapper valign-wrapper">
+              <svg class = "valign-wrapper" width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <title>blueplate/logo</title>
+                  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Logo/SidvNav/toggle" fill="#ffffff">
+                          <path d="M57.0159278,19.1561318 L56.9958945,19.1008648 C55.9895852,16.3406999 53.4412943,11.4233875 47.6807109,9.50409054 C44.1333691,8.32178276 40.6414817,8.47427327 37.5842294,9.94564748 C36.2158695,10.6042213 35.1154909,11.4430637 34.2378011,12.3082376 C33.5886068,10.9430569 32.7106266,9.70056313 31.6323137,8.6533845 C30.522354,7.57524481 29.2332561,6.70573065 27.8010219,6.0691479 C24.700219,4.6912356 21.2054283,4.64435996 17.69554,5.93344003 C11.4500932,8.22687406 9.20578548,14.0958777 8.66633868,15.8421399 C8.61233593,16.0172001 8.56094622,16.1939965 8.51245988,16.371661 C7.98898163,18.2880644 7.80577876,20.3074785 7.96807734,22.3734789 C8.01685402,22.9953045 8.10772961,23.6480912 8.23809108,24.3141882 C8.35103231,24.8894275 8.41984227,25.0937127 8.51942798,25.3616562 C8.55746217,25.4637988 8.59665771,25.5694136 8.665758,25.8052386 C8.88670473,26.5647976 9.58235303,27.0581492 10.3378108,27.0578599 C10.4983674,27.0578599 10.6621176,27.0355795 10.8241259,26.9887038 C11.7482697,26.7213391 12.279587,25.7580736 12.0113153,24.8373435 C11.9073746,24.4799891 11.8374033,24.2916185 11.7860135,24.1538851 C11.7421726,24.0364066 11.7241717,23.9877949 11.6573941,23.6483805 C11.5525823,23.1127829 11.479998,22.5925212 11.4413831,22.1026419 C11.310441,20.4353738 11.4561903,18.8141133 11.8742761,17.2834211 C11.912891,17.1413474 11.9541189,17.0001418 11.9965081,16.8621191 C12.4166263,15.5033042 14.1554567,10.9337975 18.90044,9.19129693 C21.5401873,8.22195501 24.1276738,8.23873765 26.3821433,9.24048741 C27.4378099,9.70982251 28.3860517,10.3487201 29.2007383,11.1401082 C31.0156371,12.9025744 32.0564965,15.4439863 32.0564965,18.1132935 L32.0564965,20.6419738 C32.0564965,21.6008989 32.836633,22.3781086 33.7985207,22.3781086 C34.7606986,22.3781086 35.5405448,21.6008989 35.5405448,20.6419738 L35.5405448,18.1132935 C35.5405448,17.5070931 35.4969942,16.9061011 35.4177321,16.3129218 C36.1360267,15.2397011 37.3075379,13.9347065 39.0989194,13.0727156 C41.3223228,12.0032565 43.907777,11.9077691 46.5759772,12.7969595 C50.9484578,14.2538659 52.9297199,18.1147403 53.7211795,20.2869342 L53.7417935,20.3427799 C54.1357812,21.4229451 54.8691734,23.4336785 54.3172421,27.0300817 C54.214753,27.7013871 53.9409649,29.4843976 53.1367304,30.3559372 C52.7476784,30.7772392 52.2596213,31.0856925 52.1751331,31.1374872 C51.9652192,31.251204 51.7233682,31.3770738 51.3398325,31.4771909 C50.7818041,31.6227369 49.4657049,31.8686893 46.917414,31.8785274 L46.8785088,31.8788168 L46.846862,31.878238 C46.8367002,31.878238 46.8271191,31.8779487 46.8172476,31.8779487 L5.85674411,31.8738977 C4.25350125,31.8738977 2.75594118,32.5162676 1.63930372,33.6829501 C0.525859966,34.8461604 -0.0693316085,36.4326983 0.00644644069,38.0360187 C0.153647479,41.1520913 2.77452277,43.5930968 5.97462108,43.5930968 L15.143765,43.5841267 L16.5960325,43.5991732 C16.8355608,43.6014881 17.018183,43.6139304 17.1711908,43.6385256 C17.5100145,43.6932139 17.8279339,43.7921736 18.1162389,43.9322218 C18.416738,44.0786358 18.6368137,44.244726 19.0668033,44.5769065 C19.4776307,44.8940404 19.8690055,45.2418461 20.2226364,45.6035408 C20.8549911,46.2563275 21.544252,46.966696 22.2338032,47.6767751 C22.9219027,48.3859862 23.6102926,49.0949079 24.2411957,49.7468265 L24.2632613,49.7688175 C26.5101821,52.008142 29.4614613,53.1276596 32.4130308,53.1276596 C35.36431,53.1276596 38.3158795,52.008142 40.5628003,49.7688175 L45.6889966,44.6599516 C46.369257,43.9817016 46.369257,42.8824389 45.6887063,42.2044783 C45.0090265,41.526807 43.9057446,41.526807 43.2251938,42.2044783 L38.0992879,47.3136336 C34.9671285,50.4349145 29.8731596,50.4380975 26.7375162,47.3243397 C26.1083552,46.6744466 25.423159,45.9684185 24.7376725,45.2626797 C24.049573,44.5534687 23.3611831,43.844547 22.7236023,43.1856838 C22.2509331,42.7030383 21.7384877,42.2475923 21.2007829,41.8320774 C20.7281137,41.4669104 20.2815748,41.1222876 19.6460264,40.8126769 C19.0488024,40.5218744 18.4028018,40.3196147 17.7263158,40.2108169 C17.3976539,40.1578648 17.0498298,40.131244 16.6314536,40.1271931 L15.1794765,40.1121466 L15.142023,40.1121466 L5.97287905,40.1208272 C4.66055421,40.1208272 3.5450781,39.1121329 3.48642996,37.8725327 C3.45478319,37.2032527 3.69402117,36.5663806 4.15972228,36.0799735 C4.61293889,35.6068768 5.2153889,35.3461673 5.85674411,35.3461673 L8.3960346,35.3502182 L46.8024404,35.3502182 L46.8381519,35.3507969 C46.8509267,35.3510863 46.8634112,35.3507969 46.8767667,35.3510863 L46.9310598,35.3507969 C49.136172,35.3424056 50.9661684,35.1644518 52.2227484,34.836033 C53.0354027,34.6239352 53.5792045,34.3290816 53.8715743,34.170804 C53.8866718,34.1624127 53.901479,34.1543107 53.9162862,34.1456301 C54.0167429,34.0871802 54.9214341,33.5507145 55.7004092,32.7072424 C57.0513489,31.2439701 57.5115337,29.1849143 57.7612238,27.5549731 C58.448162,23.0809538 57.4810482,20.4301654 57.0159278,19.1561318" id="BP_ic"></path>
+                      </g>
+                  </g>
+              </svg>
+            </div>
+            <h4 class = "white-text center-align">SHARE</h4>
+            <p class = "white-text center-align role_text">Your awesome experience to help the Blueplate community growing bigger!</p>
+          </div>
+        </div>
+        <div class = "row col l6 offset-l3 m8 offset-m2 s12">
+          <h5 class = "white-text center-align">Join our community of chefs and foodies, and share all your favourite food!</h5>
+          <div class = "section">
+            <div class = "row center-align">
+              <a class = "modal-trigger" href="#signup_modal">
+                <button class = "button white-space bp-red-text chef_signup join_now">Join now</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row do_you_love valign-wrapper">
+      <div class="col s12 m5 l5 xl5 left-dish">
+      </div>
+      <div class="col s12 m7 l7 xl7 valign right_dish">
+        <p class="text_1"> Do you love </p>
+          <div class = "fadeIn">
+            <p class = "text_2">cooking at home?</p>
+            <p class = "text_2">sharing your dishes?</p>
+            <p class = "text_2">creating new recipes?</p>
+            <p class = "text_2">making food from scratch?</p>
+            <p class = "text_2">growing your own veggies?</p>
+            <p class = "text_2">making new friends?</p>
+            <p class = "text_2">baking some cakes?</p>
+            <p class = "text_2">trying new food?</p>
+          </div>
+        <p class="text_3">If you said yes, we want you to join blueplate! Become a home chef and share your signature meals and dishes with anyone,
+          while earning some extra cash!</p>
+        <a class = "modal-trigger" href="#signup_modal">
+          <button class="button chef_signup sign_me_up" style="float: left;">sign me up</button>
+        </a>
+      </div>
+    </div>
+
+      <!-- whole organge session -->
+      <div class = "container">
+    <div class="row flexible2">
+        <div class="row">
+          <!-- whole top -->
+          <div class=" orange_col col s3 m2 l2 xl1">
+            <img class="org_icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Org1.svg">
+          </div>
+          <div class=" col s9 m10 l10 xl11">
+            <p class="easy">becoming a home chef is easy.</p>
+            <!-- for upper 600px -->
+            <p class="detail upper" style="padding-top:15px;">join us at blueplate and share your delicious food right from your own kitchen.</p>
+          </div>
+        </div>
+        <!-- for under 600px -->
+        <div class="row" style="margin-bottom:0px;">
+          <div class="col s12">
+            <p class="detail under" style="margin-bottom:0px;">join us at blueplate and share your delicious food right at your own kitchen.</p>
+          </div>
+        </div>
+
+      <!-- for 3 steps -->
+
+      <div class="row">
+        {{#each become_homechef}}
+          <div class="col s12 m12 l4 wrapper">
+            <span class="number">{{number}}</span>
+            <p class="org_title">{{title}}</p>
+            <p class="detail org_content">{{details}}</p>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+{{> footer}}
+</template>

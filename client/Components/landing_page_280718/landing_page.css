@@ -1,0 +1,1030 @@
+* {
+  font-family: "Montserrat", cursive, sans-serif;
+}
+
+.loader-wrapper {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  position: fixed;
+  z-index: 1000;
+}
+
+.loader,
+.loader__figure {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#youtube_wrapper {
+  height: 100vh;
+  width: 100vw;
+}
+
+#youtube_video {
+  height: 100vh;
+  width: 100vw;
+}
+
+.loader {
+  overflow: visible;
+  padding-top: 2em;
+  height: 0;
+  width: 2em;
+}
+
+.loader__figure {
+  height: 0;
+  width: 0;
+  box-sizing: border-box;
+  border: 0 solid #FE665C;
+  border-radius: 50%;
+  -webkit-animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  -moz-animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.loader__label {
+  float: left;
+  margin-left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+  margin: 0.5em 0 0 50%;
+  font-size: 0.875em;
+  letter-spacing: 0.1em;
+  line-height: 1.5em;
+  color: #8d3b3e;
+  white-space: nowrap;
+  -webkit-animation: loader-label 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  -moz-animation: loader-label 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: loader-label 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@-webkit-keyframes loader-figure {
+  0% {
+    height: 0;
+    width: 0;
+    background-color: #FE665C;
+  }
+  29% {
+    background-color: #FE665C;
+  }
+  30% {
+    height: 2em;
+    width: 2em;
+    background-color: transparent;
+    border-width: 1em;
+    opacity: 1;
+  }
+  100% {
+    height: 2em;
+    width: 2em;
+    border-width: 0;
+    opacity: 0;
+    background-color: transparent;
+  }
+}
+
+@-moz-keyframes loader-figure {
+  0% {
+    height: 0;
+    width: 0;
+    background-color: #FE665C;
+  }
+  29% {
+    background-color: #FE665C;
+  }
+  30% {
+    height: 2em;
+    width: 2em;
+    background-color: transparent;
+    border-width: 1em;
+    opacity: 1;
+  }
+  100% {
+    height: 2em;
+    width: 2em;
+    border-width: 0;
+    opacity: 0;
+    background-color: transparent;
+  }
+}
+
+@keyframes loader-figure {
+  0% {
+    height: 0;
+    width: 0;
+    background-color: #FE665C;
+  }
+  29% {
+    background-color: #FE665C;
+  }
+  30% {
+    height: 2em;
+    width: 2em;
+    background-color: transparent;
+    border-width: 1em;
+    opacity: 1;
+  }
+  100% {
+    height: 2em;
+    width: 2em;
+    border-width: 0;
+    opacity: 0;
+    background-color: transparent;
+  }
+}
+
+@-webkit-keyframes loader-label {
+  0% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@-moz-keyframes loader-label {
+  0% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes loader-label {
+  0% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+.navbar-fixed {
+  position: absolute;
+  z-index: 1;
+}
+
+.landing_1 {
+  height: 100vh;
+  width: auto;
+  background-image: url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing10.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+@media only screen and (max-width: 1366px) {
+  .landing_1 {
+    background-attachment: initial;
+  }
+}
+
+.navigation {
+  width: 100%;
+  height: 40vh;
+}
+
+.navigation div {
+  height: 40vh;
+}
+
+.logo {
+  width: 130px;
+  max-width: 130px;
+  margin-left: 15px;
+  padding-top: 9px;
+}
+
+.login_icon {
+  width: 12%;
+  min-width: 63px;
+  margin-top: 15px;
+  float: right;
+}
+
+.login {
+  color: white;
+  text-decoration: none;
+  margin-top: 20px;
+  margin-right: 0.5vw;
+  float: right;
+  margin-left: 10px;
+  mix-blend-mode: difference;
+}
+
+@media only screen and (max-width: 820px) {
+  .logo {
+    margin: 0px;
+  }
+  .login {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 0.5vw;
+    float: right;
+    margin-left: 10px;
+  }
+  .login_icon {
+    width: 15%;
+    float: right;
+  }
+}
+
+.slogan p {
+  margin: 10px;
+  font-size: 68px;
+  color: white;
+  text-align: right;
+  font-weight: bold;
+  margin-right: 20px;
+  transform: translateY(0%);
+  transition: 1s cubic-bezier(0.85, 0.5, 0.29, 0.43);
+}
+
+.slogan {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slogan.notloaded p {
+  transform: translateY(-100%);
+}
+
+.button {
+  border: none;
+  margin-bottom: 20px;
+  font-size: 16px;
+  width: auto;
+  margin-right: 30px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 50px;
+}
+
+.signup {
+  background-color: #56AACD;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+  width: 150px;
+  float: right;
+}
+
+.signup:hover {
+  width: 250px;
+}
+
+/*This is for introduction*/
+
+.intro_text {
+  font-size: 16px;
+  color: white;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.intro_text_wrapper {
+  margin-top: 11px;
+  margin-bottom: 11px;
+}
+
+@media only screen and (max-width: 820px) {
+  .intro_text {
+    font-size: 12px;
+  }
+  .slogan p {
+    margin: 10px;
+    font-size: 36px;
+    color: white;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+}
+
+.blueplate {
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  border-left-width: 10px;
+  line-height: 36px;
+  margin-bottom: 12px;
+  font-size: 36px;
+}
+
+.introduction_wrapper {
+  height: 100vh;
+}
+
+.introduction {
+  width: 512px;
+  background-color: #56AACD;
+  border-radius: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-color: white;
+  border-width: 10px;
+  margin-top: 150px;
+  margin-bottom: 150px;
+  padding: 28px 41px 32px 41px !important;
+}
+
+.join_us_now {
+  background-color:white;
+  color:#56AACD;
+  margin: 0px;
+
+}
+
+@media only screen and (max-width: 992px) {
+  .introduction {
+    margin: 60px 10px 60px 10px;
+  }
+}
+
+.dishes_highlight {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#intro_text {
+  margin: 80px;
+}
+
+#intro_text_small {
+  margin: 80px 0px 80px 0px;
+}
+
+#landing_dishes_list {
+
+}
+
+.how_it_works {
+  min-height: 100vh;
+  overflow: hidden;
+  margin-bottom: 0 !important;
+}
+
+.how_title {
+  margin-top: 50px;
+}
+
+.role_text {
+  opacity: 0.64;
+}
+
+.svg_wrapper {
+  min-height: 75px;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg_wrapper svg {
+  width: auto;
+  min-height: 93px;
+}
+
+.join_now {
+  margin: 0!important;
+}
+
+.how_descriptions {
+  margin: 80px 0px 80px 0px;
+}
+
+
+/*Do you love cooking*/
+
+.do_you_love {
+  background-color: #EEF6FA;
+  height: 100vh;
+  min-height: 50vh;
+  overflow: hidden;
+}
+
+.right_dish {
+  padding-top: 32px;
+  padding-left: 10vw !important;
+}
+
+.sign_me_up {
+  background-color: #56AACD;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  float: left;
+}
+
+.text_1 {
+  font-weight: 400;
+  text-align: left;
+  color: #56AACD;
+  font-size: 48px;
+  /* margin-top: 10vh; */
+  margin-bottom: 0px;
+  line-height: calc(48px + 6px);
+}
+
+.text_2 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: black;
+  font-size: 48px;
+  margin-top: 0px;
+  text-align: left;
+  line-height: calc(48px + 6px);
+}
+
+.text_3 {
+  position: relative;
+  margin-right: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.fadeIn {
+  height: 96px;
+}
+
+@media only screen and (max-width: 350px) {
+  .fadeIn {
+    height: 144px;
+  }
+}
+
+.fadeIn p {
+  animation: fadeEffect 20s linear infinite 0s;
+	-ms-animation: fadeEffect 20s linear infinite 0s;
+	-webkit-animation: fadeEffect 20s linear infinite 0s;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+}
+
+.fadeIn p:nth-child(2){
+	animation-delay: 2.5s;
+	-ms-animation-delay: 2.5s;
+	-webkit-animation-delay: 2.5s;
+}
+.fadeIn p:nth-child(3){
+	animation-delay: 5s;
+	-ms-animation-delay: 5s;
+	-webkit-animation-delay: 5s;
+}
+.fadeIn p:nth-child(4){
+	animation-delay: 7.5s;
+	-ms-animation-delay: 7.5s;
+	-webkit-animation-delay: 7.5s;
+}
+.fadeIn p:nth-child(5){
+	animation-delay: 10s;
+	-ms-animation-delay: 10s;
+	-webkit-animation-delay: 10s;
+}
+.fadeIn p:nth-child(6){
+	animation-delay: 12.5s;
+	-ms-animation-delay: 12.5s;
+	-webkit-animation-delay: 12.5s;
+}
+.fadeIn p:nth-child(7){
+	animation-delay: 15s;
+	-ms-animation-delay: 15s;
+	-webkit-animation-delay: 15s;
+}
+.fadeIn p:nth-child(8){
+	animation-delay: 17.5s;
+	-ms-animation-delay: 17.5s;
+	-webkit-animation-delay: 17.5s;
+}
+
+/*FadeIn Animation*/
+@-moz-keyframes fadeEffect{
+	0% { opacity: 0; }
+	5% { opacity: 0; -moz-transform: translateY(0px); }
+	10% { opacity: 1; -moz-transform: translateY(0px); }
+	15% { opacity: 1; -moz-transform: translateY(0px); }
+	20% { opacity: 0; -moz-transform: translateY(0px); }
+	80% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@-webkit-keyframes fadeEffect{
+	0% { opacity: 0; }
+	5% { opacity: 0; -webkit-transform: translateY(0px); }
+	10% { opacity: 1; -webkit-transform: translateY(0px); }
+	15% { opacity: 1; -webkit-transform: translateY(0px); }
+	20% { opacity: 0; -webkit-transform: translateY(0px); }
+	80% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@-ms-keyframes fadeEffect{
+	0% { opacity: 0; }
+	5% { opacity: 0; -ms-transform: translateY(0px); }
+	10% { opacity: 1; -ms-transform: translateY(0px); }
+	15% { opacity: 1; -ms-transform: translateY(0px); }
+	20% { opacity: 0; -ms-transform: translateY(0px); }
+	80% { opacity: 0; }
+	100% { opacity: 0; }
+}
+
+@media only screen and (max-width: 600px) {
+  .right_dish {
+    padding-left: 0.75rem !important;
+  }
+  .sign_me_up {
+    position: absolute;
+    margin-right: 0px;
+    right: calc(50vw - 154.61px/2);
+  }
+  .text_1 {
+    text-align: center;
+  }
+  .text_2 {
+    text-align: center !important;
+  }
+  .text_3{
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-right: 0px;
+  }
+}
+
+.rice {
+  width: auto;
+  position: absolute;
+  left: -400px;
+  height: 100vh;
+}
+
+.left-dish {
+  background: url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing6.png");
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 766px) {
+  .left-dish {
+    display: none !important;
+  }
+}
+/*for red session*/
+
+.red_text {
+  font-size: 18px;
+  color: #EA6055;
+  font-weight: 500;
+  padding: 0px;
+  bottom: 0px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top:20px
+}
+
+.table {
+  margin-left: 10px;
+  margin-top: 50px;
+  width:17vw;
+}
+
+.harvest {
+  margin-left: 10px;
+  width:16vw;
+  margin-top: 25px;
+}
+
+.kitchen {
+  margin-left: 15px;
+  width:12vw;
+  margin-top: 18px;
+}
+
+.content {
+  font-size: 16px;
+  color: #EA6055;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 60px;
+  padding-top:40px;
+  padding-left: 10px;
+}
+
+.we_bring{
+  font-size: 24px;
+  color: #EA6055;
+  font-weight: 550;
+  text-align: center;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: 40px;
+}
+
+@media only screen and (max-width: 815px) {
+  .content {
+   padding-top:0px;
+   margin-bottom: 0px;
+   margin-top: 10px;
+    }
+
+  .we_bring{
+  margin-bottom: 0px;
+  }
+
+  .red_icon.table{
+  margin-top: 40px;
+  }
+  .flexible{
+  }
+  .red_icon{
+  width:70px;
+  }
+  .harvest{
+  width:85px
+  }
+  .table{
+    width:85px
+    }
+
+}
+
+
+@media only screen and (min-width: 1025px) {
+  .content {
+    margin-top:70px;
+  }
+}
+
+.start_cooking {
+  background-color: #EA6055;
+  color: white;
+  text-align: center;
+  float: none !important;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px !important;
+}
+
+/*for the red photo*/
+
+.changing_wrapper {
+  height: 100vh;
+}
+
+.vet_photo {
+  height: 100%;
+  width: auto;
+  background-image: url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing15.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+@media only screen and (max-width: 1366px) {
+  .vet_photo {
+    background-attachment: initial;
+  }
+}
+
+.changing {
+  font-size: 60px;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  padding-right: 5vh;
+  line-height: 32px;
+  position: relative;
+  line-height: 100px;
+  padding-left: 50px;
+}
+
+@media only screen and (max-width: 815px) {
+  .changing {
+  text-align: center;
+  font-size:48px;
+  line-height: 60px;
+  }
+}
+/*for what_happen_image*/
+
+.what_happen_image {
+  height: 100vh;
+  width: 50%;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media only screen and (max-width: 1366px) {
+  .what_happen_image {
+    background-attachment: initial;
+  }
+}
+
+.content_wrapper {
+  height: 100vh;
+}
+
+@media only screen and (max-width: 991px) {
+  .what_happen_image {
+    height: 30vh;
+  }
+  .content_wrapper {
+    height: 70vh;
+  }
+}
+
+@media only screen and (max-height: 639px) {
+  .what_happen_image {
+    height: 100vh;
+  }
+  .content_wrapper {
+    height: 100vh;
+  }
+}
+
+.title {
+  font-size: 36px;
+  color: #B1DBBE;
+  font-weight: 600;
+  line-height: 42px;
+  text-align: left;
+}
+
+.detail {
+  font-size: 18px;
+  color: black;
+  text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+  .title {
+    font-size: 24px;
+    color: #B1DBBE;
+    font-weight: 600;
+    line-height: 29px;
+    text-align: left;
+  }
+  .detail {
+    font-size: 14px;
+    color: black;
+    text-align: left;
+  }
+  .invisible {
+    display: none;
+  }
+}
+
+/*this is for the hand*/
+.hand {
+  height: 100vh;
+  width: auto;
+  background-image: url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing8.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-attachment: fixed;
+}
+
+@media only screen and (max-width: 1366px) {
+  .hand {
+    background-attachment: initial;
+  }
+}
+
+.join_us_content {
+  margin-left: 50px;
+  margin-right: 50px;
+  height: 100vh;
+}
+
+@media only screen and (max-width: 991px) {
+  .hand {
+    height: 30vh;
+  }
+  .join_us_content {
+    height: 70vh;
+  }
+}
+
+@media only screen and (max-height: 639px) {
+  .hand {
+    height: 100vh;
+  }
+  .join_us_content {
+    height: 100vh;
+  }
+}
+
+.i_am_ready {
+  background-color: #B1DBBE;
+  color: white;
+  margin: 0px;
+}
+
+@media only screen and (max-width: 600px) {
+  .i_am_ready {
+    float: left;
+    display: table;
+    margin: 0px auto;
+  }
+}
+
+/*for organge session*/
+
+.org_icon {
+  margin-top: 0px;
+  margin-bottom: 25px;
+  float: right;
+  width:90px;
+
+}
+
+.easy{
+  font-size: 28px;
+  color: #EEAB21;
+  font-weight: 550;
+  text-align: left;
+  margin-right: 20px;
+  margin-left: 0px;
+  padding-left: 0;
+  margin-bottom: 0px;
+}
+.org_content {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.wrapper {
+  border: 5px solid #EEAB21;
+  border-radius: 30px;
+  margin-top: 50px;
+  padding: 30px !important;
+  transform: scale(0.95);
+  height: 40vh;
+}
+.wrapper .number {
+  font-size: 100px;
+  font-weight: 600;
+  color: #EEAB21;
+  position: absolute;
+  top: -105px;
+}
+
+@media only screen and (max-width: 600px) {
+  .detail.upper {
+    display: none;
+  }
+  .detail-title {
+    margin-top: 40px;
+    font-size: 18px;
+  }
+  .org_icon{
+    width:70px;
+    margin-top: 0px;
+    padding-left: 0px;
+  }
+  .easy{
+  font-size: 22px;
+  padding-left:10px;
+  }
+
+  .wrapper{
+    min-height: 130px;
+    height: 27vh;
+    padding: 25px;
+    margin: 40px 0px;
+  }
+  .wrapper .number {
+  font-size: 60px;
+  font-weight: 500;
+  color: #EEAB21;
+  position: absolute;
+  top: -63px;
+
+ }
+ .detail.under{
+   margin: 0 50px;
+   text-align: center;
+ }
+}
+
+@media only screen and (min-height: 1024px) {
+  .wrapper {
+    height: 25vh;
+    margin-top: 65px;
+  }
+}
+
+
+@media only screen and (min-width: 601px) {
+  .detail.under {
+    display: none;
+  }
+}
+
+/*for 3steps*/
+
+
+.org_title {
+  color: #EEAB21;
+  font-size: 18px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.flexible2 {
+  min-height: 100vh;
+  margin-top: 15vh;
+}
+
+.bow_wrapper {
+  height: 100vh;
+}
+
+.bow {
+  background-image: url("https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing4.jpg");
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  margin-bottom: 0px;
+}
+
+@media only screen and (max-width: 1366px) {
+  .bow {
+    background-attachment: initial;
+  }
+}
+
+.footer {
+  width: 100%;
+  height: 30px;
+}
+
+.first {
+  margin-left: 60px;
+}
+
+.last_call {
+  margin-top: calc(100vh-32px/2);;
+  text-align: left;
+  padding-left: 0px;
+}
+
+.start_now {
+  margin-right: 0px;
+  position: absolute;
+  left: 8.4vw;
+
+}
+
+@media only screen and (max-width: 600px) {
+  .last_call {
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 50px;
+  }
+  .first {
+    margin-left: 20px;
+  }
+  .start_now {
+    position: absolute;
+    left: 30vw;
+  }
+  .show-on-medium-and-up{
+    display:none;
+  }
+}
