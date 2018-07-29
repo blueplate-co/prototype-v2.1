@@ -26,8 +26,9 @@ export default class SignUp extends Component {
       confirmPassword: '',
       stage: 1,
       signUpLoading: false,
-      : '',
+      role: '',
       district: '',
+      resendVerify: '',
     }
     this.baseState = this.state;
     this.districts = [
@@ -283,10 +284,12 @@ export default class SignUp extends Component {
 
   handleResend = () => {
     var self = this;
-    self.setState({signupLoading: true})
+    self.setState({signupLoading: true, resendVerify: ''})
     Meteor.call('sendVerificationEmail', Meteor.userId(), (error) => {
       if (error) {
-        self.setState({signUploading: false})
+        self.setState({signUploading: false, resendVerify: false})
+      } else {
+        self.setState({signUploading: false, resendVerify: true})
       }
     });
   }
@@ -399,10 +402,13 @@ export default class SignUp extends Component {
             <h5 className = "bp-red-text center-align">If you don't see our verification email coming in, don't forget to check your junk/spam mailbox.</h5>
             <p className = "bp-red-text center-align"><small>Haven't received our verification email yet? Click <a href="#" onClick = {this.handleResend}>here</a> to resend.</small></p>
             {
-              this.state.signUpLoading?
-                <p>Resending you the verification email, please wait...</p>
+              this.state.resendVerify == '' ?
+              ""
               :
-                <p>Sent! Please check again!</p>
+              this.state.resendVerify ?
+                <p className = "center-align">Sent! Please check again!</p>
+              :
+                <p className = "center-align">Something's wrong, please try again.</p>
             }
           </div>
         )
