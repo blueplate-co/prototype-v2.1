@@ -17,7 +17,6 @@ export default class ListFilter extends Component {
         this.updateDate = this.updateDate.bind(this);
         this.updateTime = this.updateTime.bind(this);
         this.updateServingOption = this.updateServingOption.bind(this);
-        this.clearDateTime = this.clearDateTime.bind(this);
         this.state = {
             geolocation: null,
             date: now,
@@ -122,10 +121,10 @@ export default class ListFilter extends Component {
                 }
                 // marked for number for filter
                 number_of_filter += 1;
-            }                       
+            }
 
-            // ***** FILTER FOR DATETIME ***** //
-            if (this.state.time && this.state.date) {
+            // ***** FILTER FOR DATE ***** //
+            if (this.state.date) {
                 if (result_dish.length > 0) {
                     dish_data = result_dish;
                 } else {
@@ -144,46 +143,183 @@ export default class ListFilter extends Component {
                         menu_data = menus;
                     }
                 }
-                // filter time cooking for dish
-                var self = this;
-                result_dish = dish_data.filter((element) => {
-                    var cooking_time = 0;
-                    if (element.days) {
-                        cooking_time += element.days * 1440;
+                //- when state time is not exist -//
+                if (!this.state.time) {
+                    // filter date cooking for dish
+                    var self = this;
+                    result_dish = dish_data.filter((element) => {
+                        var cooking_time = 0;
+                        if (element.days) {
+                            cooking_time += element.days * 1440;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.hours) {
+                            cooking_time += element.hours * 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.mins) {
+                            cooking_time += 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time.diff(moment(), 'days') >= 0;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        var cooking_time = 0;
+                        // cooking time with no minutes
+                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time.diff(moment(), 'days') >= 0;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
+                } else { //- when state time is existed
+                    // filter time cooking for dish
+                    var self = this;
+                    result_dish = dish_data.filter((element) => {
+                        var cooking_time = 0;
+                        if (element.days) {
+                            cooking_time += element.days * 1440;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.hours) {
+                            cooking_time += element.hours * 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.mins) {
+                            cooking_time += 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        var now = moment(moment(), "hh:mm:ss A");
+                        var requested_time_hours = self.state.time.hour();
+                        var requested_time_mins = self.state.time.minutes();
+                        // get current date when user pick add to hours and mins expected
+                        var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time < requested_time;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        var cooking_time = 0;
+                        // cooking time with no minutes
+                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
+                        var now = moment(moment(), "hh:mm:ss A");
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
+                        return cooking_completed_time < self.state.time;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
+                }
+            }
+
+            // ***** FILTER FOR TIME ***** //
+            if (this.state.date) {
+                if (this.state.time) { // state time is already existed
+                    if (result_dish.length > 0) {
+                        dish_data = result_dish;
                     } else {
-                        cooking_time += 0;
+                        if (number_of_filter > 0) {
+                            dish_data = result_dish;
+                        } else {
+                            dish_data = dishes;
+                        }
                     }
-                    if (element.hours) {
-                        cooking_time += element.hours * 60;
+                    if (result_menu.length > 0) {
+                        menu_data = result_menu;
                     } else {
-                        cooking_time += 0;
+                        if (number_of_filter > 0) {
+                            menu_data = result_menu;
+                        } else {
+                            menu_data = menus;
+                        }
                     }
-                    if (element.mins) {
-                        cooking_time += 60;
-                    } else {
-                        cooking_time += 0;
-                    }
-                    var now = moment(moment(), "hh:mm:ss A");
-                    var requested_time_hours = self.state.time.hour();
-                    var requested_time_mins = self.state.time.minutes();
-                    // get current date when user pick add to hours and mins expected
-                    var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
-                    // cooking time is less than request time, OK to serve
-                    var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
-                    return cooking_completed_time < requested_time;
-                });
-                // filter time cooking for menu
-                result_menu = menu_data.filter((element) => {
-                    var cooking_time = 0;
-                    // cooking time with no minutes
-                    cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
-                    var now = moment(moment(), "hh:mm:ss A");
-                    // cooking time is less than request time, OK to serve
-                    var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
-                    return cooking_completed_time < self.state.time;
-                });
-                // marked for number for filter
-                number_of_filter += 1;
+                    // filter time cooking for dish
+                    var self = this;
+                    result_dish = dish_data.filter((element) => {
+                        var cooking_time = 0;
+                        if (element.days) {
+                            cooking_time += element.days * 1440;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.hours) {
+                            cooking_time += element.hours * 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.mins) {
+                            cooking_time += 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        var now = moment(moment(), "hh:mm:ss A");
+                        var requested_time_hours = self.state.time.hour();
+                        var requested_time_mins = self.state.time.minutes();
+                        // get current date when user pick add to hours and mins expected
+                        var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time < requested_time;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        var cooking_time = 0;
+                        // cooking time with no minutes
+                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
+                        var now = moment(moment(), "hh:mm:ss A");
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
+                        return cooking_completed_time < self.state.time;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
+                } else {
+                    // filter time cooking for dish
+                    var self = this;
+                    result_dish = dish_data.filter((element) => {
+                        var cooking_time = 0;
+                        if (element.days) {
+                            cooking_time += element.days * 1440;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.hours) {
+                            cooking_time += element.hours * 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        if (element.mins) {
+                            cooking_time += 60;
+                        } else {
+                            cooking_time += 0;
+                        }
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time.diff(moment(), 'days') >= 0;
+                    });
+                    // filter time cooking for menu
+                    result_menu = menu_data.filter((element) => {
+                        var cooking_time = 0;
+                        // cooking time with no minutes
+                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
+                        // cooking time is less than request time, OK to serve
+                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
+                        return cooking_completed_time.diff(moment(), 'days') >= 0;
+                    });
+                    // marked for number for filter
+                    number_of_filter += 1;
+                }
             }
 
             // **** FILTER FOR SERVING OPTIONS **** //
