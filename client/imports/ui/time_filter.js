@@ -113,7 +113,7 @@ export default class TimeFilter extends Component {
                                 inputReadOnly
                             />
                             <div className="row">
-                                {/* <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div> */}
+                                <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
                                 <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.time) ? true : false}>Apply</button></div>
                             </div>
                         </div>

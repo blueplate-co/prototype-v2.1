@@ -17,6 +17,7 @@ export default class ListFilter extends Component {
         this.updateDate = this.updateDate.bind(this);
         this.updateTime = this.updateTime.bind(this);
         this.updateServingOption = this.updateServingOption.bind(this);
+        this.clearDateTime = this.clearDateTime.bind(this);
         this.state = {
             geolocation: null,
             date: now,
@@ -245,8 +246,8 @@ export default class ListFilter extends Component {
         return (
             <div className="filter-list">
                 <LocationFilter actionFilter={this.updateGeoLocation}/>
-                {/* <DateFilter actionFilter={this.updateDate}/>
-                <TimeFilter actionFilter={this.updateTime}/> */}
+                <DateFilter actionFilter={this.updateDate} clearDateTime={this.clearDateTime}/>
+                <TimeFilter actionFilter={this.updateTime} clearDateTime={this.clearDateTime}/>
                 <ServingOptionFilter actionFilter={this.updateServingOption}/>
             </div>
         );
