@@ -60,9 +60,10 @@ export default class DateFilter extends Component {
     clearCriteria() {
         this.setState({
             popup: false,
-            date: null
+            date: moment()
         });
-        this.props.actionFilter(null);
+        // should set to current date, not null
+        this.props.actionFilter(moment());
     }
 
     apply() {
@@ -92,7 +93,7 @@ export default class DateFilter extends Component {
                                 id="date-picker-filter" // PropTypes.string.isRequired,
                             />
                             <div className="row">
-                                {/* <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div> */}
+                                <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
                                 <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.date) ? true : false}>Apply</button></div>
                             </div>
                         </div>

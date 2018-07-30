@@ -18,7 +18,7 @@ export default class TimeFilter extends Component {
             popup: false,
             width: 0,
             height: 0,
-            time: now
+            time: null
         }
     }
 
@@ -104,7 +104,7 @@ export default class TimeFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
                             <TimePicker
                                 showSecond={false}
-                                defaultValue={now}
+                                defaultValue={null}
                                 value={this.state.time}
                                 className="xxx"
                                 onChange={this.onChange}
@@ -113,7 +113,7 @@ export default class TimeFilter extends Component {
                                 inputReadOnly
                             />
                             <div className="row">
-                                {/* <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div> */}
+                                <div className="col l12 m12 s12"><button className="btn" onClick={() => this.clearCriteria()} >Clear</button></div>
                                 <div className="col l12 m12 s12"><button onClick={() => { this.apply() } } className="btn" disabled={(!this.state.time) ? true : false}>Apply</button></div>
                             </div>
                         </div>
