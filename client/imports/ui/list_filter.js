@@ -224,8 +224,8 @@ export default class ListFilter extends Component {
             }
 
             // ***** FILTER FOR TIME ***** //
-            if (this.state.date) {
-                if (this.state.time) { // state time is already existed
+            if (this.state.time) {
+                if (this.state.date) { // state date is already existed
                     if (result_dish.length > 0) {
                         dish_data = result_dish;
                     } else {

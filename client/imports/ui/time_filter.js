@@ -18,7 +18,7 @@ export default class TimeFilter extends Component {
             popup: false,
             width: 0,
             height: 0,
-            time: now
+            time: null
         }
     }
 
@@ -104,7 +104,7 @@ export default class TimeFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
                             <TimePicker
                                 showSecond={false}
-                                defaultValue={now}
+                                defaultValue={null}
                                 value={this.state.time}
                                 className="xxx"
                                 onChange={this.onChange}
