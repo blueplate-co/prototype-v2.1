@@ -382,8 +382,8 @@ export default class ListFilter extends Component {
         return (
             <div className="filter-list">
                 <LocationFilter actionFilter={this.updateGeoLocation}/>
-                <DateFilter actionFilter={this.updateDate} clearDateTime={this.clearDateTime}/>
-                <TimeFilter actionFilter={this.updateTime} clearDateTime={this.clearDateTime}/>
+                <DateFilter actionFilter={this.updateDate}/>
+                <TimeFilter actionFilter={this.updateTime}/>
                 <ServingOptionFilter actionFilter={this.updateServingOption}/>
             </div>
         );
