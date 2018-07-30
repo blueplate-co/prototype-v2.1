@@ -26,7 +26,7 @@ class LandingDishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper">
+        <a key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" href="#signup_modal">
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             {
               (hasThumbnail) ?
@@ -47,7 +47,7 @@ class LandingDishList extends Component {
           </div>
           <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
 
-        </div>
+        </a>
       )
     })
   }
@@ -56,7 +56,6 @@ class LandingDishList extends Component {
     return (
       <div className='col s12 m12 l12 no-padding list-container'>
         {/* list items */}
-        <div className="row">
           {
             (this.props.listLoading)
             ?
@@ -64,7 +63,6 @@ class LandingDishList extends Component {
             :
               this.renderList()
           }
-        </div>
       </div>
     );
   }

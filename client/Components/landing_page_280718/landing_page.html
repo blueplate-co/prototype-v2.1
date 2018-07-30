@@ -57,9 +57,14 @@
         <h5 class = "hide-on-large-only bp-blue-text center-align" id="intro_text_small">Blueplate is the first food sharing platform that connects chefs with foodies and foodies with chefs, to share the most delicious homemade food.</h5>
       </div>
       <div class = "container">
-        <h5 class = "hide-on-mide-and-down bp-blue-text center-align">Let's see what your neighbours are sharing.</h5>
+        <h5 class = "hide-on-mide-and-down bp-blue-text center-align">Let's see what your neighbours are sharing</h5>
         <div id = "landing_dishes_list">
           <!-- React Component for dishes list -->
+        </div>
+        <div class = "row center-align" style ="margin-bottom: 80px;">
+          <a class = "modal-trigger" href="#signup_modal">
+            <button class = "button bp-red white-text chef_signup join_now">see more</button>
+          </a>
         </div>
       </div>
     </div>
@@ -84,7 +89,7 @@
               </svg>
             </div>
             <h4 class = "white-text center-align">CHEFS</h4>
-            <p class = "white-text center-align role_text">Who love cooking can join the commnity and start selling their signature dishes</p>
+            <p class = "white-text center-align role_text">who love cooking can join the community and start selling their signature dishes</p>
           </div>
           <div class = "col l4 m4 s12 how_descriptions">
             <div class = "center svg_wrapper valign-wrapper">
@@ -103,7 +108,7 @@
               </svg>
             </div>
             <h4 class = "white-text center-align">FOODIES</h4>
-            <p class = "white-text center-align role_text">Who love eating can order and receive delicious homemade food straight to their door</p>
+            <p class = "white-text center-align role_text">who love eating can order and receive delicious homemade food straight to their door</p>
           </div>
           <div class = "col l4 m4 s12 how_descriptions">
             <div class = "center svg_wrapper valign-wrapper">
@@ -117,7 +122,7 @@
               </svg>
             </div>
             <h4 class = "white-text center-align">SHARE</h4>
-            <p class = "white-text center-align role_text">Your awesome experience to help the Blueplate community growing bigger!</p>
+            <p class = "white-text center-align role_text">your awesome experience to help the Blueplate community growing bigger!</p>
           </div>
         </div>
         <div class = "row col l6 offset-l3 m8 offset-m2 s12">
@@ -158,39 +163,43 @@
 
       <!-- whole organge session -->
       <div class = "container">
-    <div class="row flexible2">
+        <div class="row flexible2">
+          <div class="row">
+            <!-- whole top -->
+            <div class=" orange_col col s3 m2 l2 xl1">
+              <img class="org_icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Org1.svg">
+            </div>
+            <div class=" col s9 m10 l10 xl11">
+              <p class="easy">becoming a home chef is easy.</p>
+              <!-- for upper 600px -->
+              <p class="detail upper" style="padding-top:15px;">join us at blueplate and share your delicious food right from your own kitchen.</p>
+            </div>
+          </div>
+          <!-- for under 600px -->
+          <div class="row" style="margin-bottom:0px;">
+            <div class="col s12">
+              <p class="detail under" style="margin-bottom:0px;">join us at blueplate and share your delicious food right at your own kitchen.</p>
+            </div>
+          </div>
+
+        <!-- for 3 steps -->
+
         <div class="row">
-          <!-- whole top -->
-          <div class=" orange_col col s3 m2 l2 xl1">
-            <img class="org_icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Org1.svg">
-          </div>
-          <div class=" col s9 m10 l10 xl11">
-            <p class="easy">becoming a home chef is easy.</p>
-            <!-- for upper 600px -->
-            <p class="detail upper" style="padding-top:15px;">join us at blueplate and share your delicious food right from your own kitchen.</p>
-          </div>
+          {{#each become_homechef}}
+            <div class="col s12 m12 l4 wrapper">
+              <span class="number">{{number}}</span>
+              <p class="org_title">{{title}}</p>
+              <p class="detail org_content">{{details}}</p>
+            </div>
+          {{/each}}
         </div>
-        <!-- for under 600px -->
-        <div class="row" style="margin-bottom:0px;">
-          <div class="col s12">
-            <p class="detail under" style="margin-bottom:0px;">join us at blueplate and share your delicious food right at your own kitchen.</p>
-          </div>
-        </div>
-
-      <!-- for 3 steps -->
-
-      <div class="row">
-        {{#each become_homechef}}
-          <div class="col s12 m12 l4 wrapper">
-            <span class="number">{{number}}</span>
-            <p class="org_title">{{title}}</p>
-            <p class="detail org_content">{{details}}</p>
-          </div>
-        {{/each}}
       </div>
     </div>
-  </div>
-
+    <div class = "row">
+      <div >
+        <iframe id="youtube_wrapper" src="https://www.youtube.com/embed/FQ3us-LPouI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
   </div>
 
 {{> footer}}
