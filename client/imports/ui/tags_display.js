@@ -12,6 +12,7 @@ export default class TagsDisplay extends React.Component {
       tags: [],
       move: 0,
       color: [],
+      tagListMaskWidth: 0,
       tagListWidth: 0,
     }
     this.style = {
@@ -47,12 +48,35 @@ export default class TagsDisplay extends React.Component {
   componentDidMount() {
     const self = this;
     Meteor.call('tags.display', (error, result) => {
-      var tagListWidth = ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+      var tagListMaskWidth = ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
       self.setState({
         tags: result,
-        tagListWidth: tagListWidth,
+        tagListMaskWidth: tagListMaskWidth,
       })
     });
+    /* Monitor size of the div keeping Tag list to determine whether aarows buttons should appear */
+    window.addEventListener('resize', () => {
+      this.setState({
+        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+      })
+    })
+  }
+
+  componentDidUpdate() {
+    var tagListWidth = ReactDOM.findDOMNode(this.refs.tag_list).getBoundingClientRect().width
+    if (! tagListWidth == this.state.tagListWidth) {
+      this.setState({
+        tagListWidth: tagListWidth,
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', () => {
+      this.setState({
+        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+      })
+    })
   }
 
   listTags() {
@@ -90,7 +114,7 @@ export default class TagsDisplay extends React.Component {
     })
   }
 
-  handleMoveLeft = (document) => {
+  handleMoveLeft = () => {
     this.setState({
       move: this.state.move - 300,
     })
@@ -100,6 +124,14 @@ export default class TagsDisplay extends React.Component {
     this.setState({
       move: this.state.move + 300,
     })
+  }
+
+  endOfTagList() {
+    if (this.state.tagListMaskWidth - this.state.move >= this.state.tagListWidth) {
+      return true
+    } else {
+      return false
+    }
   }
 
   render() {
@@ -124,15 +156,20 @@ export default class TagsDisplay extends React.Component {
     return (
       <div style = {this.style.tagWrapper}>
         <h6>Can't decide? Here's some extra help:</h6>
-          <button
-            className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
-            style = {this.style.chevronLeft}
-            onClick={this.handleMoveLeft}
-          >
-            <i className="black-text medium material-icons">chevron_left</i>
-          </button>
+          {
+            this.endOfTagList() ?
+              ""
+            :
+              <button
+                className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
+                style = {this.style.chevronLeft}
+                onClick={this.handleMoveLeft}
+              >
+                <i className="black-text medium material-icons">chevron_left</i>
+              </button>
+          }
           <span style = {styles.mask} ref="the_mask">
-            <span style = {styles.tagList}>
+            <span  style = {styles.tagList} ref="tag_list">
               {this.listTags()}
             </span>
           </span>
