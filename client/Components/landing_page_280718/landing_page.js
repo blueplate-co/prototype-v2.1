@@ -2,7 +2,7 @@ import {
   Accounts
 } from 'meteor/accounts-base';
 import {
-  FlowRouterlo
+  FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import {
   Template
@@ -11,14 +11,26 @@ import {
   Blaze
 } from 'meteor/blaze';
 
+import React from 'react';
+import { render } from 'react-dom';
 
-Template.old_landing_page.onRendered(function () {
+// import for show room react component
+import LandingDishList from '../../imports/ui/landing_dish_list.js';
+
+
+
+
+import './landing_page.html';
+
+Template.landing_page.onRendered(function () {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   $('body').css('overflow-y', 'hidden');
   Session.set('login_clicked', false);
   Session.set('popup_appeared', false);
+  this.$('#login_modal').modal();
 
+  render (<LandingDishList />, document.getElementById('landing_dishes_list'));
   // everything is loaded
   // window.onload = function () {
   //   setTimeout(() => {
@@ -125,7 +137,7 @@ Template.old_landing_page.onRendered(function () {
   Materialize.scrollFire(options);
 });
 
-Template.old_landing_page.events({
+Template.landing_page.events({
   'click .chef_signup': function() {
 
   },
@@ -138,7 +150,7 @@ Template.old_landing_page.events({
   },
 })
 
-Template.old_landing_page.helpers({
+Template.landing_page.helpers({
   what_happen_details: [{
       title: "What’s happening to our food?",
       background_large: '"https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/landing2.jpg"',
