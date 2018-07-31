@@ -20,7 +20,7 @@ export default class ListFilter extends Component {
         this.state = {
             geolocation: null,
             date: now,
-            time: default_time,
+            time: null,
             serving_option: []
         }
     }
@@ -123,7 +123,7 @@ export default class ListFilter extends Component {
                 number_of_filter += 1;
             }
 
-            // ***** FILTER FOR DATE ***** //
+            // ***** FILTER FOR DATETIME ***** //
             if (this.state.date) {
                 if (result_dish.length > 0) {
                     dish_data = result_dish;
@@ -143,9 +143,8 @@ export default class ListFilter extends Component {
                         menu_data = menus;
                     }
                 }
-                //- when state time is not exist -//
-                if (!this.state.time) {
-                    // filter date cooking for dish
+                //- when has time filter, filter with combination date and time
+                if (this.state.time) {
                     var self = this;
                     result_dish = dish_data.filter((element) => {
                         var cooking_time = 0;
@@ -165,45 +164,11 @@ export default class ListFilter extends Component {
                             cooking_time += 0;
                         }
                         // cooking time is less than request time, OK to serve
-                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
-                        return cooking_completed_time.diff(moment(), 'days') >= 0;
-                    });
-                    // filter time cooking for menu
-                    result_menu = menu_data.filter((element) => {
-                        var cooking_time = 0;
-                        // cooking time with no minutes
-                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
-                        // cooking time is less than request time, OK to serve
-                        var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
-                        return cooking_completed_time.diff(moment(), 'days') >= 0;
-                    });
-                    // marked for number for filter
-                    number_of_filter += 1;
-                } else { //- when state time is existed
-                    // filter time cooking for dish
-                    var self = this;
-                    result_dish = dish_data.filter((element) => {
-                        var cooking_time = 0;
-                        if (element.days) {
-                            cooking_time += element.days * 1440;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.hours) {
-                            cooking_time += element.hours * 60;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.mins) {
-                            cooking_time += 60;
-                        } else {
-                            cooking_time += 0;
-                        }
                         var now = moment(moment(), "hh:mm:ss A");
                         var requested_time_hours = self.state.time.hour();
                         var requested_time_mins = self.state.time.minutes();
                         // get current date when user pick add to hours and mins expected
-                        var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
+                        var requested_time = self.state.date.hour(0).minutes(0).add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
                         // cooking time is less than request time, OK to serve
                         var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
                         return cooking_completed_time < requested_time;
@@ -211,82 +176,21 @@ export default class ListFilter extends Component {
                     // filter time cooking for menu
                     result_menu = menu_data.filter((element) => {
                         var cooking_time = 0;
+                        var now = moment(moment(), "hh:mm:ss A");
                         // cooking time with no minutes
                         cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
-                        var now = moment(moment(), "hh:mm:ss A");
-                        // cooking time is less than request time, OK to serve
-                        var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
-                        return cooking_completed_time < self.state.time;
-                    });
-                    // marked for number for filter
-                    number_of_filter += 1;
-                }
-            }
-
-            // ***** FILTER FOR TIME ***** //
-            if (this.state.time) {
-                if (this.state.date) { // state date is already existed
-                    if (result_dish.length > 0) {
-                        dish_data = result_dish;
-                    } else {
-                        if (number_of_filter > 0) {
-                            dish_data = result_dish;
-                        } else {
-                            dish_data = dishes;
-                        }
-                    }
-                    if (result_menu.length > 0) {
-                        menu_data = result_menu;
-                    } else {
-                        if (number_of_filter > 0) {
-                            menu_data = result_menu;
-                        } else {
-                            menu_data = menus;
-                        }
-                    }
-                    // filter time cooking for dish
-                    var self = this;
-                    result_dish = dish_data.filter((element) => {
-                        var cooking_time = 0;
-                        if (element.days) {
-                            cooking_time += element.days * 1440;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.hours) {
-                            cooking_time += element.hours * 60;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.mins) {
-                            cooking_time += 60;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        var now = moment(moment(), "hh:mm:ss A");
-                        var requested_time_hours = self.state.time.hour();
-                        var requested_time_mins = self.state.time.minutes();
-                        // get current date when user pick add to hours and mins expected
-                        var requested_time = self.state.date.add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
                         // cooking time is less than request time, OK to serve
                         var cooking_completed_time = now.add(cooking_time - 15, 'minutes');
-                        return cooking_completed_time < requested_time;
-                    });
-                    // filter time cooking for menu
-                    result_menu = menu_data.filter((element) => {
-                        var cooking_time = 0;
-                        // cooking time with no minutes
-                        cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
-                        var now = moment(moment(), "hh:mm:ss A");
-                        // cooking time is less than request time, OK to serve
-                        var cooking_completed_time = now.add(cooking_time + 15, 'minutes');
-                        return cooking_completed_time < self.state.time;
+                        return cooking_completed_time.diff(moment(), 'days') >= 0;
                     });
                     // marked for number for filter
                     number_of_filter += 1;
                 } else {
-                    // filter time cooking for dish
-                    var self = this;
+                    //- has no time filter, no execute any action. Because, date filter is always has value from today, cannot choose the past
+                }
+            } else {
+                if (this.state.time) {
+                    //- if has no date is date is null, get current date for filter
                     result_dish = dish_data.filter((element) => {
                         var cooking_time = 0;
                         if (element.days) {
@@ -305,12 +209,19 @@ export default class ListFilter extends Component {
                             cooking_time += 0;
                         }
                         // cooking time is less than request time, OK to serve
+                        var now = moment(moment(), "hh:mm:ss A");
+                        var requested_time_hours = self.state.time.hour();
+                        var requested_time_mins = self.state.time.minutes();
+                        // get current date when user pick add to hours and mins expected
+                        var requested_time = self.state.date.hour(0).minutes(0).add(requested_time_hours, 'hours').add(requested_time_mins, 'minutes');
+                        // cooking time is less than request time, OK to serve
                         var cooking_completed_time = moment().add(cooking_time - 15, 'minutes');
-                        return cooking_completed_time.diff(moment(), 'days') >= 0;
+                        return cooking_completed_time < requested_time;
                     });
                     // filter time cooking for menu
                     result_menu = menu_data.filter((element) => {
                         var cooking_time = 0;
+                        var now = moment(moment(), "hh:mm:ss A");
                         // cooking time with no minutes
                         cooking_time = (element.lead_hours * 60) + (element.lead_days * 1440);
                         // cooking time is less than request time, OK to serve
@@ -319,6 +230,8 @@ export default class ListFilter extends Component {
                     });
                     // marked for number for filter
                     number_of_filter += 1;
+                } else {
+                    //- has no time filter, no execute any action. NO DATE, NO TIME FILTER. WHAT SHOULD I DO NOW ლ(´﹏`ლ)
                 }
             }
 
