@@ -8,12 +8,16 @@ export default class TagsDisplay extends React.Component {
     super(props);
     this.handleMoveLeft = this.handleMoveLeft.bind(this);
     this.handleMoveRight = this.handleMoveRight.bind(this);
+    this.handleSwipe = this.handleSwipe.bind(this);
     this.state = {
       tags: [],
+      initialTouch: 0,
+      touchMovement: 0,
       move: 0,
-      color: [],
+      tagColor: [],
       tagListMaskWidth: 0,
       tagListWidth: 0,
+      windowSize: window.innerWidth,
     }
     this.style = {
       tagWrapper: {
@@ -47,8 +51,30 @@ export default class TagsDisplay extends React.Component {
 
   componentDidMount() {
     const self = this;
+    const color = [
+      {
+        name: "blue",
+        code: "#56AACD"
+      },
+      {
+        name: "orange",
+        code: "#EFAB1E"
+      },
+      {
+        name: "green",
+        code: "#B1DBBE"
+      },
+      {
+        name: "red",
+        code: "#EB5F55"
+      }
+    ];
     Meteor.call('tags.display', (error, result) => {
       var tagListMaskWidth = ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+      for (i=0; i < result.length; i++) {
+        var randomNumber = Math.floor(Math.random() * 4);
+        this.state.tagColor.push(color[randomNumber].code)
+      }
       self.setState({
         tags: result,
         tagListMaskWidth: tagListMaskWidth,
@@ -57,7 +83,8 @@ export default class TagsDisplay extends React.Component {
     /* Monitor size of the div keeping Tag list to determine whether aarows buttons should appear */
     window.addEventListener('resize', () => {
       this.setState({
-        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width,
+        windowSize: window.innerWidth,
       })
     })
   }
@@ -69,43 +96,33 @@ export default class TagsDisplay extends React.Component {
         tagListWidth: tagListWidth,
       })
     }
+    if (! window.innerWidth == this.state.windowSize) {
+      this.setState({
+        windowSize: window.innerWidth,
+        initialTouch: 0,
+        touchMovement: 0,
+        move: 0,
+      })
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', () => {
       this.setState({
-        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width
+        tagListMaskWidth: ReactDOM.findDOMNode(this.refs.the_mask).getBoundingClientRect().width,
+        windowSize: window.innerWidth,
       })
     })
   }
 
   listTags() {
     return this.state.tags.map((item, index) => {
-      const color = [
-        {
-          name: "blue",
-          code: "#56AACD"
-        },
-        {
-          name: "orange",
-          code: "#EFAB1E"
-        },
-        {
-          name: "green",
-          code: "#B1DBBE"
-        },
-        {
-          name: "red",
-          code: "#EB5F55"
-        }
-      ];
-      const randomNumber = Math.floor(Math.random() * 4);
       const tagStyle = {
         display: 'inline-block',
         overflow: 'visible',
         fontSize: '16px',
         zIndex: '1000',
-        backgroundColor: `${color[randomNumber].code}`,
+        backgroundColor: this.state.tagColor[index],
         cursor: 'pointer',
       };
       return (
@@ -124,6 +141,33 @@ export default class TagsDisplay extends React.Component {
     this.setState({
       move: this.state.move + 300,
     })
+  }
+
+  handleInitialTouch = (event) => {
+    this.setState({
+      initialTouch: event.targetTouches[0].clientX
+    })
+  }
+
+  handleSwipe = (event) => {
+    var touchMovement = event.targetTouches[0].clientX - this.state.initialTouch;
+    this.setState({touchMovement: touchMovement})
+    if (this.state.move + touchMovement > 0) {
+    /* When it is swiped to the beginning of the tag list*/
+      this.setState({
+        move: 0
+      })
+    } else if (this.state.tagListMaskWidth - this.state.move - touchMovement > this.state.tagListWidth) {
+    /* When it is swiped to the end of the tag list */
+      this.setState({
+        move: this.state.tagListMaskWidth - this.state.tagListWidth
+      })
+    } else {
+    /* When is it in between */
+      this.setState({
+        move: this.state.move + (event.targetTouches[0].clientX - this.state.initialTouch)
+      })
+    }
   }
 
   endOfTagList() {
@@ -146,11 +190,12 @@ export default class TagsDisplay extends React.Component {
         transition: 'transform 200ms ease-in-out',
       },
       mask: {
-        width: this.state.move == 0 ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
+        width: this.state.windowSize < 420 ? '100%' : this.state.move == 0 ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
         overflowX: 'hidden',
         position: 'relative',
         display: 'inline-block',
         cursor: 'pointer',
+        height: 'calc(100% - 2%)',
       }
     }
     return (
@@ -168,11 +213,12 @@ export default class TagsDisplay extends React.Component {
                 <i className="black-text medium material-icons">chevron_left</i>
               </button>
           }
-          <span style = {styles.mask} ref="the_mask">
-            <span  style = {styles.tagList} ref="tag_list">
-              {this.listTags()}
+
+            <span style = {styles.mask} ref="the_mask" onTouchStart = {this.handleInitialTouch} onTouchMove = {this.handleSwipe}>
+              <span style = {styles.tagList} ref="tag_list">
+                {this.listTags()}
+              </span>
             </span>
-          </span>
           {
             (this.state.move == 0) ?
               ""
