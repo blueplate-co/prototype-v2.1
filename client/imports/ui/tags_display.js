@@ -180,8 +180,6 @@ export default class TagsDisplay extends React.Component {
   }
 
   endOfTagList() {
-    /** REVIEW REQUIRED **/
-
     if (this.state.tagListMaskWidth - this.state.move >= this.state.tagListWidth) {
       return true
     } else {
@@ -201,8 +199,7 @@ export default class TagsDisplay extends React.Component {
         transition: this.state.windowSize < 420? 'transform 700ms ease-out' : 'transform 200ms ease-in-out',
       },
       mask: {
-        /** REVIEW REQUIRED **/
-        width: this.state.windowSize < 420 ? '100%' : this.state.move == 0 ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
+        width: this.state.windowSize < 601 ? '100%' : this.state.move == 0 || this.endOfTagList() ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
         overflowX: 'hidden',
         position: 'relative',
         display: 'inline-block',
