@@ -13,6 +13,7 @@ export default class TagsDisplay extends React.Component {
       tags: [],
       initialTouch: 0,
       touchMovement: 0,
+      initialPosition: 0,
       move: 0,
       tagColor: [],
       tagListMaskWidth: 0,
@@ -144,16 +145,19 @@ export default class TagsDisplay extends React.Component {
   }
 
   handleInitialTouch = (event) => {
+    event.preventDefault()
     this.setState({
-      initialTouch: event.targetTouches[0].clientX
+      initialTouch: event.targetTouches[0].clientX,
+      initialPosition: this.state.move
     })
   }
 
   handleSwipe = (event) => {
-    var touchMovement = event.targetTouches[0].clientX - this.state.initialTouch;
+    event.preventDefault()
+    var touchMovement = Math.floor(event.targetTouches[0].clientX - this.state.initialTouch);
     this.setState({touchMovement: touchMovement})
     if (this.state.move + touchMovement > 0) {
-    /* When it is swiped to the beginning of the tag list*/
+    /* When it is swiped to the beginning of the tag list */
       this.setState({
         move: 0
       })
@@ -162,15 +166,22 @@ export default class TagsDisplay extends React.Component {
       this.setState({
         move: this.state.tagListMaskWidth - this.state.tagListWidth
       })
-    } else {
-    /* When is it in between */
+    } else if (touchMovement < 100 || touchMovement > -100) {
+    /* When it is moving in between with small gesture movement */
       this.setState({
-        move: this.state.move + (event.targetTouches[0].clientX - this.state.initialTouch)
+        move: this.state.initialPosition + touchMovement
+      })
+    } else if (touchMovement >= 100 || touchMovement <= -100){
+    /* When it is moving in between with bigger movement */
+      this.setState({
+        move: this.state.move + touchMovement + (touchMovement * 100)
       })
     }
   }
 
   endOfTagList() {
+    /** REVIEW REQUIRED **/
+
     if (this.state.tagListMaskWidth - this.state.move >= this.state.tagListWidth) {
       return true
     } else {
@@ -187,9 +198,10 @@ export default class TagsDisplay extends React.Component {
         position: 'relative',
         whiteSpace: 'nowrap',
         transform: 'translateX(' + this.state.move + 'px)',
-        transition: 'transform 200ms ease-in-out',
+        transition: this.state.windowSize < 420? 'transform 700ms ease-out' : 'transform 200ms ease-in-out',
       },
       mask: {
+        /** REVIEW REQUIRED **/
         width: this.state.windowSize < 420 ? '100%' : this.state.move == 0 ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
         overflowX: 'hidden',
         position: 'relative',
@@ -214,7 +226,8 @@ export default class TagsDisplay extends React.Component {
               </button>
           }
 
-            <span style = {styles.mask} ref="the_mask" onTouchStart = {this.handleInitialTouch} onTouchMove = {this.handleSwipe}>
+            <span
+              style = {styles.mask} ref="the_mask" onTouchStart = {this.handleInitialTouch} onTouchMove = {this.handleSwipe} onTouchEnd = {this.handleTouchEnd}>
               <span style = {styles.tagList} ref="tag_list">
                 {this.listTags()}
               </span>
