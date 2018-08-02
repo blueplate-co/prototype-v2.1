@@ -147,22 +147,22 @@ export default class ListFilter extends Component {
                 if (this.state.time) {
                     var self = this;
                     result_dish = dish_data.filter((element) => {
-                        var cooking_time = 0;
-                        if (element.days) {
-                            cooking_time += element.days * 1440;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.hours) {
-                            cooking_time += element.hours * 60;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.mins) {
-                            cooking_time += 60;
-                        } else {
-                            cooking_time += 0;
-                        }
+                        var cooking_time = element.cooking_time;
+                        // if (element.days) {
+                        //     cooking_time += element.days * 1440;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
+                        // if (element.hours) {
+                        //     cooking_time += element.hours * 60;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
+                        // if (element.mins) {
+                        //     cooking_time += 60;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
                         // cooking time is less than request time, OK to serve
                         var now = moment(moment(), "hh:mm:ss A");
                         var requested_time_hours = self.state.time.hour();
@@ -192,22 +192,22 @@ export default class ListFilter extends Component {
                 if (this.state.time) {
                     //- if has no date is date is null, get current date for filter
                     result_dish = dish_data.filter((element) => {
-                        var cooking_time = 0;
-                        if (element.days) {
-                            cooking_time += element.days * 1440;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.hours) {
-                            cooking_time += element.hours * 60;
-                        } else {
-                            cooking_time += 0;
-                        }
-                        if (element.mins) {
-                            cooking_time += 60;
-                        } else {
-                            cooking_time += 0;
-                        }
+                        var cooking_time = element.cooking_time;
+                        // if (element.days) {
+                        //     cooking_time += element.days * 1440;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
+                        // if (element.hours) {
+                        //     cooking_time += element.hours * 60;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
+                        // if (element.mins) {
+                        //     cooking_time += 60;
+                        // } else {
+                        //     cooking_time += 0;
+                        // }
                         // cooking time is less than request time, OK to serve
                         var now = moment(moment(), "hh:mm:ss A");
                         var requested_time_hours = self.state.time.hour();
