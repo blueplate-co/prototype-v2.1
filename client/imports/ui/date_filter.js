@@ -60,10 +60,10 @@ export default class DateFilter extends Component {
     clearCriteria() {
         this.setState({
             popup: false,
-            date: moment()
+            date: null
         });
         // should set to current date, not null
-        this.props.actionFilter(moment());
+        this.props.actionFilter(null);
     }
 
     apply() {
