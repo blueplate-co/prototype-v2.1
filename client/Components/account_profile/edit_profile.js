@@ -231,8 +231,21 @@ Template.edit_homecook_profile.onRendered(function() {
    Session.set('profileImg',get_homecook_profile.profileImg)
    Session.set('bannerProfileImg', get_homecook_profile.bannerProfileImg)
 
+   Session.set('deleted_tags', [])
+
    this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+   this.$('#kitchen_speciality').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+
    this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
+   this.$('#kitchen_tags').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
 
   }, 1000);
 });
@@ -288,10 +301,12 @@ Template.edit_homecook_profile.events({
     house_rule,
     Session.get('profileImg'),
     Session.get('bannerProfileImg'),
+    Session.get('deleted_tags'),
 
     function(err) {
       if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
          else {
+          Session.set('deleted_tags', []);
           Materialize.toast('Profile updated!', 4000);
           //divert to the profile page
           // BlazeLayout.render('screen', {

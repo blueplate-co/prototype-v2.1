@@ -50,9 +50,13 @@ Meteor.methods({
       order_count: 0,
       average_rating: 0,
       deleted: false
+    }, (err, res) => {
+      if (res) {
+        Meteor.call('new_tags.upsert', menu_tags, "Menu", res)
+      }
     });
   },
-  'menu.update' (menu_id, menu_name, menu_description,  menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id, menu_tags) {
+  'menu.update' (menu_id, menu_name, menu_description,  menu_selling_price, min_order, lead_hours, lead_days, serving_option, dishes_id, image_id, menu_tags, deleted_tags) {
     check(menu_id, String);
     check(menu_name, String);
     check(menu_selling_price, Match.Any);
@@ -83,6 +87,8 @@ Meteor.methods({
         updatedAt: new Date()
       }
     });
+    Meteor.call('new_tags.upsert', menu_tags, "Menu", menu_id)
+    Meteor.call('tags.remove', deleted_tags, "Menu", menu_id)
   },
   'menu.online' (menu_id, status) {
     // check(menu_id, String);
@@ -130,7 +136,12 @@ Meteor.methods({
 Meteor.methods({
   'menu.delete': function(menu_id) {
     check(menu_id, String);
-
+    var deleted_tags = [];
+    var tags = Menu.findOne({_id: menu_id}).menu_tags
+    for (i=0; i < tags.length; i++) {
+      deleted_tags.push(tags[i].tag)
+    }
+    Meteor.call('tags.remove', deleted_tags, "Menu", menu_id)
     return (Menu.update({
       _id: menu_id
     }, {

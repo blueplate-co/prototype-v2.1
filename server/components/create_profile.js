@@ -186,6 +186,11 @@ Meteor.methods({
       updatedAt: new Date(),
       profileImg: profileImg,
       bannerProfileImg: bannerProfileImg
+    }, (error, res) => {
+      if (res) {
+        Meteor.call('new_tags.upsert', kitchen_tags, "Kitchen_details", Meteor.userId())
+        Meteor.call('new_tags.upsert', kitchen_speciality, "Kitchen_details", Meteor.userId())
+      }
     });
   }
 });

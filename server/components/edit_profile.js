@@ -138,7 +138,8 @@ Meteor.methods({
     kitchen_tags,
     house_rule,
     profileImg,
-    bannerProfileImg
+    bannerProfileImg,
+    deleted_tags
   ) {
 /**
     check(kitchen_profile_id, String);
@@ -203,10 +204,9 @@ Meteor.methods({
         }
       })
     }
-
-
-
-
+    Meteor.call('new_tags.upsert', kitchen_tags, "Kitchen_details", Meteor.userId())
+    Meteor.call('new_tags.upsert', kitchen_speciality, "Kitchen_details", Meteor.userId())    
+    Meteor.call('tags.remove', deleted_tags, "Kitchen_details", Meteor.userId())
   }
 });
 

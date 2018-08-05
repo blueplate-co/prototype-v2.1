@@ -369,29 +369,18 @@ Template.create_homecook_profile.onRendered(function(){
       autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
       showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
    });**/
-
-     this.$('#kitchen_speciality').material_chip({
-       data: [{
-       tag: 'Italian',
-     }, {
-       tag: 'Cheese',
-     }, {
-       tag: 'Carbonara',
-     }],
-
-
-    });
-
-    this.$('#kitchen_tags').material_chip({
-      data: [{
-       tag: 'Seaview',
-     }, {
-       tag: 'Roof top',
-     }, {
-       tag: 'Bring your own wine',
-     }],
-
-
+   Session.set('deleted_tags', [])
+   this.$('#kitchen_speciality').material_chip();
+   this.$('#kitchen_speciality').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+   this.$('#kitchen_tags').material_chip();
+   this.$('#kitchen_tags').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
    });
 
 })
@@ -764,8 +753,10 @@ Template.create_homecook_profile.events({
     Session.get('bannerProfileImg'),
 
     function(err) {
-      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-         else {
+      if (err) {
+        Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+        } else {
+          Session.set('deleted_tags', []);
           Materialize.toast('Profile created!', 4000);
           //divert to the profile page
           // BlazeLayout.render('screen', {

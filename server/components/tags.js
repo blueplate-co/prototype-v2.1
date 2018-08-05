@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import { Session } from 'meteor/session'
 
 Tags = new Mongo.Collection('tags');
 
@@ -21,26 +22,256 @@ Meteor.methods({
     return tags;
   },
   'tags.insert'(tag_name) {
-      var dishes_count = Dishes.find({dish_tags: {tag: tag_name}}).count();
-      console.log('counts from Dishes Collection: ' + dishes_count);
-      var menus_count = Menu.find({menu_tags: {tag: tag_name}}).count();
-      console.log('counts from Menu Collection: ' + menus_count);
-      var kitchens_count = Kitchen_details.find({kitchen_tags: {tag: tag_name}}).count();
-      console.log('counts from Kitchen Collection: ' + kitchens_count);
-      var total_count = dishes_count + menus_count + kitchens_count;
+    //this method is used to transfer all the tags that are inside Dishes/Menu/Kitchen_details collection to Tags Collection.
+    //At the same time, pass all the _id to the associated tags
+    var dishes_id = [];
+    var menus_id = [];
+    var kitchens_id = [];
+
     if (!Tags.findOne({tag_name: tag_name})) {
       Tags.insert({
         tag_name: tag_name,
         deleted: false,
-        count: total_count,
+        dishes_id: [],
+        menus_id: [],
+        kitchens_id: [],
         createAt: new Date()
+      }, (err, res) => {
+        if (res) {
+          Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
+            dishes_id.push(dish._id)
+          })
+          console.log("Dish Array: " + dishes_id)
+          Tags.update({tag_name: tag_name},{$addToSet: {dishes_id: {$each: dishes_id}}})
+
+          Menu.find({menu_tags: {tag: tag_name}}).forEach((menu) => {
+            menus_id.push(menu._id)
+          })
+          console.log("Menu Array: " + menus_id)
+          Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
+
+          Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
+            kitchens_id.push(kitchen._id)
+          })
+          console.log("Kitchen Array: " + kitchens_id)
+          Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
+        }
       })
       return tag_name + " is transferred.";
     } else {
-      return tag_name + " is already existed.";
+      Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
+        dishes_id.push(dish._id)
+      })
+      console.log("Dish Array: " + dishes_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {dishes_id: {$each: dishes_id}}})
+
+      Menu.find({menu_tags: {tag: tag_name}}).forEach((menu) => {
+        menus_id.push(menu._id)
+      })
+      console.log("Menu Array: " + menus_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
+
+      Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
+        kitchens_id.push(kitchen._id)
+      })
+      console.log("Kitchen Array: " + kitchens_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
+      return tag_name + " is already existed, but dishes/menus/kitchens count updated";
     }
   },
   'tags.display'() {
     return Tags.find({}, {sort: {count: -1}, limit: 30}).fetch()
+  },
+  'tags.remove'(tags, collection, _id) {
+    console.log('*********** TAGS.REMOVE IN OPERATION **********')
+    var tags = Object.values(tags)
+    console.log('There are ' + tags.length + ' tags.')
+    console.log(typeof(tags) + ': ' + tags)
+    switch (collection) {
+      case "Dishes":
+        console.log('Collection to work on: Dishes')
+        if (tags.length > 0 || tags) {
+          for (i=0; i< tags.length; i++) {
+            var tag = tags[i].toString();
+            if (Tags.findOne({tag_name: tag, dishes_id: _id})) {
+              Tags.update({tag_name: tag}, {$pull: {dishes_id: _id}})
+              console.log(_id + ' HAS BEEN REMOVED FROM TAG: ' + tag)
+            } else {
+              console.log('UNABLE TO FIND' + _id  + ' FROM TAG: ' + tag + ' , REMOVAL TERMINATED')
+            }
+            console.log('***** MOVING ON NEXT LOOP *****')
+          }
+        } else {
+          console.log('***** NO TAGS WERE REMOVED *****')
+        }
+        console.log('********** TAGS.REMOVE COMPLETED **********')
+      break;
+      case "Menu":
+        console.log('Collection to work on: Menu')
+        console.log('There are ' + tags.length + ' tags.')
+        if (tags.length > 0 || tags) {
+          for (i=0; i< tags.length; i++) {
+            var tag = tags[i].toString();
+            if (Tags.findOne({tag_name: tag, menus_id: _id})) {
+              Tags.update({tag_name: tag}, {$pull: {menus_id: _id}})
+              console.log(_id + ' HAS BEEN REMOVED FROM TAG: ' + tag)
+            } else {
+              console.log('UNABLE TO FIND' + _id  + ' FROM TAG: ' + tag + ' , REMOVAL TERMINATED')
+            }
+            console.log('***** MOVING ON NEXT LOOP *****')
+          }
+        } else {
+          console.log('***** NO TAGS WERE REMOVED *****')
+        }
+        console.log('********** TAGS.REMOVE COMPLETED **********')
+      break;
+      case "Kitchen_details":
+        console.log('Collection to work on: Kitchens_details')
+        console.log('There are ' + tags.length + ' tags.')
+        if (tags.length > 0 || tags) {
+          for (i=0; i< tags.length; i++) {
+            var tag = tags[i].toString();
+            if (Tags.findOne({tag_name: tag, kitchens_id: _id})) {
+              Tags.update({tag_name: tag}, {$pull: {kitchens_id: _id}})
+              console.log(_id + ' HAS BEEN REMOVED FROM TAG: ' + tag)
+            } else {
+              console.log('UNABLE TO FIND' + _id  + ' FROM TAG: ' + tag + ' , REMOVAL TERMINATED')
+            }
+            console.log('***** MOVING ON NEXT LOOP *****')
+          }
+        } else {
+          console.log('***** NO TAGS WERE REMOVED *****')
+        }
+        console.log('********** TAGS.REMOVE COMPLETED **********')
+    }
+  },
+  'new_tags.upsert'(tags, collection, _id) {
+    console.log('********* NEW_TAG.INSERT IN OPERATION *********')
+    console.log('here is the id: ' + _id)
+      switch (collection) {
+        case "Dishes":
+          console.log('Collection to work on: Dishes')
+          for (i=0; i < tags.length; i++) {
+            console.log('total tag length:' + tags.length)
+            console.log('on loop: ' + (i + 1))
+            var tag_name = tags[i].tag
+            console.log('Tag name working on:' + tag_name);
+            console.log('Check if tag is deleted');
+            if (!Dishes.findOne({_id: _id, dish_tags: {tag: tag_name}})) {
+              console.log(tag_name + ' is removed. Removing dishes_id from this tag document.')
+              Tags.update({tag_name: tag_name}, {$pull: {dishes_id: _id}})
+            } else {
+              if (!Tags.findOne({tag_name: tag_name})) {
+                console.log('Tag not existed, creating new tag')
+                Tags.insert({
+                  tag_name: tag_name,
+                  deleted: false,
+                  dishes_id: [],
+                  menus_id: [],
+                  kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
+                  createAt: new Date()
+                })
+                console.log(tag_name + ': tag creation done. Updating dish_id: ' + _id + ' to Tag collection')
+                Tags.update({tag_name: tag_name},{$push: {dishes_id: _id}})
+                console.log(_id + ' has inserted to :' + tag_name)
+                console.log("***** MOVING ON TO NEXT LOOP *****")
+              } else {
+                console.log('tag exists, so updating dish_id: ' + _id + ' to Tag collection')
+                if (Tags.findOne({tag_name: tag_name, dishes_id: _id})) {
+                  console.log(_id + " is already existed in " + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                } else {
+                  Tags.update({tag_name: tag_name},{$push: {dishes_id: _id}})
+                  console.log(_id + ' has inserted to ' + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                }
+              }
+            }
+          }
+          console.log("********** OPERATION ENDED **********")
+        break;
+        case "Menu":
+          console.log('Collection to work on: Menu')
+          for (i=0; i < tags.length; i++) {
+            console.log('total tag length:' + tags.length)
+            console.log('on loop: ' + (i + 1))
+            var tag_name = tags[i].tag
+            console.log('Tag name working on:' + tag_name);
+            console.log('Check if tag is deleted');
+            if (!Menu.findOne({_id: _id, menu_tags: {tag: tag_name}})) {
+              console.log(tag_name + ' is removed. Removing Menu_id from this tag document.')
+              Tags.update({tag_name: tag_name}, {$pull: {menus_id: _id}})
+            } else {
+              if (!Tags.findOne({tag_name: tag_name})) {
+                console.log('Tag not existed, creating new tag')
+                Tags.insert({
+                  tag_name: tag_name,
+                  deleted: false,
+                  dishes_id: [],
+                  menus_id: [],
+                  kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
+                  createAt: new Date()
+                })
+                console.log(tag_name + ': tag creation done. Updating menu_id: ' + _id + ' to Tag collection')
+                Tags.update({tag_name: tag_name},{$push: {menus_id: _id}})
+                console.log(_id + ' has inserted to :' + tag_name)
+                console.log("***** MOVING ON TO NEXT LOOP *****")
+              } else {
+                console.log('tag exists, so updating menu_id: ' + _id + ' to Tag collection')
+                if (Tags.findOne({tag_name: tag_name, menus_id: _id})) {
+                  console.log(_id + " is already existed in " + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                } else {
+                  Tags.update({tag_name: tag_name},{$push: {menus_id: _id}})
+                  console.log(_id + ' has inserted to ' + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                }
+              }
+            }
+          }
+          console.log("********** OPERATION ENDED **********")
+        break;
+        case "Kitchen_details":
+          console.log('Collection to work on: Kitchen_details')
+          for (i=0; i < tags.length; i++) {
+            console.log('total tag length:' + tags.length)
+            console.log('on loop: ' + (i + 1))
+            var tag_name = tags[i].tag
+            console.log('Tag name working on:' + tag_name);
+            console.log('Check if tag is deleted');
+            if (!Kitchen_details.findOne({user_id: _id, kitchen_tags: {tag: tag_name}}) && !Kitchen_details.findOne({user_id: _id, kitchen_speciality: {tag: tag_name}})) {
+              console.log(tag_name + ' is removed. Removing kitchens_id from this tag document.')
+              Tags.update({tag_name: tag_name}, {$pull: {kitchens_id: _id}})
+            } else {
+              if (!Tags.findOne({tag_name: tag_name})) {
+                console.log('Tag not existed, creating new tag')
+                Tags.insert({
+                  tag_name: tag_name,
+                  deleted: false,
+                  dishes_id: [],
+                  menus_id: [],
+                  kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
+                  createAt: new Date()
+                })
+                console.log(tag_name + ': tag creation done. Updating kitchens_id: ' + _id + ' to Tag collection')
+                Tags.update({tag_name: tag_name},{$push: {kitchens_id: _id}})
+                console.log(_id + ' has inserted to :' + tag_name)
+                console.log("***** MOVING ON TO NEXT LOOP *****")
+              } else {
+                console.log('tag exists, so updating kitchens_id: ' + _id + ' to Tag collection')
+                if (Tags.findOne({tag_name: tag_name, kitchens_id: _id})) {
+                  console.log(_id + " is already existed in " + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                } else {
+                  Tags.update({tag_name: tag_name},{$push: {kitchens_id: _id}})
+                  console.log(_id + ' has inserted to ' + tag_name)
+                  console.log("***** MOVING ON TO NEXT LOOP *****")
+                }
+              }
+            }
+          }
+          console.log("********** OPERATION ENDED **********")
+        break;
+      }
   }
 })
