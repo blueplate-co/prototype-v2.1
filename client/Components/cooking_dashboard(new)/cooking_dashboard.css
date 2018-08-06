@@ -45,7 +45,7 @@
   grid-template-columns: repeat(2, 1fr);
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits-background.svg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 30% auto;
   background-position-y: center;
   background-position-x: center;
   background-color: #56aacd;
@@ -93,7 +93,7 @@
 .dashboard-totalviews {
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/views-background.svg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 45% auto;
   background-position-y: center;
   background-position-x: center;
   background-color: #eeab21;

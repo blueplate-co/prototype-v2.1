@@ -127,7 +127,7 @@ Meteor.methods({
   "dashboard.summarydishes"() {
     var result = [];
     // calculate id, name, orders, rating
-    var dishes = Dishes.find({ user_id: Meteor.userId() }).fetch();
+    var dishes = Dishes.find({ user_id: Meteor.userId(), deleted: false }).fetch();
     for (var i = 0; i < dishes.length; i++) {
       var singleDish = {
         id: dishes[i]._id,
@@ -157,7 +157,7 @@ Meteor.methods({
     var result = [];
     var item = { id: "", name: "", views: 0, likes: 0, orders: 0, rating: 0 };
     // calculate id, name, orders, rating
-    var menus = Menu.find({ user_id: Meteor.userId() }).fetch();
+    var menus = Menu.find({ user_id: Meteor.userId(), deleted: false }).fetch();
     for (var i = 0; i < menus.length; i++) {
       var singleMenu = {
         id: menus[i]._id,
@@ -186,7 +186,7 @@ Meteor.methods({
   "dashboard.summaryorder"() {
     var result = [];
     // calculate id, name, orders, rating
-    var orders = Order_record.find({ seller_id: Meteor.userId() }).fetch();
+    var orders = Order_record.find({ seller_id: Meteor.userId(), deleted: false }).fetch();
     for (var i = 0; i < orders.length; i++) {
       //- id
       var id = orders[i]._id;
@@ -256,7 +256,6 @@ Meteor.methods({
         ];
         result = Order_record.aggregate(pipeline);
         return result;
-        break;
       case "month":
         var result = [];
         var userId = Meteor.userId();
@@ -279,8 +278,8 @@ Meteor.methods({
           },
         ];
         result = Order_record.aggregate(pipeline);
+        console.log(result);
         return result;
-        break;
       case "year":
         var result = [];
         var userId = Meteor.userId();
@@ -304,7 +303,6 @@ Meteor.methods({
         ];
         result = Order_record.aggregate(pipeline);
         return result;
-        break;
     }
   },
 });
