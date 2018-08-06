@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session'
+import { check } from 'meteor/check';
 
 Tags = new Mongo.Collection('tags');
 
@@ -35,28 +36,27 @@ Meteor.methods({
         dishes_id: [],
         menus_id: [],
         kitchens_id: [],
+        count: 0,
         createAt: new Date()
-      }, (err, res) => {
-        if (res) {
-          Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
-            dishes_id.push(dish._id)
-          })
-          console.log("Dish Array: " + dishes_id)
-          Tags.update({tag_name: tag_name},{$addToSet: {dishes_id: {$each: dishes_id}}})
-
-          Menu.find({menu_tags: {tag: tag_name}}).forEach((menu) => {
-            menus_id.push(menu._id)
-          })
-          console.log("Menu Array: " + menus_id)
-          Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
-
-          Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
-            kitchens_id.push(kitchen._id)
-          })
-          console.log("Kitchen Array: " + kitchens_id)
-          Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
-        }
       })
+      Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
+        dishes_id.push(dish._id)
+      })
+      console.log("Dish Array: " + dishes_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {dishes_id: {$each: dishes_id}}})
+
+      Menu.find({menu_tags: {tag: tag_name}}).forEach((menu) => {
+        menus_id.push(menu._id)
+      })
+      console.log("Menu Array: " + menus_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
+
+      Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
+        kitchens_id.push(kitchen._id)
+      })
+      console.log("Kitchen Array: " + kitchens_id)
+      Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
+      Meteor.call('tags_total_count.update', tag_name)
       return tag_name + " is transferred.";
     } else {
       Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
@@ -76,8 +76,23 @@ Meteor.methods({
       })
       console.log("Kitchen Array: " + kitchens_id)
       Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
+      Meteor.call('tags_total_count.update', tag_name)
       return tag_name + " is already existed, but dishes/menus/kitchens count updated";
     }
+  },
+  'tags_total_count.update' (tag_name) {
+    console.log('***** UPDATE TAG TOTAL COUNT IN OPERATION *****')
+    var tag = Tags.findOne({tag_name: tag_name})
+    console.log(tag)
+    var tag_count = tag.dishes_id.length + tag.menus_id.length + tag.kitchens_id.length
+
+    check(tag_name, String);
+    check(tag_count, Number);
+
+    console.log("Total count = " + tag_count + ". Inserting to " + tag_name)
+    Tags.update({tag_name: tag_name}, {$set: {count: tag_count}})
+    console.log(tag_name + " total count updated")
+    console.log('***** UPDATE TAG TOTAL COUNT OPERATION COMPLETED *****')
   },
   'tags.display'() {
     return Tags.find({}, {sort: {count: -1}, limit: 30}).fetch()
@@ -169,6 +184,7 @@ Meteor.methods({
                   dishes_id: [],
                   menus_id: [],
                   kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
+                  count: 0,
                   createAt: new Date()
                 })
                 console.log(tag_name + ': tag creation done. Updating dish_id: ' + _id + ' to Tag collection')
@@ -188,6 +204,8 @@ Meteor.methods({
               }
             }
           }
+          //update total count of the tag
+          Meteor.call('tags_total_count.update', tag_name)
           console.log("********** OPERATION ENDED **********")
         break;
         case "Menu":
@@ -229,6 +247,8 @@ Meteor.methods({
               }
             }
           }
+          //update total count of the tag
+          Meteor.call('tags_total_count.update', tag_name)
           console.log("********** OPERATION ENDED **********")
         break;
         case "Kitchen_details":
@@ -270,6 +290,8 @@ Meteor.methods({
               }
             }
           }
+          //update total count of the tag
+          Meteor.call('tags_total_count.update', tag_name)
           console.log("********** OPERATION ENDED **********")
         break;
       }
