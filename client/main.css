@@ -50,6 +50,7 @@ html {
   height: 70vh;
   font-family: 'Montserrat', sans-serif;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body p {
