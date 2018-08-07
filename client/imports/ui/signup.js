@@ -323,7 +323,7 @@ export default class SignUp extends Component {
         return (
           <div className = "container">
             <div className = "row">
-              <h5 className = "bp-red-text center-align">2 more quetions!</h5>
+              <h5 className = "bp-red-text center-align">2 more questions!</h5>
             </div>
             <div className = "row">
               <h2 className = "bp-red-text center-align">Which district do you live in?</h2>
