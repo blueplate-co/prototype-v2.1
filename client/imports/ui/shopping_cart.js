@@ -81,6 +81,7 @@ class ShoppingCart extends Component {
                     globalCart[i].address = kitchenAddress;
                     var commaIndex = kitchenAddress.indexOf(",");
                     var shortAddress = kitchenAddress.substring(commaIndex + 1, kitchenAddress.length).trim();
+                    $("#label_" + seller_id).addClass('format-text-label');
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
@@ -93,6 +94,7 @@ class ShoppingCart extends Component {
                     globalCart[i].address = kitchenAddress;
                     var commaIndex = kitchenAddress.indexOf(",");
                     var shortAddress = kitchenAddress.substring(commaIndex + 1, kitchenAddress.length).trim();
+                    $("#label_" + seller_id).addClass('format-text-label');
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));

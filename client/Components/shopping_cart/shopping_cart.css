@@ -146,3 +146,8 @@ i.remove_button {
     margin-top: 0px;
   }
 }
+
+.format-text-label {
+  font-size: 0.8rem !important;
+  transform: translateY(-140%);
+}
