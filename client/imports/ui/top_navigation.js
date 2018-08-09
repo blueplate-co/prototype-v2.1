@@ -273,6 +273,12 @@ class TopNavigation extends Component {
     );
   };
 
+  removeDeletedItem(arr) {
+    let deleted = arr.filter(element => element.deleted === true);
+    deleted.forEach(f => arr.splice(arr.findIndex(element => element.deleted === f.deleted),1));
+    return arr;
+  }
+
   searching(e) {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
@@ -311,9 +317,13 @@ class TopNavigation extends Component {
           menu: [],
           kitchen: []
         }
-        result.dish = dishIndex.search(queryString).mongoCursor.fetch();
-        result.menu = menuIndex.search(queryString).mongoCursor.fetch();
-        result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
+        // result.dish = dishIndex.search(queryString).mongoCursor.fetch();
+        // result.menu = menuIndex.search(queryString).mongoCursor.fetch();
+        // result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
+        // filter again to remove all deleted item in array with search in minimongodb
+        result.dish = this.removeDeletedItem(dishIndex.search(queryString).mongoCursor.fetch());
+        result.menu = this.removeDeletedItem(menuIndex.search(queryString).mongoCursor.fetch());
+        result.kitchen = this.removeDeletedItem(kitchenIndex.search(queryString).mongoCursor.fetch());
         Session.set('search_result', result);
         Session.set('search_result_origin', result);
         FlowRouter.go('/search');
