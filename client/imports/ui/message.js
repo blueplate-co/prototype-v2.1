@@ -85,18 +85,27 @@ class Message extends Component {
         _id: this.props.conversation[this.state.index]._id,
       });
 
+      var phonenumber,
+          countryCode,
+          userMessage;
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-        var receiver = Kitchen_details.findOne({
+        receiver = Kitchen_details.findOne({
           "user_id": conversation.seller_id
         });
         var receiverId = receiver.user_id;
+            phonenumber = receiver.kitchen_contact;
+            countryCode = receiver.kitchen_address_country;
+            userMessage = receiver.chef_name;
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-        var receiver = Profile_details.findOne({
+        receiver = Profile_details.findOne({
           "user_id": conversation.buyer_id
         });
         var receiverId = receiver.user_id;
+            phonenumber = receiver.mobile;
+            countryCode = receiver.mobile_dial_code,
+            userMessage = receiver.foodie_name;
       }
 
       Meteor.call(
@@ -109,6 +118,36 @@ class Message extends Component {
           if (!err) {
             $("#message-content").val("");
           } else {
+            console.log(err);
+          }
+        }
+      );
+      
+      var contentMessage = userMessage + ' has sent a message to you: ' + message;
+      if (phonenumber.indexOf("+") == -1) {
+        if (countryCode != null && countryCode.indexOf("Vietnam") > -1) {
+          if (phonenumber.indexOf('0') == 0) {
+            phonenumber = "+84" + phonenumber.substr(1);
+          } else {
+            phonenumber = "+84" + phonenumber;
+          }
+        } else {
+            if (phonenumber.indexOf('0') == '0') {
+              // for number is not have 0 at first 123xxxxxx
+              phonenumber = '+852' + phonenumber.substr(1);
+            } else {
+              // for number is have 0 at first 0123xxxxx
+              phonenumber = "+852" + phonenumber.substr(1);
+            }
+        }
+      } 
+
+      Meteor.call(
+        'message.sms',
+        phonenumber,
+        contentMessage.trim(),
+        (err, res) => {
+          if (!err) {
             console.log(err);
           }
         }
