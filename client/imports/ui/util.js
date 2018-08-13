@@ -4,6 +4,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import PaymentGenerator from '../ui/util_payment_generator';
 import SellingPriceGenerator from '../ui/util_selling_price_generator';
 import PaymentForClaim from '../ui/util_payment_for_claim';
+import BonusForStaff from '../ui/util_bonus_for_staff';
 
 export default class Util extends Component {
   constructor(props) {
@@ -25,9 +26,10 @@ export default class Util extends Component {
   render() {
     return (
       <div>
-          <PaymentGenerator />
+          {/* <PaymentGenerator />
           <SellingPriceGenerator />
-          <PaymentForClaim />
+          <PaymentForClaim /> */}
+          <BonusForStaff/>
       </div>
     );
   }

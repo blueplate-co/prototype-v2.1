@@ -1,6 +1,4 @@
-import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
 
 var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
 
@@ -15,6 +13,10 @@ Meteor.publish("userData", function() {
   } else {
     this.ready();
   }
+});
+
+Meteor.publish("theBonusHistory", function() {
+  return Bonus_history.find({});
 });
 
 Meteor.methods({
@@ -82,4 +84,32 @@ Meteor.methods({
 
     return result;
   },
+  "util.giveBonusForStaff"(email, amount) {
+    try {
+        var user = Meteor.users.findOne(
+          { emails: { $elemMatch: { address: email } } }
+        );
+        var user_id = user._id;
+        var buyerCredits = user.credits;
+        Meteor.users.update(
+            {
+              _id: user_id,
+            },
+            {
+              $set: {
+                  credits: parseInt(buyerCredits + parseInt(amount)),
+              },
+            }
+        ,() => {
+          // add history only when tranfer done
+          Bonus_history.insert({
+            email: email,
+            date: new Date(),
+            amount: amount
+          });
+        });
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 });
