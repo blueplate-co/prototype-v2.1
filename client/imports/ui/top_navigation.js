@@ -412,7 +412,7 @@ class TopNavigation extends Component {
                 <ul className="right">
                   <li className="icon" onClick={() => this.openProfile()}>
                     {
-                      (Meteor.userId()) ?
+                      (this.state.avatar) ?
                         <img style={{ width: '35px', height: '35px', borderRadius: '50%', marginTop: '5px' }} src={this.state.avatar} />
                       :
                         <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
