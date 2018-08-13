@@ -186,7 +186,8 @@ Meteor.methods({
   "dashboard.summaryorder"() {
     var result = [];
     // calculate id, name, orders, rating
-    var orders = Order_record.find({ seller_id: Meteor.userId(), deleted: false }).fetch();
+    var orders = Order_record.find({ seller_id: Meteor.userId() }).fetch();
+    console.log(orders);
     for (var i = 0; i < orders.length; i++) {
       //- id
       var id = orders[i]._id;
@@ -226,7 +227,7 @@ Meteor.methods({
   },
   "dashboard.topselling"() {
     var dishes = Dishes.find(
-      { user_id: Meteor.userId() },
+      { user_id: Meteor.userId(), deleted: false },
       { sort: { order_count: -1 }, limit: 5 }
     ).fetch();
     return dishes;
@@ -236,10 +237,11 @@ Meteor.methods({
       case "week":
         var result = [];
         var userId = Meteor.userId();
+        var firstdayofweek = moment().day(1).toISOString();
         var pipeline = [
           {
             $match: {
-              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }, { createdAt: { $gte: new Date(firstdayofweek) } }],
             },
           },
           {
@@ -259,10 +261,12 @@ Meteor.methods({
       case "month":
         var result = [];
         var userId = Meteor.userId();
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstdayofmonth = new Date(y, m, 1).toISOString();
         var pipeline = [
           {
             $match: {
-              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }, { createdAt: { $gte: new Date(firstdayofmonth) } }],
             },
           },
           {
@@ -283,10 +287,13 @@ Meteor.methods({
       case "year":
         var result = [];
         var userId = Meteor.userId();
+        var thisYear = (new Date()).getFullYear();    
+        var start = new Date("1/1/" + thisYear);
+        var firstdayofyear = moment(start.valueOf()).toISOString();
         var pipeline = [
           {
             $match: {
-              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }],
+              $and: [{ status: { $ne: "Created" } }, { seller_id: userId }, { createdAt: { $gte: new Date(firstdayofyear) } }],
             },
           },
           {

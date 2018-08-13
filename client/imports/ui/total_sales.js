@@ -51,7 +51,15 @@ export default class TotalSales extends Component {
     Meteor.call("dashboard.totalsalesData", "week", (err, response) => {
       var result = [0, 0, 0, 0, 0, 0, 0];
       for (var i = 0; i < response.length; i++) {
-        result[response[i]._id.day - 2] = Math.round(response[i].sales / 1.15);
+        if (response[i]._id.day > 1) {
+          result[response[i]._id.day - 2] = Math.round(response[i].sales / 1.15);
+        } else {
+          // Date:       Mon Tue Wed Thu Fri Sat Sun
+          // $dayofweek: 2.  3.  4.  5.  6.  7.  1.
+          // $index      0.  1.  2.  3.  4.  5.  6.
+          // Sunday always in index 6
+          result[6] = Math.round(response[i].sales / 1.15);
+        }
       }
       var config = this.state.data;
       config.datasets[0].data = result;
@@ -90,9 +98,15 @@ export default class TotalSales extends Component {
         Meteor.call("dashboard.totalsalesData", "week", (err, response) => {
           var result = [0, 0, 0, 0, 0, 0, 0];
           for (var i = 0; i < response.length; i++) {
-            result[response[i]._id.day - 2] = Math.round(
-              response[i].sales / 1.15
-            );
+            if (response[i]._id.day > 1) {
+              result[response[i]._id.day - 2] = Math.round(response[i].sales / 1.15);
+            } else {
+              // Date:       Mon Tue Wed Thu Fri Sat Sun
+              // $dayofweek: 2.  3.  4.  5.  6.  7.  1.
+              // $index      0.  1.  2.  3.  4.  5.  6.
+              // Sunday always in index 6
+              result[6] = Math.round(response[i].sales / 1.15);
+            }
           }
           var config = this.state.data;
           config.datasets[0].data = result;
