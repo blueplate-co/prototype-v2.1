@@ -362,9 +362,11 @@ class TopNavigation extends Component {
       } else {
         var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
       }
-      credits = parseFloat(parseFloat(this.props.credits) + parseFloat(stripebalance)).toFixed(2);
-      this.setState({
-        credits: credits
+      Meteor.call('payment.getCredits', (err, res) => {
+        credits = parseFloat(parseFloat(res) + parseFloat(stripebalance)).toFixed(2);
+        this.setState({
+          credits: credits
+        });
       });
     });
   }
