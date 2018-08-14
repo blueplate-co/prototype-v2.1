@@ -196,7 +196,8 @@ Meteor.methods({
       rating: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      paymentType: paymentType
+      paymentType: paymentType,
+      send_sms: true
     })
   },
 
@@ -275,5 +276,14 @@ Meteor.methods({
           console.log('test');
         }
       })
+  },
+  'order_record.update_send_sms'(order_id) {
+    Order_record.update({
+      _id: order_id}, {
+        $set:{
+          send_sms: false,
+          updatedAt: new Date()
+        }
+    });
   },
 });

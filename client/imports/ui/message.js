@@ -6,6 +6,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 import Rating from "./rating";
 import ProgressiveImages from "./progressive_image";
+import { validatePhoneNumber, getCountryCodeFromKitChen, getCountryCodeFromProfile } from '/imports/functions/common';
 
 // App component - represents the whole app
 class Message extends Component {
@@ -85,7 +86,7 @@ class Message extends Component {
         _id: this.props.conversation[this.state.index]._id,
       });
 
-      var phonenumber,
+      var phoneNumber,
           countryCode,
           userMessage;
       if (Meteor.userId() == conversation.buyer_id) {
@@ -94,8 +95,8 @@ class Message extends Component {
           "user_id": conversation.seller_id
         });
         var receiverId = receiver.user_id;
-            phonenumber = receiver.kitchen_contact;
-            countryCode = receiver.kitchen_address_country;
+            phoneNumber = receiver.kitchen_contact;
+            countryCode = getCountryCodeFromKitChen(receiver);
             userMessage = receiver.chef_name;
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
@@ -103,8 +104,8 @@ class Message extends Component {
           "user_id": conversation.buyer_id
         });
         var receiverId = receiver.user_id;
-            phonenumber = receiver.mobile;
-            countryCode = receiver.mobile_dial_code,
+            phoneNumber = receiver.mobile;
+            countryCode = getCountryCodeFromProfile(receiver),
             userMessage = receiver.foodie_name;
       }
 
@@ -123,28 +124,12 @@ class Message extends Component {
         }
       );
       
-      var contentMessage = userMessage + ' has sent a message to you: ' + message;
-      if (phonenumber.indexOf("+") == -1) {
-        if (countryCode != null && countryCode.indexOf("Vietnam") > -1) {
-          if (phonenumber.indexOf('0') == 0) {
-            phonenumber = "+84" + phonenumber.substr(1);
-          } else {
-            phonenumber = "+84" + phonenumber;
-          }
-        } else {
-            if (phonenumber.indexOf('0') == '0') {
-              // for number is not have 0 at first 123xxxxxx
-              phonenumber = '+852' + phonenumber.substr(1);
-            } else {
-              // for number is have 0 at first 0123xxxxx
-              phonenumber = "+852" + phonenumber.substr(1);
-            }
-        }
-      } 
+      var contentMessage = 'Blueplate: ' + userMessage + ', ' + message;
+      phoneNumber = validatePhoneNumber(phoneNumber, countryCode);
 
       Meteor.call(
         'message.sms',
-        phonenumber,
+        phoneNumber,
         contentMessage.trim(),
         (err, res) => {
           if (!err) {
@@ -152,30 +137,6 @@ class Message extends Component {
           }
         }
       );
-
-
-      // if setting sms is turn on, send sms into receiver
-      // if (setting turn on) {
-        // let rawPhoneNumber = receiver.kitchen_contact;
-        // let phonenumber;
-        // if (rawPhoneNumber.indexOf('+') > -1) {
-        //   // full format phonenumber +852xxxxxxxx
-        //   phonenumber = rawPhoneNumber;
-        // } else {
-        //   if (rawPhoneNumber[0] !== '0') {
-        //     // for number is not have 0 at first 123xxxxxx
-        //     phonenumber = '+852' + rawPhoneNumber;
-        //   } else {
-        //     // for number is have 0 at first 0123xxxxx
-        //     phonenumber = '+852' + rawPhoneNumber.slice(1, rawPhoneNumber.length);
-        //   }
-        // }
-        // Meteor.call("message.sms", phonenumber, message, (err, res) => {
-        //   if (!err) {
-        //     console.log('Chatting message sent');
-        //   }
-        // });
-      // }
     }
   }
 
