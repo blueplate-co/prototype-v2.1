@@ -438,7 +438,7 @@ Template.create_dishes_form.events({
     var user_id = Meteor.userId();
     var dish_name = event.target.dish_name.value;
     var dish_cost = event.target.dish_cost.value;
-    var dish_selling_price = parseFloat(event.target.dish_selling_price.value).toFixed(2) + (parseFloat(event.target.dish_selling_price.value) * 0.15).toFixed(2); // add fee 15% into selling price
+    var dish_selling_price = parseFloat(event.target.dish_selling_price.value * 1.15).toFixed(2); // add fee 15% into selling price
     if (dish_name.trim().length == "" || dish_selling_price.toString().trim().length == "" || Session.get('tempImages') == "") {
       Materialize.toast("Sorry we can't save your dish. We need to have at least your dish image, dish name and selling price to save", 6000, 'rounded bp-green');
       return false;
@@ -539,7 +539,8 @@ Template.create_dishes_form.events({
       return true;
     }
     var dish_cost = $('#dish_cost').val();
-    var dish_selling_price = parseFloat($('#dish_selling_price').val()) + (parseFloat($('#dish_selling_price').val()) * 0.15);
+    var dish_selling_price = parseFloat($('#dish_selling_price').val() * 1.15);
+    console.log(dish_selling_price); // add 15% fee
     var dish_profit = dish_selling_price - dish_cost;
 
     var dish_tags = $('#dish_tags').material_chip('data')

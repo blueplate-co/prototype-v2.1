@@ -48,6 +48,8 @@ Meteor.methods({
     check(dish_tags, Match.Any);
     console.log('backend:' + imgMeta);
 
+    console.log(dish_selling_price);
+
     Dishes.update({
       _id: dish_id
     }, {
