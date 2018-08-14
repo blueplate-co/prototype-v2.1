@@ -983,6 +983,10 @@
   margin-bottom: 0px;
 }
 
+.faq_section {
+  min-height: 100vh;
+}
+
 .faq_container .collapsible {
   border-left: none !important;
   border-right: none !important;
