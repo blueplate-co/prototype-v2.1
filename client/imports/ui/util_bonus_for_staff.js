@@ -5,7 +5,7 @@ class BonusForStaff extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            history: [],
+            history: []
         };
     }
 
@@ -56,6 +56,7 @@ class BonusForStaff extends Component {
                 <input id="email" type="email" placeholder="Email address" />
                 <input id="amount" type="number" placeholder="Amount" />
                 <button className="btn" onClick={(e) => this.submit(e)} >Submit</button>
+                <h3>Total amount: {this.props.sum}</h3>
                 <table className="highlight">
                     <thead>
                         <tr>
@@ -77,9 +78,14 @@ class BonusForStaff extends Component {
 export default withTracker(props => {
     const handle = Meteor.subscribe("theBonusHistory");
     var history = Bonus_history.find({}).fetch();
+    var sum = 0;
+    for (var i = 0; i < history.length; i++) {
+        sum += parseInt(history[i].amount);
+    }
     return {
       currentUser: Meteor.user(),
       listLoading: !handle.ready(),
-      history: history
+      history: history,
+      sum: sum
     };
   })(BonusForStaff);
