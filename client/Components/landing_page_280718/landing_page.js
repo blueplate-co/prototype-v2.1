@@ -29,6 +29,7 @@ Template.landing_page.onRendered(function () {
   Session.set('login_clicked', false);
   Session.set('popup_appeared', false);
   this.$('#login_modal').modal();
+  this.$('.collapsible').collapsible();
 
   render (<LandingDishList />, document.getElementById('landing_dishes_list'));
   // everything is loaded
@@ -148,6 +149,13 @@ Template.landing_page.events({
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   },
+  'click .collapsible-header': function(event) {
+    if ($(event.target).hasClass('active')) {
+      $(event.target).children('i').addClass('rotate')
+    } else {
+      $(event.target).children('i').removeClass('rotate')
+    }
+  }
 })
 
 Template.landing_page.helpers({
