@@ -81,19 +81,20 @@ Meteor.methods({
           },
         }
       );
-      var messages = Messages.find({ conversation_id: conversationId });
-      messages.forEach(function(mess) {
-        Messages.update(
-          {
-            _id: mess._id,
-          },
-          {
-            $set: {
-              available: false,
-            },
-          }
-        );
-      });
+      // DONT DISABLE MESSAGE AFTER CONVERSATION DISABLED T_T
+      // var messages = Messages.find({ conversation_id: conversationId });
+      // messages.forEach(function(mess) {
+      //   Messages.update(
+      //     {
+      //       _id: mess._id,
+      //     },
+      //     {
+      //       $set: {
+      //         available: false,
+      //       },
+      //     }
+      //   );
+      // });
     }
   },
   "message.sms"(phonenumber, content) {
