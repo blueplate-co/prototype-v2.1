@@ -2,6 +2,7 @@ import { search_distinct_order_record_orders_tracking } from '/imports/functions
 import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
 
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 Template.orders_tracking.helpers({
   'order': function() {
@@ -16,7 +17,9 @@ Template.orders_tracking.helpers({
         smsList = {};
 
     orders.map(function(order) {
-      orderIds.push(order.seller_id);
+      if (!orderIds.includes(order.seller_id)) {
+        orderIds.push(order.seller_id);
+      }
 
       if (order.send_sms) {
         // Update state send_sms field after sms was sent to Chef
@@ -350,9 +353,10 @@ Template.pending_confirmation.events({
     }).fetch()
 
     product.forEach(cancel_order)
-
+    
+    show_loading_progress();
     function cancel_order(array_value, index) {
-
+      
       setTimeout(function() {
         var order = array_value
         var trans_no = parseInt(String(order.transaction_no))
@@ -390,16 +394,23 @@ Template.pending_confirmation.events({
           Meteor.call('order_record.cancelled', order_id) //update the order to cooking
         }
       }, 100 * index)
+
+      // setTimeout(function() {
+        // hide_loading_progress();
+      // }, 101);
+
       Meteor.call('notification.cancel_order', seller_id, buyer_id);
       // get conversation_id between seller and buyer
       let conversation = Conversation.findOne({
         buyer_id: buyer_id,
         seller_id: seller_id
       });
+      
       Meteor.call('message.disableConversation', conversation._id, (err, res) => {
         if (!err) {
           console.log('Disabled conversation');
         }
+        hide_loading_progress();
         // send SMS for cancel
         var kitchen_number = Kitchen_details.findOne({
           user_id: seller_id
