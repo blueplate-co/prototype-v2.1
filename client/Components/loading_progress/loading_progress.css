@@ -1,0 +1,19 @@
+/** Start loading**/
+#div-load-data {
+  margin: 0 auto;
+  position: fixed;
+  top: 40%;
+  left: 43%;
+  }
+  
+  #showLoadFull {
+    background-color: #000; 
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    position: fixed;
+    opacity: 0.5;
+    top: 0;
+    display: none;
+  }
+  /*End loading*/
