@@ -105,6 +105,9 @@ Meteor.methods({
         order_count: count
       }
     });
+  },
+  'dish.get_detail' (dish_id) {
+    return Dishes.findOne({ _id: dish_id });
   }
 });
 
