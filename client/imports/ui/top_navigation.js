@@ -349,9 +349,11 @@ class TopNavigation extends Component {
   }
 
   componentWillReceiveProps() {
-    this.setState({
-      avatar: Profile_details.findOne({ user_id: Meteor.userId() }).profileImg.large
-    })
+    if (Profile_details.findOne({ user_id: Meteor.userId() })) {
+      this.setState({
+        avatar: Profile_details.findOne({ user_id: Meteor.userId() }).profileImg.large
+      })
+    }
   }
 
   componentDidMount() {

@@ -58,7 +58,12 @@ Meteor.methods({
     return card;
   },
   "payment.getCredits"() {
-    return Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits;
+    var credits = Meteor.users.find({ _id: Meteor.userId() }).fetch()[0];
+    if (credits) {
+      return Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].credits;
+    } else {
+      return 0;
+    }
   },
   "payment.depositCredits"(creditPackage, buyer_id) {
     if (creditPackage == "") {
