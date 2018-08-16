@@ -1,3 +1,6 @@
+
+import { open_dialog_confirm } from '/imports/functions/common';
+
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
 });
@@ -12,35 +15,27 @@ Template.dishes_selection.events({
   Session.set('selected_dishes_id', checked_values);
   },
   'click #delete_dish': function () {
-    $('#confirm_delete').modal({
-        dismissible: true, // Modal can be dismissed by clicking outside of the modal
-        opacity: .5, // Opacity of modal background
-        inDuration: 300, // Transition in duration
-        outDuration: 200, // Transition out duration
-        startingTop: '4%', // Starting top style attribute
-        endingTop: '10%' // Ending top style attribute
-      }
-    );
-    $('#confirm_delete').modal('open');
+        
+    open_dialog_confirm("Are you sure?", "Are you sure to delete this dish?", () => {},() => {
+      Meteor.call('dish.remove', sessionStorage.getItem("deletedDishID"));
+      Meteor.call('dish_image.remove', sessionStorage.getItem("deletedDishImagesID"), function(err) {
+        if (err) {
+          Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded bp-green");
+        }
+      });
+      Meteor.call('menu.checkDish', sessionStorage.getItem("deletedDishID"), function(err, result) {
+        if (result) {
+            var $toastContent = $('<span>This dish is already in menu. Please update your menu.</span>');
+            Materialize.toast($toastContent, 12000);
+        } else {
+            Materialize.toast('The dish has been deleted', 4000, "rounded bp-green");
+        }
+      });
+      sessionStorage.clear(); //clear all things to make sure everything is clean before use it again
+    });
     sessionStorage.setItem("deletedDishID", this._id);
     sessionStorage.setItem("deletedDishImagesID", this.image_id);
-  },
-  'click #confirm': function() {
-    Meteor.call('dish.remove', sessionStorage.getItem("deletedDishID"));
-    Meteor.call('dish_image.remove', sessionStorage.getItem("deletedDishImagesID"), function(err) {
-      if (err) {
-        Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded bp-green");
-      }
-    });
-    Meteor.call('menu.checkDish', sessionStorage.getItem("deletedDishID"), function(err, result) {
-      if (result) {
-          var $toastContent = $('<span>This dish is already in menu. Please update your menu.</span>');
-          Materialize.toast($toastContent, 12000);
-      } else {
-          Materialize.toast('The dish has been deleted', 4000, "rounded bp-green");
-      }
-    });
-    sessionStorage.clear(); //clear all things to make sure everything is clean before use it again
+
   },
   'click #edit_dish': function(event, template) {
     event.preventDefault();

@@ -1,5 +1,6 @@
 import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
+import { open_dialog_confirm } from '/imports/functions/common';
 
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
@@ -188,66 +189,50 @@ Template.dishes_summary.events({
       Materialize.toast("Please select a dish you'd like to delete", 4000, 'rounded bp-green');
     } else {
       event.preventDefault();
-        $('#confirm_multi_delete').modal({
-          dismissible: true, // Modal can be dismissed by clicking outside of the modal
-          opacity: .5, // Opacity of modal background
-          inDuration: 300, // Transition in duration
-          outDuration: 200, // Transition out duration
-          startingTop: '4%', // Starting top style attribute
-          endingTop: '10%', // Ending top style attribute
+      open_dialog_confirm("Are you sure?", "Are you sure to delete there dish?", () => {
+          $('.modal-content').scrollTop(0);
+          $('.modal-overlay').remove();
+          var checkboxes = document.getElementsByClassName("dishes_checkbox");
+          for (var i = 0; i < checkboxes.length; i++) {
+              checkboxes[i].checked = false;
+          };
+          Ingredients_temporary.remove({});
+        Session.set('selected_dishes_id', []); // clear all selected dishes
+      },() => {
+        var selected_dishes = Session.get('selected_dishes_id');
+        if (typeof selected_dishes !== "undefined" && typeof selected_dishes !== "string"){
+          selected_dishes = selected_dishes.filter(function(a){return a !== "on"})
         }
-      );
-      $('#confirm_multi_delete').modal('open');
-    }
-  },
-
-  'click #cancel_multi': function(event) {
-    Session.set('selected_dishes_id', []); // clear all selected dishes
-  },
-
-  'click #confirm_multi': function(event) {
-    var selected_dishes = Session.get('selected_dishes_id');
-    if (typeof selected_dishes !== "undefined" && typeof selected_dishes !== "string"){
-      selected_dishes = selected_dishes.filter(function(a){return a !== "on"})
-    }
-    if (!selected_dishes || selected_dishes.length === 0) {
-      Materialize.toast("Please select a dish you'd like to delete", 4000, 'rounded bp-green');
-    } else {
-      for (i = 0; i < selected_dishes.length; i++) {
-        var dish_details = Dishes.findOne({_id: selected_dishes[i]});
-        if (dish_details.image_id) {
-          Meteor.call('dish_image.remove',dish_details.image_id, function(err) {
-              if (err) Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded bp-green");
-          });
-        }
-        var delete_message = dish_details.dish_name + " deleted";
-        Materialize.toast(delete_message, 3000);
-        Meteor.call('dish.remove', selected_dishes[i], function(err){
-          if (err) {
-            Materialize.toast('Oops! Error when delete dish. Please try again. ' + err.message , 4000, "rounded bp-green");
-          } else {
-            Meteor.call('menu.checkDish', selected_dishes[i], function(err, result) {
-              if (result) {
-                  var $toastContent = $('<span>This dish is already in menu. Please update your menu.</span>');
-                  Materialize.toast($toastContent, 12000);
+        if (!selected_dishes || selected_dishes.length === 0) {
+          Materialize.toast("Please select a dish you'd like to delete", 4000, 'rounded bp-green');
+        } else {
+          for (i = 0; i < selected_dishes.length; i++) {
+            var dish_details = Dishes.findOne({_id: selected_dishes[i]});
+            if (dish_details.image_id) {
+              Meteor.call('dish_image.remove',dish_details.image_id, function(err) {
+                  if (err) Materialize.toast('Oops! Error when remove dish images. Please try again. ' + err.message, 4000, "rounded bp-green");
+              });
+            }
+            var delete_message = dish_details.dish_name + " deleted";
+            Materialize.toast(delete_message, 3000);
+            Meteor.call('dish.remove', selected_dishes[i], function(err){
+              if (err) {
+                Materialize.toast('Oops! Error when delete dish. Please try again. ' + err.message , 4000, "rounded bp-green");
+              } else {
+                Meteor.call('menu.checkDish', selected_dishes[i], function(err, result) {
+                  if (result) {
+                      var $toastContent = $('<span>This dish is already in menu. Please update your menu.</span>');
+                      Materialize.toast($toastContent, 12000);
+                  }
+                });
+                sessionStorage.clear(); //clear all things to make sure everything is clean before use it again
               }
             });
-            sessionStorage.clear(); //clear all things to make sure everything is clean before use it again
           }
-        });
-      }
-      Session.set('selected_dishes_id', null);
+          Session.set('selected_dishes_id', null);
+        }
+      });
     }
-  },
-
-  'click .modal-close': function() {
-    $('.modal-content').scrollTop(0);
-    $('.modal-overlay').remove();
-    var checkboxes = document.getElementsByClassName("dishes_checkbox");
-    for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = false;
-    };
-    Ingredients_temporary.remove({});
   },
   'click #modal_add_btn': function() {
     $('.modal-content').scrollTop(0);

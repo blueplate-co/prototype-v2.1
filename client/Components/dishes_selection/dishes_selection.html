@@ -1,6 +1,4 @@
 <template name = "dishes_selection">
-  {{> confirm_delete}}
-  {{> confirm_multi_delete}}
   {{#if subscription}}
     <table class = "bordered" id="menu_dishes_table">
       <thead>
@@ -43,30 +41,4 @@
   {{else}}
     {{> spinner}}
   {{/if}}
-</template>
-
-<template name="confirm_delete">
-  <div id="confirm_delete" class="modal">
-    <div class="modal-content">
-      <h6>Are you sure?</h6>
-      <p>Are you sure to delete this dish?</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a id="confirm" class="modal-action modal-close waves-effect waves-green btn-flat">Sure</a>
-    </div>
-  </div>
-</template>
-
-<template name="confirm_multi_delete">
-  <div id="confirm_multi_delete" class="modal">
-    <div class="modal-content">
-      <h6>Are you sure?</h6>
-      <p>Are you sure to delete these dish?</p>
-    </div>
-    <div class="modal-footer">
-      <a id="cancel_multi" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a id="confirm_multi" class="modal-action modal-close waves-effect waves-green btn-flat">Sure</a>
-    </div>
-  </div>
 </template>
