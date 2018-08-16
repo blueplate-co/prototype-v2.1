@@ -395,10 +395,6 @@ Template.pending_confirmation.events({
         }
       }, 100 * index)
 
-      // setTimeout(function() {
-        // hide_loading_progress();
-      // }, 101);
-
       Meteor.call('notification.cancel_order', seller_id, buyer_id);
       // get conversation_id between seller and buyer
       let conversation = Conversation.findOne({
@@ -412,21 +408,16 @@ Template.pending_confirmation.events({
         }
         hide_loading_progress();
         // send SMS for cancel
-        var kitchen_number = Kitchen_details.findOne({
-          user_id: seller_id
-        }).kitchen_contact;
-        if (kitchen_number[0] == "0") {
-          kitchen_number = '+852' + kitchen_number.slice(1, kitchen_number.length);
-        } else if (kitchen_number[0] == '+') {
-          kitchen_number = kitchen_number;
-        } else {
-          kitchen_number = '+852' + kitchen_number;
-        }
-        var buyer_name = Profile_details.findOne({
-          user_id: buyer_id
-        }).foodie_name;
-        var message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
-        Meteor.call('message.sms', kitchen_number, content.trim(), (err, res) => {
+        var kitchen = Kitchen_details.findOne({user_id: seller_id}),
+            kitchen_phone_number = kitchen.kitchen_contact,
+            countryCode = getCountryCodeFromKitChen(kitchen);
+        
+        kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
+
+        var buyer_name = Profile_details.findOne({user_id: buyer_id}).foodie_name,
+            message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
+            
+        Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
           if (!err) {
             console.log('Message sent');
           }
