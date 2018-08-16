@@ -1,3 +1,6 @@
+
+import { open_dialog_confirm } from '/imports/functions/common';
+
 Template.menu_list.onCreated(function() {
   this.user_menus = this.subscribe('getListMenus');
 })
@@ -43,21 +46,13 @@ Template.menu_list.events({
     Session.set('selected_menus_id', checked_values);
   },
   'click #delete_menu': function () {
-    $('#confirm_delete').modal({
-        dismissible: true, // Modal can be dismissed by clicking outside of the modal
-        opacity: .5, // Opacity of modal background
-        inDuration: 300, // Transition in duration
-        outDuration: 200, // Transition out duration
-        startingTop: '4%', // Starting top style attribute
-        endingTop: '10%' // Ending top style attribute
-      }
-    );
-    $('#confirm_delete').modal('open');
+
+    open_dialog_confirm("Are you sure?", "Are you sure to delete this menu?", () => {},() => {
+
+      Meteor.call('menu.delete', sessionStorage.getItem("deletedMenuID"));
+      sessionStorage.clear();
+    });
     sessionStorage.setItem("deletedMenuID", this._id);
-  },
-  'click #confirm': function() {
-    Meteor.call('menu.delete', sessionStorage.getItem("deletedMenuID"));
-    sessionStorage.clear();
   },
   'click #edit_menu': function() {
     $('#edit_menu_modal').modal('open')

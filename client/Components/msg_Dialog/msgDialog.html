@@ -2,10 +2,12 @@
   <header>
     {{> notifications}}
     {{> navbar}}
+    {{> loading_progress}}
   </header>
   <main>
     <div class = "render_component">
       {{> Template.dynamic template = render_component}}
+      {{> confirm_message }}
     </div>
   </main>
   {{>footer}}
