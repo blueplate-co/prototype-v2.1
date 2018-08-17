@@ -605,3 +605,9 @@ let changeImgName = function(imgPath)
   return milliseconds + '_' + uniqid()+ '.' + extension
 
 }
+
+$(document).on("keydown", "#dish_tags", function(event) {
+    if (event.keyCode == 13) {
+      $(this).find(".chip").addClass("dirty_field");
+    }
+});
