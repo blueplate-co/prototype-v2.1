@@ -1,30 +1,14 @@
-import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
-  FlowRouter
-} from 'meteor/ostrio:flow-router-extra';
-import {
-  Meteor
-} from 'meteor/meteor';
-import {
-  Template
-} from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';
-import {
-  FilesCollection
-} from 'meteor/ostrio:files';
-import {
-  ReactiveVar
-} from 'meteor/reactive-var'
-import {
-  search_distinct_in_order_record
-} from '/imports/functions/shopping_cart.js';
-import {
-  date_time_conversion
-} from '/imports/functions/date_time_conversion.js';
+import { Accounts } from 'meteor/accounts-base';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Meteor } from 'meteor/meteor';
+import {  Template } from 'meteor/templating';
+import { Blaze } from 'meteor/blaze';
+import {  FilesCollection } from 'meteor/ostrio:files';
+import { ReactiveVar } from 'meteor/reactive-var'
+import { search_distinct_in_order_record} from '/imports/functions/shopping_cart.js';
+import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
+
+import { validatePhoneNumber, getCountryCodeFromProfile } from '/imports/functions/common';
 
 Meteor.subscribe('listAllOrdersSeller');
 Meteor.subscribe('listAllOrdersBuyer');
@@ -654,25 +638,17 @@ Template.request_card.events({
       });
       Meteor.call('message.disableConversation', conversation._id, (err, res) => {
         if (!err) {
-          console.log('Disabled conversation');
           // send SMS when reject order
-          var foodie_country_code = Profile_details.findOne({
-            user_id: buyer_id
-          }).mobile_dial_code;
-          foodie_country_code = '+' + foodie_country_code.split('+')[1];
-          var foodie_mobile_number = Profile_details.findOne({
-            user_id: buyer_id
-          }).mobile;
-          if (foodie_mobile_number[0] == "0") {
-            foodie_number = foodie_country_code + foodie_mobile_number.slice(1, foodie_mobile_number.length);
-          } else {
-            foodie_number = foodie_country_code + foodie_mobile_number;
-          }
-          var seller_name = Kitchen_details.findOne({
-            user_id: seller_id
-          }).chef_name;
-          var message = 'Unfortunately, ' + seller_name + ' has just rejected your order.';
-          Meteor.call('message.sms', foodie_number, message.trim(), (err, res) => {
+          var profile_foodies = Profile_details.findOne({ user_id: buyer_id}),
+              foodie_phone_number = profile_foodies.mobile;
+              country_code = getCountryCodeFromProfile(profile_foodies);
+          
+          foodie_phone_number = validatePhoneNumber(foodie_phone_number, country_code);
+
+          var seller_name = Kitchen_details.findOne({user_id: seller_id}).chef_name,
+              message = 'Unfortunately, ' + seller_name + ' has just rejected your order.';
+
+          Meteor.call('message.sms', foodie_phone_number, message.trim(), (err, res) => {
             if (!err) {
               console.log('Message sent');
             }

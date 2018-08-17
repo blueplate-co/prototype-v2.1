@@ -78,35 +78,33 @@ class Message extends Component {
         Materialize.toast('Your message must at least 2 characters.', 4000, 'rounded bp-green');
         return false;
       }
-      var receiverId = '';
-      var receiver = {};
+      var receiverId = '',
+          receiver = {},
+          phoneNumber,
+          countryCode,
+          userMessage;
 
       // get info about current conversation
       var conversation = Conversation.findOne({
         _id: this.props.conversation[this.state.index]._id,
       });
 
-      var phoneNumber,
-          countryCode,
-          userMessage;
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-        receiver = Kitchen_details.findOne({
-          "user_id": conversation.seller_id
-        });
-        var receiverId = receiver.user_id;
-            phoneNumber = receiver.kitchen_contact;
-            countryCode = getCountryCodeFromKitChen(receiver);
-            userMessage = receiver.chef_name;
+        receiver = Kitchen_details.findOne({"user_id": conversation.seller_id});
+        
+        receiverId = receiver.user_id;
+        phoneNumber = receiver.kitchen_contact;
+        countryCode = getCountryCodeFromKitChen(receiver);
+        userMessage = Profile_details.findOne({"user_id": conversation.buyer_id}).foodie_name;
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-        receiver = Profile_details.findOne({
-          "user_id": conversation.buyer_id
-        });
-        var receiverId = receiver.user_id;
-            phoneNumber = receiver.mobile;
-            countryCode = getCountryCodeFromProfile(receiver),
-            userMessage = receiver.foodie_name;
+        receiver = Profile_details.findOne({"user_id": conversation.buyer_id});
+        
+        receiverId = receiver.user_id;
+        phoneNumber = receiver.mobile;
+        countryCode = getCountryCodeFromProfile(receiver),
+        userMessage = Kitchen_details.findOne({"user_id": conversation.seller_id}).chef_name;
       }
 
       Meteor.call(
