@@ -212,8 +212,7 @@ class Message extends Component {
             var unread;
             let user_id = item.user_id;
             let conversation = Conversation.findOne({
-              $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
-              available: true
+              $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }]
             });
             let conversation_id = conversation._id;
             // get all unseen messages in available conversation
