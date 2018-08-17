@@ -53,6 +53,7 @@
     #confirm_message.confirm_message_popup {
         top: 23% !important;
         min-height: 20% !important;
+        height: 26%;
         width: 50% !important;
         border-radius: 15px !important;
         overflow: hidden !important;

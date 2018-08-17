@@ -67,3 +67,27 @@ export function getCountryCodeFromProfile(profile) {
   }
   return countryCode;
 };
+
+$(document).on('focusin', '.form_field', function() {
+  if ($(this).closest('input[type=checkbox]').length > 0) {
+    $(this).data("old_data_val", $(this).is(':checked'));
+  } else {
+    $(this).data("old_data_val", $(this).val());
+    }
+});
+
+/**
+ * Tick field had changed if it was edited
+ */
+$(document).on('change', '.form_field', function() {
+  var $el = $(this),
+      oldVal = $el.data("old_data_val"),
+      newVal = $el.val(),
+      isCheckbox = $('.form_field').closest('input[type=checkbox]').is(':checked');
+
+  if ( (newVal == oldVal) || oldVal == isCheckbox) {
+    $el.removeClass('dirty_field');
+  } else {
+    $el.addClass('dirty_field');
+  }
+});

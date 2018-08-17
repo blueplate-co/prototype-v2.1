@@ -61,12 +61,27 @@ Template.dishes_summary.events({
   },
 
   'click #close_create_dish_modal': function(event) {
-    // clear all selected dishes in session
     event.preventDefault();
-    Session.set('selected_dishes_id', []);
-    Session.set('tempImages', '');
-    Session.set('ingredient_temp', []);
-    Session.set('imgMeta', []);
+    var hasChangeField = $('.dirty_field'),
+    bChangeField = hasChangeField.length > 0;
+    
+    if (bChangeField) {
+      open_dialog_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
+        // Cancel
+        
+      }, () => {
+        $('#edit_dish_modal').modal('close');
+
+        // clear all selected dishes in session
+        Session.set('sel                                                                                                                                                                                                                                                        ected_dishes_id', []);
+        Session.set('tempImages', '');
+        Session.set('ingredient_temp', []);
+        Session.set('imgMeta', []);
+      });
+    } else {
+      $('#edit_dish_modal').modal('close');
+    }
+
   },
 
   'click .btn_edit_dish': function(event,template) {
