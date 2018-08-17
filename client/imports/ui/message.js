@@ -89,6 +89,11 @@ class Message extends Component {
         _id: this.props.conversation[this.state.index]._id,
       });
 
+      if (!conversation.available) {
+        Materialize.toast('Your conversation has stopped.', 4000, 'rounded bp-green');
+        return false;
+      }
+
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
         receiver = Kitchen_details.findOne({"user_id": conversation.seller_id});
@@ -333,8 +338,7 @@ class Message extends Component {
     // get detail info of current conservation
     if (this.props.conversation[this.state.index]) {
       var conversation = Conversation.findOne({
-        _id: this.props.conversation[this.state.index]._id,
-        available: true
+        _id: this.props.conversation[this.state.index]._id
       });
 
       if (Meteor.userId() == conversation.buyer_id) {
@@ -407,8 +411,7 @@ export default withTracker(props => {
 
   // get all conversation
   all_conversation = Conversation.find({
-    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
-    available: true
+    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }]
   }).fetch();
 
   // get all messages

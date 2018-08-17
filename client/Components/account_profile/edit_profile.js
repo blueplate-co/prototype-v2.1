@@ -114,7 +114,7 @@ Template.edit_foodie_profile.events({
     const date_of_birth = $('#date_of_birth').val();
     const gender = $("input[name='gender']:checked").val();
     const mobile_dial_code = $('#mobile_country').val();
-    const mobile = $('#mobile').val();
+    const mobile = $('#mobile').val().replace(/\s/g, "");
     const home_address_country = $('#home_address_country').val();
     const home_address = $('#edit_home_address').val();
     const home_address_conversion = Session.get('home_address_conversion');
@@ -252,7 +252,7 @@ Template.edit_homecook_profile.events({
     const kitchen_address = $('#kitchen_address').val();
     const kitchen_address_conversion = Session.get('kitchen_address_conversion');
     const kitchen_contact_country = $('#kitchen_contact_country').val();
-    const kitchen_contact = $('#kitchen_contact').val();
+    const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
     const serving_option = Session.get('serving_option_tags');
 
     //Step 2
