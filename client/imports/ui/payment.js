@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 class Modal extends React.Component {
 
@@ -137,7 +138,7 @@ class Payment extends Component {
     }
 
     choosePayment(payment) {
-        var self = this;
+        show_loading_progress();
         if (payment == 'credits') {
             // get current credits of user
             Meteor.call('payment.getCredits', (err, credits) => {
@@ -204,6 +205,7 @@ class Payment extends Component {
                             })
                         })
                     }
+                    hide_loading_progress();
                 });
             });
         } else {
@@ -211,6 +213,7 @@ class Payment extends Component {
             this.setState({
                 payment: payment
             });
+            hide_loading_progress();
         }
     }
 
