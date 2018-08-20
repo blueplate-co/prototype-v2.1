@@ -398,6 +398,16 @@
   opacity: 0.64;
 }
 
+.gif_wrapper {
+  min-height: 100vh;
+}
+
+.landing_gif {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
 .svg_wrapper {
   min-height: 75px;
   align-items: center;
