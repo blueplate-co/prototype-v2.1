@@ -1,5 +1,13 @@
 import { Template } from 'meteor/templating';
 
+Template.online_switch.onRendered(function(){
+  $('.tooltip').tipso({
+    speed: 400,
+    position: 'bottom',
+    background: '#343434'
+  })
+});
+
 Template.online_switch.events({
   'change .online_status': function(instance) {
     var switch_id = '#switch_' + this._id;

@@ -16,7 +16,11 @@ Template.dishes_summary.onRendered(function(){
     $(".overlay").remove();
     } // Callback for Modal close
   });
-  $('.tooltipped').tooltip({delay: 500});
+  $('.tooltip').tipso({
+    speed: 400,
+    position: 'bottom',
+    background: '#343434'
+  })
   Session.set('ingredient_temp', []);
   Session.set('imgMeta', []);
 });

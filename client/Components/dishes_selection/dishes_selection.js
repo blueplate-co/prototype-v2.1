@@ -3,6 +3,11 @@ import { open_dialog_confirm } from '/imports/functions/common';
 
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
+  $('.tooltip').tipso({
+    speed: 400,
+    position: 'bottom',
+    background: '#343434'
+  })
 });
 
 Template.dishes_selection.events({

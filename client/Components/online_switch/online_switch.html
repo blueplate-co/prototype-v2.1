@@ -1,6 +1,6 @@
 <template name = "online_switch">
   <div class="switch">
-    <div class="online_status switch">
+    <div class="online_status switch tooltip" data-tipso="Switch to online to get order from foodie">
       <label>Offline<input type="checkbox" checked="{{#if online_status}}checked{{/if}}" id="switch_{{_id}}"><span class="lever red lighten-5"></span>Online</label>
     </div>
   </div>

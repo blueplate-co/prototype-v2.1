@@ -4,6 +4,14 @@ import { date_time_conversion } from '/imports/functions/date_time_conversion.js
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
+Template.orders_tracking.onRendered(function(){
+  $('.tooltip').tipso({
+    speed: 400,
+    position: 'bottom',
+    background: '#343434'
+  })
+});
+
 Template.orders_tracking.helpers({
   'order': function() {
     var order = Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).count()
