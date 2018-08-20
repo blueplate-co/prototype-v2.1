@@ -1,5 +1,5 @@
 
-import { open_dialog_confirm } from '/imports/functions/common';
+import { open_dialog_delete_confirm } from '/imports/functions/common';
 
 Template.menu_list.onCreated(function() {
   this.user_menus = this.subscribe('getListMenus');
@@ -47,7 +47,7 @@ Template.menu_list.events({
   },
   'click #delete_menu': function () {
 
-    open_dialog_confirm("Are you sure?", "Are you sure to delete this menu?", () => {},() => {
+    open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this menu?", () => {},() => {
 
       Meteor.call('menu.delete', sessionStorage.getItem("deletedMenuID"));
       sessionStorage.clear();

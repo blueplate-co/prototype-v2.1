@@ -1,6 +1,6 @@
 import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
-import { open_dialog_confirm } from '/imports/functions/common';
+import { open_dialog_edit_confirm, open_dialog_delete_confirm } from '/imports/functions/common';
 
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
@@ -70,7 +70,7 @@ Template.dishes_summary.events({
         bChangeField = hasChangeField.length > 0;
         
     if (bChangeField) {
-      open_dialog_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
+      open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
         // Cancel
         
       }, () => {
@@ -94,7 +94,7 @@ Template.dishes_summary.events({
         bChangeField = hasChangeField.length > 0;
     
     if (bChangeField) {
-      open_dialog_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
+      open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
         // Cancel
         
       }, () => {
@@ -223,7 +223,7 @@ Template.dishes_summary.events({
       Materialize.toast("Please select a dish you'd like to delete", 4000, 'rounded bp-green');
     } else {
       event.preventDefault();
-      open_dialog_confirm("Are you sure?", "Are you sure to delete there dish?", () => {
+      open_dialog_delete_confirm("Are you sure?", "Are you sure to delete there dish?", () => {
           $('.modal-content').scrollTop(0);
           $('.modal-overlay').remove();
           var checkboxes = document.getElementsByClassName("dishes_checkbox");

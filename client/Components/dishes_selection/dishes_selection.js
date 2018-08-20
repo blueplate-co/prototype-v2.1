@@ -1,5 +1,5 @@
 
-import { open_dialog_confirm } from '/imports/functions/common';
+import { open_dialog_delete_confirm } from '/imports/functions/common';
 
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
@@ -21,7 +21,7 @@ Template.dishes_selection.events({
   },
   'click #delete_dish': function () {
         
-    open_dialog_confirm("Are you sure?", "Are you sure to delete this dish?", () => {},() => {
+    open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this dish?", () => {},() => {
       Meteor.call('dish.remove', sessionStorage.getItem("deletedDishID"));
       Meteor.call('dish_image.remove', sessionStorage.getItem("deletedDishImagesID"), function(err) {
         if (err) {

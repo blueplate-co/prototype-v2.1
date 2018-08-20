@@ -1,4 +1,4 @@
-#confirm_message.confirm_message_popup {
+#confirm_edit_message.confirm_message_popup {
     top: 25% !important;
     min-height: 20% !important;
     width: 50% !important;
@@ -38,7 +38,16 @@
 
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 110px !important;
+        width: 40% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 23% !important;
         height: 155px !important;
         min-height: 110px !important;
@@ -50,7 +59,16 @@
 
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 20% !important;
+        height: 26%;
+        width: 50% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 23% !important;
         min-height: 20% !important;
         height: 26%;
@@ -62,7 +80,16 @@
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 20% !important;
+        width: 54% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 23% !important;
         height: 155px !important;
         min-height: 20% !important;
@@ -74,7 +101,16 @@
 
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 23% !important;
         min-height: 110px;
         height: 155px !important;
@@ -85,7 +121,16 @@
 }
 
 @media (max-width: 640px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 72% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 23% !important;
         min-height: 110px;
         height: 155px !important;
@@ -97,7 +142,14 @@
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
-    #confirm_message.confirm_message_popup {
+    #confirm_edit_message.confirm_message_popup {
+        top: 0% !important;
+        height: 100% !important;
+        width: 100% !important;
+        border-radius: 0px !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
         top: 0% !important;
         height: 100% !important;
         width: 100% !important;
