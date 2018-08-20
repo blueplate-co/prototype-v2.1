@@ -1,24 +1,3 @@
 .btn-floating {
   margin: 12px;
 }
-
-.btn-edit-dish-confirm {
-  background-color: #56AACD;
-  color: #fff;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 30px;
-  width: 14%;
-}
-
-.btn-edit-dish-cancel {
-  color: #56AACD;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 30px;
-  width: 14%;
-  padding: 0px;
-  border: 1px solid #56AACD;
-}

@@ -63,7 +63,31 @@ Template.dishes_summary.events({
   'click #close_create_dish_modal': function(event) {
     event.preventDefault();
     var hasChangeField = $('.dirty_field'),
-    bChangeField = hasChangeField.length > 0;
+        bChangeField = hasChangeField.length > 0;
+        
+    if (bChangeField) {
+      open_dialog_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
+        // Cancel
+        
+      }, () => {
+        $('#add_dish_modal').modal('close');
+
+        // clear all selected dishes in session
+        Session.set('sel                                                                                                                                                                                                                                                        ected_dishes_id', []);
+        Session.set('tempImages', '');
+        Session.set('ingredient_temp', []);
+        Session.set('imgMeta', []);
+      });
+    } else {
+      $('#add_dish_modal').modal('close');
+    }
+
+  },
+
+  'click #close_edit_dish_modal': function(event) {
+    event.preventDefault();
+    var hasChangeField = $('.dirty_field'),
+        bChangeField = hasChangeField.length > 0;
     
     if (bChangeField) {
       open_dialog_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
