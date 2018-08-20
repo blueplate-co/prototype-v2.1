@@ -83,7 +83,7 @@ $(document).on('change', '.form_field', function() {
   var $el = $(this),
       oldVal = $el.data("old_data_val"),
       newVal = $el.val(),
-      isCheckbox = $('.form_field').closest('input[type=checkbox]').is(':checked');
+      isCheckbox = $el.closest('input[type=checkbox]').is(':checked');
 
   if ( (newVal == oldVal) || (oldVal === isCheckbox) ) {
     $el.removeClass('dirty_field');
