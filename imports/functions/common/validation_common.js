@@ -85,9 +85,15 @@ $(document).on('change', '.form_field', function() {
       newVal = $el.val(),
       isCheckbox = $('.form_field').closest('input[type=checkbox]').is(':checked');
 
-  if ( (newVal == oldVal) || oldVal == isCheckbox) {
+  if ( (newVal == oldVal) || (oldVal === isCheckbox) ) {
     $el.removeClass('dirty_field');
   } else {
     $el.addClass('dirty_field');
+  }
+});
+
+$(document).on('change', '.validateFieldRequired, .invalid', function() {
+  if ($(this).val() != null && $(this).val().length > 0) {
+    $(this).removeClass('validateFieldRequired').removeClass('invalid');
   }
 });

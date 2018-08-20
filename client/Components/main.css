@@ -148,3 +148,30 @@ body p {
     column-gap:           6px;
   }
 }
+
+/* Common style use for all site */
+.validateFieldRequired:focus:not([readonly]) {
+  border: 1px solid #EA6055 !important;
+  box-shadow: 0 1px 0 0 #EA6055 !important;
+}
+
+.btn-edit-dish-confirm {
+  background-color: #56AACD;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  width: 13%;
+}
+
+.btn-edit-dish-cancel {
+  color: #56AACD;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  width: 13%;
+  padding: 0px;
+  border: 1px solid #56AACD;
+}

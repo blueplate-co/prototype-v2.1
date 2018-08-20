@@ -195,7 +195,10 @@ class ShoppingCart extends Component {
                 if (item[key] == '') {
                     $('#address_' + item.id).addClass('invalid');
                     Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
+                    $('#address_' + item.id).prepend($('#address_' + item.id));
+                    $('#address_' + item.id).focus();
                     valid = false;
+                    return false;
                 } else {
                     $('#address_' + item.id).removeClass('invalid');
                 }
