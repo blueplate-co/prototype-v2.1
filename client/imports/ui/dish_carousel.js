@@ -217,7 +217,11 @@ export default class DishCarousel extends Component {
                     <div className="row">
                         <div className="col l8 s10 m8 offset-l1 offset-m2 offset-s2">
                             <Rating rating={  Session.get('selectedMenu').average_rating } />
-                            <span className="order-count">{ Session.get('selectedMenu').order_count }</span>
+                            {
+                                (parseInt(Session.get('selectedMenu').order_count) >= 10)
+                                ? <span className="order-count">{ Session.get('selectedMenu').order_count }</span>
+                                : ''
+                            }
                             <p className="price">$ { Session.get('selectedMenu').menu_selling_price }</p>
                             {/**<span className="qty">
                                 <span className="decreaseQty" onClick={ this.decreaseQty } >-</span>
