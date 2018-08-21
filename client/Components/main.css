@@ -175,3 +175,34 @@ body p {
   padding: 0px;
   border: 1px solid #56AACD;
 }
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+  .btn-edit-dish-confirm {
+    width: 20%;
+  }
+  
+  .btn-edit-dish-cancel {
+    width: 20%;
+  }
+}
+
+@media (max-width: 640px) {
+  .btn-edit-dish-confirm {
+    width: 17%;
+  }
+  
+  .btn-edit-dish-cancel {
+    width: 17%;
+  }
+}
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+  .btn-edit-dish-confirm {
+    width: 27%;
+  }
+  
+  .btn-edit-dish-cancel {
+    width: 27%;
+  }
+}
