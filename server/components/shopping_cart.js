@@ -93,6 +93,23 @@ Meteor.methods({
           }, function(err, customer) {
             if (!err) {
               console.log(customer);
+              // update balance of seller
+              // FIRST, get Stripe balance of seller
+              Meteor.call('payment.getStripeBalanceOfSpecific', seller_id, function (err, res) {
+                let sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id;
+                let sellerBalance = parseFloat(res.account_balance / 100).toFixed(2);
+                var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
+                var newBalance = parseFloat(sellerBalance + amount).toFixed(2);
+                updatedCustomer(sellerCustomerId, {
+                  account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
+                }, function(err, customer) {
+                  if (!err) {
+                    console.log('Update seller successful');
+                  } else {
+                    console.log(err);
+                  }
+                });
+              });
             } else {
               console.log(err);
             }
