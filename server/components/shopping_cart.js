@@ -104,7 +104,7 @@ Meteor.methods({
                 console.log('Amount: ' + amount);
                 console.log('New balance when seller sold: ' + newBalance);
                 updatedCustomer(sellerCustomerId, {
-                  account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
+                  account_balance: parseInt(parseFloat(newBalance) * 100 / 1.15) // convert to int number and convert to cent number
                 }, function(err, customer) {
                   if (!err) {
                     console.log('Update seller successful');
