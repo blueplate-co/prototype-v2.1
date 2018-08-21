@@ -98,8 +98,11 @@ Meteor.methods({
               Meteor.call('payment.getStripeBalanceOfSpecific', seller_id, function (err, res) {
                 let sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id;
                 let sellerBalance = parseFloat(res.account_balance / 100).toFixed(2);
+                console.log('Current seller balance: ' + sellerBalance);
                 var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
-                var newBalance = parseFloat(sellerBalance + amount).toFixed(2);
+                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(amount.toString()))).toFixed(2);
+                console.log('Amount: ' + amount);
+                console.log('New balance when seller sold: ' + newBalance);
                 updatedCustomer(sellerCustomerId, {
                   account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
                 }, function(err, customer) {
