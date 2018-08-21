@@ -687,18 +687,17 @@ Template.create_foodie_profile.events({
 
     function(err) {
       if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded bp-green');
-         else {
-          Materialize.toast('Profile created!', 4000);
-          //divert to the profile page
-          // BlazeLayout.render('screen', {
-          //   navbar: "bp_navbar",
-          //   render_component: "show_room"
-          // });
-          FlowRouter.go('/main');
+        else {
+          Meteor.call('kitchen_details.syncFromProfile', first_name + ' ' +  last_name, mobile, Session.get('profileImg'), (err, response) => {
+            if (err) {
+              Materialize.toast('Profile created!', 4000);
+            } else {
+              FlowRouter.go('/main');
+            }
+          });
         }
       }
     );
-
   }
 });
 
@@ -766,13 +765,14 @@ Template.create_homecook_profile.events({
     function(err) {
       if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
          else {
-          Materialize.toast('Profile created!', 4000);
-          //divert to the profile page
-          // BlazeLayout.render('screen', {
-          //   navbar: "bp_navbar",
-          //   render_component: "show_room"
-          // });
-          FlowRouter.go('/path_choosing');
+          Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
+            if (err) {
+              Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+            } else {
+              Materialize.toast('Profile created!', 4000);
+              FlowRouter.go('/path_choosing');
+            }
+          });
         }
       }
     );

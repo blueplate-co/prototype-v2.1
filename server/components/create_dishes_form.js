@@ -100,15 +100,15 @@ Meteor.methods({
     // console.log('param', params2);
     var returned_data = null;
     kraken.upload(params2, function (status) {
-      console.log(status);
-      if (status.success) {
+      // console.log(status);
+      // if (status.success) {
 
-        console.log("Success. Optimized image URL: %s", status);
-        // console.log('return data: ', sizes);
+      //   console.log("Success. Optimized image URL: %s", status);
+      //   // console.log('return data: ', sizes);
 
-      } else {
-        console.log("Fail. Error message: %s", status.message);
-      }
+      // } else {
+      //   console.log("Fail. Error message: %s", status.message);
+      // }
     });
 
   },
