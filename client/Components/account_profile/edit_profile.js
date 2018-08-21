@@ -123,7 +123,12 @@ Template.edit_foodie_profile.events({
     const office_address_conversion = Session.get('office_address_conversion');
     const profileImg = Session.get('profileImg');
     const bannerProfileImg = Session.get('bannerProfileImg');
-
+    
+    if (!validateFieldRequired('mobile')) {
+      Materialize.toast('Mobile number is required', 4000, 'rounded bp-green');
+      return;
+    }
+    
     //Step 2
     const about_myself = $('#about_myself').val();
 
@@ -240,6 +245,7 @@ Template.edit_homecook_profile.onRendered(function () {
 
 
 Template.edit_homecook_profile.events({
+<<<<<<< HEAD
     'blur #kitchen_address': function () {
       address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
 
@@ -304,6 +310,98 @@ Template.edit_homecook_profile.events({
           }
         }
       );
+=======
+  'blur #kitchen_address': function() {
+    address_geocode('kitchen_address_conversion',$('#kitchen_address').val(), 'kitchen address');
+
+  },
+
+  'click #edit_homecook_button':function(){
+    //Step 1
+    const kitchen_name = $('#kitchen_name').val();
+    const chef_name = $('#chef_name').val();
+    const kitchen_address_country = $('#kitchen_address_country').val();
+    const kitchen_address = $('#kitchen_address').val();
+    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    const kitchen_contact_country = $('#kitchen_contact_country').val();
+    const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
+    const serving_option = Session.get('serving_option_tags');
+
+    if (!validateFieldRequired('kitchen_contact')) {
+      Materialize.toast('Telephone number is required', 4000, 'rounded bp-green');
+      return;
+    }
+
+    //Step 2
+    const cooking_exp = $('#cooking_exp').val();
+    const cooking_story = $('#cooking_story').val();
+
+    //Step 3
+    var speciality = $('#kitchen_speciality').material_chip('data');
+    const kitchen_speciality = speciality;
+
+    var tags = $('#kitchen_tags').material_chip('data');
+    const kitchen_tags = tags;
+
+
+    //Step 4
+    const house_rule = $('#house_rule').val();
+
+
+
+    Meteor.call('kitchen_details.update',
+    kitchen_name,
+    chef_name,
+    kitchen_address_country,
+    kitchen_address,
+    kitchen_address_conversion,
+    kitchen_contact_country,
+    kitchen_contact,
+    serving_option,
+    cooking_exp,
+    cooking_story,
+    kitchen_speciality,
+    kitchen_tags,
+    house_rule,
+    Session.get('profileImg'),
+    Session.get('bannerProfileImg'),
+
+    function(err) {
+      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+         else {
+          Materialize.toast('Profile updated!', 4000);
+          //divert to the profile page
+          // BlazeLayout.render('screen', {
+          //   navbar: "bp_navbar",
+          //   render_component: "show_room"
+          // });
+          FlowRouter.go('/profile/show_homecook_profile');
+        }
+      }
+    );
+
+  }
+
+});
+
+let validateFieldRequired = function(el) {
+  var $el = $('#' + el),
+      value = $el.val();
+      
+  if (value == null || value === '' || value.length == 0) {
+    $el.addClass('invalid');
+    $('#edit_foodie_profile').animate({
+      scrollTo: $el.offset().top
+    }, 2000);
+    $el.focus();
+    return false;
+  }
+
+  return true;
+};
+
+
+>>>>>>> cb0ecd43d717d55d48f62370e235ce034bec99f0
 
     }
 
