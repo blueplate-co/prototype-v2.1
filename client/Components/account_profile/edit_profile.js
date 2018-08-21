@@ -123,7 +123,11 @@ Template.edit_foodie_profile.events({
     const office_address_conversion = Session.get('office_address_conversion');
     const profileImg = Session.get('profileImg');
     const bannerProfileImg = Session.get('bannerProfileImg');
-
+    
+    if (!validateFieldRequired('mobile')) {
+      Materialize.toast('Mobile number is required', 4000, 'rounded bp-green');
+      return;
+    }
 
     //Step 2
     const about_myself = $('#about_myself').val();
@@ -255,6 +259,11 @@ Template.edit_homecook_profile.events({
     const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
     const serving_option = Session.get('serving_option_tags');
 
+    if (!validateFieldRequired('kitchen_contact')) {
+      Materialize.toast('Telephone number is required', 4000, 'rounded bp-green');
+      return;
+    }
+
     //Step 2
     const cooking_exp = $('#cooking_exp').val();
     const cooking_story = $('#cooking_story').val();
@@ -305,7 +314,23 @@ Template.edit_homecook_profile.events({
 
   }
 
-}),
+});
+
+let validateFieldRequired = function(el) {
+  var $el = $('#' + el),
+      value = $el.val();
+      
+  if (value == null || value === '' || value.length == 0) {
+    $el.addClass('invalid');
+    $('#edit_foodie_profile').animate({
+      scrollTo: $el.offset().top
+    }, 2000);
+    $el.focus();
+    return false;
+  }
+
+  return true;
+};
 
 
 
