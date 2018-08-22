@@ -145,7 +145,7 @@ Meteor.methods({
                     console.log('New Amount: ' + newAmount);
                     var balance = customer.account_balance; // in cent
                     console.log('Balance of current user: ' + balance);
-                    var newBalance = Math.floor(balance + ( newAmount * 100 / 1.15 )); // balance convert into cent
+                    var newBalance = Math.floor(balance + ( amount * 100 / 1.15 )); // balance convert into cent
                     console.log('New balance of seller: ' + newBalance);
                     var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                     updatedCustomer(sellerCustomerId, {
