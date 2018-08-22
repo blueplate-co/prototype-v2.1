@@ -13,7 +13,6 @@ Template.input_rating.helpers({
 Template.input_rating.events({
   'click .input_rating': function(event, template) {
     var rating = template.$('#rating').data('userrating');
-    debugger
     Meteor.call('rating.insert', rating, this._id);
     Meteor.call('order_record.rating.insert', rating, this._id);
     if (Dishes.findOne({'_id': this.product_id})) {
