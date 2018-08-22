@@ -66,9 +66,15 @@ class DishSearchList extends Component {
               }
             </div>
           </div>
-          <div className="row">
-            <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-          </div>
+          {
+            (!isNaN(item.dish_selling_price))
+            ? (
+              <div className="row">
+                <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+              </div>
+            ) : ('')
+          }
+
 
         </div>
       )
