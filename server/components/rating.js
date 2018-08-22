@@ -19,7 +19,7 @@ Meteor.methods({
   'average_rating.update'(total_count, new_rating, previous_avg_rating, product_id, seller_id, order_id, quantities) {
     if (total_count > 0) {
       var new_avg_rating = (previous_avg_rating * (total_count - quantities) + new_rating * quantities) / total_count;
-      //console.log(new_avg_rating);
+      console.log(new_avg_rating);
       if (Dishes.findOne({_id: product_id})) {
         Dishes.update({
           _id: product_id

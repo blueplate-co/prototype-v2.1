@@ -43,29 +43,6 @@ Meteor.methods({
     profileImg,
     bannerProfileImg
   ) {
-/**
-    check(foodie_profile_id, String);
-    check(foodie_name, String);
-    check(email, Match.Any);
-    check(date_of_birth, Match.Any);
-    check(mobile_dial_code, Match.Any);
-    check(mobile, Match.Any);
-    check(profile_keywords, Match.Any);
-    check(gender, Match.Any);
-    check(about_myself, Match.Any);
-    check(home_address_country, Match.Any);
-    check(home_address, Match.Any);
-    check(home_address_conversion, Match.Any);
-    check(office_address_country, Match.Any);
-    check(office_address, Match.Any);
-    check(office_address_conversion, Match.Any);
-    check(allergy_tags, Match.Any);
-    check(dietary_tags, Match.Any);
-    check(card_number, Match.Any);
-    check(card_exp_month, Match.Any);
-    check(card_exp_year, Match.Any);
-**/
-
     if(!_.isEmpty(bannerProfileImg))
     {
       Profile_details.update({
@@ -120,7 +97,22 @@ Meteor.methods({
         }
       })
     }
+  },
 
+  'profile_details.syncFromKitchen' (
+    name,
+    phone,
+    profile_picture
+  ) {
+    Profile_details.update({
+      user_id: Meteor.userId() 
+    }, {
+      $set: {
+        foodie_name: name,
+        mobile: phone,
+        profileImg: profile_picture
+      }
+    });
   },
 
   'kitchen_details.update' (
@@ -140,22 +132,6 @@ Meteor.methods({
     profileImg,
     bannerProfileImg
   ) {
-/**
-    check(kitchen_profile_id, String);
-    check(kitchen_name, String);
-    check(chef_name, String);
-    check(homecook_profile_keywords, Match.Any);
-    check(kitchen_address_country, Match.Any);
-    check(kitchen_address, Match.Any);
-    check(kitchen_address_conversion, Match.Any);
-    check(about_homecook_myself, Match.Any);
-    check(serving_option, Match.Any);
-    check(bank_fullname, Match.Any);
-    check(bank_name, Match.Any);
-    check(bank_account_no, Match.Any);
-    check(bank_address_country, Match.Any);
-    check(bank_address, Match.Any);
-**/
     console.log('is banner empty? ', _.isEmpty(bannerProfileImg));
     if(!_.isEmpty(bannerProfileImg)) //- if chef change banner's images
     {
@@ -203,11 +179,24 @@ Meteor.methods({
         }
       })
     }
+  },
 
-
-
-
+  'kitchen_details.syncFromProfile' (
+    name,
+    phone,
+    profile_picture
+  ) {
+    Kitchen_details.update({
+      user_id: Meteor.userId() 
+    }, {
+      $set: {
+        chef_name: name,
+        kitchen_contact: phone,
+        profileImg: profile_picture
+      }
+    });
   }
+
 });
 
 var isEmpty = function(obj) {

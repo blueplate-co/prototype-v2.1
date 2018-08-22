@@ -19,19 +19,23 @@ class KitchenList extends Component {
 
   renderList = () => {
     return this.props.kitchen.map((item, index) => {
-      return (
-        <div key = {index}>
-          <KitchenCard
-            bannerProfileImg = {item.bannerProfileImg}
-            kitchenId = {item._id}
-            userId = {item.user_id}
-            kitchenName = {item.kitchen_name}
-            chefName = {item.chef_name}
-            averageRating = {item.average_rating}
-            orderCount = {item.order_count}
-          />
-        </div>
-      )
+      if (Dishes.find({ user_id: item.user_id }).fetch().length > 0) {
+        return (
+          <div key = {index}>
+            <KitchenCard
+              bannerProfileImg = {item.bannerProfileImg}
+              kitchenId = {item._id}
+              userId = {item.user_id}
+              kitchenName = {item.kitchen_name}
+              chefName = {item.chef_name}
+              averageRating = {item.average_rating}
+              orderCount = {item.order_count}
+            />
+          </div>
+        )
+      } else {
+        return (null)
+      }
     })
   }
 

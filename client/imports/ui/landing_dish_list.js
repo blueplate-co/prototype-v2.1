@@ -43,6 +43,11 @@ class LandingDishList extends Component {
           <div className="no-margin">
             <div className="dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
+              {
+                (parseInt(item.order_count) >= 10)
+                ? <span className="order-count">{ item.order_count }</span>
+                : ''
+              }
             </div>
           </div>
           <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
