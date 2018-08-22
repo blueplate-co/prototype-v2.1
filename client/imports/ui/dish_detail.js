@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Rating from './rating.js';
 
 import ProgressiveImages from './progressive_image';
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import DishMap from './dish_map';
 
 // Dish detail component
 export default class Dish_Detail extends Component {
@@ -128,11 +128,8 @@ export default class Dish_Detail extends Component {
                                 </div>
 
                                 <div className="row show-chef-map">
-                                    <div className="col s12 m7 chef-location">
-                                    
-
-
-
+                                    <div className="col s12 m7 chef-location" style={{ position: 'relative' }}>
+                                        <DishMap />
                                     </div>
                                 </div>
                             </div>
