@@ -101,4 +101,50 @@
     width:100%;
     min-height: 100px;
     height: 300px;
+    position: relative;
+    padding-left: 0px !important;
+}
+
+#img-chef {
+    border-radius: 50%;
+}
+
+#chef-story-title {
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    font-size: 30px;
+    letter-spacing: -0.75px;
+    color: rgba(0, 0, 0, 0.87);
+    padding-top: 40px;
+}
+
+.chef-story-content {
+    background: #F7F7F7;
+}
+
+.chef-name {
+    font-weight: bold;
+    line-height: 32px;
+    font-size: 24px;
+    padding-top: 62px;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.chef-story-image {
+    padding-top: 61px !important;
+}
+
+.chef-name-summary {
+    padding-top: 62px !important;
+}
+
+.chef-summary {
+    font-style: normal;
+    font-weight: normal;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #727272;
+    padding-top: 4px;
 }
