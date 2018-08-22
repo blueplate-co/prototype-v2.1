@@ -11,18 +11,6 @@ export default class Util extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    Meteor.call("util.check_logged_user", (err, res) => {
-      var email = res.emails[0].address;
-      if ((email !== 'trang.nguyen@blueplate.co') && (email !== 'michael.lin@blueplate.co')) {
-          alert('Only 2 admins from Blueplate can access that');
-          window.location.href = "/";
-      } else {
-        $('#chat-panel').remove();
-      }
-    });
-  }
-
   render() {
     return (
       <div>
