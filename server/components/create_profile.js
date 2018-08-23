@@ -187,7 +187,24 @@ Meteor.methods({
       profileImg: profileImg,
       bannerProfileImg: bannerProfileImg
     });
-  }
+  },
+  'user.updateDistrict' (district) {
+    Meteor.users.update({
+      _id: Meteor.userId()
+    }, {
+        $set: {
+          'profile.district': district
+        }
+    });
+  },
+  'user.getDistrict' () {
+    var district = Meteor.users.findOne({ _id: Meteor.userId() }).profile.district;
+    if (district) {
+      return district;
+    } else {
+      return "";
+    }
+  },
 });
 
 Meteor.methods({

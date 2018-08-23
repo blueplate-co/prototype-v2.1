@@ -51,6 +51,15 @@ Template.edit_foodie_profile.onRendered(function () {
 
     var office_address = document.getElementById('edit_office_address');
     new google.maps.places.Autocomplete(office_address);
+    // get district for user
+    Meteor.call('user.getDistrict', (err, res) => {
+      if (!err) {
+        var district = res;
+        $('#district').val(district);
+      } else {
+        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+      }
+    });
   }, 1000);
 
   //activate dropdown
@@ -93,11 +102,23 @@ Template.edit_foodie_profile.onRendered(function () {
     /*checkboxes_recall(get_profile.serving_option_tags)*/
 
   }, 800);
-
-
-
 });
 
+let validateFieldRequired = function(el) {
+  var $el = $('#' + el),
+      value = $el.val();
+      
+  if (value == null || value === '' || value.length == 0) {
+    $el.addClass('invalid');
+    $('#edit_foodie_profile').animate({
+      scrollTo: $el.offset().top
+    }, 2000);
+    $el.focus();
+    return false;
+  }
+
+  return true;
+};
 
 Template.edit_foodie_profile.events({
   'blur #edit_home_address': function () {
@@ -120,6 +141,7 @@ Template.edit_foodie_profile.events({
     const home_address_conversion = Session.get('home_address_conversion');
     const office_address_country = $('#office_address_country').val();
     const office_address = $('#edit_office_address').val();
+    const dictrict = $('#district').val();
     const office_address_conversion = Session.get('office_address_conversion');
     const profileImg = Session.get('profileImg');
     const bannerProfileImg = Session.get('bannerProfileImg');
@@ -168,17 +190,20 @@ Template.edit_foodie_profile.events({
           // sync to kitchen profile
           Meteor.call('kitchen_details.syncFromProfile', first_name + ' ' +  last_name, mobile, profileImg, (err, response) => {
             if (err) {
-
+              console.log('Error when sync detail from profile');
             } else {
-              FlowRouter.go('/main');
+              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+                if (err) {
+                  console.log('Error when update district');
+                } else {
+                  FlowRouter.go('/main');
+                }
+              })
             }
           });
         }
       }
     );
-
-
-
 
     var trimInput = function (value) {
       return value.replace(/^\s*|\s*$/g, "");
@@ -202,6 +227,15 @@ Template.edit_homecook_profile.onRendered(function () {
     // add google places autocomplete
     var input = document.getElementById('kitchen_address');
     new google.maps.places.Autocomplete(input);
+    // get district for user
+    Meteor.call('user.getDistrict', (err, res) => {
+      if (!err) {
+        var district = res;
+        $('#district').val(district);
+      } else {
+        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+      }
+    });    
   }, 1000);
 
   /**this.$('# edit_homecook_stepper').activateStepper({
@@ -260,6 +294,7 @@ Template.edit_homecook_profile.events({
       const kitchen_contact_country = $('#kitchen_contact_country').val();
       const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
       const serving_option = Session.get('serving_option_tags');
+      const district = $('#district').val();
 
       //Step 2
       const cooking_exp = $('#cooking_exp').val();
@@ -302,8 +337,14 @@ Template.edit_homecook_profile.events({
               if (err) {
                 Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
               } else {
-                Materialize.toast('Profile updated!', 4000);
-                FlowRouter.go('/profile/show_homecook_profile');
+                Meteor.call('user.updateDistrict', district, (err, res) => {
+                  if (err) {
+                    console.log('Error when update district');
+                  } else {
+                    Materialize.toast('Profile updated!', 4000);
+                    FlowRouter.go('/profile/show_homecook_profile');
+                  }
+                })  
               }
             });
           }
