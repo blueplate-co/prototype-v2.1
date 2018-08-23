@@ -160,6 +160,11 @@ Template.edit_foodie_profile.events({
     //Step 4
     const dietary_tags = Session.get('dietary_tags');
 
+    if (district == '') {
+      Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
     Meteor.call('profile_details.update',
       foodie_name,
       first_name,
@@ -311,7 +316,10 @@ Template.edit_homecook_profile.events({
       //Step 4
       const house_rule = $('#house_rule').val();
 
-
+      if (district == '') {
+        Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+        return;
+      }
 
       Meteor.call('kitchen_details.update',
         kitchen_name,

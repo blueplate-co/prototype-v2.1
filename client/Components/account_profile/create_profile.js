@@ -680,6 +680,11 @@ Template.create_foodie_profile.events({
     //Step 4
     const dietary_tags = Session.get('dietary_tags');
 
+    if (district == '') {
+      Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
 
     Meteor.call('profile_details.insert',
       foodie_name,
@@ -756,6 +761,11 @@ Template.create_homecook_profile.events({
 
     //Step 4
     const house_rule = $('#house_rule').val();
+
+    if (district == '') {
+      Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
 
     if (!Session.get('serving_option_tags')) {
       Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
