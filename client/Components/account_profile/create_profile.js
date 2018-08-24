@@ -39,6 +39,10 @@ Template.create_foodie_profile.onRendered(function () {
       Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
     }
   });
+  $('#mobile').intlTelInput({
+    initialCountry: "HK",
+    utilsScript: "../intlTelInput/utils.js"
+  });
 })
 
 Template.profile_banner.onCreated(function () {
@@ -371,7 +375,11 @@ Template.create_homecook_profile.onRendered(function () {
       } else {
         Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
       }
-    });    
+    });
+    $('#kitchen_contact').intlTelInput({
+      initialCountry: "HK",
+      utilsScript: "../intlTelInput/utils.js"
+    });
   }, 1000);
 
   //activate dropdown
@@ -662,7 +670,7 @@ Template.create_foodie_profile.events({
     const date_of_birth = $('#date_of_birth').val();
     const gender = $("input[name='gender']:checked").val();
     const mobile_dial_code = $('#mobile_country').val();
-    const mobile = $('#mobile').val().replace(/\s/g, "");
+    const mobile = $('#mobile').intlTelInput("getNumber");
     const home_address_country = $('#home_address_country').val();
     const home_address = $('#create_home_address').val();
     const home_address_conversion = Session.get('home_address_conversion');
@@ -682,6 +690,11 @@ Template.create_foodie_profile.events({
 
     if (district == '') {
       Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
+    if (!$('#mobile').intlTelInput("isValidNumber")) {
+      Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
 
@@ -744,7 +757,7 @@ Template.create_homecook_profile.events({
     const kitchen_address = $('#kitchen_address').val();
     const kitchen_address_conversion = Session.get('kitchen_address_conversion');
     const kitchen_contact_country = $('#kitchen_contact_country').val();
-    const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
+    const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
     const serving_option = Session.get('serving_option_tags');
     const district = $('#district').val();
 
@@ -764,6 +777,11 @@ Template.create_homecook_profile.events({
 
     if (district == '') {
       Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
+    if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+      Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
 

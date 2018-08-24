@@ -51,6 +51,10 @@ Template.edit_foodie_profile.onRendered(function () {
 
     var office_address = document.getElementById('edit_office_address');
     new google.maps.places.Autocomplete(office_address);
+    $('#mobile').intlTelInput({
+      initialCountry: "HK",
+      utilsScript: "../intlTelInput/utils.js"
+    });
     // get district for user
     Meteor.call('user.getDistrict', (err, res) => {
       if (!err) {
@@ -101,7 +105,7 @@ Template.edit_foodie_profile.onRendered(function () {
     Session.set('bannerProfileImg', get_profile.bannerProfileImg)
     /*checkboxes_recall(get_profile.serving_option_tags)*/
 
-  }, 800);
+  }, 1500);
 });
 
 let validateFieldRequired = function(el) {
@@ -135,7 +139,7 @@ Template.edit_foodie_profile.events({
     const date_of_birth = $('#date_of_birth').val();
     const gender = $("input[name='gender']:checked").val();
     const mobile_dial_code = $('#mobile_country').val();
-    const mobile = $('#mobile').val().replace(/\s/g, "");
+    const mobile = $('#mobile').intlTelInput("getNumber");
     const home_address_country = $('#home_address_country').val();
     const home_address = $('#edit_home_address').val();
     const home_address_conversion = Session.get('home_address_conversion');
@@ -148,6 +152,11 @@ Template.edit_foodie_profile.events({
     
     if (!validateFieldRequired('mobile')) {
       Materialize.toast('Mobile number is required', 4000, 'rounded bp-green');
+      return;
+    }
+
+    if (!$('#mobile').intlTelInput("isValidNumber")) {
+      Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
     
@@ -240,7 +249,11 @@ Template.edit_homecook_profile.onRendered(function () {
       } else {
         Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
       }
-    });    
+    });
+    $('#kitchen_contact').intlTelInput({
+      initialCountry: "HK",
+      utilsScript: "../intlTelInput/utils.js"
+    });   
   }, 1000);
 
   /**this.$('# edit_homecook_stepper').activateStepper({
@@ -297,7 +310,7 @@ Template.edit_homecook_profile.events({
       const kitchen_address = $('#kitchen_address').val();
       const kitchen_address_conversion = Session.get('kitchen_address_conversion');
       const kitchen_contact_country = $('#kitchen_contact_country').val();
-      const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
+      const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
       const serving_option = Session.get('serving_option_tags');
       const district = $('#district').val();
 
@@ -318,6 +331,11 @@ Template.edit_homecook_profile.events({
 
       if (district == '') {
         Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+        return;
+      }
+
+      if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+        Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
         return;
       }
 

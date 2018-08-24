@@ -124,19 +124,13 @@
           </div>
         </div>
       </div>
+
       <div class="row col l12 m12 s12 valign">
-
-        <div class="input-field col l2 m4 s6 offset-l3 valign">
-          <select class="material_select" id="mobile_country">
-            <option value="" disabled selected>Country</option>
-            {{#each country_list}}
-            <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-            {{/each}}
-          </select>
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
         </div>
-
         <div class="input-field col l3 m4 s6 valign">
-          <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
+          <input id="mobile" type="tel">
         </div>
       </div>
 
@@ -329,7 +323,7 @@
           <h6>Kitchen Contact</h6>
         </div>
         <div class="input-field col l4 m12 s12 valign">
-          <input id="kitchen_contact" name="kitchen_contact" type="text" placeholder="telephone no.">
+          <input id="kitchen_contact" name="kitchen_contact" type="tel" placeholder="telephone no.">
         </div>
       </div>
 

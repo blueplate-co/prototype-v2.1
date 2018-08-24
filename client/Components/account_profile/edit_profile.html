@@ -88,19 +88,11 @@
         </div>
       </div>
       <div class="row col l12 m12 s12 valign">
-
-        <div class="input-field col l2 m4 s6 offset-l3 valign">
-          <select class="material_select" id="mobile_country">
-            <option value="{{get_foodie_profile.mobile_dial_code}}" selected>{{get_foodie_profile.mobile_dial_code}}</option>
-            {{#each country_list}}
-            <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-            {{/each}}
-          </select>
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
         </div>
-
         <div class="input-field col l3 m4 s6 valign">
-          <input id="mobile" name="mobile" type="text" value={{get_foodie_profile.mobile}}>
-          <label class="active" for="mobile">Mobile no.</label>
+          <input id="mobile" type="tel" value={{get_foodie_profile.mobile}}>
         </div>
       </div>
 
@@ -285,12 +277,11 @@
       </div>
 
       <div class="row col l12 m12 s12 valign">
-        <div class='text-field col l3 m3 s12 valign'>
-          <h6>Kitchen contact</h6>
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
         </div>
-        <div class="input-field col l4 m6 s12 valign">
-          <input id="kitchen_contact" name="kitchen_contact" type="text" value="{{get_homecook_profile.kitchen_contact}}">
-          <label class="active" for="kitchen_contact">telephone no.</label>
+        <div class="input-field col l3 m4 s6 valign">
+          <input id="kitchen_contact" type="tel" value={{get_homecook_profile.mobile}}>
         </div>
       </div>
 
