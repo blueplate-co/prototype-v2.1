@@ -8,7 +8,7 @@
 }
 
 #detail-dish-info {
-    width: 84%;
+    width: 100%;
     height: auto;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.236073);
     border-radius: 4px;
@@ -16,7 +16,7 @@
 }
 
 .rating-content {
-    padding: 27px 19px 32px;
+    padding: 22px 19px 2px;
 }
 
 .rating-detail {
@@ -49,40 +49,40 @@
 }
 
 .handle-order-dish {
-    padding: 20px 0px 20px 10px;
+    padding-top: 20px !important;
 }
 
-.btn-order-dish {
+#btn-order-dish {
     background-color: #56AACD;
     color: #fff;
     text-align: center;
     font-size: 18px;
     font-weight: 600;
     border-radius: 20px;
-    width: 13%;
+    width: 90%;
+    padding: 3px 0px;
 }
 
 .btn-tag-detail {
-    width: 133px;
+    text-align: center;
     height: 38px;
-    background-color: #ffffff;
     color: #56AACD;
     border: 1px solid #56AACD;
-    box-sizing: border-box;
     border-radius: 30px;
-    padding: 8px 25px;
+    padding: 8px 14px;
     margin-top: 34px;
     margin-left: -9px;
 }
 
 #dish-name {
+    display: block;
     height: 32px;
     font-style: normal;
     font-weight: bold;
     line-height: 32px;
     font-size: 24px;
     color: rgba(0, 0, 0, 0.87);
-    padding: 24px 30px 17px 30px;
+    padding: 10px 0px 0px 30px;
 }
 
 #dish-price {
@@ -93,14 +93,13 @@
     /* align: left; */
     fill: solid;
     color: #56AACD;
-    padding: 14px 7px 2px;
+    padding: 0px 7px 2px;
 }
 
 .chef-location {
-    border: 1px solid red;
     width:100%;
     min-height: 100px;
-    height: 300px;
+    height: 301px;
     position: relative;
     padding-left: 0px !important;
 }
@@ -117,17 +116,26 @@
     letter-spacing: -0.75px;
     color: rgba(0, 0, 0, 0.87);
     padding-top: 40px;
+    display: block;
 }
 
 .chef-story-content {
     background: #F7F7F7;
 }
 
+.chef-story-row {
+    margin-right: 16px;
+}
+
+#chef-story-descr {
+    width: 85%;
+}
+
 .chef-name {
     font-weight: bold;
     line-height: 32px;
     font-size: 24px;
-    padding-top: 62px;
+    padding-bottom: 12px !important;
     color: rgba(0, 0, 0, 0.87);
 }
 
@@ -140,11 +148,281 @@
 }
 
 .chef-summary {
-    font-style: normal;
-    font-weight: normal;
-    line-height: 20px;
     font-size: 14px;
-    text-align: center;
     color: #727272;
-    padding-top: 4px;
+    /* margin-left: 5px !important; */
+    padding-top: 20px;
+    display: inline;
+}
+
+.chef-summary-infor {
+    display: inline-block;
+    padding: 0px 12px;
+}
+.tag-summary {
+    padding: 20px !important;
+}
+
+.chef-relate-title {
+    line-height: 28px;
+    font-size: 30px;
+    letter-spacing: -0.75px;
+    color: rgba(0, 0, 0, 0.87); 
+}
+
+.service-option-title {
+    color: #117198;
+    text-align: center;
+}
+
+.service-option-select {
+    padding-top: 15px !important;
+}
+
+#serving-option-content, #tag-title {
+    font-size: 16px;
+    letter-spacing: -0.182857px;
+    color: #4A4A4A;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.chef-story-image > img {
+    display: block;
+    margin:0 auto; 
+}
+
+.dish-story-content {
+    text-align: justify;
+}
+
+.dish-serving {
+    margin-right: -50px;
+}
+
+#reduce_order {
+    margin-right: 7px;
+    cursor: pointer;
+}
+
+#add_order {
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+    .service-option-title {
+        margin-left: -22px;
+    }
+
+    .show_dish_detail_wrapper {
+        width: 100vw;
+        height: auto;
+        padding: 0 64px 0 64px;
+    }
+
+    .dish-scroll-fix-top {
+        position: fixed;
+        /* background-color: #cfd8d5; */
+        top: 81px;
+        width: 36.5% !important;
+    }
+    
+    .dish-scroll-bottom {
+        position: absolute;
+        top: 1196px;
+        width: 37% !important;
+    }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .service-option-select img {
+        width: 85px;
+        height: 94px;
+    }
+
+    .dish-story-content {
+        width: 59%;
+        padding-right: 15px;
+    }
+
+    .dish-scroll-fix-top {
+        position: fixed;
+        /* background-color: #cfd8d5; */
+        top: 81px;
+        width: 37% !important;
+    }
+    
+    .dish-scroll-bottom {
+        position: absolute;
+        top: 1196px;
+        width: 37% !important;
+    }
+
+    .show_dish_detail_wrapper {
+        width: 100vw;
+        height: auto;
+        padding: 0 64px 0 64px;
+    }
+
+    .chef-name-summary, .chef-summary {
+        width: 84% !important;
+    }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .service-option-select img {
+        width: 85px;
+        height: 94px;
+    }
+    
+    #chef-story-title, .chef-name-summary {
+        text-align: center;
+    }
+
+    #chef-story-descr {
+        width: 100%;
+    }
+
+    .dish-scroll-fix-top {
+        position: fixed;
+        /* background-color: #cfd8d5; */
+        top: 81px;
+        width: 34.5% !important;
+    }
+    
+    .dish-scroll-bottom {
+        position: absolute;
+        top: 1196px;
+        width: 34.5% !important;
+    }
+
+    .show_dish_detail_wrapper {
+        width: 100%;
+        height: auto;
+        padding: 0 64px 0 64px;
+    }
+
+    .chef-story-image {
+        padding-top: 30px !important;
+    }
+
+    .chef-story-image > img {
+        display: block;
+        margin:0 auto; 
+    }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+    .service-option-select img {
+        width: 75px;
+        height: 84px;
+    }
+
+    .chef-story-image > img {
+        display: block;
+        margin:0 auto; 
+    }
+
+    .show_dish_detail_wrapper {
+        width: 100%;
+        height: auto;
+        padding: 0 64px 0 64px;
+    }
+
+    #chef-story-descr {
+        width: 100%;
+    }
+
+    #dish-name {
+        margin-bottom: 15px;
+        padding-left: 10px;
+    }
+
+    .chef-story-image {
+        width: 45% !important;
+    }
+
+    .chef-story-image {
+        padding-top: 25px !important;
+    }
+
+    .chef-story-content {
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 640px) {
+    .service-option-select img {
+        width: 85px;
+        height: 94px;
+    }
+
+    .service-option-select {
+        text-align: center;
+    }
+
+    #dish-name {
+        margin-bottom: 20px;
+    }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+    .service-option-select {
+        text-align: center;
+    }
+
+    .dish-serving {
+        margin-right: 0px;
+    }
+
+    #dish-name {
+        margin-bottom: 0px;
+    }
+
+    #chef-story-descr {
+        width: 96%;
+    }
+
+    .show_dish_detail_wrapper {
+        padding: 0px 10px;
+    }
+
+    .show_dish_detail_wrapper {
+        text-align: center;
+    }
+
+    .chef-story-image {
+        padding-top: 20px !important;
+        width: 100% !important;
+    }
+
+    .chef-name-summary {
+        padding-top: 40px !important;
+    }
+
+    #btn-order-dish {
+        width: 100%;
+    }
+}
+
+/* Dishes list relate */
+.relate-images-thumbnail {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;            
+    position: relative;
+    overflow: hidden;
+}
+
+.dish-relate-wrapper {
+    height: 242px!important;
+    cursor: pointer;
 }
