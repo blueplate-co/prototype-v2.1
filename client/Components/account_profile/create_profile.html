@@ -2,261 +2,226 @@
 
 
 <!--Template of the profile banner-->
-<template name = "profile_banner">
-    <div class = "profile_banner_area valign-wrapper">
-      <div class="container profile_cover">
-        <div class = "left-align">
-          {{> upload_profile}}
-           <!--<h5 class="white-text">{{check_foodie_name}}</h5> -->
+<template name="profile_banner">
+  <div class="profile_banner_area valign-wrapper">
+    <div class="container profile_cover">
+      <div class="left-align">
+        {{> upload_profile}}
+        <!--<h5 class="white-text">{{check_foodie_name}}</h5> -->
+      </div>
+    </div>
+    <br>
+
+    <div class="upload_banner_image">
+      {{load_banner}}
+      <div class="profile_banner_upload">
+        <div class="file-field input-field">
+          <div>
+            <p class="white-text" style="white-space: nowrap;">
+              {{#with currentUpload}}
+              <span>{{progress.get}}% uploaded...</span>
+              {{else}}
+              <i class="material-icons white-text" style="position: relative; top: 5px;">file_upload</i>
+              {{#if checkUpload}} change banner image {{else}} upload banner image {{/if}} {{/with}}
+            </p>
+            <input id="banner_file_input" type="file">
+          </div>
+          <div class="file-path-wrapper">
+          </div>
         </div>
       </div>
-      <br>
-
-      <div class="upload_banner_image">
-          {{load_banner}}
-            <div class="profile_banner_upload">
-                <div class="file-field input-field">
-                  <div>
-                    <p class = "white-text" style="white-space: nowrap;">
-                      {{#with currentUpload}}
-                        <span>{{progress.get}}% uploaded...</span>
-                      {{else}}
-                        <i class="material-icons white-text" style="position: relative; top: 5px;">file_upload</i>
-                        {{#if checkUpload}}
-                          change banner image
-                        {{else}}
-                          upload banner image
-                        {{/if}}
-                      {{/with}}
-                    </p>
-                    <input id="banner_file_input" type="file">
-                  </div>
-                  <div class="file-path-wrapper">
-                  </div>
-              </div>
-          </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <template name="upload_profile">
   <div>
     {{#with checkUpload}}
-      <div class = "profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
-        {{#with currentUpload}}
-          {{> spinnerWhite}}
-          <span class ="white-text">{{progress.get}}%</span>
-        {{else}}
-          <div class = "file-field input-field" id="profile_upload_overlay">
-            <div class = "upload_fonts">
-              <i class="material-icons white-text" style="margin: auto;">file_upload</i>
-              <p class = "center-align white-text">change profile picture</p>
-              <input id="file_input" type="file">
-            </div>
-          </div>
-          <div class = "file-path-wrapper"></div>
-        {{/with}}
-      </div>
-    {{else}}
-      <div class = "profile_image_upload">
-        <div class="file-field input-field">
-          <div class = "profile_upload_wrapper">
-            {{#with currentUpload}}
-              {{> spinner}}
-              <span class ="grey-text">{{progress.get}}%</span>
-            {{else}}
-              <i class="material-icons grey-text" style="margin: auto;">file_upload</i>
-              <p class = "center-align">upload profile picture</p>
-              <input id="file_input" type="file">
-            {{/with}}
-          </div>
-          <div class="file-path-wrapper">
-          </div>
+    <div class="profile_upload_wrapper" style="background-image: url('{{load_profile}}')">
+      {{#with currentUpload}} {{> spinnerWhite}}
+      <span class="white-text">{{progress.get}}%</span>
+      {{else}}
+      <div class="file-field input-field" id="profile_upload_overlay">
+        <div class="upload_fonts">
+          <i class="material-icons white-text" style="margin: auto;">file_upload</i>
+          <p class="center-align white-text">change profile picture</p>
+          <input id="file_input" type="file">
         </div>
       </div>
+      <div class="file-path-wrapper"></div>
+      {{/with}}
+    </div>
+    {{else}}
+    <div class="profile_image_upload">
+      <div class="file-field input-field">
+        <div class="profile_upload_wrapper">
+          {{#with currentUpload}} {{> spinner}}
+          <span class="grey-text">{{progress.get}}%</span>
+          {{else}}
+          <i class="material-icons grey-text" style="margin: auto;">file_upload</i>
+          <p class="center-align">upload profile picture</p>
+          <input id="file_input" type="file"> {{/with}}
+        </div>
+        <div class="file-path-wrapper">
+        </div>
+      </div>
+    </div>
     {{/with}}
   </div>
 </template>
 
 <!-- Template for foodie Profile-->
-<template name = "create_foodie_profile">
-    <form class ="create_foodie_profile col l12 m6 s6" id="create_foodie_profile">
-      {{>profile_banner}}
-      <div class='container'>
-      <!--  <ul id='create_foodie_stepper' class="stepper horizontal" style="min-height:600px">
-           <li class="step active">
-              <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
-              <div class="step-content"> -->
-              <br>
-              <div class = "row col l12 m12 s12">
-                <span>Need help? </span><a href="/seller-handbook/articles/jRbys8bZucc8ed42Y">This article </a><span>should help.</span>
-              </div>
-                <div class="row col l12 m6 s6 valign">
-                  <br>
-                  <h5>Personal details</h5>
-                  <p>All the personal details are used for internal record purpose only. It will not be disclosed to any other parties.</p>
-                  <br>
-                </div>
-                <div class="row col l12 m6 s6 valign">
-                  <div class="input-field col l3 m12 s12 valign">
-                    <h6>Your details</h6>
-                  </div>
-                  <div class="input-field col l3 m4 s12 valign">
-                    <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name" class="mandatory" required />
-                  </div>
-                  <div class="input-field col l3 m4 s6 valign">
-                    <input id="first_name" name="first_name" type="text" placeholder="First Name">
-                  </div>
-                  <div class="input-field col l3 m4 s6 valign">
-                    <input id="last_name" name="last_name" type="text" placeholder="Last Name">
-                  </div>
-                </div>
-
-                <div class="row col l12 m12 s12 valign">
-                  <div class="input-field col l4 m5 s12 offset-l3 valign">
-                    <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address" disabled>
-                  </div>
-                  <div class="input-field col l2 m3 s12 valign">
-                      <input class ="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
-                   </div>
-                   <div class="input-field col l3 m4 s12 valign">
-                     <div class="col l6 m6 s6 valign">
-                       <p><input class ="with-gap right" type="radio" name="gender" value="male" id="male"/>
-                       <label for="male">Male </label></p>
-                     </div>
-                       <div class="col l6 m6 s6 valign">
-                       <p><input class ="with-gap right" type="radio" name="gender" value="female" id="female"/>
-                       <label for="female">Female </label></p>
-                     </div>
-                     </div>
-                   </div>
-                   <div class="row col l12 m12 s12 valign">
-
-                  <div class="input-field col l2 m4 s6 offset-l3 valign">
-                    <select class="material_select" id="mobile_country">
-                      <option value="" disabled selected>Country</option>
-                         {{#each country_list}}
-                       <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                         {{/each}}
-                     </select>
-                   </div>
-
-                   <div class="input-field col l3 m4 s6 valign">
-                     <input id="mobile" name="mobile" type="text" placeholder="Mobile no.">
-                   </div>
-                   </div>
-
-                <div class="row col l12 m6 s6 valign">
-                  <div class="text-field col l3 m6 s6 valign">
-                    <h6>Delivery address</h6>
-                  </div>
-
-                  <div class="input-field col l9 m12 s12 valign">
-                    <input placeholder="" id="create_home_address" name="create_home_address" type="text">
-                    <label for="create_home_address">Home Address</label>
-
-                    </div>
-<!--                    <div class="input-field col l2 m2 s6 valign">
-                      <select class="material_select" id="home_address_country">
-                        <option value="" disabled selected>Country</option>
-                        {{#each country_list}}
-                        <option value={{name}}>{{name}}</option>
-                        {{/each}}
-                        </select>
-                      </div> -->
-                  </div>
-
-
-                  <div class="row col l12 m6 s6 valign">
-                    <div class="input-field col l9 m12 s12 offset-l3 valign">
-                      <input placeholder="" id="create_office_address" name="create_office_address" type="text">
-                      <label for="create_office_address">Office Address</label>
-                    </div>
-                    <!--
-                      <div class="input-field col l2 m2 s6 valign">
-                        <select class="material_select" id="office_address_country">
-                          <option value="" disabled selected>Country</option>
-                          {{#each country_list}}
-                          <option value={{name}}>{{name}}</option>
-                          {{/each}}
-                          </select>
-                        </div> -->
-                    </div>
-            <!--     <div class="step-actions">
-                    <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                 </div>
-              </div>
-           </li>-->
-    <!--       <li class="step">
-              <div class="step-title waves-effect">Your Story</div>
-              <div class="step-content"> -->
-
-              <div class="row col l12 m6 s6 valign">
-                <br>
-                <h5>Your story</h5>
-                <p>Tell us more about yourself. You can write something about your background, the reason why you join blueplate, etc. Your story will be displayed on your profile that other member would be able to see.</p>
-                <br>
-              </div>
-              <div class = "row col l12 m12 s12">
-                  <div class="input-field col l12 m12 s12  valign">
-                    <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
-                    <label for="about_myself"></label>
-                    </div>
-                  </div>
-
-      <!--            <div class="step-actions">
-                    <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                    <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                 </div>
-             </div>
-           </li>
-           <li class="step">
-              <div class="step-title waves-effect">Allergies</div>
-              <div class="step-content"> -->
-
-              <div class="row col l12 m6 s6 valign">
-                <br>
-                <h5>Allergies and dietary preferences</h5>
-                <p>If you have food allergies and some special diet preference, please let us know. All the special requiremnts will be displayed to the homechefs when you make your order</p>
-                <br>
-              </div>
-                <div class ="row l12 valign">
-                  <div class="text-field col l3 m3 s6 valign">
-                    <h6>Major food allergies</h6>
-                    </div>
-                    <div class="col l9 m9 s12 valign">
-                    {{> food_allergies}}
-                    </div>
-                  </div>
-        <!--          <div class="step-actions">
-                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                   <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                 </div>
-              </div>
-           </li>
-           <li class="step">
-              <div class="step-title waves-effect">Perferences</div>
-              <div class="step-content"> -->
-                <div class ="row l12 m6 s6 valign">
-                  <div class="text-field col l3 m3 s6 valign">
-                    <h6>Dietary preferences</h6>
-                    </div>
-                  <div class="col l9 m9 s12 valign">
-                    {{> dietary_preferences}}
-                    </div>
-                  </div>
-                 <!--<div class="step-actions">-->
-
-                   <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=butoon>SUBMIT</button>
-                   <br>
-                   <br>
-                   <br>
-                 <!--</div>
-             </div>
-           </li>
-      </ul>-->
+<template name="create_foodie_profile">
+  <form class="create_foodie_profile col l12 m6 s6" id="create_foodie_profile">
+    {{>profile_banner}}
+    <div class='container'>
+      <br>
+      <div class="row col l12 m12 s12">
+        <span>Need help? </span>
+        <a href="/seller-handbook/articles/jRbys8bZucc8ed42Y">This article </a>
+        <span>should help.</span>
       </div>
-    </form>
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Personal details</h5>
+        <p>All the personal details are used for internal record purpose only. It will not be disclosed to any other parties.</p>
+        <br>
+      </div>
+      <div class="row col l12 m6 s6 valign">
+        <div class="input-field col l3 m12 s12 valign">
+          <h6>Your details</h6>
+        </div>
+        <div class="input-field col l3 m4 s12 valign">
+          <input id="foodie_name" name="foodie_name" type="text" placeholder="Foodie Name" class="mandatory" required />
+        </div>
+        <div class="input-field col l3 m4 s6 valign">
+          <input id="first_name" name="first_name" type="text" placeholder="First Name">
+        </div>
+        <div class="input-field col l3 m4 s6 valign">
+          <input id="last_name" name="last_name" type="text" placeholder="Last Name">
+        </div>
+      </div>
+
+      <div class="row col l12 m12 s12 valign">
+        <div class="input-field col l4 m5 s12 offset-l3 valign">
+          <input id="email" name="email" type="text" value={{get_foodie_email}} placeholder="Email Address" disabled>
+        </div>
+        <div class="input-field col l2 m3 s12 valign">
+          <input class="datepicker" id="date_of_birth" name="date_of_birth" type="text" placeholder="Date of birth">
+        </div>
+        <div class="input-field col l3 m4 s12 valign">
+          <div class="col l6 m6 s6 valign">
+            <p>
+              <input class="with-gap right" type="radio" name="gender" value="male" id="male" />
+              <label for="male">Male </label>
+            </p>
+          </div>
+          <div class="col l6 m6 s6 valign">
+            <p>
+              <input class="with-gap right" type="radio" name="gender" value="female" id="female" />
+              <label for="female">Female </label>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row col l12 m12 s12 valign">
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
+        </div>
+        <div class="input-field col l3 m4 s6 valign">
+          <input id="mobile" type="tel">
+        </div>
+      </div>
+
+      <div class="row col l12 m6 s6 valign">
+        <div class="text-field col l3 m6 s6 valign">
+          <h6>Delivery address</h6>
+        </div>
+
+        <div class="input-field col l9 m12 s12 valign">
+          <input placeholder="" id="create_home_address" name="create_home_address" type="text">
+          <label for="create_home_address">Home Address</label>
+        </div>
+      </div>
+      <div class="row col l12 m6 s6 valign">
+        <div class="input-field col l9 m12 s12 offset-l3 valign">
+          <input placeholder="" id="create_office_address" name="create_office_address" type="text">
+          <label for="create_office_address">Office Address</label>
+        </div>
+      </div>
+      <div class="row col l12 m6 s6 valign">
+        <div class="input-field col l9 m12 s12 offset-l3 valign">
+          <select class="browser-default" id="district">
+            <option value="" disabled selected>Choose your district</option>
+            <option value="Central and Western">Central and Western</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Southern">Southern</option>
+            <option value="Wan Chai">Wan Chai</option>
+            <option value="Sham Shui Po">Sham Shui Po</option>
+            <option value="Kowloon City">Kowloon City</option>
+            <option value="Kwun Tong">Kwun Tong</option>
+            <option value="Wong Tai Sin">Wong Tai Sin</option>
+            <option value="Yau Tsim Mong">Yau Tsim Mong</option>
+            <option value="Islands">Islands</option>
+            <option value="Kwai Tsing">Kwai Tsing</option>
+            <option value="North">North</option>
+            <option value="Sai Kung">Sai Kung</option>
+            <option value="Sha Tin">Sha Tin</option>
+            <option value="Tai Po">Tai Po</option>
+            <option value="Tsuen Wan">Tsuen Wan</option>
+            <option value="Tuen Mun">Tuen Mun</option>
+            <option value="Yuen Long">Yuen Long</option>
+            <label>District</label>
+          </select>
+        </div>
+      </div>
+
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Your story</h5>
+        <p>Tell us more about yourself. You can write something about your background, the reason why you join blueplate, etc.
+          Your story will be displayed on your profile that other member would be able to see.</p>
+        <br>
+      </div>
+      <div class="row col l12 m12 s12">
+        <div class="input-field col l12 m12 s12  valign">
+          <textarea id="about_myself" class="materialize-textarea" name="about_myself" type="text" data-length="500"></textarea>
+          <label for="about_myself"></label>
+        </div>
+      </div>
+
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Allergies and dietary preferences</h5>
+        <p>If you have food allergies and some special diet preference, please let us know. All the special requiremnts will
+          be displayed to the homechefs when you make your order</p>
+        <br>
+      </div>
+      <div class="row l12 valign">
+        <div class="text-field col l3 m3 s6 valign">
+          <h6>Major food allergies</h6>
+        </div>
+        <div class="col l9 m9 s12 valign">
+          {{> food_allergies}}
+        </div>
+      </div>
+
+      <div class="row l12 m6 s6 valign">
+        <div class="text-field col l3 m3 s6 valign">
+          <h6>Dietary preferences</h6>
+        </div>
+        <div class="col l9 m9 s12 valign">
+          {{> dietary_preferences}}
+        </div>
+      </div>
+
+      <button id="create_foodie_profile_button" class="waves-effect waves-dark btn" type=butoon>SUBMIT</button>
+      <br>
+      <br>
+      <br>
+    </div>
+  </form>
 </template>
 
 
@@ -269,98 +234,121 @@
 
 <!-- HOMECOOK PROFILE-->
 <!-- Template for homecook Profile-->
-<template name = "create_homecook_profile">
-  <form class ="create_homecook_profile col l12 m12 s12" id="create_homecook_profile">
+<template name="create_homecook_profile">
+  <form class="create_homecook_profile col l12 m12 s12" id="create_homecook_profile">
     {{>profile_banner}}
-    <div class = "container">
+    <div class="container">
       <!--<ul id='create_homecook_stepper' class="stepper horizontal" style="min-height:600px">
          <li class="step active">
             <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
             <div class="step-content">-->
-            <br>
-            <div class = "row col l12 m12 s12">
-              <span>Need help? </span><a href="/seller-handbook/articles/BaCH9h3bgTy2NM2s7">This article </a><span>should help.</span>
-            </div>
-            <div class="row col l12 m6 s6 valign">
-              <br>
-              <h5>Kitchen details</h5>
-              <p>Information about your kitchen. Details, like telephone number and address, are for internal record purpose, and it will only be given out to foodies if you accept their orders.</p>
-              <br>
-              <p>Fields marked with * are compulsory</p>
-              <br>
-            </div>
-              <div class="row col l12 m12 s6 valign">
-                <div class="text-field col l3 m12 s12 valign">
-                  <h6>Kitchen title</h6>
-                </div>
-                <div class="input-field col l5 m6 s6 valign">
-                  <input id="kitchen_name" name="kitchen_name" type="text">
-                  <label for="kitchen_name">Kitchen name</label>
-                  </div>
+      <br>
+      <div class="row col l12 m12 s12">
+        <span>Need help? </span>
+        <a href="/seller-handbook/articles/BaCH9h3bgTy2NM2s7">This article </a>
+        <span>should help.</span>
+      </div>
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Kitchen details</h5>
+        <p>Information about your kitchen. Details, like telephone number and address, are for internal record purpose, and
+          it will only be given out to foodies if you accept their orders.</p>
+        <br>
+        <p>Fields marked with * are compulsory</p>
+        <br>
+      </div>
+      <div class="row col l12 m12 s6 valign">
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Kitchen title</h6>
+        </div>
+        <div class="input-field col l5 m6 s6 valign">
+          <input id="kitchen_name" name="kitchen_name" type="text">
+          <label for="kitchen_name">Kitchen name</label>
+        </div>
 
-                  <div class="input-field col l4 m6 s6 valign">
-                    <input id="chef_name" name="chef_name" type="text">
-                    <label for="chef_name">Chef name</label>
-                    </div>
-                </div>
-              <div class="row col l12 valign">
-                <div class="text-field col l3 m12 s6 valign">
-                  <h6>Kitchen location<sup>*</sup></h6>
-                </div>
+        <div class="input-field col l4 m6 s6 valign">
+          <input id="chef_name" name="chef_name" type="text">
+          <label for="chef_name">Chef name</label>
+        </div>
+      </div>
+      <div class="row col l12 valign">
+        <div class="text-field col l3 m12 s6 valign">
+          <h6>Kitchen location
+            <sup>*</sup>
+          </h6>
+        </div>
 
-                <div class="input-field col l6 m9 s12 valign">
-                  <input placeholder="" id="kitchen_address" name="kitchen_address" type="text">
-                  <label for="kitchen_address">Address</label>
-                  </div>
-                  <div class="input-field col l3 m3 s6 valign">
-                    <select class="material_select" id="kitchen_address_country">
-                      <option value="" disabled selected>Select country</option>
-                      {{#each country_list}}
-                      <option value="{{name}}">{{name}}</option>
-                      {{/each}}
-                      </select>
-                    </div>
-                </div>
+        <div class="input-field col l6 m9 s12 valign">
+          <input placeholder="" id="kitchen_address" name="kitchen_address" type="text">
+          <label for="kitchen_address">Address</label>
+        </div>
+        <div class="input-field col l3 m3 s6 valign">
+          <select class="material_select" id="kitchen_address_country">
+            <option value="" disabled selected>Select country</option>
+            {{#each country_list}}
+            <option value="{{name}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="row col l12 m6 s6 valign">
+          <div class="input-field col l9 m12 s12 offset-l3 valign">
+            <select class="browser-default" id="district">
+              <option value="" disabled selected>Choose your district</option>
+              <option value="Central and Western">Central and Western</option>
+              <option value="Eastern">Eastern</option>
+              <option value="Southern">Southern</option>
+              <option value="Wan Chai">Wan Chai</option>
+              <option value="Sham Shui Po">Sham Shui Po</option>
+              <option value="Kowloon City">Kowloon City</option>
+              <option value="Kwun Tong">Kwun Tong</option>
+              <option value="Wong Tai Sin">Wong Tai Sin</option>
+              <option value="Yau Tsim Mong">Yau Tsim Mong</option>
+              <option value="Islands">Islands</option>
+              <option value="Kwai Tsing">Kwai Tsing</option>
+              <option value="North">North</option>
+              <option value="Sai Kung">Sai Kung</option>
+              <option value="Sha Tin">Sha Tin</option>
+              <option value="Tai Po">Tai Po</option>
+              <option value="Tsuen Wan">Tsuen Wan</option>
+              <option value="Tuen Mun">Tuen Mun</option>
+              <option value="Yuen Long">Yuen Long</option>
+              <label>District</label>
+            </select>
+          </div>
+        </div>
+      </div>
 
-                <div class="row col l12 m12 s12 valign">
-                  <div class='text-field col l3 m3 s12 valign'>
-                    <h6>Kitchen Contact</h6>
-                  </div>
-                  <!--
-               <div class="input-field col l4 m4 s6 valign">
-                 <select class="material_select" id="kitchen_contact_country">
-                   <option value="" disabled selected>Country</option>
-                      {{#each country_list}}
-                    <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                      {{/each}}
-                  </select>
-                </div>
-              -->
-                <div class="input-field col l4 m12 s12 valign">
-                  <input id="kitchen_contact" name="kitchen_contact" type="text" placeholder="telephone no.">
-                </div>
-                </div>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m3 s12 valign'>
+          <h6>Kitchen Contact</h6>
+        </div>
+        <div class="input-field col l4 m12 s12 valign">
+          <input id="kitchen_contact" name="kitchen_contact" type="tel" placeholder="telephone no.">
+        </div>
+      </div>
 
-                <div class="row col l12 m12 s12 valign">
-                  <div class='text-field col l3 m3 s12 valign'>
-                    <h6>Serving Options<sup>(*)</sup></h6>
-                  </div>
-                  <div class = "col l9 m12 s12">
-                    {{> serving_option}}
-                  </div>
-                </div>
-                <div class = "row l12 m12 s12 valign">
-                  <div class='text-field col l3 m6 s6 valign'>
-                    <h6>House rules</h6>
-                  </div>
-                  <div class="input-field col l9 m12 s12 valign">
-                    <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500"></textarea>
-                    <label for="house_rule">Any House rules?</label>
-                  </div>
-                </div>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m3 s12 valign'>
+          <h6>Serving Options
+            <sup>(*)</sup>
+          </h6>
+        </div>
+        <div class="col l9 m12 s12">
+          {{> serving_option}}
+        </div>
+      </div>
+      <div class="row l12 m12 s12 valign">
+        <div class='text-field col l3 m6 s6 valign'>
+          <h6>House rules</h6>
+        </div>
+        <div class="input-field col l9 m12 s12 valign">
+          <textarea id="house_rule" class="materialize-textarea" name="house_rule" type="text" data-length="500"></textarea>
+          <label for="house_rule">Any House rules?</label>
+        </div>
+      </div>
 
 
-        <!--       <div class="step-actions">
+      <!--       <div class="step-actions">
                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                </div>
             </div>
@@ -368,34 +356,36 @@
          <li class="step">
             <div class="step-title waves-effect">Cooking Journey</div>
             <div class="step-content"> -->
-            <div class="row col l12 m6 s6 valign">
-              <br>
-              <h5>Cooking journey</h5>
-              <p>Share with us and the community about your journey of cooking. Writing an interesting story can help differentiating yourself from others in this marketing palce and attracting more attention from foodies. It is optional, so don't worry if you want to come back to this later.</p>
-              <br>
-            </div>
-            <div class = "row col l12 m12 s12 valign">
-              <div class='text-field col l3 m6 s6 valign'>
-                <h6>Cooking experience</h6>
-              </div>
-              <div class="input-field col l9 m12 s12 valign">
-                <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500"></textarea>
-                <label for="cooking_exp"></label>
-              </div>
-            </div>
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Cooking journey</h5>
+        <p>Share with us and the community about your journey of cooking. Writing an interesting story can help differentiating
+          yourself from others in this marketing palce and attracting more attention from foodies. It is optional, so don't
+          worry if you want to come back to this later.</p>
+        <br>
+      </div>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m6 s6 valign'>
+          <h6>Cooking experience</h6>
+        </div>
+        <div class="input-field col l9 m12 s12 valign">
+          <textarea id="cooking_exp" class="materialize-textarea" name="cooking_exp" type="text" data-length="500"></textarea>
+          <label for="cooking_exp"></label>
+        </div>
+      </div>
 
-            <div class = "row col l12 m12 s12 valign">
-              <div class='text-field col l3 m6 s6 valign'>
-                <h6>Cooking Story</h6>
-              </div>
-              <div class="input-field col l9 m12 s12 valign">
-                <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500"></textarea>
-                <label for="cooking_story"></label>
-              </div>
-            </div>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m6 s6 valign'>
+          <h6>Cooking Story</h6>
+        </div>
+        <div class="input-field col l9 m12 s12 valign">
+          <textarea id="cooking_story" class="materialize-textarea" name="cooking_story" type="text" data-length="500"></textarea>
+          <label for="cooking_story"></label>
+        </div>
+      </div>
 
 
-               <!--<div class="step-actions">
+      <!--<div class="step-actions">
                   <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
                   <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                </div>
@@ -405,38 +395,38 @@
          <li class="step">
             <div class="step-title waves-effect">Your Kitchen</div>
             <div class="step-content">-->
-            <div class="row col l12 m6 s6 valign">
-              <br>
-              <h5>Kitchen characteristics</h5>
-              <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
-              <br>
-            </div>
-            <div class = "row col l12 m12 s12 valign">
-              <div class='text-field col l3 m6 s6 valign'>
-                <h6>Specialities</h6>
-              </div>
-              <div class = 'col l9 m12 s12'>
-                <div id='kitchen_speciality' class="chips chips-placeholder"></div>
-              </div>
-            </div>
-            <br>
-            <div class = "row col l12 m12 s12 valign">
-              <div class='text-field col l3 m6 s6 valign'>
-                <h6>About your place and kitchen</h6>
-              </div>
-              <div class = 'col l9 m12 s12'>
-                <div id='kitchen_tags' class="chips chips-placeholder"></div>
-              </div>
-            </div>
+      <div class="row col l12 m6 s6 valign">
+        <br>
+        <h5>Kitchen characteristics</h5>
+        <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
+        <br>
+      </div>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m6 s6 valign'>
+          <h6>Specialities</h6>
+        </div>
+        <div class='col l9 m12 s12'>
+          <div id='kitchen_speciality' class="chips chips-placeholder"></div>
+        </div>
+      </div>
+      <br>
+      <div class="row col l12 m12 s12 valign">
+        <div class='text-field col l3 m6 s6 valign'>
+          <h6>About your place and kitchen</h6>
+        </div>
+        <div class='col l9 m12 s12'>
+          <div id='kitchen_tags' class="chips chips-placeholder"></div>
+        </div>
+      </div>
 
-               <!--<div class="step-actions">-->
-                 <br>
-                 <button id="create_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
-                 <br>
-                 <br>
-                 <br>
+      <!--<div class="step-actions">-->
+      <br>
+      <button id="create_homecook_button" class="waves-effect waves-dark btn" type="button">SUBMIT</button>
+      <br>
+      <br>
+      <br>
 
-               <!--</div>
+      <!--</div>
             </div>
          </li>
       </ul>-->
@@ -453,35 +443,35 @@
   <div class="row col l12 m6 s6 valign">
     <div class="text-field col l3 m3 s6 valign">
       <h6>Bank details</h6>
-      </div>
-      <div class="input-field col l3 m3 s6 valign">
-        <input id="bank_fullname" name="bank_fullname" type="text" >
-        <label for="bank_fullname">Account Name</label>
-      </div>
-      <div class="input-field col l3 m3 s6 valign">
-        <input id="bank_name" name="bank_name" type="text" >
-        <label for="bank_name">Name of the Bank</label>
-      </div>
-      <div class="input-field col l3 m2 s6 valign">
-        <input id="bank_account_no" name="bank_account_no" type="text">
-        <label for="bank_account_no">Account Number</label>
-      </div>
     </div>
-    <div class="row col l12 m6 s6 valign">
-      <div class="input-field col l6 m6 s6 offset-l3 valign">
-        <input id="bank_address" name="bank_address" type="text">
-        <label for="bank_address">Address of the Bank</label>
-        </div>
-      <div class="input-field col l3 m2 s2 valign">
-        <select class="material_select" id="bank_address_country">
-          <option value="" disabled selected>Country</option>
-          {{#each country_list}}
-          <option value="{{name}}">{{name}}</option>
-          {{/each}}
-          </select>
-        </div>
+    <div class="input-field col l3 m3 s6 valign">
+      <input id="bank_fullname" name="bank_fullname" type="text">
+      <label for="bank_fullname">Account Name</label>
+    </div>
+    <div class="input-field col l3 m3 s6 valign">
+      <input id="bank_name" name="bank_name" type="text">
+      <label for="bank_name">Name of the Bank</label>
+    </div>
+    <div class="input-field col l3 m2 s6 valign">
+      <input id="bank_account_no" name="bank_account_no" type="text">
+      <label for="bank_account_no">Account Number</label>
+    </div>
+  </div>
+  <div class="row col l12 m6 s6 valign">
+    <div class="input-field col l6 m6 s6 offset-l3 valign">
+      <input id="bank_address" name="bank_address" type="text">
+      <label for="bank_address">Address of the Bank</label>
+    </div>
+    <div class="input-field col l3 m2 s2 valign">
+      <select class="material_select" id="bank_address_country">
+        <option value="" disabled selected>Country</option>
+        {{#each country_list}}
+        <option value="{{name}}">{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
 
-</div>
+  </div>
 </template>
 
 <!-- Credit Card Details for Payment -->
@@ -489,27 +479,27 @@
   <div class="row col l12 valign">
     <div class="text-field col l3 m3 s3 valign">
       <h6>Payment details</h6>
-      </div>
-    <div class="input-field col l5 m3 s3 valign">
-      <input id="card_number" name="card_number" type="text" >
-      <label for="card_number">Card Number</label>
-      </div>
-      <div class="input-field col l1 m2 s2 valign">
-        <select class="material_select" id="card_exp_month">
-          <option value="" disabled selected>MM</option>
-          {{#each month_list}}
-          <option value="{{option}}">{{month}}</option>
-          {{/each}}
-          </select>
-        </div>
-      <div class="input-field col l1 m2 s2 valign">
-        <select class="material_select" id="card_exp_year">
-          <option value="" disabled selected>YYYY</option>
-          {{#each year_list}}
-          <option value="{{option}}">{{year}}</option>
-          {{/each}}
-          </select>
-        </div>
     </div>
+    <div class="input-field col l5 m3 s3 valign">
+      <input id="card_number" name="card_number" type="text">
+      <label for="card_number">Card Number</label>
+    </div>
+    <div class="input-field col l1 m2 s2 valign">
+      <select class="material_select" id="card_exp_month">
+        <option value="" disabled selected>MM</option>
+        {{#each month_list}}
+        <option value="{{option}}">{{month}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="input-field col l1 m2 s2 valign">
+      <select class="material_select" id="card_exp_year">
+        <option value="" disabled selected>YYYY</option>
+        {{#each year_list}}
+        <option value="{{option}}">{{year}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
 
 </template>

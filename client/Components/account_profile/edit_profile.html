@@ -3,10 +3,6 @@
   <form class="edit_foodie_profile col l12 m6 s6" id="edit_foodie_profile">
     {{>profile_banner}}
     <div class='container'>
-      <!--  <ul id='edit_foodie_stepper' class="stepper horizontal" style="min-height:640px">
-         <li class="step active">
-            <div data-step-label="For internal only" class="step-title waves-effect">Your details</div>
-            <div class="step-content">-->
       <br>
       <div class="row col l12 m12 s12">
         <span>Need help? </span>
@@ -92,19 +88,11 @@
         </div>
       </div>
       <div class="row col l12 m12 s12 valign">
-
-        <div class="input-field col l2 m4 s6 offset-l3 valign">
-          <select class="material_select" id="mobile_country">
-            <option value="{{get_foodie_profile.mobile_dial_code}}" selected>{{get_foodie_profile.mobile_dial_code}}</option>
-            {{#each country_list}}
-            <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-            {{/each}}
-          </select>
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
         </div>
-
         <div class="input-field col l3 m4 s6 valign">
-          <input id="mobile" name="mobile" type="text" value={{get_foodie_profile.mobile}}>
-          <label class="active" for="mobile">Mobile no.</label>
+          <input id="mobile" type="tel" value={{get_foodie_profile.mobile}}>
         </div>
       </div>
 
@@ -116,45 +104,40 @@
         <div class="input-field col l9 m12 s12 valign">
           <input id="edit_home_address" name="edit_home_address" type="text" value={{get_foodie_profile.home_address}}>
           <label for="edit_home_address" class="active">Home address</label>
-
         </div>
-        <!--
-                  <div class="input-field col l2 m2 s6 valign">
-                    <select class="material_select" id="home_address_country">
-                      <option value={{get_foodie_profile.home_address_country}} selected>{{get_foodie_profile.home_address_country}}</option>
-                      {{#each country_list}}
-                      <option value={{name}}>{{name}}</option>
-                      {{/each}}
-                      </select>
-                    </div>
-                  -->
       </div>
-
-
       <div class="row col l12 m6 s6 valign">
         <div class="input-field col l9 m12 s12 offset-l3 valign">
           <input id="edit_office_address" name="edit_office_address" type="text" value="{{get_foodie_profile.office_address}}">
           <label for="edit_office_address" class="active">Office Address</label>
         </div>
-        <!--
-                    <div class="input-field col l2 m2 s6 valign">
-                      <select class="material_select" id="office_address_country">
-                        <option value={{get_foodie_profile.office_address_country}} selected>{{get_foodie_profile.office_address_country}}</option>
-                        {{#each country_list}}
-                        <option value={{name}}>{{name}}</option>
-                        {{/each}}
-                        </select>
-                      </div>
-                    -->
       </div>
-      <!--     <div class="step-actions">
-                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-               </div>
-            </div>
-         </li>
-         <li class="step">
-            <div class="step-title waves-effect">Your Story</div>
-            <div class="step-content"> -->
+      <div class="row col l12 m6 s6 valign">
+        <div class="input-field col l9 m12 s12 offset-l3 valign">
+          <select class="browser-default" id="district">
+            <option value="" disabled selected>Choose your district</option>
+            <option value="Central and Western">Central and Western</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Southern">Southern</option>
+            <option value="Wan Chai">Wan Chai</option>
+            <option value="Sham Shui Po">Sham Shui Po</option>
+            <option value="Kowloon City">Kowloon City</option>
+            <option value="Kwun Tong">Kwun Tong</option>
+            <option value="Wong Tai Sin">Wong Tai Sin</option>
+            <option value="Yau Tsim Mong">Yau Tsim Mong</option>
+            <option value="Islands">Islands</option>
+            <option value="Kwai Tsing">Kwai Tsing</option>
+            <option value="North">North</option>
+            <option value="Sai Kung">Sai Kung</option>
+            <option value="Sha Tin">Sha Tin</option>
+            <option value="Tai Po">Tai Po</option>
+            <option value="Tsuen Wan">Tsuen Wan</option>
+            <option value="Tuen Mun">Tuen Mun</option>
+            <option value="Yuen Long">Yuen Long</option>
+            <label>District</label>
+          </select>
+        </div>
+      </div>
 
       <div class="row col l12 m6 s6 valign">
         <br>
@@ -169,16 +152,6 @@
           <label for="about_myself" class="active">Write a paragraph about yourself</label>
         </div>
       </div>
-
-      <!--         <div class="step-actions">
-                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-               </div>
-            </div>
-         </li>
-         <li class="step">
-            <div class="step-title waves-effect">Allergies</div>
-            <div class="step-content"> -->
 
       <div class="row col l12 m6 s6 valign">
         <br>
@@ -196,15 +169,6 @@
         </div>
       </div>
 
-      <!--           <div class="step-actions">
-                 <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                 <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-               </div>
-            </div>
-         </li>
-         <li class="step">
-            <div class="step-title waves-effect">Perferences</div>
-            <div class="step-content">-->
       <div class="row l12 m6 s6 valign">
         <div class="text-field col l3 m3 s6 valign">
           <h6>Dietary preferences</h6>
@@ -214,15 +178,10 @@
         </div>
       </div>
 
-      <!--     <div class="step-actions">-->
       <button id="edit_foodie_profile_button" class="waves-effect waves-dark btn" type=button>SUBMIT</button>
       <br>
       <br>
       <br>
-      <!--         </div>
-            </div>
-         </li>
-      </ul> -->
     </div>
   </form>
   {{/with}}
@@ -237,10 +196,6 @@
   <form class="edit_homecook_profile col l12 m12 s12" id="edit_homecook_profile">
     {{>profile_banner}}
     <div class="container">
-      <!--    <ul id='edit_homecook_stepper' class="stepper horizontal" style="min-height:600px">
-         <li class="step active">
-            <div data-step-label="For internal only" class="step-title waves-effect">Kitchen Details</div>
-            <div class="step-content"> -->
       <br>
       <div class="row col l12 m12 s12">
         <span>Need help? </span>
@@ -294,23 +249,39 @@
         </div>
       </div>
 
-      <div class="row col l12 m12 s12 valign">
-        <div class='text-field col l3 m3 s12 valign'>
-          <h6>Kitchen contact</h6>
+      <div class="row col l12 m6 s6 valign">
+        <div class="input-field col l9 m12 s12 offset-l3 valign">
+          <select class="browser-default" id="district">
+            <option value="" disabled selected>Choose your district</option>
+            <option value="Central and Western">Central and Western</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Southern">Southern</option>
+            <option value="Wan Chai">Wan Chai</option>
+            <option value="Sham Shui Po">Sham Shui Po</option>
+            <option value="Kowloon City">Kowloon City</option>
+            <option value="Kwun Tong">Kwun Tong</option>
+            <option value="Wong Tai Sin">Wong Tai Sin</option>
+            <option value="Yau Tsim Mong">Yau Tsim Mong</option>
+            <option value="Islands">Islands</option>
+            <option value="Kwai Tsing">Kwai Tsing</option>
+            <option value="North">North</option>
+            <option value="Sai Kung">Sai Kung</option>
+            <option value="Sha Tin">Sha Tin</option>
+            <option value="Tai Po">Tai Po</option>
+            <option value="Tsuen Wan">Tsuen Wan</option>
+            <option value="Tuen Mun">Tuen Mun</option>
+            <option value="Yuen Long">Yuen Long</option>
+            <label>District</label>
+          </select>
         </div>
-        <!--
-               <div class="input-field col l2 m3 s12 valign">
-                 <select class="material_select" id="kitchen_contact_country">
-                   <option value={{get_homecook_profile.kitchen_contact_country}} selected>{{get_homecook_profile.kitchen_contact_country}}</option>
-                      {{#each country_list}}
-                    <option value='{{name}} {{dial_code}}'>{{name}} {{dial_code}}</option>
-                      {{/each}}
-                  </select>
-                </div>
-              -->
-        <div class="input-field col l4 m6 s12 valign">
-          <input id="kitchen_contact" name="kitchen_contact" type="text" value="{{get_homecook_profile.kitchen_contact}}">
-          <label class="active" for="kitchen_contact">telephone no.</label>
+      </div>
+
+      <div class="row col l12 m12 s12 valign">
+        <div class="text-field col l3 m12 s12 valign">
+          <h6>Mobile phone number</h6>
+        </div>
+        <div class="input-field col l3 m4 s6 valign">
+          <input id="kitchen_contact" type="tel" value={{get_homecook_profile.mobile}}>
         </div>
       </div>
 
@@ -333,15 +304,6 @@
           <label class='active' for="house_rule">Any rules that you'd like your guests to follow when they order your food or eat at your place?</label>
         </div>
       </div>
-
-      <!--           <div class="step-actions">
-                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-               </div>
-            </div>
-         </li>
-         <li class="step">
-            <div class="step-title waves-effect">Cooking Journey</div>
-            <div class="step-content"> -->
       <div class="row col l12 m6 s6 valign">
         <br>
         <h5>Cooking journey</h5>
@@ -368,18 +330,6 @@
           <label class="active" for="cooking_story"></label>
         </div>
       </div>
-
-
-      <!--             <div class="step-actions">
-                  <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
-                  <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-               </div>
-            </div>
-         </li>
-
-         <li class="step">
-            <div class="step-title waves-effect">Your Kitchen</div>
-            <div class="step-content">-->
       <div class="row col l12 m6 s6 valign">
         <br>
         <h5>Kitchen characteristics</h5>
@@ -410,10 +360,6 @@
       <br>
       <br>
       <br>
-      <!--       </div>
-            </div>
-         </li>
-      </ul>-->
     </div>
   </form>
   {{/with}}

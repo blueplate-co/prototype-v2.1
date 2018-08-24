@@ -2,7 +2,9 @@ import {
   address_geocode
 } from '/imports/functions/address_geocode.js';
 import './create_profile.html';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import {
+  FlowRouter
+} from 'meteor/ostrio:flow-router-extra';
 
 
 profile_images = new FilesCollection({
@@ -25,17 +27,30 @@ profile_images = new FilesCollection({
 Session.keys = {}
 
 /** function from ostrio **/
-Template.create_foodie_profile.onRendered(function() {
-  window.scrollTo(0,0);
+Template.create_foodie_profile.onRendered(function () {
+  window.scrollTo(0, 0);
   Session.keys = {};
+  // get district for user
+  Meteor.call('user.getDistrict', (err, res) => {
+    if (!err) {
+      var district = res;
+      $('#district').val(district);
+    } else {
+      Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+    }
+  });
+  $('#mobile').intlTelInput({
+    initialCountry: "HK",
+    utilsScript: "../intlTelInput/utils.js"
+  });
 })
 
-Template.profile_banner.onCreated(function() {
+Template.profile_banner.onCreated(function () {
   this.currentUpload = new ReactiveVar(false);
 });
 
-Template.profile_banner.onRendered(function() {
-  Meteor.setTimeout(function(){
+Template.profile_banner.onRendered(function () {
+  Meteor.setTimeout(function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
       var check_profile_banner = Kitchen_details.findOne({
         "user_id": Meteor.userId()
@@ -65,7 +80,7 @@ Template.profile_banner.helpers({
     return Template.instance().currentUpload.get();
   },
 
-  'checkUpload': function() {
+  'checkUpload': function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
       var checkupload = Kitchen_details.findOne({
         'user_id': Meteor.userId()
@@ -86,7 +101,7 @@ Template.profile_banner.helpers({
       }
     }
   },
-  'load_banner': function() {
+  'load_banner': function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
       var checkuploadBannerprofile = Kitchen_details.findOne({
         'user_id': Meteor.userId()
@@ -97,7 +112,7 @@ Template.profile_banner.helpers({
       });
     }
 
-    if (!checkuploadBannerprofile){
+    if (!checkuploadBannerprofile) {
       return false;
     } else {
       if (checkuploadBannerprofile.bannerProfileImg) {
@@ -110,7 +125,7 @@ Template.profile_banner.helpers({
     }
   },
 
-  "check_foodie_name": function() {
+  "check_foodie_name": function () {
     var foodie_name = Profile_details.findOne({
       'user_id': Meteor.userId()
     });
@@ -124,7 +139,7 @@ Template.profile_banner.helpers({
     }
   },
 
-  "check_foodie_keywords": function() {
+  "check_foodie_keywords": function () {
     var foodie = Profile_details.findOne({
       'user_id': Meteor.userId()
     });
@@ -140,12 +155,12 @@ Template.profile_banner.helpers({
 });
 
 Template.profile_banner.events({
-  'change #banner_file_input': function(e, template) {
+  'change #banner_file_input': function (e, template) {
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case
       // multiple files were selected
       var file = e.currentTarget.files[0];
-      return data = processImage(file, function(data) {
+      return data = processImage(file, function (data) {
         console.log(file);
         const upload = profile_images.insert({
           file: data,
@@ -160,11 +175,11 @@ Template.profile_banner.events({
         }, false);
         Meteor.call('profile_images.remove', "banner_picture");
 
-        upload.on('start', function() {
+        upload.on('start', function () {
           template.currentUpload.set(this);
         });
 
-        upload.on('end', function(error, profile_images) {
+        upload.on('end', function (error, profile_images) {
           if (error) {
             alert('Error during upload: ' + error.message);
           } else {
@@ -177,18 +192,18 @@ Template.profile_banner.events({
             saveToKraken(newImgName, profile_images.path, 'bannerProfileImg');
 
           }
-          Meteor._reload.onMigrate(function() {
+          Meteor._reload.onMigrate(function () {
             return [false];
           });
           template.currentUpload.set(false);
         });
         upload.start();
-    });
+      });
     }
   }
 });
 
-Template.upload_profile.onCreated(function() {
+Template.upload_profile.onCreated(function () {
   this.currentUpload = new ReactiveVar(false);
   this.profileUpdated = new ReactiveVar(false);
 });
@@ -198,7 +213,7 @@ Template.upload_profile.helpers({
     return Template.instance().currentUpload.get();
   },
 
-  checkUpload: function() {
+  checkUpload: function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
       var check_profile_picture = Kitchen_details.findOne({
         'user_id': Meteor.userId()
@@ -219,7 +234,7 @@ Template.upload_profile.helpers({
     }
   },
 
-  load_profile: function() {
+  load_profile: function () {
     if (Template.instance().currentUpload.get()) {
       return false;
     } else {
@@ -255,7 +270,7 @@ Template.upload_profile.events({
       // We upload only one file, in case
       // multiple files were selected
       var file = e.currentTarget.files[0];
-      return data = processImage(file, function(data) {
+      return data = processImage(file, function (data) {
         upload = profile_images.insert({
           file: data,
           isBase64: true,
@@ -263,16 +278,16 @@ Template.upload_profile.events({
           streams: 'dynamic',
           chunkSize: 'dynamic',
           meta: {
-              'base64': data,
-              'purpose': 'profile_picture'
+            'base64': data,
+            'purpose': 'profile_picture'
           }
         }, false);
 
-        upload.on('start', function() {
+        upload.on('start', function () {
           template.currentUpload.set(this);
         });
 
-        upload.on('end', function(error, profile_images) {
+        upload.on('end', function (error, profile_images) {
           template.profileUpdated.set(true);
           if (error) {
             alert('Error during upload: ' + error.message);
@@ -287,7 +302,7 @@ Template.upload_profile.events({
             console.log('new image name: ', newImgName)
             saveToKraken(newImgName, profile_images.path, 'profileImg');
           }
-          Meteor._reload.onMigrate(function() {
+          Meteor._reload.onMigrate(function () {
             return [false];
           });
           template.currentUpload.set(false);
@@ -298,16 +313,16 @@ Template.upload_profile.events({
   }
 });
 
-Template.create_foodie_profile.onRendered(function() {
+Template.create_foodie_profile.onRendered(function () {
 
-/**
-  this.$('#create_foodie_stepper').activateStepper({
-   linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
-   autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
-   autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
-   showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
-});
-**/
+  /**
+    this.$('#create_foodie_stepper').activateStepper({
+     linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+     autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+     autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+     showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+  });
+  **/
 
   //activate datepicker
   this.$('.datepicker').pickadate({
@@ -329,7 +344,7 @@ Template.create_foodie_profile.onRendered(function() {
   this.$('input#input_text, textarea#about_myself').characterCounter();
 
   //activate the selection tabs
-  this.$(document).ready(function() {
+  this.$(document).ready(function () {
     $('ul.tabs').tabs();
   });
 
@@ -346,53 +361,66 @@ Template.create_foodie_profile.onRendered(function() {
 
 
 
-Template.create_homecook_profile.onRendered(function(){
+Template.create_homecook_profile.onRendered(function () {
 
-    // add google places autocomplete
-    setTimeout(() => {
-      var input = document.getElementById('kitchen_address');
-      new google.maps.places.Autocomplete(input);
-    }, 1000);
-
-     //activate dropdown
-     this.$('#kitchen_address_country').material_select();
-     this.$('#kitchen_contact_country').material_select();
-
-     //activate characterCounter
-     this.$('input#input_text, textarea#cooking_exp').characterCounter();
-     this.$('input#input_text, textarea#cooking_story').characterCounter();
-     this.$('input#input_text, textarea#house_rule').characterCounter();
-
-/**     this.$('#create_homecook_stepper').activateStepper({
-      linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
-      autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
-      autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
-      showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
-   });**/
-
-     this.$('#kitchen_speciality').material_chip({
-       data: [{
-       tag: 'Italian',
-     }, {
-       tag: 'Cheese',
-     }, {
-       tag: 'Carbonara',
-     }],
-
-
+  // add google places autocomplete
+  setTimeout(() => {
+    var input = document.getElementById('kitchen_address');
+    new google.maps.places.Autocomplete(input);
+    // get district for user
+    Meteor.call('user.getDistrict', (err, res) => {
+      if (!err) {
+        var district = res;
+        $('#district').val(district);
+      } else {
+        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+      }
     });
+    $('#kitchen_contact').intlTelInput({
+      initialCountry: "HK",
+      utilsScript: "../intlTelInput/utils.js"
+    });
+  }, 1000);
 
-    this.$('#kitchen_tags').material_chip({
-      data: [{
-       tag: 'Seaview',
-     }, {
-       tag: 'Roof top',
-     }, {
-       tag: 'Bring your own wine',
-     }],
+  //activate dropdown
+  this.$('#kitchen_address_country').material_select();
+  this.$('#kitchen_contact_country').material_select();
+
+  //activate characterCounter
+  this.$('input#input_text, textarea#cooking_exp').characterCounter();
+  this.$('input#input_text, textarea#cooking_story').characterCounter();
+  this.$('input#input_text, textarea#house_rule').characterCounter();
+
+  /**     this.$('#create_homecook_stepper').activateStepper({
+        linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
+        autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+        autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
+        showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
+     });**/
+
+  this.$('#kitchen_speciality').material_chip({
+    data: [{
+      tag: 'Italian',
+    }, {
+      tag: 'Cheese',
+    }, {
+      tag: 'Carbonara',
+    }],
 
 
-   });
+  });
+
+  this.$('#kitchen_tags').material_chip({
+    data: [{
+      tag: 'Seaview',
+    }, {
+      tag: 'Roof top',
+    }, {
+      tag: 'Bring your own wine',
+    }],
+
+
+  });
 
 })
 
@@ -597,26 +625,25 @@ Template.upload_homecook_profile.events({
   }
 });**/
 
-var saveToKraken = function(imgName, imgPath, sessionName)
-{
+var saveToKraken = function (imgName, imgPath, sessionName) {
   //- meteor call
-  Meteor.call('saveToKraken', imgName, imgPath, (error, result)=>{
-    if(error) console.log('kraken errors', error);
+  Meteor.call('saveToKraken', imgName, imgPath, (error, result) => {
+    if (error) console.log('kraken errors', error);
     console.log(result);
   });
 
   //- declare some sizes
   var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + imgName;
-  var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + imgName;
-  var medium   = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + imgName;
-  var small    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + imgName;
+  var large = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + imgName;
+  var medium = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + imgName;
+  var small = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + imgName;
 
   //- add to sizes object
-  var sizes    = {};
+  var sizes = {};
   sizes.origin = original;
-  sizes.large  = large;
+  sizes.large = large;
   sizes.medium = medium;
-  sizes.small  = small;
+  sizes.small = small;
 
   //- set to session
   Session.set(sessionName, sizes);
@@ -625,13 +652,13 @@ var saveToKraken = function(imgName, imgPath, sessionName)
 
 
 Template.create_foodie_profile.events({
-  'blur #create_home_address': function() {
+  'blur #create_home_address': function () {
     address_geocode('home_address_conversion', $('#create_home_address').val(), 'home address');
   },
-  'blur #create_office_address': function() {
+  'blur #create_office_address': function () {
     address_geocode('office_address_conversion', $('#create_office_address').val(), 'office address');
   },
-  'click #create_foodie_profile_button': function(event, template) {
+  'click #create_foodie_profile_button': function (event, template) {
     event.preventDefault();
 
     //Step 1
@@ -639,10 +666,11 @@ Template.create_foodie_profile.events({
     const first_name = $('#first_name').val();
     const last_name = $('#last_name').val();
     const email = $('#email').val();
+    const district = $('#district').val();
     const date_of_birth = $('#date_of_birth').val();
     const gender = $("input[name='gender']:checked").val();
     const mobile_dial_code = $('#mobile_country').val();
-    const mobile = $('#mobile').val().replace(/\s/g, "");
+    const mobile = $('#mobile').intlTelInput("getNumber");
     const home_address_country = $('#home_address_country').val();
     const home_address = $('#create_home_address').val();
     const home_address_conversion = Session.get('home_address_conversion');
@@ -660,39 +688,52 @@ Template.create_foodie_profile.events({
     //Step 4
     const dietary_tags = Session.get('dietary_tags');
 
+    if (district == '') {
+      Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
+    if (!$('#mobile').intlTelInput("isValidNumber")) {
+      Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+      return;
+    }
+
 
     Meteor.call('profile_details.insert',
-    foodie_name,
-    first_name,
-    last_name,
-    email,
-    date_of_birth,
-    gender,
-    mobile_dial_code,
-    mobile,
-    home_address_country,
-    home_address,
-    home_address_conversion,
-    office_address_country,
-    office_address,
-    office_address_conversion,
-    about_myself,
-    allergy_tags,
-    dietary_tags,
-
-
-    //- save images to kraken
-    Session.get('profileImg'),
-    Session.get('bannerProfileImg'),
-
-    function(err) {
-      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded bp-green');
+      foodie_name,
+      first_name,
+      last_name,
+      email,
+      date_of_birth,
+      gender,
+      mobile_dial_code,
+      mobile,
+      home_address_country,
+      home_address,
+      home_address_conversion,
+      office_address_country,
+      office_address,
+      office_address_conversion,
+      about_myself,
+      allergy_tags,
+      dietary_tags,
+      //- save images to kraken
+      Session.get('profileImg'),
+      Session.get('bannerProfileImg'),
+      function (err) {
+        if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded bp-green');
         else {
-          Meteor.call('kitchen_details.syncFromProfile', first_name + ' ' +  last_name, mobile, Session.get('profileImg'), (err, response) => {
+          Meteor.call('kitchen_details.syncFromProfile', first_name + ' ' + last_name, mobile, Session.get('profileImg'), (err, response) => {
             if (err) {
-              Materialize.toast('Profile created!', 4000);
+              Materialize.toast('Profile created!', 4000, 'rounded bp-green');
             } else {
-              FlowRouter.go('/main');
+              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+                if (err) {
+                  console.log('Error when update district');
+                } else {
+                  FlowRouter.go('/main');
+                }
+              })
             }
           });
         }
@@ -703,10 +744,10 @@ Template.create_foodie_profile.events({
 
 
 Template.create_homecook_profile.events({
-  'blur #kitchen_address': function() {
+  'blur #kitchen_address': function () {
     address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
   },
-  'click #create_homecook_button': function(event, template) {
+  'click #create_homecook_button': function (event, template) {
     event.preventDefault();
 
     //Step 1
@@ -716,8 +757,9 @@ Template.create_homecook_profile.events({
     const kitchen_address = $('#kitchen_address').val();
     const kitchen_address_conversion = Session.get('kitchen_address_conversion');
     const kitchen_contact_country = $('#kitchen_contact_country').val();
-    const kitchen_contact = $('#kitchen_contact').val().replace(/\s/g, "");
+    const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
     const serving_option = Session.get('serving_option_tags');
+    const district = $('#district').val();
 
     //Step 2
     const cooking_exp = $('#cooking_exp').val();
@@ -733,6 +775,16 @@ Template.create_homecook_profile.events({
     //Step 4
     const house_rule = $('#house_rule').val();
 
+    if (district == '') {
+      Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+      return;
+    }
+
+    if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+      Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+      return;
+    }
+
     if (!Session.get('serving_option_tags')) {
       Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
       return false;
@@ -745,49 +797,55 @@ Template.create_homecook_profile.events({
 
 
     Meteor.call('kitchen_details.insert',
-    kitchen_name,
-    chef_name,
-    kitchen_address_country,
-    kitchen_address,
-    kitchen_address_conversion,
-    kitchen_contact_country,
-    kitchen_contact,
-    serving_option,
-    cooking_exp,
-    cooking_story,
-    kitchen_speciality,
-    kitchen_tags,
-    house_rule,
-    //- insert new images object of different size
-    Session.get('profileImg'),
-    Session.get('bannerProfileImg'),
+      kitchen_name,
+      chef_name,
+      kitchen_address_country,
+      kitchen_address,
+      kitchen_address_conversion,
+      kitchen_contact_country,
+      kitchen_contact,
+      serving_option,
+      cooking_exp,
+      cooking_story,
+      kitchen_speciality,
+      kitchen_tags,
+      house_rule,
+      //- insert new images object of different size
+      Session.get('profileImg'),
+      Session.get('bannerProfileImg'),
 
-    function(err) {
-      if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-         else {
+      function (err) {
+        if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+        else {
           Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
             if (err) {
               Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
             } else {
-              Materialize.toast('Profile created!', 4000);
-              FlowRouter.go('/path_choosing');
+              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+                if (err) {
+                  console.log('Error when update district');
+                } else {
+                  Materialize.toast('Profile created!', 4000);
+                  FlowRouter.go('/path_choosing');
+                }
+              })
             }
           });
         }
       }
     );
 
-    }
-    });
+  }
+});
 
 //Validation rules
 
 //Trim Helper
-var trimInput = function(value) {
+var trimInput = function (value) {
   return value.replace(/^\s*|\s*$/g, "");
 }
 
-var isNotEmpty = function(value) {
+var isNotEmpty = function (value) {
   if (value && value !== '') {
     return true;
   }
@@ -795,7 +853,7 @@ var isNotEmpty = function(value) {
   return false;
 }
 //Email Validation
-isEmail = function(value) {
+isEmail = function (value) {
   var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   if (filter.test(value)) {
     return true;
@@ -805,7 +863,7 @@ isEmail = function(value) {
 }
 
 //Check Password fields
-isValidPassword = function(password) {
+isValidPassword = function (password) {
 
   if (password.length < 8) {
     Bert.alert("Password must be a least 8 charaters", "danger", "growl-top-right");
@@ -815,7 +873,7 @@ isValidPassword = function(password) {
 };
 
 //Match Password
-areValidPassword = function(password, cpassword) {
+areValidPassword = function (password, cpassword) {
 
   if (!isValidPassword(password)) {
 
@@ -834,10 +892,12 @@ areValidPassword = function(password, cpassword) {
 
 
 Template.create_foodie_profile.helpers({
-  'get_foodie_email': function() {
+  'get_foodie_email': function () {
     // to get user email always we enter profile page
 
-    return Meteor.users.findOne({"_id": Meteor.userId()}).emails[0].address
+    return Meteor.users.findOne({
+      "_id": Meteor.userId()
+    }).emails[0].address
   },
 
   country_list: [{
@@ -3400,8 +3460,7 @@ Template.create_homecook_profile.helpers({
 });**/
 
 
-let changeImgName = function(imgPath)
-{
+let changeImgName = function (imgPath) {
 
   //- return new name DateTime in milliseconds + unique ID
   let currentDate = new Date()
@@ -3414,6 +3473,6 @@ let changeImgName = function(imgPath)
   let extension = fileExtension(imgPath)
   console.log('file extension', extension)
 
-  return milliseconds + '_' + uniqid()+ '.' + extension
+  return milliseconds + '_' + uniqid() + '.' + extension
 
 }

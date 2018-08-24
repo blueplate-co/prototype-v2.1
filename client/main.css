@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700');
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
-    color: #000000;
-    font-weight: 600;
-    opacity: 0.87;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+  color: #000000;
+  font-weight: 600;
+  opacity: 0.87;
 }
 
 .btn {
@@ -55,10 +59,10 @@ html {
 
 body p {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(0,0,0);
+  color: rgba(0, 0, 0);
   opacity: 0.87;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 .no-side-padding {
@@ -67,7 +71,7 @@ body p {
 }
 
 .card {
-  border-radius: 20px   !important;
+  border-radius: 20px !important;
   display: inline-block;
   border-color: #B1DBBE;
   border-width: medium;
@@ -79,7 +83,9 @@ body p {
 }
 
 /* modal responsive settings */
+
 /* desktop and above */
+
 @media (min-width:1024px) {
   .modal {
     top: 15% !important;
@@ -87,7 +93,9 @@ body p {
     border-radius: 20px !important;
   }
 }
+
 /* iPad and below */
+
 @media (max-width: 1023px) {
   .modal {
     border-radius: 0px !important;
@@ -98,59 +106,59 @@ body p {
   }
 }
 
-
 /* Showroom grid settings */
+
 @media (max-width: 869px) {
   .card_container {
     -webkit-column-count: 1;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    1;
-    -moz-column-gap:      6px;
-    column-count:         1;
-    column-gap:           6px;
+    -webkit-column-gap: 6px;
+    -moz-column-count: 1;
+    -moz-column-gap: 6px;
+    column-count: 1;
+    column-gap: 6px;
   }
 }
 
 @media(min-width: 870px) {
   .card_container {
     -webkit-column-count: 2;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    2;
-    -moz-column-gap:      6px;
-    column-count:         2;
-    column-gap:           6px;
+    -webkit-column-gap: 6px;
+    -moz-column-count: 2;
+    -moz-column-gap: 6px;
+    column-count: 2;
+    column-gap: 6px;
   }
 }
 
 @media(min-width:1220px) {
   .card_container {
     -webkit-column-count: 3;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    3;
-    -moz-column-gap:      6px;
-    column-count:         3;
-    column-gap:           6px;
+    -webkit-column-gap: 6px;
+    -moz-column-count: 3;
+    -moz-column-gap: 6px;
+    column-count: 3;
+    column-gap: 6px;
   }
 }
 
 @media(min-width:1522px) {
   .card_container {
     -webkit-column-count: 4;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    4;
-    -moz-column-gap:      6px;
-    column-count:         4;
-    column-gap:           6px;
+    -webkit-column-gap: 6px;
+    -moz-column-count: 4;
+    -moz-column-gap: 6px;
+    column-count: 4;
+    column-gap: 6px;
   }
 }
 
 @media(min-width:1824px) {
   .card_container {
     -webkit-column-count: 5;
-    -webkit-column-gap:   6px;
-    -moz-column-count:    5;
-    -moz-column-gap:      6px;
-    column-count:         5;
-    column-gap:           6px;
+    -webkit-column-gap: 6px;
+    -moz-column-count: 5;
+    -moz-column-gap: 6px;
+    column-count: 5;
+    column-gap: 6px;
   }
 }

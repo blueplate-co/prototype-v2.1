@@ -155,6 +155,37 @@ body p {
   box-shadow: 0 1px 0 0 #EA6055 !important;
 }
 
+/* .intl-tel-input .form-control {
+  padding-left: 35px;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag {
+  padding: 0;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #dbe0e2;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag .iti-flag {
+  background: none;
+  margin-top: 0;
+  top: 0;
+  position: relative;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag .iti-flag .arrow {
+  top:33%;
+  left: 0; 
+  right: 0;
+  margin: 0 auto;
+} */
+
+.intl-tel-input .country-list .iti-flag {
+  display: none;
+}
+
 .btn-edit-dish-confirm {
   background-color: #56AACD;
   color: #fff;
