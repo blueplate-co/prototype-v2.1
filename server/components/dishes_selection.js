@@ -108,12 +108,6 @@ Meteor.methods({
   },
   'dish.get_detail' (dish_id) {
     return Dishes.findOne({ _id: dish_id });
-  },
-  'dish.list_relate' (user_id) {
-    const query = { user_id: user_id, deleted: false };
-    const options = { sort: { average_rating: -1 } };
-    var dishes = Dishes.find(query, options).fetch();
-    return dishes != null ? dishes : {};
   }
 });
 

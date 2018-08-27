@@ -4,46 +4,15 @@ import Rating from './rating.js';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import DishStatus from './dish_status';
 
-const imageServing = [
-    {
-        id:"selectDelivery",
-        service: 'Delivery',
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Del+1.svg'
-    },
-    {
-        id:"selectDineIn",
-        service: 'Dine in',
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dine+2.svg'
-    },
-    {
-        id:"selectPickup",
-        service: 'Pick up',
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/pick+up+1.svg'
-    }
-];
-
-const serviceNotSupport = [
-    {
-        service: 'Delivery',
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Deli+2.svg'
-    },
-    {
-        service: 'Dine-in', 
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dine+1.svg'
-    },
-    {
-        service: 'Pick-up',
-        image: 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/pick+up+2.svg'
-    }
-];
 // Dish detail component
 export default class Dish_Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: {},
-            listRelates: {},
             sumOrder : 1,
             kitchenDetail: {}
         }
@@ -55,7 +24,7 @@ export default class Dish_Detail extends Component {
                 this.setState({
                     data: res
                 })
-                this.getListDishRelated();
+                Session.set('user_dish_id', this.state.data.user_id);
             } else {
                 Materialize.toast('Error occur when fetch data. Please try again.', 4000, 'rounded bp-green');
             }
@@ -71,7 +40,7 @@ export default class Dish_Detail extends Component {
                     return (
                         <div key={index} className="col s4 m3 l3 service-option-select">
                             <img src={serving.image} width="100" height="109" alt="Serving option" />
-                            <p className="service-option-title">{serving.service}</p>
+                            <p className={serving.styleService} >{serving.serviceName}</p>
                         </div>
                     );
                 })
@@ -81,32 +50,34 @@ export default class Dish_Detail extends Component {
 
     getImageService(services) {
         var servingOptions = [],
-            serviceName = {};
+            mapCheckService = {};
+            
+        services.map(i => {
+            mapCheckService[i] = 1;
+        });
 
-        for (var  i = 0; i < services.length; i++) {
-            if (services[i] === "Delivery") {
-                serviceName = {"service": services[i], "image":'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Del+1.svg'};
-                servingOptions.push(serviceName);
-            } else if (services[i] === "Dine-in") {
-                serviceName = {"service": services[i], "image":'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dine+2.svg'};
-                servingOptions.push(serviceName);
-            } else if (services[i] === "Pick-up") {
-                serviceName = {"service": services[i], "image":'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/pick+up+1.svg'};
-                servingOptions.push(serviceName);
+        const imgSupportDelivery = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Del+1.svg",
+            imgSupportDinein = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dine+2.svg",
+            imgSupportPickup = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/pick+up+1.svg",
+            imgUnSupportDelivery = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Deli+2.svg",
+            imgUnSupportDinein = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Dine+1.svg",
+            imgUnSupportPickup = "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/pick+up+2.svg";
+
+        var addServiceObject = function(servingOptions, serviceName, mapCheckService, serviceSupportImg, serviceUnSupportImg, 
+                                        styleService, styleUnService) {
+            if (mapCheckService[serviceName]) {
+                servingOptions.push({"serviceName": serviceName, "image": serviceSupportImg, "styleService" : styleService});
+            } else {
+                servingOptions.push({"serviceName": serviceName, "image": serviceUnSupportImg, "styleService": styleUnService});
             }
-        }
+        };
 
-        // var serviceNotSupport = ["Delivery", "Dine-in", "Pick-up"];
-        // if (servingOptions.length < 3) {
-        //     for (var i = 0; i < serviceNotSupport.length; i++) {
-        //         if (servingOptions[serviceNotSupport[i].service]) {
-        //             servingOptions.push(serviceNotSupport[i]);
-        //         }
-        //     }
-        // }
+        addServiceObject(servingOptions, "Delivery", mapCheckService, imgSupportDelivery, imgUnSupportDelivery, "style-service", "style-unService");
+        addServiceObject(servingOptions, "Dine-in", mapCheckService, imgSupportDinein, imgUnSupportDinein, "style-service", "style-unService");
+        addServiceObject(servingOptions, "Pick-up", mapCheckService, imgSupportPickup, imgUnSupportPickup, "style-service", "style-unService");
 
         return servingOptions;
-    }
+    };
 
     renderTags() {
         if (Object.keys(this.state.data).length > 0) {
@@ -116,9 +87,7 @@ export default class Dish_Detail extends Component {
             return (
                 this.state.data.dish_tags.map((item, index) => {
                     return (
-                        <div key={index} className="col s4 m4 l3 tag-summary">
-                            <span className="btn-tag-detail">{item.tag}</span>
-                        </div>
+                        <li key={index}>{item.tag}</li>
                     );
                 })
             );
@@ -126,10 +95,15 @@ export default class Dish_Detail extends Component {
     };
 
     getChefInfo() {
-        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id});
-        var source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "";
-
+        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
+            source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "",
+            cooking_story_content;
         
+        if (chef_detail.cooking_story.length > 100) { 
+            cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
+        } else {
+            cooking_story_content = chef_detail.cooking_story
+        }
         // Get summary like Chef from dishes
         var dishes = Dishes.find({'user_id': this.state.data.user_id}).fetch(),
             summaryLike = 0;
@@ -141,35 +115,37 @@ export default class Dish_Detail extends Component {
 
         return (
             <div className="show_dish_detail_wrapper">
-                <span className="col s12 m12 l1 chef-story-image"><img src={source_img} id="img-chef" width="78" height="78"/></span>
+                <a className="col s12 m12 l1 chef-story-image"
+                    href={"/kitchen/" + this.state.data.kitchen_id}
+                >
+                    <img src={source_img} id="img-chef" width="78" height="78"/>
+                </a>
                 <div className="row col s12 m12 l4 chef-name-summary">
-                    <span className="col s12 m12 l10 chef-name">{chef_detail.chef_name}</span>
+                    <a className="col s12 m12 l10 chef-name"
+                        href={"/kitchen/" + this.state.data.kitchen_id}
+                    >
+                        {chef_detail.chef_name}
+                    </a>
                     <div className="col s12 m12 l10 chef-summary">
-                        <span className="chef-summary-infor">
-                            <p>{chef_detail.order_count}</p><p>Tried</p>
-                        </span>
-                        <span className="chef-summary-infor">
-                            <p>0</p><p>Following</p>
-                        </span>
-                        <span className="chef-summary-infor">
-                            <p>{summaryLike}</p><p>Likes</p>
-                        </span>
+                        <ul className="chef-summary-infor no-margin">
+                            <li className="text-center">{chef_detail.order_count}</li>
+                            <li>Tried</li>
+                        </ul>
+                        <li className="dot-text-style">&bull;</li>
+                        <ul className="chef-summary-infor no-margin">
+                            <li className="text-center">0</li><li>Following</li>
+                        </ul>
+                        <li className="dot-text-style">&bull;</li>
+                        <ul className="chef-summary-infor no-margin">
+                            <li className="text-center">{summaryLike}</li><li>Likes</li>
+                        </ul>
                     </div>
                 </div>
                 <div className="row col s12 m12 l8 dish-story-content">
-                    <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                    <p id="chef-story-descr">{cooking_story_content}<a href={"/kitchen/" + this.state.data.kitchen_id}>... see more</a></p>
                 </div>
             </div>
         );
-    };
-
-    getListDishRelated() {
-        Meteor.call('dish.list_relate', this.state.data.user_id, (error, res) => {
-            if (!error) {
-                this.setState({listRelates:res});
-            }
-        });
-
     };
 
     handleReduceOrder() {
@@ -184,6 +160,67 @@ export default class Dish_Detail extends Component {
     handleAddOrder() {
         this.setState({ sumOrder: this.state.sumOrder+1 });
     }
+
+    dishOrder() {
+        var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+        if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
+            Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+        } else {
+            var dish_details = Dishes.findOne({"_id": this.state.data._id});
+            var foodie_id = Meteor.userId();
+            var homecook_id = dish_details.user_id;
+            var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
+            var foodie_name = foodie_details.foodie_name;
+            var homecook_name =  homecook_details.chef_name;
+            var dish_id = dish_details._id;
+            var dish_price = dish_details.dish_selling_price;
+            var dish_name = dish_details.dish_name;
+            var ready_time = dish_details.cooking_time;
+            var quantity = this.state.sumOrder;
+
+
+            var serving_option = this.state.data.serving_option;
+            var address = Session.get('address');
+            //check if the dish has been put in shopping check_shopping_cart
+            var order = Shopping_cart.findOne({"product_id": this.state._id, 'buyer_id': foodie_id});
+            var total_price_per_dish = 0;
+            if (order) {
+                var order_id = order._id;
+                quantity = parseInt(order.quantity) + this.state.sumOrder;
+                total_price_per_dish = parseInt(dish_price) * quantity;
+                Meteor.call('shopping_cart.update',
+                    order_id,
+                    quantity,
+                    total_price_per_dish,
+                    function(err) {
+                        if (err) Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                    }
+                )
+            } else{
+                Meteor.call('shopping_cart.insert',
+                    foodie_id,
+                    homecook_id,
+                    foodie_name,
+                    homecook_name,
+                    address,
+                    serving_option,
+                    ready_time,
+                    dish_id,
+                    dish_name,
+                    quantity,
+                    dish_price,
+                    function(err) {
+                        if (err) {
+                            Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                        } else {
+                            Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
+                            FlowRouter.go('/main');
+                        }
+                    }
+                );
+            }
+        }
+    }
     
     render() {
         var dish_detail = (this.state.data);
@@ -195,7 +232,7 @@ export default class Dish_Detail extends Component {
                             <div id="dish-image" className="col s12 m12 l12">
                                 <ProgressiveImages
                                     large={ dish_detail.meta.origin }
-                                    small={ dish_detail.meta.origin }
+                                    small={ dish_detail.meta.small }
                                 />
                             </div>
 
@@ -209,15 +246,22 @@ export default class Dish_Detail extends Component {
                                         
                                         <div className="row dish-tag">
                                             <p id="tag-title">Tags</p>
-                                            {this.renderTags()}
+                                            <ul className="dish-detail-list-tags">
+                                                {this.renderTags()}
+                                            </ul>
                                         </div>
                                     </div>
 
                                     <div className="col s12 m5 l5">
                                         <div id="detail-dish-info">
-                                            <span id="dish-name">{dish_detail.dish_name}</span>
+                                            <span id="dish-name" className="row">{dish_detail.dish_name}</span>
                                             <div className="rating-content">
-                                                <p id="dish-price">${dish_detail.dish_selling_price}</p>
+                                                <div className="row no-margin">
+                                                    <div id="dish-price" className="col l6 m6 s6 dish-price no-padding text-left">$ { dish_detail.dish_selling_price }</div>
+                                                    <div className="col l6 m6 s6 dish-detail-status-order">
+                                                    <DishStatus status={dish_detail.online_status} />
+                                                    </div>
+                                                </div>
                                                 <div className="rating-detail">
                                                     <span><Rating rating={dish_detail.average_rating}/></span>
                                                     <span className="sum-order-dish">{dish_detail.order_count}</span>
@@ -234,7 +278,11 @@ export default class Dish_Detail extends Component {
                                                 
                                                 <div className="row">
                                                     <div className="handle-order-dish col s12 m7 l6">
-                                                        <p id="btn-order-dish" >Order</p>
+                                                        {dish_detail.online_status ? 
+                                                            <p id="btn-order-dish" onClick={this.dishOrder.bind(this)}>Order</p>
+                                                            :
+                                                            <p id="btn-offline-order-dish">Offline</p>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,9 +305,7 @@ export default class Dish_Detail extends Component {
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
                                         <p className="chef-relate-title">Chef relate dish</p>
-                                        {this.state.listRelates.length > 0 ?
-                                            <DishListRelate dishes={this.state.listRelates}/> : "No dish related to show!"
-                                        }
+                                        <DishListRelate kitchen_id={this.state.data.kitchen_id} />
                                     </div>
                                 </div>
                             </div>

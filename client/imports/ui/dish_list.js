@@ -41,7 +41,7 @@ class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <a key={index} target="_blank" className="col xl3 l4 m6 s12 dish-wrapper" href={ "/dish/" + item._id }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -75,7 +75,7 @@ class DishList extends Component {
             ) : ('')
           }
 
-        </div>
+        </a>
       )
     })
   }
