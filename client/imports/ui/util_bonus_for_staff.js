@@ -20,7 +20,12 @@ class BonusForStaff extends Component {
                     Materialize.toast(error.message, 4000, 'rounded bp-green');
                 } else {
                     // do something
-                    Materialize.toast('Transfer completed. Please refresh the page to see result.', 4000, 'rounded bp-green');
+                    if (response.status == 'error') {
+                        Materialize.toast(response.message, 4000, 'rounded bp-red');
+                    } else {
+                        Materialize.toast('Transfer completed. Please refresh the page to see result.', 4000, 'rounded bp-green');
+                    }
+                    
                 }
             });
         } else {
