@@ -15,18 +15,9 @@ class DishAllList extends Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       loading: false
     }
-  }
-
-  handleClick = (item) => {
-    Meteor.call('dish.view', item._id, item.user_id);;
-    Session.set('selectedDish', item);
-    Session.set('selectedItem', 'dish');
-    Session.set('modal', true);
-    this.props.popup(item);
   }
 
   renderList = () => {
@@ -41,7 +32,7 @@ class DishAllList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <a target="_blank" key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" href={ "/dish/" + item._id }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -77,7 +68,7 @@ class DishAllList extends Component {
           }
 
 
-        </div>
+        </a>
       )
     })
   }

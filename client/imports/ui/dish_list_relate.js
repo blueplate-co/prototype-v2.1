@@ -7,26 +7,18 @@ import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import ChefAvatar from './chef_avatar';
 import Like from './like_button';
+import DishStatus from './dish_status';
 
 import { navbar_find_by } from '../../../imports/functions/find_by';
 
 // App component - represents the whole app
-export default class DishListRelate extends Component {
+export class DishListRelate extends Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       loading: false,
     }
-  }
-
-  handleClick = (item) => {
-    Meteor.call('dish.view', item._id, item.user_id);
-    Session.set('selectedDish', item);
-    Session.set('selectedItem', 'dish');
-    Session.set('modal', true);
-    this.props.popup(item);
   }
 
   renderList = () => {
@@ -41,7 +33,7 @@ export default class DishListRelate extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" onClick={ () => this.handleClick(item) }>
+        <a key={index} target="_blank" className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" href={ "/dish/" + item._id }>
           <div className="relate-images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -56,26 +48,29 @@ export default class DishListRelate extends Component {
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.dish_name }</h5>
           </div>
-          <div className="row no-margin">
+          {
+            (!isNaN(item.dish_selling_price))
+            ? (
+              <div className="row no-margin">
+                <div className="col l6 m6 s6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                <div className="col l6 m6 s6 no-padding">
+                  <DishStatus status={item.online_status} />
+                </div>
+              </div>
+            ) : ('')
+          }
+          <div className="row">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
               {
                 (parseInt(item.order_count) >= 10)
-                ? <span className="order-count">{ item.order_count }</span>
+                ? <span className="order-dish-count">{ item.order_count }</span>
                 : ''
               }
             </div>
           </div>
-          {
-            (!isNaN(item.dish_selling_price))
-            ? (
-              <div className="row">
-                <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-              </div>
-            ) : ('')
-          }
 
-        </div>
+        </a>
       )
     })
   }
@@ -89,36 +84,16 @@ export default class DishListRelate extends Component {
               this.renderList()
           }
         </div>
+        <a className="col s12 m12 l12 text-right dish-relate-see-more" href={"/kitchen/" + this.props.kitchen_id}>... see more</a>
       </div>
     );
   }
 }
 
-// export default withTracker(props => {
-//   const handle = Meteor.subscribe('theDishes');
-//   navbar_find_by("Kitchen_details");
-//   var kitchen_info = Session.get('searched_result');
-//   var kitchen_id = [];
-//   if (FlowRouter.getParam('homecook_id')) {
-//     kitchen_id[0] = FlowRouter.getParam('homecook_id')
-//   } else {
-//     if (kitchen_info) {
-//       for (i = 0; i < kitchen_info.length; i++) {
-//         kitchen_id[i] = kitchen_info[i]._id;
-//       }
-//     }
-//   }
-//   if (FlowRouter.getParam('homecook_id')) {
-//     return {
-//         currentUser: Meteor.user(),
-//         listLoading: !handle.ready(),
-//         dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}}).fetch(),
-//     };
-//   } else {
-//     return {
-//         currentUser: Meteor.user(),
-//         listLoading: !handle.ready(),
-//         dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}, limit: 8 }).fetch(),
-//     };
-//   }
-// })(DishListRelate);
+export default withTracker(props => {
+  var user_id = Session.get('user_dish_id');
+
+  return {
+    dishes: Dishes.find({ user_id: user_id, deleted: false},{sort: {average_rating: -1, online_status: -1},  limit : 4}).fetch(),
+  };
+})(DishListRelate);
