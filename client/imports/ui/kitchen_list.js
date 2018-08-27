@@ -19,7 +19,7 @@ class KitchenList extends Component {
 
   renderList = () => {
     return this.props.kitchen.map((item, index) => {
-      if (Dishes.find({ user_id: item.user_id }).fetch().length > 0) {
+      if (Dishes.find({ user_id: item.user_id, deleted: false }).fetch().length > 0) {
         return (
           <div key = {index}>
             <KitchenCard
