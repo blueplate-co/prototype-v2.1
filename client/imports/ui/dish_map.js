@@ -30,32 +30,28 @@ export class DishMap extends Component {
       width: '100%', // 90vw basically means take up 90% of the width screen. px also works.
       height: '100%', // 75vh similarly will take up roughly 75% of the height of the screen. px also works.
     }
-
+    var kitchen = Kitchen_details.findOne({user_id: this.props.kitchenId});
     return (
         <Map
           google = {this.props.google}
-          zoom = {11}
+          zoom = {12}
           style = {style}
           initialCenter= {{lat: 22.3964, lng: 114.1095}}
           onClick = {this.onMapClicked}
         >
-          {/* {this.props.kitchens.map((kitchen, index)=> {
-            return (
-              (kitchen.kitchen_address_conversion === null) ?
-              ""
-              :
-              <Marker
-                key = {index}
-                name = {kitchen.kitchen_name}
-                kitchen_id = {kitchen._id}
-                url = {kitchen.bannerProfileImg.large}
-                position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
-                onClick = {this.onMarkerClick}
-              />
-            )
-          })
+        {kitchen.kitchen_address_conversion === null ? 
+          ""
+          :
+          <Marker
+              name = {kitchen.kitchen_name}
+              kitchen_id = {kitchen._id}
+              url = {kitchen.bannerProfileImg != null ? kitchen.bannerProfileImg.large : ""}
+              position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
+              onClick = {this.onMarkerClick}
+            />
+          
         }
-        <InfoWindow
+        {<InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}>
             <div>
@@ -63,7 +59,7 @@ export class DishMap extends Component {
               <h6>{this.state.selectedPlace.name}</h6>
               <a href={"/kitchen/" + this.state.selectedPlace.kitchen_id}>more info</a>
             </div>
-        </InfoWindow> */}
+        </InfoWindow> }
       </Map>
     );
   }
