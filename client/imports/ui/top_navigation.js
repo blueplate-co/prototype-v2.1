@@ -158,8 +158,9 @@ class TopNavigation extends Component {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
             setTimeout(() => {
-              this.setState({ sidebarOpen: true });
+              this.setState({ sidebarOpen: false });
             }, 300);
+            FlowRouter.go("/cooking/dishes");
           }}
         >
           <span>Switch to cooking</span>
@@ -197,8 +198,9 @@ class TopNavigation extends Component {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
             setTimeout(() => {
-              this.setState({ sidebarOpen: true });
+              this.setState({ sidebarOpen: false });
             }, 300);
+            FlowRouter.go("/main");
           }}
         >
           <span>Switch to foodie</span>
