@@ -116,7 +116,7 @@ Template.dishes_summary.events({
 
   },
 
-  'click .btn_edit_dish': function(event,template) {
+  'click #btn_edit_dish': function(event,template) {
     event.preventDefault();
     // Check if a create dish form existed in the modal
     if (Blaze.getView($("#edit_dish_modal_content")[0])._templateInstance.lastNode.children.length > 1) {
