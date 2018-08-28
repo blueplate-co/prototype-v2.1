@@ -9,7 +9,10 @@ import {
 } from '/imports/functions/address_geocode.js'
 import {
   get_checkboxes_value
-} from '/imports/functions/get_checkboxes_value.js'
+} from '/imports/functions/get_checkboxes_value.js';
+
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
+
 
 
 
@@ -304,6 +307,7 @@ Template.edit_homecook_profile.events({
 
     'click #edit_homecook_button': function () {
       //Step 1
+      show_loading_progress();
       const kitchen_name = $('#kitchen_name').val();
       const chef_name = $('#chef_name').val();
       const kitchen_address_country = $('#kitchen_address_country').val();
@@ -330,11 +334,13 @@ Template.edit_homecook_profile.events({
       const house_rule = $('#house_rule').val();
 
       if (district == '') {
+        hide_loading_progress();
         Materialize.toast('District field is required.', 4000, 'rounded bp-green');
         return;
       }
 
       if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+        // hide_loading_progress();
         Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
         return;
       }
@@ -357,6 +363,7 @@ Template.edit_homecook_profile.events({
         Session.get('bannerProfileImg'),
 
         function (err) {
+          hide_loading_progress();
           if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
           else {
             Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {

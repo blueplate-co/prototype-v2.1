@@ -33,8 +33,6 @@ class KitchenList extends Component {
             />
           </div>
         )
-      } else {
-        return (null)
       }
     })
   }

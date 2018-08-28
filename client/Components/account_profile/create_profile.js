@@ -5,6 +5,7 @@ import './create_profile.html';
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 
 profile_images = new FilesCollection({
@@ -749,7 +750,7 @@ Template.create_homecook_profile.events({
   },
   'click #create_homecook_button': function (event, template) {
     event.preventDefault();
-
+    show_loading_progress();
     //Step 1
     const kitchen_name = $('#kitchen_name').val();
     const chef_name = $('#chef_name').val();
@@ -776,20 +777,24 @@ Template.create_homecook_profile.events({
     const house_rule = $('#house_rule').val();
 
     if (district == '') {
+      hide_loading_progress();
       Materialize.toast('District field is required.', 4000, 'rounded bp-green');
       return;
     }
 
     if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+      hide_loading_progress();
       Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
 
     if (!Session.get('serving_option_tags')) {
+      hide_loading_progress();
       Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
       return false;
     } else {
       if (Session.get('serving_option_tags').length == 0) {
+        hide_loading_progress();
         Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
         return false;
       }
@@ -815,16 +820,22 @@ Template.create_homecook_profile.events({
       Session.get('bannerProfileImg'),
 
       function (err) {
+        hide_loading_progress();
         if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
         else {
+          hide_loading_progress();
           Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
             if (err) {
+              hide_loading_progress();
               Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
             } else {
-              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+              hide_loading_progress();
+              Meteor.call('user.updateDistrict', district, (err, res) => {
                 if (err) {
+                  hide_loading_progress();
                   console.log('Error when update district');
                 } else {
+                  hide_loading_progress();
                   Materialize.toast('Profile created!', 4000);
                   FlowRouter.go('/path_choosing');
                 }
