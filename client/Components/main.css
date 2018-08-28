@@ -189,51 +189,17 @@ body p {
 .btn-edit-dish-confirm {
   background-color: #56AACD;
   color: #fff;
-  text-align: center;
   font-size: 18px;
   font-weight: 600;
   border-radius: 30px;
-  width: 13%;
+  text-transform: lowercase;
 }
 
 .btn-edit-dish-cancel {
   color: #56AACD;
-  text-align: center;
   font-size: 18px;
   font-weight: 600;
   border-radius: 30px;
-  width: 13%;
-  padding: 0px;
   border: 1px solid #56AACD;
-}
-
-/* Landscape phones and portrait tablets */
-@media (max-width: 767px) {
-  .btn-edit-dish-confirm {
-    width: 20%;
-  }
-  
-  .btn-edit-dish-cancel {
-    width: 20%;
-  }
-}
-
-@media (max-width: 640px) {
-  .btn-edit-dish-confirm {
-    width: 17%;
-  }
-  
-  .btn-edit-dish-cancel {
-    width: 17%;
-  }
-}
-/* Portrait phones and smaller 480*/
-@media (max-width: 520px) {
-  .btn-edit-dish-confirm {
-    width: 27%;
-  }
-  
-  .btn-edit-dish-cancel {
-    width: 27%;
-  }
+  text-transform: lowercase;
 }
