@@ -4,9 +4,11 @@ import { open_dialog_delete_confirm } from '/imports/functions/common';
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
   $('.tooltip').tipso({
-    speed: 400,
+    speed: 200,
+    hideDelay: 500,
     position: 'bottom',
-    background: '#343434'
+    background: '#343434',
+    tooltipHover: true
   })
 });
 
