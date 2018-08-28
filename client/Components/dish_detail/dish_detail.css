@@ -8,7 +8,7 @@
 }
 
 #detail-dish-info {
-    width: 100%;
+    width: 71%;
     height: auto;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.236073);
     border-radius: 4px;
@@ -16,11 +16,11 @@
 }
 
 .rating-content {
-    padding: 22px 19px 2px;
+    padding: 0px 19px 2px;
 }
 
 .rating-detail {
-    margin: 4px 0px 4px 20px;
+    margin: 4px 0px;
 }
 
 .sum-order-dish {
@@ -43,47 +43,56 @@
     font-weight: normal;
     line-height: 25px;
     font-size: 16px;
-    padding-top: 33px;
+    padding-top: 20px;
     padding-right: 10px;
     color: rgba(0, 0, 0, 0.87);
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .handle-order-dish {
     padding-top: 20px !important;
 }
 
-#btn-order-dish {
+.btn-order-dish-detail {
     background-color: #56AACD;
     color: #fff;
     text-align: center;
     font-size: 18px;
     font-weight: 600;
     border-radius: 20px;
-    width: 90%;
-    padding: 3px 0px;
+    padding: 7px 40px;
     cursor: pointer;
 }
 
-#btn-offline-order-dish {
+#dish-request-content {
+    color: rgba(0, 0, 0);
+    font-style: italic;
+    padding-top: 16px;
+    padding-right: 10px;
+    text-align: justify;
+    line-height: inherit;
+}
+
+.btn-offline-order-dish {
     background-color: #DFDFDF;
     color: #9F9F9F;
     text-align: center;
     font-size: 18px;
     font-weight: 600;
     border-radius: 20px;
-    width: 90%;
-    padding: 3px 0px;
+    padding: 7px 40px;
 }
 
 #dish-name {
     display: block;
-    height: 32px;
+    height: auto;
     font-style: normal;
     font-weight: bold;
     line-height: 32px;
     font-size: 24px;
     color: rgba(0, 0, 0, 0.87);
-    padding: 10px 0px 0px 30px;
+    padding: 10px 0px 0px 18px;
 }
 
 #dish-price {
@@ -91,10 +100,8 @@
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
-    /* align: left; */
-    fill: solid;
     color: #56AACD;
-    padding: 0px 7px 2px;
+    padding: 10px 3px 2px;
 }
 
 .chef-location {
@@ -110,7 +117,6 @@
 }
 
 #chef-story-title {
-    font-style: normal;
     font-weight: 600;
     line-height: 28px;
     font-size: 30px;
@@ -167,10 +173,13 @@
 }
 
 .chef-relate-title {
+    font-weight: 600;
     line-height: 28px;
     font-size: 30px;
     letter-spacing: -0.75px;
-    color: rgba(0, 0, 0, 0.87); 
+    color: rgba(0, 0, 0, 0.87);
+    padding-top: 8px;
+    display: block;
 }
 
 .style-service {
@@ -262,13 +271,13 @@
     .dish-scroll-fix-top {
         position: fixed;
         top: 81px;
-        width: 36.5% !important;
+        width: 26% !important;
     }
     
     .dish-scroll-bottom {
         position: absolute;
         top: 1196px;
-        width: 37% !important;
+        width: 26% !important;
     }
 }
 
@@ -290,15 +299,14 @@
 
     .dish-scroll-fix-top {
         position: fixed;
-        /* background-color: #cfd8d5; */
         top: 81px;
-        width: 37% !important;
+        width: 28.5% !important;
     }
     
     .dish-scroll-bottom {
         position: absolute;
         top: 1196px;
-        width: 37% !important;
+        width: 28.5% !important;
     }
 
     .show_dish_detail_wrapper {
@@ -310,10 +318,18 @@
     .chef-name-summary, .chef-summary {
         width: 84% !important;
     }
+
+    #detail-dish-info {
+        width: 80.5%;
+    }
 }
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
+
+    #detail-dish-info {
+        width: 91%;
+    }
 
     .style-service, .style-unService {
         margin-left: 13px;
@@ -336,19 +352,19 @@
         position: fixed;
         /* background-color: #cfd8d5; */
         top: 81px;
-        width: 34.5% !important;
+        width: 31.5% !important;
     }
     
     .dish-scroll-bottom {
         position: absolute;
         top: 1196px;
-        width: 34.5% !important;
+        width: 31.5% !important;
     }
 
     .show_dish_detail_wrapper {
         width: 100%;
         height: auto;
-        padding: 0 64px 0 64px;
+        padding: 0px 64px 0 64px;
     }
 
     .chef-story-image {
@@ -368,6 +384,10 @@
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
 
+    #detail-dish-info {
+        width: 95%;
+    }
+
     .style-service, .style-unService {
         text-align: center;
     }
@@ -385,7 +405,7 @@
     .show_dish_detail_wrapper {
         width: 100%;
         height: auto;
-        padding: 0 64px 0 64px;
+        padding: 0px 64px 0 64px;
     }
 
     #chef-story-descr {
@@ -394,7 +414,7 @@
 
     #dish-name {
         margin-bottom: 15px;
-        padding-left: 10px;
+        padding-left: 18px;
     }
 
     .chef-name-summary {
@@ -412,10 +432,14 @@
     .chef-story-content {
         text-align: center;
     }
-
 }
 
 @media (max-width: 640px) {
+
+    #detail-dish-info {
+        width: 100%;
+    }
+
     .service-option-select img {
         width: 85px;
         height: 94px;
@@ -433,20 +457,41 @@
         display: block;
         margin: 0 auto;
     }
+
+    .chef-name {
+        font-size: 19px;
+    }
 }
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
+
+    /* Swap dish box on to top */
+    #service-dish-info {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    #edit_dish, #delete_dish {
+        display: none;
+    }
+
+    #chef-story-title {
+        font-size: 20px;
+    }
+
     .service-option-select {
         text-align: center;
     }
 
     .dish-serving {
         margin-right: 0px;
+        padding-top: 25px;
     }
 
     #dish-name {
         margin-bottom: 0px;
+        font-size: 20px;
     }
 
     #chef-story-descr {
@@ -455,10 +500,6 @@
 
     .show_dish_detail_wrapper {
         padding: 0px 10px;
-    }
-
-    .show_dish_detail_wrapper {
-        text-align: center;
     }
 
     .chef-story-image {
@@ -470,8 +511,9 @@
         padding-top: 40px !important;
     }
 
-    #btn-order-dish {
-        width: 100%;
+    .btn-order-dish-detail {
+        display: block;
+        padding: 4px 0px;
     }
 }
 

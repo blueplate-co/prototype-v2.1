@@ -69,7 +69,6 @@ export class DishListRelate extends Component {
               }
             </div>
           </div>
-
         </a>
       )
     })
@@ -94,6 +93,6 @@ export default withTracker(props => {
   var user_id = Session.get('user_dish_id');
 
   return {
-    dishes: Dishes.find({ user_id: user_id, deleted: false},{sort: {average_rating: -1, online_status: -1},  limit : 4}).fetch(),
+    dishes: Dishes.find({ user_id: user_id, deleted: false},{sort: {average_rating: -1, online_status: -1},  limit : 3}).fetch(),
   };
 })(DishListRelate);

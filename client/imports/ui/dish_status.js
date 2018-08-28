@@ -7,7 +7,7 @@ const onlineContent = {
         color: '#B6B6B6'
     },
     dishStatusText = {
-        marginLeft: '-10px'
+        marginLeft: '-6px'
     }
 
 export default class DishStatus extends Component {

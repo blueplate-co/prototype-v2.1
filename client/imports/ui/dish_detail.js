@@ -14,7 +14,10 @@ export default class Dish_Detail extends Component {
         this.state = {
             data: {},
             sumOrder : 1,
-            kitchenDetail: {}
+            kitchenDetail: {},
+            summary_order : 0,
+            kitchen_likes : 0,
+            kitchen_follows : 0
         }
     }
 
@@ -25,6 +28,25 @@ export default class Dish_Detail extends Component {
                     data: res
                 })
                 Session.set('user_dish_id', this.state.data.user_id);
+                // Get summary order of Chef
+                Meteor.call('kitchen_tried.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({summary_order: res});
+                    }
+                });
+
+                // Get summary like Chef from dishes and menu
+                Meteor.call('kitchen_likes.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({kitchen_likes : res});
+                    }
+                });
+
+                Meteor.call('kitchen_follows.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({kitchen_follows : res});
+                    }
+                });
             } else {
                 Materialize.toast('Error occur when fetch data. Please try again.', 4000, 'rounded bp-green');
             }
@@ -98,21 +120,13 @@ export default class Dish_Detail extends Component {
         var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
             source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "",
             cooking_story_content;
-        
+
         if (chef_detail.cooking_story.length > 100) { 
             cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
         } else {
             cooking_story_content = chef_detail.cooking_story
         }
-        // Get summary like Chef from dishes
-        var dishes = Dishes.find({'user_id': this.state.data.user_id}).fetch(),
-            summaryLike = 0;
-
-        for (var i = 0; i < dishes.length; i++) {
-            var dishLiked = DishesLikes.findOne({'dish_id': dishes[i]._id});
-            dishLiked != null ? summaryLike++ : "";
-        }
-
+        
         return (
             <div className="show_dish_detail_wrapper">
                 <a className="col s12 m12 l1 chef-story-image"
@@ -128,16 +142,16 @@ export default class Dish_Detail extends Component {
                     </a>
                     <div className="col s12 m12 l10 chef-summary">
                         <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{chef_detail.order_count}</li>
+                            <li className="text-center">{ this.state.summary_order }</li>
                             <li>Tried</li>
                         </ul>
                         <li className="dot-text-style">&bull;</li>
                         <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">0</li><li>Following</li>
+                            <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
                         </ul>
                         <li className="dot-text-style">&bull;</li>
                         <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{summaryLike}</li><li>Likes</li>
+                            <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
                         </ul>
                     </div>
                 </div>
@@ -254,13 +268,10 @@ export default class Dish_Detail extends Component {
 
                                     <div className="col s12 m5 l5">
                                         <div id="detail-dish-info">
-                                            <span id="dish-name" className="row">{dish_detail.dish_name}</span>
+                                            <span id="dish-name">{dish_detail.dish_name}</span>
                                             <div className="rating-content">
-                                                <div className="row no-margin">
-                                                    <div id="dish-price" className="col l6 m6 s6 dish-price no-padding text-left">$ { dish_detail.dish_selling_price }</div>
-                                                    <div className="col l6 m6 s6 dish-detail-status-order">
-                                                    <DishStatus status={dish_detail.online_status} />
-                                                    </div>
+                                                <div className="no-margin">
+                                                    <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>
                                                 </div>
                                                 <div className="rating-detail">
                                                     <span><Rating rating={dish_detail.average_rating}/></span>
@@ -277,11 +288,14 @@ export default class Dish_Detail extends Component {
                                                 </div>
                                                 
                                                 <div className="row">
-                                                    <div className="handle-order-dish col s12 m7 l6">
+                                                    <div className="handle-order-dish">
                                                         {dish_detail.online_status ? 
-                                                            <p id="btn-order-dish" onClick={this.dishOrder.bind(this)}>Order</p>
+                                                            <span className="btn-order-dish-detail" onClick={this.dishOrder.bind(this)}>order</span>
                                                             :
-                                                            <p id="btn-offline-order-dish">Offline</p>
+                                                            <div>
+                                                                <span className="btn-offline-order-dish" >offline</span>
+                                                                {/* <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p> */}
+                                                            </div>
                                                         }
                                                     </div>
                                                 </div>

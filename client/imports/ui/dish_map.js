@@ -34,9 +34,9 @@ export class DishMap extends Component {
     return (
         <Map
           google = {this.props.google}
-          zoom = {12}
+          zoom = {17}
           style = {style}
-          initialCenter= {{lat: 22.3964, lng: 114.1095}}
+          initialCenter= {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
           onClick = {this.onMapClicked}
         >
         {kitchen.kitchen_address_conversion === null ? 
@@ -45,7 +45,7 @@ export class DishMap extends Component {
           <Marker
               name = {kitchen.kitchen_name}
               kitchen_id = {kitchen._id}
-              url = {kitchen.bannerProfileImg != null ? kitchen.bannerProfileImg.large : ""}
+              url = {kitchen.bannerProfileImg != null ? kitchen.bannerProfileImg.large : kitchen.profileImg != null ? kitchen.profileImg.origin : ""}
               position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
               onClick = {this.onMarkerClick}
             />
