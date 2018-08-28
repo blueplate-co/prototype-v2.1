@@ -286,7 +286,7 @@ class TopNavigation extends Component {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
       // excute searching when keyword longer than 2 characters
-      if (queryString.length > 2) {
+      if (queryString.length >= 2) {
         // create index search for dish_name
         const dishIndex = new Index({
             collection: Dishes,
@@ -331,7 +331,7 @@ class TopNavigation extends Component {
         Session.set('search_result_origin', result);
         FlowRouter.go('/search');
       } else {
-        Materialize.toast('Your keyword must longer than 2 characters',4000,"rounded bp-green");
+        Materialize.toast('Your keyword must longer than 1 characters',4000,"rounded bp-green");
       }
     }
   }
