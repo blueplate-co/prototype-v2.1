@@ -1,6 +1,6 @@
 <template name = "dishes_selection">
   {{#if subscription}}
-    <table class = "responsive-table bordered" id="menu_dishes_table">
+    <table class = "bordered" id="menu_dishes_table">
       <thead>
         <tr>
           <th></th>
@@ -15,7 +15,7 @@
       <tbody>
         {{#each user_dishes}}
           <tr>
-            <td width="40px">
+            <td>
               <input class="dishes_checkbox" type="checkbox" id="{{checkbox_id}}" value="{{_id}}"/>
               <label for="{{checkbox_id}}"></label>
             </td>
