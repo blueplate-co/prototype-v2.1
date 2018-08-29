@@ -164,7 +164,7 @@ class Payment extends Component {
                     if (trueBalance < total) {
                         // not enough money to pay
                         this.setState({
-                            pendingCost: pendingCost
+                            pendingCost: parseFloat(pendingCost.toString())
                         },() => {
                             this.openModal();
                         })
