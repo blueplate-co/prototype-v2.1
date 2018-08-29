@@ -65,7 +65,7 @@
     cursor: pointer;
 }
 
-#dish-request-content {
+#dish-request-content, #dish-request-infor {
     color: rgba(0, 0, 0);
     font-style: italic;
     padding-top: 16px;
@@ -74,14 +74,8 @@
     line-height: inherit;
 }
 
-.btn-offline-order-dish {
-    background-color: #DFDFDF;
-    color: #9F9F9F;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
-    padding: 7px 40px;
+#dish-request-infor {
+    padding-top: 0px;
 }
 
 #dish-name {

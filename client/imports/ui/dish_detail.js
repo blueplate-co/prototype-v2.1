@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Rating from './rating.js';
+import { Meteor } from 'meteor/meteor';
 
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import DishStatus from './dish_status';
 
 // Dish detail component
 export default class Dish_Detail extends Component {
@@ -17,7 +17,8 @@ export default class Dish_Detail extends Component {
             kitchenDetail: {},
             summary_order : 0,
             kitchen_likes : 0,
-            kitchen_follows : 0
+            kitchen_follows : 0,
+            alreadyRequested: false
         }
     }
 
@@ -27,6 +28,7 @@ export default class Dish_Detail extends Component {
                 this.setState({
                     data: res
                 })
+                Session.set('dish_id_relate', this.state.data._id);
                 Session.set('user_dish_id', this.state.data.user_id);
                 // Get summary order of Chef
                 Meteor.call('kitchen_tried.get', this.state.data.user_id, (error, res) => {
@@ -45,6 +47,12 @@ export default class Dish_Detail extends Component {
                 Meteor.call('kitchen_follows.get', this.state.data.user_id, (error, res) => {
                     if (!error) {
                         this.setState({kitchen_follows : res});
+                    }
+                });
+
+                Meteor.call('requestdish.find_dish_request', this.state.data._id, Meteor.userId(), (err, res) => {
+                    if (res) {
+                        this.setState({alreadyRequested: true});
                     }
                 });
             } else {
@@ -180,7 +188,7 @@ export default class Dish_Detail extends Component {
         if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
             Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
         } else {
-            var dish_details = Dishes.findOne({"_id": this.state.data._id});
+            var dish_details = this.state.data;
             var foodie_id = Meteor.userId();
             var homecook_id = dish_details.user_id;
             var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
@@ -236,6 +244,46 @@ export default class Dish_Detail extends Component {
         }
     }
     
+    handleOnRequestDish() {
+        var dish_id = this.state.data._id
+            buyer_id = Meteor.userId(),
+            seller_id = this.state.data.kitchen_id;
+
+        var kitchen = Kitchen_details.findOne({_id: seller_id}),
+            kitchen_contact = kitchen.kitchen_contact;
+
+        var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
+        var seller_email = seller_detail.emails[0].address;
+
+        var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
+                     "there are foodies requested. Let’s make it online to let them order it from you.\n" + 
+                     "Check it out here: " + document.location.host + "/cooking/dishes";
+
+        Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
+            if (!err) {
+                Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
+                
+                Meteor.call('message.sms', kitchen_contact, message.trim(), (err, res) => {
+                    if (!err) {
+                        console.log(res);
+                    }
+                });
+
+                // Sent email
+                Meteor.call(
+                    'requestdish.sendEmail',
+                    kitchen.chef_name + " <" + seller_email + ">",
+                    'the.phan@blueplate.co',
+                    'blueplate.co',
+                    'Hey ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Warm regard, \n Blueplate Team,"
+                );
+
+                FlowRouter.go('/main');
+            }
+        });
+
+    };
+
     render() {
         var dish_detail = (this.state.data);
         return (
@@ -289,13 +337,16 @@ export default class Dish_Detail extends Component {
                                                 
                                                 <div className="row">
                                                     <div className="handle-order-dish">
-                                                        {dish_detail.online_status ? 
+                                                        { (dish_detail.online_status) ? 
                                                             <span className="btn-order-dish-detail" onClick={this.dishOrder.bind(this)}>order</span>
                                                             :
-                                                            <div>
-                                                                <span className="btn-offline-order-dish" >offline</span>
-                                                                {/* <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p> */}
-                                                            </div>
+                                                            (this.state.alreadyRequested) ?
+                                                                <p id="dish-request-infor">Your request has sent. We will notify you when chef make it ready again</p>
+                                                                :
+                                                                <div>
+                                                                    <span className="btn-order-dish-detail" onClick = {() => this.handleOnRequestDish()}>request</span>
+                                                                    <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p>
+                                                                </div>
                                                         }
                                                     </div>
                                                 </div>

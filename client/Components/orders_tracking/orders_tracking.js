@@ -79,11 +79,11 @@ Template.orders_tracking.helpers({
       if (smsList.hasOwnProperty(phoneNumber)) {
           var message = smsList[phoneNumber];
           message = 'New incoming order! ' + buyer_name + ' has just placed ' + message + ' from you.'
-          Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
-            if (!err) {
-              console.log('Message sent');
-            }
-          });
+          // Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
+          //   if (!err) {
+          //     console.log('Message sent');
+          //   }
+          // });
       }
     }
     
@@ -425,11 +425,11 @@ Template.pending_confirmation.events({
         var buyer_name = Profile_details.findOne({user_id: buyer_id}).foodie_name,
             message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
             
-        Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
-          if (!err) {
-            console.log('Message sent');
-          }
-        });
+        // Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
+        //   if (!err) {
+        //     console.log('Message sent');
+        //   }
+        // });
       })
     }
   },
