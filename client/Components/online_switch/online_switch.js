@@ -1,5 +1,4 @@
 import { Template } from 'meteor/templating';
-import { validatePhoneNumber, getCountryCodeFromProfile } from '/imports/functions/common';
 
 Template.online_switch.onRendered(function(){
   $('.tooltip').tipso({
