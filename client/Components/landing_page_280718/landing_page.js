@@ -140,7 +140,8 @@ Template.landing_page.onRendered(function () {
 
 Template.landing_page.events({
   'click .chef_signup': function() {
-
+    //- send to Facebook Pixel
+    fbq('trackCustom', 'ClickSignUp');
   },
   'click .login_icon': function() {
     Session.set('login_clicked', true);

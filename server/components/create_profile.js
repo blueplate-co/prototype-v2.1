@@ -204,42 +204,6 @@ Meteor.methods({
     } else {
       return "";
     }
-  },
-  'update.allphone' () {
-    var profile_details = Profile_details.find({}).fetch();
-    var kitchen_details = Kitchen_details.find({}).fetch();
-    //- 
-    for (var i = 0; i < profile_details.length; i++) {
-      var phoneNumber = profile_details[i].mobile;
-      if (phoneNumber.length > 0) {
-        if (profile_details[i].mobile.indexOf('+') == -1) {
-          phoneNumber = ('+852' + phoneNumber).trim().replace(/\s/g, "X");;
-          Profile_details.update({
-            _id: profile_details[i].user_id
-          }, {
-              $set: {
-                'mobile': phoneNumber
-              }
-          });
-        }
-      }
-    }
-    //-
-    for (var j = 0; j < kitchen_details.length; i++) {
-      var phoneNumber = kitchen_details[j].mobile;
-      if (phoneNumber.length > 0) {
-        if (profile_details[j].kitchen_contact.indexOf('+') == -1) {
-          phoneNumber = ('+852' + phoneNumber).trim().replace(/\s/g, "X");;
-          Profile_details.update({
-            _id: profile_details[i].user_id
-          }, {
-              $set: {
-                'kitchen_contact': phoneNumber
-              }
-          });
-        }
-      }
-    }
   }
 });
 

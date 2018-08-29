@@ -285,6 +285,8 @@ class TopNavigation extends Component {
   searching(e) {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
+      //- send to Facebook Pixel
+      fbq('track', 'Search', { search_string: queryString });
       // excute searching when keyword longer than 2 characters
       if (queryString.length >= 2) {
         // create index search for dish_name

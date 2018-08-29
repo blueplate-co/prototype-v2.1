@@ -6,28 +6,8 @@
  * @param {*} countryCode country code phone number
  */
 export function validatePhoneNumber(phoneNumber, countryCode) {
-  if (phoneNumber != null) {
-    if (phoneNumber.indexOf("+") == -1) {
-      if (countryCode != null && countryCode == '+84') {
-        if (phoneNumber.indexOf('0') == 0) {
-          phoneNumber = countryCode + phoneNumber.substr(1);
-        } else if (phoneNumber.indexOf('84') == 0) {
-          phoneNumber = countryCode + phoneNumber.substr(2);
-        } else {
-          phoneNumber = countryCode + phoneNumber;
-        }
-      } else {
-        // Defauld is '+852'
-        if (phoneNumber.indexOf('0') == '0') {
-          phoneNumber = '+852' + phoneNumber.substr(1);
-        } else if (phoneNumber.indexOf('852') == 0) {
-          phoneNumber = '+852' + phoneNumber.substr(3);
-        } else {
-          phoneNumber = "+852" + phoneNumber;
-        }
-      }
-    }
-  }
+  //- replace all white spaces in phone number
+  var phoneNumber = phoneNumber.trim().replace(/ /g,'');
   return phoneNumber;
 };
 
