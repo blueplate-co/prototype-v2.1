@@ -208,7 +208,6 @@ class ShoppingCart extends Component {
             }
         });
         if (valid) {
-            console.log(globalCart);
             globalCart.forEach((item, index) => {
                 Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
                     if (!err) {
@@ -228,6 +227,7 @@ class ShoppingCart extends Component {
                     }
                 })
             })
+            this.sendSummaryCheckoutDish();
             FlowRouter.go('/payment');
         }
     }
@@ -356,6 +356,32 @@ class ShoppingCart extends Component {
             return <h5>Shopping cart is empty</h5>
         }
     }
+
+    // Internal sms: send order info message to admin when has new order
+    sendSummaryCheckoutDish() {
+        var checkSellerName ={};
+        this.props.shoppingCart.map( (item, index) => {
+            if (checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"]) {
+                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] + ", " + item.quantity + " " + item.product_name;
+            } else {
+                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = item.quantity + " " + item.product_name;
+            }
+        });
+
+        for (var chefName in checkSellerName) {
+            if (checkSellerName.hasOwnProperty(chefName)) {
+                var info_buyer = Meteor.user().profile.name + "(email: " + Meteor.user().emails[0].address + ")";
+                var message = "blueplate notification: " + info_buyer + " has just placed " + checkSellerName[chefName] + " from " + chefName;
+
+                // console.log("send message: " + message);
+                Meteor.call('message.sms', "+84989549437", message.trim(), (err, res) => {
+                  if (!err) {
+                    console.log('Message sent');
+                  }
+                });
+            }
+        }
+    };
 
     componentWillUpdate() {
         //- run google places autocomplete with timeout to make sure HTML is rendered
