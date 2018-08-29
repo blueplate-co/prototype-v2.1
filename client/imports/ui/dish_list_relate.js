@@ -91,8 +91,9 @@ export class DishListRelate extends Component {
 
 export default withTracker(props => {
   var user_id = Session.get('user_dish_id');
+  var dish_id_relate = Session.get('dish_id_relate');
 
   return {
-    dishes: Dishes.find({ user_id: user_id, deleted: false},{sort: {average_rating: -1, online_status: -1},  limit : 3}).fetch(),
+    dishes: Dishes.find({ _id: { $not: dish_id_relate}, user_id: user_id, deleted: false},{sort: {average_rating: -1, online_status: -1},  limit : 3}).fetch(),
   };
 })(DishListRelate);
