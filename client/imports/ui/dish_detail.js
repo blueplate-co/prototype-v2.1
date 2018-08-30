@@ -219,7 +219,7 @@ export class Dish_Detail extends Component {
                         if (err) Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
                     }
                 )
-            } else{
+            } else {
                 Meteor.call('shopping_cart.insert',
                     foodie_id,
                     homecook_id,
@@ -236,6 +236,8 @@ export class Dish_Detail extends Component {
                         if (err) {
                             Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
                         } else {
+                            //- send to Facebook Pixel
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                             Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
                             FlowRouter.go('/main');
                         }
@@ -258,12 +260,13 @@ export class Dish_Detail extends Component {
 
         var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
                      "there are foodies requested. Let’s make it online to let them order it from you.\n" + 
-                     "Check it out here: " + document.location.host + "/cooking/dishes";
+                     "Check it out here: " + document.location.origin + "/cooking/dishes";
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
-                
+                //- send to Facebook Pixel
+                fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
                 Meteor.call('message.sms', kitchen_contact, message.trim(), (err, res) => {
                     if (!err) {
                         console.log(res);

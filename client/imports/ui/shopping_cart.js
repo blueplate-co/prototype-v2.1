@@ -228,6 +228,8 @@ class ShoppingCart extends Component {
                 })
             })
             this.sendSummaryCheckoutDish();
+            //- send to Facebook Pixel
+            fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             FlowRouter.go('/payment');
         }
     }
@@ -382,6 +384,11 @@ class ShoppingCart extends Component {
             }
         }
     };
+
+    componentDidMount() {
+        //- send to Facebook Pixel
+        fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+    }
 
     componentWillUpdate() {
         //- run google places autocomplete with timeout to make sure HTML is rendered
