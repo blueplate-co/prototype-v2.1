@@ -46,7 +46,6 @@ sentNotificationToRequester = function(dishesRequest) {
 
   if (!dishesRequest.sent_notification) {
     var message = "The dish you requested (" + dish_name + ")  is ready for ordering now. Check it out at " + site + " URL";
-    debugger
     Meteor.call('message.sms', buyer.mobile, "Hey! " + message.trim(), (err, res) => {
       if (!err) {
         Meteor.call('requestdish.update', dishesRequest._id, (err, res) => {
