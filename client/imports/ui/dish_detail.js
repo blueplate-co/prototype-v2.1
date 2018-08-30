@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import Rating from './rating.js';
 import { Meteor } from 'meteor/meteor';
 
+import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // Dish detail component
-export default class Dish_Detail extends Component {
+export class Dish_Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -394,6 +395,14 @@ export default class Dish_Detail extends Component {
         )
     }
 }
+
+export default withTracker(props => {
+    const handle = Meteor.subscribe('userEmail');
+    return {
+        currentUser: Meteor.user(),
+        listLoading: !handle.ready(),
+    };
+  })(Dish_Detail);
 
 $(document).ready(function () {  
       $(window).bind("scroll", function(e) {
