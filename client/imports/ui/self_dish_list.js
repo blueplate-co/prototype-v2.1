@@ -87,8 +87,8 @@ class SelfDishList extends Component {
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+          <div className="col s6 m6 l6 text-right no-padding manage-dish-text">
+            <a href="/cooking/dishes">{ this.props.manageDish }</a>
           </div>
         </div>
 

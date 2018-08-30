@@ -134,7 +134,7 @@ ul.right .icon {
 
 .sidebar-container li {
   display: block;
-  padding: 15px 20px;
+  padding: 20px 20px;
   height: 55px;
   position: relative;
   cursor: pointer;
@@ -142,8 +142,9 @@ ul.right .icon {
 
 .sidebar-container li img {
   float: right;
-  width: 24px;
-  height: 21px;
+  width: 36px;
+  height: 36px;
+  margin-top: -6px;
 }
 
 .sidebar-container .divider {
@@ -155,8 +156,8 @@ ul.right .icon {
 
 #cart-number-sidebar {
   position: absolute;
-  right: 27px;
-  margin-top: 1px;
+  right: 35px;
+  margin-top: 3px;
   color: #838383;
   font-weight: 400;
 }
@@ -553,4 +554,53 @@ ul.right .icon {
   .nearby {
     display: none;
   }
+}
+
+
+#menu-foodie-mode-title, #menu-chef-mode-title {
+  font-weight: 600;
+  line-height: 32px;
+  font-size: 24px;
+  color: #56AACD;
+}
+
+#foodie-logo-mode-img, #chef-logo-mode-img {
+  float: left;
+  width: 55px;
+  height: 25px;
+}
+
+#foodies-title-img, #chef-title-img {
+  margin-top: -25px;
+  width: 61px;
+  height: 62px;
+}
+
+.sidebar-container li span {
+  font-weight: normal;
+  line-height: 24px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.switch-mode-text {
+  margin-top: 32px;
+}
+
+.notification-status {
+  border-radius: 50%;
+  background-color: #EEAB21;
+  position: absolute;
+  right: 15px;
+  margin-top: -7px;
+  width: 15px;
+  height: 15px;
+}
+
+#top-navigation-container>div>div>ul>li:not(:nth-child(-n+2)):hover {
+  background-color: #56aacd52;
+}
+
+.not-cursor {
+  cursor: default !important;
 }
