@@ -16,9 +16,15 @@ export class DishListRelate extends Component {
 
   constructor(props) {
     super(props);
+    this.tracking = this.tracking.bind(this);
     this.state = {
       loading: false,
     }
+  }
+
+  tracking = (item) => {
+    //- send to Facebook Pixel
+    fbq('trackCustom', 'ClickOnRelateDish', { user_id: Meteor.userId(), dish_id: item._id, dish_name: item.dish_name });
   }
 
   renderList = () => {
@@ -33,7 +39,7 @@ export class DishListRelate extends Component {
         hasThumbnail = false;
       }
       return (
-        <a key={index} target="_blank" className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" href={ "/dish/" + item._id }>
+        <a key={index} target="_blank" className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" href={ "/dish/" + item._id } onClick={() => this.tracking(item)}>
           <div className="relate-images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {

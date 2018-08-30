@@ -42,7 +42,7 @@ sentNotificationToRequester = function(dishesRequest) {
       buyer = Profile_details.findOne({ user_id: dishesRequest.buyer_id }),
       byer_name = buyer.last_name + " " + buyer.first_name;
       
-  var site = document.location.host + "/dish/" + dishesRequest.dish_id;
+  var site = document.location.origin + "/dish/" + dishesRequest.dish_id;
 
   if (!dishesRequest.sent_notification) {
     var message = "The dish you requested (" + dish_name + ")  is ready for ordering now. Check it out at " + site + " URL";

@@ -130,6 +130,8 @@ class Payment extends Component {
 	}
 
     componentDidMount() {
+        //- send to Facebook Pixel
+        fbq('track', 'ViewContent', { content_name: 'Select Payment', content_ids: Meteor.userId() });
         if (!Session.get('product')) {
             Materialize.toast('Please complete your order before.', 'rounded bp-green');
             FlowRouter.go('/shopping_cart');
@@ -140,6 +142,8 @@ class Payment extends Component {
     choosePayment(payment) {
         show_loading_progress();
         if (payment == 'credits') {
+            //- send to Facebook Pixel
+            fbq('trackCustom', 'SelectPayment', { content_name: 'Credits', content_ids: Meteor.userId() });
             // get current credits of user
             Meteor.call('payment.getCredits', (err, credits) => {
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
@@ -210,6 +214,8 @@ class Payment extends Component {
             });
         } else {
             // if choose credit card is payment method
+            //- send to Facebook Pixel
+            fbq('trackCustom', 'SelectPayment', { content_name: 'Credits Card', content_ids: Meteor.userId() });
             this.setState({
                 payment: payment
             });
@@ -311,6 +317,8 @@ class Payment extends Component {
                     action: false
                 })
             } else {
+                //- send to Facebook Pixel
+                fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
                 var StripeToken = response.id;
                 var transaction_no = 1;
                 //- add each every product into order collection

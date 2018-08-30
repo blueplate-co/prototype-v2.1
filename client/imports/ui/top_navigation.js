@@ -156,8 +156,12 @@ class TopNavigation extends Component {
         <li
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
-              debugger
               FlowRouter.go("/shopping_cart");
+              //- send to Facebook Pixel
+              fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
+              this.setState({ sidebarOpen: false }, () => {
+                FlowRouter.go("/shopping_cart");
+              });
             });
           }}
         >
@@ -409,7 +413,11 @@ class TopNavigation extends Component {
                   </li>
 
                   <li
-                    onClick={() => FlowRouter.go("/shopping_cart")}
+                    onClick={() => {
+                      //- send to Facebook Pixel
+                      fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                      FlowRouter.go("/shopping_cart");
+                    }}
                     className="icon"
                     id="cart-icon"
                   >
