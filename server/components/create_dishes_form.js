@@ -303,7 +303,7 @@ Meteor.methods({
       updatedAt: new Date(),
       online_status: false,
       order_count: 0,
-      average_rating: 0,
+      average_rating: 5,
       deleted: false,
       //- insert meta data for image sizes
       meta: imgMeta
