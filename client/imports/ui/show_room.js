@@ -24,7 +24,8 @@ export default class ShowRoom extends Component {
     super(props);
     this.state = {
       selectedDish: {},
-      screen: this.props.screen
+      kitchenExisted: false,
+      screen: this.props.screen,
     }
   }
 
@@ -43,6 +44,11 @@ export default class ShowRoom extends Component {
   componentDidMount = () => {
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
+    Meteor.call('check_kitchen.get', Meteor.userId(), (err, res) => {
+      this.setState({
+        kitchenExisted: res
+      })
+    })
   }
 
   renderCategories = () => {
@@ -136,7 +142,7 @@ export default class ShowRoom extends Component {
             </div>
             <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
-            <ShowroomBanner />
+            <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
             <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
             <KitchenList title="Kitchens" seemore="see all"/>

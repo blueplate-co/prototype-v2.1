@@ -71,15 +71,15 @@ body p {
 }
 
 .card {
-  border-radius: 20px !important;
+  border-radius: 10px !important;
   display: inline-block;
   border-color: #B1DBBE;
   border-width: medium;
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .card-action {
-  border-radius: 0px 0px 20px 20px !important;
+  border-radius: 0px 0px 10px 10px !important;
 }
 
 /* modal responsive settings */
