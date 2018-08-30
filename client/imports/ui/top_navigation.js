@@ -103,9 +103,15 @@ class TopNavigation extends Component {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
         
-        <li className="not-cursor">
+        <li
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            FlowRouter.go("/main");
+          }}
+        >
           <img id="foodie-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
         </li>
+
         <li className="not-cursor">
           <span id="menu-foodie-mode-title">Foodie Mode</span>
           <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eat-20.svg" width="61px" height="62px" />
@@ -118,7 +124,7 @@ class TopNavigation extends Component {
             // setTimeout(() => {
             //   this.setState({ sidebarOpen: false });
             // }, 200);
-            FlowRouter.go("/cooking/dishes");
+            FlowRouter.go("/profile/show_homecook_profile");
           }}
         >
           <span className="foodies-mod-text">Switch to cooking</span>
@@ -186,7 +192,12 @@ class TopNavigation extends Component {
     ) : (
       <ul className="sidebar-container">
 
-        <li className="not-cursor">
+        <li
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            FlowRouter.go("/main");
+          }}
+        >
           <img id="chef-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
         </li>
 
@@ -199,7 +210,7 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
-            FlowRouter.go("/main");
+            FlowRouter.go("/profile/edit_foodie_profile");
           }}
         >
           <span>Switch to foodie</span>
