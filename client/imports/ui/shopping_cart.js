@@ -256,9 +256,9 @@ class ShoppingCart extends Component {
                             <span className="detail-title">{ detail.dish_name }</span>
                             <span className="detail-price">HK${ detail.dish_selling_price }</span>
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }>-</span>
+                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle"></i></span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }>+</span>
+                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle"></i></span>
                             </div>
                         </div>
                     </div>
