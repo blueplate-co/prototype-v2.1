@@ -102,36 +102,29 @@ class TopNavigation extends Component {
   renderSideBar = () => {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/main");
-            });
-          }}
-        >
-          <span>Search food</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
+        
+        <li className="not-cursor">
+          <img id="foodie-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
         </li>
-        <li className="divider" />
-
-        <li
-          onClick={() => {
-            //- send to Facebook Pixel
-            fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/shopping_cart");
-            });
-          }}
-        >
-          <span>Shopping cart</span>
-          <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-        </li>
-        <li>
-          <span>Notification</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/notification.svg" />
+        <li className="not-cursor">
+          <span id="menu-foodie-mode-title">Foodie Mode</span>
+          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eat-20.svg" width="61px" height="62px" />
         </li>
 
+        <li className="switch-mode-text"
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            localStorage.setItem("userMode", "chef");
+            // setTimeout(() => {
+            //   this.setState({ sidebarOpen: false });
+            // }, 200);
+            FlowRouter.go("/cooking/dishes");
+          }}
+        >
+          <span className="foodies-mod-text">Switch to cooking</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+        </li>
+        
         <li
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -151,25 +144,33 @@ class TopNavigation extends Component {
           }}
         >
           <span>Order Status</span>
+          { (this.props.orderStatus.length > 0)
+            ?
+              <span className="notification-status"></span>
+            :
+              ""
+           }
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/OrderStatus.svg" />
         </li>
 
-        <li className="divider" />
         <li
           onClick={() => {
-            this.setState({ sidebarOpen: false });
-            localStorage.setItem("userMode", "chef");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: false });
-            }, 300);
-            FlowRouter.go("/cooking/dishes");
+            this.setState({ sidebarOpen: false }, () => {
+              FlowRouter.go("/shopping_cart");
+              //- send to Facebook Pixel
+              fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
+              this.setState({ sidebarOpen: false }, () => {
+                FlowRouter.go("/shopping_cart");
+              });
+            });
           }}
         >
-          <span>Switch to cooking</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+          <span className="bp-blue-text">Shopping cart</span>
+          <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
         </li>
-        <li className="divider" />
-        <li>
+
+        <li className="switch-mode-text">
           <span>Help</span>
         </li>
         <li
@@ -184,31 +185,38 @@ class TopNavigation extends Component {
       </ul>
     ) : (
       <ul className="sidebar-container">
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/main");
-            });
-          }}
-        >
-          <span>Search food</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
+
+        <li className="not-cursor">
+          <img id="chef-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
         </li>
-        <li className="divider" />
-        <li
+
+        <li className="not-cursor">
+          <span id="menu-chef-mode-title">Chef Mode</span>
+          <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch+Copy.svg" />
+        </li>
+
+        <li className="switch-mode-text"
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: false });
-            }, 300);
             FlowRouter.go("/main");
           }}
         >
           <span>Switch to foodie</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
         </li>
-        <li className="divider" />
+        
+        <li
+          onClick={() => {
+            this.setState({ sidebarOpen: false }, () => {
+              this.checkKitchenProfileExists();
+            });
+          }}
+        >
+          <span>Your Kitchen</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen_profile_sidebar.svg" />
+        </li>
+
         <li
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -219,37 +227,7 @@ class TopNavigation extends Component {
           <span>Dashboard</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dashboard.svg" />
         </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              this.checkKitchenProfileExists();
-            });
-          }}
-        >
-          <span>Kitchen profile</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-        </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/cooking/dishes");
-            });
-          }}
-        >
-          <span>Manage dishes</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg" />
-        </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/cooking/menus");
-            });
-          }}
-        >
-          <span>Manage menus</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manageManage.svg" />
-        </li>
-
+        
         <li
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -257,12 +235,17 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Manage orders</span>
+          <span>Current orders</span>
+          { (this.props.currentOrder.length > 0)
+            ?
+              <span className="notification-status"></span>
+            :
+              ""
+           }
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg" />
         </li>
 
-        <li className="divider" />
-        <li>
+        <li className="switch-mode-text">
           <span>Help</span>
         </li>
         <li
@@ -471,6 +454,8 @@ export default withTracker(props => {
     currentUser: Meteor.user(),
     credits: credits,
     loading: !handle.ready(),
-    shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch()
+    shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
+    currentOrder: Order_record.find({'seller_id': Meteor.userId(), 'status': 'Created'}).fetch(),
+    orderStatus: Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).fetch()
   };
 })(TopNavigation);

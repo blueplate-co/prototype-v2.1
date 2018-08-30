@@ -31,3 +31,7 @@
     margin: 0 12px 0 12px;
   }
 }
+
+.manage-dish-text, .manage-menu-text {
+  margin-top: 5px;
+}
