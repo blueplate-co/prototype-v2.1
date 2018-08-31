@@ -102,19 +102,9 @@ class TopNavigation extends Component {
   renderSideBar = () => {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
-        
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false });
-            FlowRouter.go("/main");
-          }}
-        >
-          <img id="foodie-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
-        </li>
-
-        <li className="not-cursor">
-          <span id="menu-foodie-mode-title">Foodie Mode</span>
-          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eat-20.svg" width="61px" height="62px" />
+        <li className="not-cursor foodie-title-text">
+          <span id="menu-foodie-mode-title">Foodie</span>
+          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eat-20.svg"/>
         </li>
 
         <li className="switch-mode-text"
@@ -128,10 +118,10 @@ class TopNavigation extends Component {
           }}
         >
           <span className="foodies-mod-text">Switch to cooking</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/wish-list");
@@ -139,10 +129,10 @@ class TopNavigation extends Component {
           }}
         >
           <span>Wishlist</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Heart.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/love.svg" />
         </li>
 
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/orders_tracking");
@@ -156,10 +146,10 @@ class TopNavigation extends Component {
             :
               ""
            }
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/OrderStatus.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/status.svg" />
         </li>
 
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/shopping_cart");
@@ -171,9 +161,9 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span className="bp-blue-text">Shopping cart</span>
+          <span>Shopping cart</span>
           <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
 
         <li className="switch-mode-text">
@@ -192,17 +182,8 @@ class TopNavigation extends Component {
     ) : (
       <ul className="sidebar-container">
 
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false });
-            FlowRouter.go("/main");
-          }}
-        >
-          <img id="chef-logo-mode-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Group_logo.svg" />
-        </li>
-
-        <li className="not-cursor">
-          <span id="menu-chef-mode-title">Chef Mode</span>
+        <li className="not-cursor chef-title-text">
+          <span id="menu-chef-mode-title">Chef</span>
           <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch+Copy.svg" />
         </li>
 
@@ -210,14 +191,14 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
-            FlowRouter.go("/profile/edit_foodie_profile");
+            FlowRouter.go("/main");
           }}
         >
           <span>Switch to foodie</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               this.checkKitchenProfileExists();
@@ -225,10 +206,10 @@ class TopNavigation extends Component {
           }}
         >
           <span>Your Kitchen</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen_profile_sidebar.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen.svg" />
         </li>
 
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/cooking/dashboard");
@@ -236,10 +217,10 @@ class TopNavigation extends Component {
           }}
         >
           <span>Dashboard</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dashboard.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dash.svg" />
         </li>
         
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/cooking/orders");
@@ -253,7 +234,7 @@ class TopNavigation extends Component {
             :
               ""
            }
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/curent+order.svg" />
         </li>
 
         <li className="switch-mode-text">
@@ -470,3 +451,11 @@ export default withTracker(props => {
     orderStatus: Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).fetch()
   };
 })(TopNavigation);
+
+$(document).on('click', ".visted-color, .switch-mode-text", function() {
+    $(".visted-color").children("span:nth-child(-n+1)").css("color","#212121");
+    
+    if ($(this).attr('class') !== 'switch-mode-text') {
+      $(this).children("span:nth-child(-n+1)").css("color", "#56AACD");
+    }
+});

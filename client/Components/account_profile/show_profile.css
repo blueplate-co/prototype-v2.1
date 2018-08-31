@@ -34,4 +34,5 @@
 
 .manage-dish-text, .manage-menu-text {
   margin-top: 5px;
+  text-decoration: underline;
 }
