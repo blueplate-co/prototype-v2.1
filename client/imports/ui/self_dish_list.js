@@ -19,13 +19,14 @@ class SelfDishList extends Component {
   }
 
   handleClick = (item) => {
-    if (item.user_id == Meteor.userId()){
-      FlowRouter.go('/cooking/dishes');
-    } else {
-      Session.set('selectedDish', item);
-      Session.set('selectedItem', 'dish');
-      this.props.popup(item);
-    }
+    window.open('/dish/' + item._id, '_blank');
+    // if (item.user_id == Meteor.userId()){
+    //   FlowRouter.go('/cooking/dishes');
+    // } else {
+    //   Session.set('selectedDish', item);
+    //   Session.set('selectedItem', 'dish');
+    //   this.props.popup(item);
+    // }
   }
 
   renderList = () => {
