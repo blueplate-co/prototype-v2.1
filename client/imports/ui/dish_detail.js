@@ -297,52 +297,6 @@ export class Dish_Detail extends Component {
 
     };
 
-    handleOnRateStar() {
-        var dishes = Dishes.find({average_rating: { $eq : 0 }}).fetch();
-        dishes.map( (item, index ) => {
-            Meteor.call('dish.update_start', item._id, (err, res) => {
-                if (!err) {
-                    console.log("okkkkkkkkkkkkkkkkkkkkkkkkkk");
-                    return true;
-                }
-            })
-        });
-
-        console.log(dishes);
-    }
-
-    handleOnRateMenuStar() {
-        debugger
-
-        var menus = Menu.find({average_rating: { $eq : 0 }}).fetch();
-
-        menus.map( (item, index) => {
-            Meteor.call('menu.update_rate_star', item._id, (err, res) => {
-                if (!err)  {
-                    console.log("menu updated");
-                }
-            }); 
-        } )
-        console.log("menu oke");
-    }
-
-    handleOnRateKitchenStar() {
-        debugger
-
-        var kitchens = Kitchen_details.find({average_rating: { $eq : 0 }}).fetch();
-
-        kitchens.map( (item, index) => {
-            Meteor.call('kitchen_details.update_star', item._id, (err, res) => {
-                if (!err)  {
-                    console.log("kitchen updated");
-                }
-            }); 
-        } )
-        console.log("kitchen oke");
-    }
-
-
-
     render() {
         var dish_detail = (this.state.data);
         return (
@@ -357,11 +311,6 @@ export class Dish_Detail extends Component {
                                 />
                             </div>
 
-                            <div>
-                                <span className="btn-order-dish-detail" onClick = {() => this.handleOnRateStar()}>Rate</span>
-                                <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p>
-                            </div>
-                        
                             <div className="container-fluid">
                                 <div id="service-dish-info" className="row show_dish_detail_wrapper">
                                     <div id="service-option" className="col s12 m7 l7 leftDish">
