@@ -104,7 +104,7 @@ class TopNavigation extends Component {
       <ul className="sidebar-container">
         <li className="not-cursor foodie-title-text">
           <span id="menu-foodie-mode-title">Foodie</span>
-          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BP_icon_20180312_Eat-20.svg"/>
+          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foodie_sidebar_icon.svg"/>
         </li>
 
         <li className="switch-mode-text"
@@ -184,7 +184,7 @@ class TopNavigation extends Component {
 
         <li className="not-cursor chef-title-text">
           <span id="menu-chef-mode-title">Chef</span>
-          <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch+Copy.svg" />
+          <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef_sidebar_icon.svg" />
         </li>
 
         <li className="switch-mode-text"
