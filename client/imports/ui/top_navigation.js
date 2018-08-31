@@ -107,7 +107,7 @@ class TopNavigation extends Component {
           <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foodie_sidebar_icon.svg"/>
         </li>
 
-        <li className="switch-mode-text"
+        <li className="switch-chef-text"
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
@@ -117,7 +117,7 @@ class TopNavigation extends Component {
             FlowRouter.go("/profile/show_homecook_profile");
           }}
         >
-          <span className="foodies-mod-text">Switch to cooking</span>
+          <span>Switch to cooking</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         
@@ -166,7 +166,7 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
 
-        <li className="switch-mode-text">
+        <li className="help-title-content">
           <span>Help</span>
         </li>
         <li
@@ -187,7 +187,7 @@ class TopNavigation extends Component {
           <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef_sidebar_icon.svg" />
         </li>
 
-        <li className="switch-mode-text"
+        <li className="switch-foodie-text"
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
@@ -205,7 +205,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Your Kitchen</span>
+          <span className="your-kitchen-menu">Your Kitchen</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen.svg" />
         </li>
 
@@ -237,7 +237,7 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/curent+order.svg" />
         </li>
 
-        <li className="switch-mode-text">
+        <li className="help-title-content">
           <span>Help</span>
         </li>
         <li
@@ -452,10 +452,17 @@ export default withTracker(props => {
   };
 })(TopNavigation);
 
-$(document).on('click', ".visted-color, .switch-mode-text", function() {
+$(document).on('click', ".visted-color, .switch-foodie-text, .switch-chef-text", function() {
     $(".visted-color").children("span:nth-child(-n+1)").css("color","#212121");
-    
-    if ($(this).attr('class') !== 'switch-mode-text') {
+    $('.your-kitchen-menu').css("color","#212121");
+
+    if ( ($(this).attr('class') !== 'switch-foodie-text') && ( $(this).attr('class') !== 'switch-chef-text') ) {
       $(this).children("span:nth-child(-n+1)").css("color", "#56AACD");
+    }
+
+    if ($(this).attr('class') === 'switch-chef-text') {
+        setTimeout(() => {
+          $('.your-kitchen-menu').css("color", "#56AACD");
+        }, 10);
     }
 });

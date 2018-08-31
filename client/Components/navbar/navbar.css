@@ -579,7 +579,7 @@ ul.right .icon {
   color: #212121;
 }
 
-.switch-mode-text {
+.switch-foodie-text, .switch-chef-text, .help-title-content {
   margin-top: 32px;
 }
 
