@@ -266,14 +266,16 @@ export class Dish_Detail extends Component {
         var seller_email = seller_detail.emails[0].address;
 
         var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
-                     "there are foodies requested. Let’s make it online to let them order it from you.\n" + 
-                     "Check it out here: " + document.location.origin + "/cooking/dishes";
+                     "foodies are requesting it!. Let’s make more good food and more hungry foodies happy.\n" + 
+                     "Switch your dish to online here: " + document.location.origin + "/cooking/dishes";
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
                 fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
+                
+                // Send sms
                 Meteor.call('message.sms', kitchen_contact, message.trim(), (err, res) => {
                     if (!err) {
                         console.log(res);
@@ -286,7 +288,7 @@ export class Dish_Detail extends Component {
                     kitchen.chef_name + " <" + seller_email + ">",
                     'the.phan@blueplate.co',
                     'blueplate.co',
-                    'Hey ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Warm regard, \n Blueplate Team,"
+                    'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
 
                 FlowRouter.go('/main');
@@ -294,6 +296,52 @@ export class Dish_Detail extends Component {
         });
 
     };
+
+    handleOnRateStar() {
+        var dishes = Dishes.find({average_rating: { $eq : 0 }}).fetch();
+        dishes.map( (item, index ) => {
+            Meteor.call('dish.update_start', item._id, (err, res) => {
+                if (!err) {
+                    console.log("okkkkkkkkkkkkkkkkkkkkkkkkkk");
+                    return true;
+                }
+            })
+        });
+
+        console.log(dishes);
+    }
+
+    handleOnRateMenuStar() {
+        debugger
+
+        var menus = Menu.find({average_rating: { $eq : 0 }}).fetch();
+
+        menus.map( (item, index) => {
+            Meteor.call('menu.update_rate_star', item._id, (err, res) => {
+                if (!err)  {
+                    console.log("menu updated");
+                }
+            }); 
+        } )
+        console.log("menu oke");
+    }
+
+    handleOnRateKitchenStar() {
+        debugger
+
+        var kitchens = Kitchen_details.find({average_rating: { $eq : 0 }}).fetch();
+
+        kitchens.map( (item, index) => {
+            Meteor.call('kitchen_details.update_star', item._id, (err, res) => {
+                if (!err)  {
+                    console.log("kitchen updated");
+                }
+            }); 
+        } )
+        console.log("kitchen oke");
+    }
+
+
 
     render() {
         var dish_detail = (this.state.data);
@@ -309,6 +357,11 @@ export class Dish_Detail extends Component {
                                 />
                             </div>
 
+                            <div>
+                                <span className="btn-order-dish-detail" onClick = {() => this.handleOnRateStar()}>Rate</span>
+                                <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p>
+                            </div>
+                        
                             <div className="container-fluid">
                                 <div id="service-dish-info" className="row show_dish_detail_wrapper">
                                     <div id="service-option" className="col s12 m7 l7 leftDish">
