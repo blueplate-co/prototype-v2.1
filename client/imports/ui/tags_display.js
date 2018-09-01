@@ -143,41 +143,6 @@ export default class TagsDisplay extends React.Component {
     })
   }
 
-  handleInitialTouch = (event) => {
-    event.preventDefault()
-    this.setState({
-      initialTouch: event.targetTouches[0].clientX,
-      initialPosition: this.state.move
-    })
-  }
-
-  handleSwipe = (event) => {
-    event.preventDefault()
-    var touchMovement = Math.floor(event.targetTouches[0].clientX - this.state.initialTouch);
-    this.setState({touchMovement: touchMovement})
-    if (this.state.move + touchMovement > 0) {
-    /* When it is swiped to the beginning of the tag list */
-      this.setState({
-        move: 0
-      })
-    } else if (this.state.tagListMaskWidth - this.state.move - touchMovement > this.state.tagListWidth) {
-    /* When it is swiped to the end of the tag list */
-      this.setState({
-        move: this.state.tagListMaskWidth - this.state.tagListWidth
-      })
-    } else if (touchMovement < 100 || touchMovement > -100) {
-    /* When it is moving in between with small gesture movement */
-      this.setState({
-        move: this.state.initialPosition + touchMovement
-      })
-    } else if (touchMovement >= 100 || touchMovement <= -100){
-    /* When it is moving in between with bigger movement */
-      this.setState({
-        move: this.state.move + touchMovement + (touchMovement * 100)
-      })
-    }
-  }
-
   endOfTagList() {
     if (this.state.tagListMaskWidth - this.state.move >= this.state.tagListWidth) {
       return true
