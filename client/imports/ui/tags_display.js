@@ -8,7 +8,6 @@ export default class TagsDisplay extends React.Component {
     super(props);
     this.handleMoveLeft = this.handleMoveLeft.bind(this);
     this.handleMoveRight = this.handleMoveRight.bind(this);
-    this.handleSwipe = this.handleSwipe.bind(this);
     this.state = {
       tags: [],
       initialTouch: 0,
@@ -189,22 +188,32 @@ export default class TagsDisplay extends React.Component {
 
   render() {
     const styles = {
-      tagList: {
+      tagListSmall: {
         display: 'inline-block',
         width: 'auto',
-        overflowX: 'hidden',
+        overflowX: 'scroll',
+        position: 'relative',
+        whiteSpace: 'nowrap',
+      },
+      tagListLarge: {
+        display: 'inline-block',
+        width: 'auto',
+        overflowX: 'scroll',
         position: 'relative',
         whiteSpace: 'nowrap',
         transform: 'translateX(' + this.state.move + 'px)',
-        transition: this.state.windowSize < 420? 'transform 700ms ease-out' : 'transform 200ms ease-in-out',
+        transition: 'transform 200ms ease-in-out',
       },
       mask: {
-        width: this.state.windowSize < 601 ? '100%' : this.state.move == 0 || this.endOfTagList() ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
-        overflowX: 'hidden',
+        width: this.state.windowSize < 768 ? '100%' : this.state.move == 0 || this.endOfTagList() ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
+        overflowX: 'scroll',
         position: 'relative',
         display: 'inline-block',
         cursor: 'pointer',
         height: 'calc(100% - 2%)',
+        overflowX: 'scroll',
+        WebkitOverflowScrolling: 'touch',
+        WebkitScrollBar: 'none',
       }
     }
     return (
@@ -223,9 +232,8 @@ export default class TagsDisplay extends React.Component {
               </button>
           }
 
-            <span
-              style = {styles.mask} ref="the_mask" onTouchStart = {this.handleInitialTouch} onTouchMove = {this.handleSwipe} onTouchEnd = {this.handleTouchEnd}>
-              <span style = {styles.tagList} ref="tag_list">
+            <span style = {styles.mask} ref="the_mask">
+              <span style = {this.state.windowSize < 768 ? styles.tagListSmall : styles.tagListLarge} ref="tag_list">
                 {this.listTags()}
               </span>
             </span>
@@ -236,7 +244,7 @@ export default class TagsDisplay extends React.Component {
               <button
                 className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
                 style = {this.style.chevronRight}
-                onClick={this.handleMoveRight}
+                onClick = {this.handleMoveRight}
               >
                 <i className="black-text medium material-icons">chevron_right</i>
               </button>
