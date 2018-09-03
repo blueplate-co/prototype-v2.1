@@ -29,7 +29,7 @@ const ShowroomBanner = props => {
 
   handleClick = () => {
     if (props.kitchenExisted) {
-      FlowRouter.go('/cooking/dishes')
+      FlowRouter.go('/profile/show_homecook_profile')
     } else {
       FlowRouter.go('/profile/create_homecook_profile')
     }
@@ -50,7 +50,7 @@ const ShowroomBanner = props => {
             <p><bold>Why not finish setting up your kitchen and enjoy our promotion of</bold></p>
             <h4 className = "bp-blue-text" style = {bannerStyle.promo_title}>HK$200 cash reward</h4>
             <p>for every 4 dishes listed</p>
-            <button className = "btn left" style = {bannerStyle.banner_button}>continue</button>
+            <button className = "btn left" style = {bannerStyle.banner_button} onClick={handleClick}>continue</button>
           </div>
           :
           <div className = "card-content">
