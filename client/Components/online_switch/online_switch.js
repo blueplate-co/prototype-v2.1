@@ -39,28 +39,30 @@ Template.online_switch.events({
 
 sentNotificationToRequester = function(dishesRequest) {
   var dish_name = Dishes.findOne({ _id: dishesRequest.dish_id }).dish_name,
-      buyer = Profile_details.findOne({ user_id: dishesRequest.buyer_id }),
+      buyer = Profile_details.findOne({ user_id: dishesRequest.buyer_id })
       byer_name = buyer.last_name + " " + buyer.first_name;
       
   var site = document.location.origin + "/dish/" + dishesRequest.dish_id;
 
   if (!dishesRequest.sent_notification) {
-    var message = "The dish you requested (" + dish_name + ")  is ready for ordering now. Check it out at " + site + " URL";
+    var message = "The delicious dish you requested (" + dish_name + ") is now ready for ordering. Check it out at " + site;
     Meteor.call('message.sms', buyer.mobile, "Hey! " + message.trim(), (err, res) => {
       if (!err) {
+
+        // Send smssend
         Meteor.call('requestdish.update', dishesRequest._id, (err, res) => {
           if (!err) {
             console.log('Updated');
           }
         });
         
-        // Sent email
+        // Send email
         Meteor.call(
           'requestdish.sendEmail',
           byer_name + " <" + buyer.email + ">",
           'the.phan@blueplate.co',
           'blueplate.co!',
-          'Hey ' + byer_name + "\n\n" + message + "\n\n Wish you good appetite! \n Warm regard,"
+          'Hey ' + buyer.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
         );
         // console.log('Message sent');
       }

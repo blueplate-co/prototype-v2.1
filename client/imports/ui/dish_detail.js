@@ -205,7 +205,7 @@ export class Dish_Detail extends Component {
             var serving_option = this.state.data.serving_option;
             var address = Session.get('address');
             //check if the dish has been put in shopping check_shopping_cart
-            var order = Shopping_cart.findOne({"product_id": this.state._id, 'buyer_id': foodie_id});
+            var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
             var total_price_per_dish = 0;
             if (order) {
                 var order_id = order._id;
@@ -216,7 +216,14 @@ export class Dish_Detail extends Component {
                     quantity,
                     total_price_per_dish,
                     function(err) {
-                        if (err) Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                        if (err) {
+                            Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                        } else {
+                            //- send to Facebook Pixel
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
+                            Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
+                            FlowRouter.go('/main');
+                        }
                     }
                 )
             } else {
@@ -259,14 +266,16 @@ export class Dish_Detail extends Component {
         var seller_email = seller_detail.emails[0].address;
 
         var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
-                     "there are foodies requested. Let’s make it online to let them order it from you.\n" + 
-                     "Check it out here: " + document.location.origin + "/cooking/dishes";
+                     "foodies are requesting it!. Let’s make more good food and more hungry foodies happy.\n" + 
+                     "Switch your dish to online here: " + document.location.origin + "/cooking/dishes";
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
                 fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
+                
+                // Send sms
                 Meteor.call('message.sms', kitchen_contact, message.trim(), (err, res) => {
                     if (!err) {
                         console.log(res);
@@ -279,7 +288,7 @@ export class Dish_Detail extends Component {
                     kitchen.chef_name + " <" + seller_email + ">",
                     'the.phan@blueplate.co',
                     'blueplate.co',
-                    'Hey ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Warm regard, \n Blueplate Team,"
+                    'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
 
                 FlowRouter.go('/main');

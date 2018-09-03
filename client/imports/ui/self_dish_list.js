@@ -19,13 +19,14 @@ class SelfDishList extends Component {
   }
 
   handleClick = (item) => {
-    if (item.user_id == Meteor.userId()){
-      FlowRouter.go('/cooking/dishes');
-    } else {
-      Session.set('selectedDish', item);
-      Session.set('selectedItem', 'dish');
-      this.props.popup(item);
-    }
+    window.open('/dish/' + item._id, '_blank');
+    // if (item.user_id == Meteor.userId()){
+    //   FlowRouter.go('/cooking/dishes');
+    // } else {
+    //   Session.set('selectedDish', item);
+    //   Session.set('selectedItem', 'dish');
+    //   this.props.popup(item);
+    // }
   }
 
   renderList = () => {
@@ -87,8 +88,8 @@ class SelfDishList extends Component {
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+          <div className="col s6 m6 l6 text-right no-padding manage-dish-text">
+            <a href="/cooking/dishes">{ this.props.manageDish }</a>
           </div>
         </div>
 

@@ -267,7 +267,7 @@ export default class SignUp extends Component {
               Bert.alert(err.reason,"danger", "growl-top-right");
             } else {
               //- send to Facebook Pixel
-              fbq('trackCustom', 'CompleteRegistration', { fullname: full_name, email: email, role: this.state.role });
+              fbq('trackCustom', 'CompleteRegistration', { fullname: full_name, email: email });
               Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                 if (!err) {
                   self.setState({stage: 4, signUpLoading: false,});

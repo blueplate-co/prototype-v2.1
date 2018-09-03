@@ -123,8 +123,8 @@ class SelfMenuList extends Component {
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+          <div className="col s6 m6 l6 text-right no-padding manage-menu-text">
+            <a href="/cooking/menus">{ this.props.manageMenu }</a>
           </div>
         </div>
 

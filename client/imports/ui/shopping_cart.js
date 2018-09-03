@@ -192,7 +192,8 @@ class ShoppingCart extends Component {
         });
         globalCart.forEach((item, index) => {
             for( var key in item ) {
-                if (item[key] == '') {
+                debugger
+                if (item[key] == '' && key == 'address') {
                     $('#address_' + item.id).addClass('invalid');
                     Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
                     $('#address_' + item.id).prepend($('#address_' + item.id));
@@ -255,9 +256,9 @@ class ShoppingCart extends Component {
                             <span className="detail-title">{ detail.dish_name }</span>
                             <span className="detail-price">HK${ detail.dish_selling_price }</span>
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }>-</span>
+                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle"></i></span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }>+</span>
+                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle"></i></span>
                             </div>
                         </div>
                     </div>
@@ -301,6 +302,7 @@ class ShoppingCart extends Component {
         for (var i = 0; i < product.length; i++) {
             subtotal += parseFloat(product[i].total_price_per_dish);
         }
+        subtotal = subtotal.toFixed(2);
         return (
             <div key={index}>
                 <div className="row kitchen-name">
@@ -405,6 +407,7 @@ class ShoppingCart extends Component {
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
             total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
         }
+        total = total.toFixed(2);
         Session.set('product', '');
         return (
             <div className="container">

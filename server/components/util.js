@@ -95,14 +95,18 @@ Meteor.methods({
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         var history = Bonus_history.find({
+          "email": email,
           "date": {'$gte': firstDay, '$lte': lastDay}
         }).fetch();
         var sum = 0;
         for (var i = 0; i< history.length; i++) {
           sum += history[i].amount;
         }
-
-        if (sum + amount > 2000) {
+        var sumOf = parseInt(sum) + parseInt(amount);
+        console.log('Sum of: ' + sumOf);
+        console.log('History: ');
+        console.log(JSON.stringify(history));
+        if (sumOf > 2000) {
           return {
             status: 'error',
             message: 'Out of limit of this month.'
@@ -112,6 +116,12 @@ Meteor.methods({
         var user = Meteor.users.findOne(
           { emails: { $elemMatch: { address: email } } }
         );
+        if (!user) {
+          return {
+            status: 'error',
+            message: 'User not found.'
+          }
+        }
         var user_id = user._id;
         var buyerCredits = user.credits;
         Meteor.users.update(

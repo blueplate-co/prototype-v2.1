@@ -181,7 +181,7 @@ Meteor.methods({
       kitchen_tags:kitchen_tags,
       house_rule:house_rule,
       order_count: 0,
-      average_rating: 0,
+      average_rating: 5,
       createdAt: new Date(),
       updatedAt: new Date(),
       profileImg: profileImg,
