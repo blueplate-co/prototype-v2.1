@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+
 //- empty cart store global in this page
 window.globalCart = [];
 // var kitchen = { id: item, service: "", date: "", time: "", timeStamp: "", address: "" };
@@ -192,7 +193,6 @@ class ShoppingCart extends Component {
         });
         globalCart.forEach((item, index) => {
             for( var key in item ) {
-                debugger
                 if (item[key] == '' && key == 'address') {
                     $('#address_' + item.id).addClass('invalid');
                     Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
@@ -230,7 +230,9 @@ class ShoppingCart extends Component {
             })
             this.sendSummaryCheckoutDish();
             //- send to Facebook Pixel
-            fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
+            if (location.hostname == 'www.blueplate.co') {
+                fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
+            }
             FlowRouter.go('/payment');
         }
     }
@@ -389,7 +391,9 @@ class ShoppingCart extends Component {
 
     componentDidMount() {
         //- send to Facebook Pixel
-        fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+        }
     }
 
     componentWillUpdate() {

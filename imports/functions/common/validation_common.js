@@ -31,6 +31,16 @@ export function getCountryCodeFromKitChen(kitchen) {
 };
 
 /**
+ * Validation env throught by domain
+ */
+export function validateEnv() {
+  if (location.hostname == 'www.blueplate.co') {
+    return 'production';
+  }
+  return 'dev';
+}
+
+/**
  * Get country code phone number from profile_details
  * 
  * @param profile object
