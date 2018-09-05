@@ -154,7 +154,9 @@ class TopNavigation extends Component {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/shopping_cart");
               //- send to Facebook Pixel
-              fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
+              if (location.hostname == 'www.blueplate.co') {
+                fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
+              }
               this.setState({ sidebarOpen: false }, () => {
                 FlowRouter.go("/shopping_cart");
               });
@@ -263,7 +265,9 @@ class TopNavigation extends Component {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
       //- send to Facebook Pixel
-      fbq('track', 'Search', { search_string: queryString });
+      if (location.hostname == 'www.blueplate.co') {
+        fbq('track', 'Search', { search_string: queryString });
+      }
       // excute searching when keyword longer than 2 characters
       if (queryString.length >= 2) {
         // create index search for dish_name
@@ -407,7 +411,9 @@ class TopNavigation extends Component {
                   <li
                     onClick={() => {
                       //- send to Facebook Pixel
-                      fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                      if (location.hostname == 'www.blueplate.co') {
+                        fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                      }
                       FlowRouter.go("/shopping_cart");
                     }}
                     className="icon"

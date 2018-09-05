@@ -469,18 +469,19 @@ Template.request_card.events({
 
     function charge_card(buyer_id, seller_id, trans_no, paymentType) {
       setTimeout(function () {
-        console.log(buyer_id, seller_id, trans_no)
-        var transaction = Transactions.findOne({
+        console.log(buyer_id, seller_id, trans_no);
+        var transaction = Transactions.find({
           'buyer_id': buyer_id,
           'seller_id': seller_id,
           'transaction_no': trans_no
-        })
+        }).fetch();
         console.log(transaction)
         var homecook = Kitchen_details.findOne({
           'user_id': Meteor.userId()
         })
-        var stripeToken = transaction.stripeToken
-        var amount = transaction.amount
+        var stripeToken = transaction.stripeToken;
+        //- calculation sum of transactions
+        var amount = transaction.reduce(function(total, item){ return total + item.amount }, 0);
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
         Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType);
       }, 3 * 1000)

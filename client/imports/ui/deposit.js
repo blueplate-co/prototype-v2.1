@@ -15,7 +15,9 @@ export default class Deposit extends Component {
 
     componentDidMount () {
         //- send to Facebook Pixel
-        fbq('track', 'ViewContent', { content_name: 'TopupPage', content_ids: Meteor.userId() });
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('track', 'ViewContent', { content_name: 'TopupPage', content_ids: Meteor.userId() });
+        }
     }
 
     validationAndCredits() {
@@ -53,7 +55,9 @@ export default class Deposit extends Component {
                         packageValue = 1000;
                         break;
                 }
-                fbq('trackCustom', 'SelectCreditPackage', { content_ids: Meteor.userId(), packageValue: packageValue });
+                if (location.hostname == 'www.blueplate.co') {
+                    fbq('trackCustom', 'SelectCreditPackage', { content_ids: Meteor.userId(), packageValue: packageValue });
+                }
                 Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function(err, response){
                     if (err) {
                         console.log(err);

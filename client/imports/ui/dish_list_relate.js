@@ -8,6 +8,7 @@ import Like from './like_button';
 import DishStatus from './dish_status';
 
 
+
 // App component - represents the whole app
 export class DishListRelate extends Component {
 
@@ -21,7 +22,9 @@ export class DishListRelate extends Component {
 
   tracking = (item) => {
     //- send to Facebook Pixel
-    fbq('trackCustom', 'ClickOnRelateDish', { user_id: Meteor.userId(), dish_id: item._id, dish_name: item.dish_name });
+    if (location.hostname == 'www.blueplate.co') {
+      fbq('trackCustom', 'ClickOnRelateDish', { user_id: Meteor.userId(), dish_id: item._id, dish_name: item.dish_name });
+    }
   }
 
   renderList = () => {
