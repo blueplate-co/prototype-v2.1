@@ -250,6 +250,25 @@
     color: #56AACD;
 }
 
+.show-more-descr-dish, .handle-see-chef-story {
+    color: #56AACD;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.handle-see-chef-story {
+    margin-left: 5px;
+}
+
+.btn-close-dish-descr {
+    color: #56AACD;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 1px solid #56AACD;
+    text-transform: lowercase;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     .style-service, .style-unService {
@@ -528,4 +547,11 @@
 .dish-relate-see-more {
     color: #56AACD;
     margin-top: -20px;
+}
+
+.loading-dish-detail {
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    right: 50%;
 }
