@@ -37,7 +37,7 @@ Meteor.methods({
         menus_id: [],
         kitchens_id: [],
         count: 0,
-        createAt: new Date()
+        createdAt: new Date()
       })
       Dishes.find({dish_tags: {tag: tag_name}}).forEach((dish) => {
         dishes_id.push(dish._id)
