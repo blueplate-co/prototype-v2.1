@@ -8,6 +8,8 @@ import {
   check
 } from 'meteor/check';
 
+import { Email } from 'meteor/email'
+
 Profile_details = new Mongo.Collection('profile_details');
 Kitchen_details = new Mongo.Collection('kitchen_details');
 
@@ -187,6 +189,24 @@ Meteor.methods({
       profileImg: profileImg,
       bannerProfileImg: bannerProfileImg
     });
+  },
+  'kitchen.email' (subject, kitchen_contact) {
+    var user_details = Meteor.users.findOne({"_id": Meteor.userId()});
+    var email_address = user_details.emails[0].address;
+    var user_name = user_details.profile.name;
+    var district = user_details.profile.district;
+    var text =
+      'Signed up on ' + new Date().toDateString() + '\n\n' +
+      'User details: \nUser Name: ' + user_name +
+      '\nEmail: ' + email_address +
+      '\nContact no.: ' + kitchen_contact +
+      '\nDistrict: ' + district;
+    Email.send({
+      from: 'account.admin@blueplate.co',
+      to: 'x+568445105783448@mail.asana.com',
+      subject: subject,
+      text: text
+    })
   },
   'user.updateDistrict' (district) {
     Meteor.users.update({
