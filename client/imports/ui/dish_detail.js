@@ -19,11 +19,13 @@ export class Dish_Detail extends Component {
             summary_order : 0,
             kitchen_likes : 0,
             kitchen_follows : 0,
-            alreadyRequested: false
+            alreadyRequested: false,
+            cooking_story_content: '',
         }
     }
-
+    
     componentDidMount() {
+        $(window).scrollTop(0);
         Meteor.call('dish.get_detail', this.props.id, (error, res) => {
             if (!error) {
                 this.setState({
@@ -125,10 +127,10 @@ export class Dish_Detail extends Component {
         }
     };
 
-    getChefInfo() {
+    renderChefInfo() {
         var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
             source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "",
-            cooking_story_content;
+            cooking_story_content = chef_detail.cooking_story;
 
         if (chef_detail.cooking_story.length > 100) { 
             cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
@@ -165,7 +167,22 @@ export class Dish_Detail extends Component {
                     </div>
                 </div>
                 <div className="row col s12 m12 l8 dish-story-content">
-                    <p id="chef-story-descr">{cooking_story_content}<a href={"/kitchen/" + this.state.data.kitchen_id}>... see more</a></p>
+                    { (this.state.cooking_story_content.length > 0) ?
+                       <p id="chef-story-descr">{this.state.cooking_story_content}
+                            <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
+                                see less
+                            </span>
+                       </p>
+                        :
+                        (chef_detail.cooking_story.length > 100) ?
+                            <p id="chef-story-descr">{cooking_story_content}
+                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
+                                    see more
+                                </span>
+                            </p>
+                            :
+                            <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                    }
                 </div>
             </div>
         );
@@ -222,7 +239,7 @@ export class Dish_Detail extends Component {
                             //- send to Facebook Pixel
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                             Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                            FlowRouter.go('/main');
+                            // FlowRouter.go('/main');
                         }
                     }
                 )
@@ -246,7 +263,7 @@ export class Dish_Detail extends Component {
                             //- send to Facebook Pixel
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                             Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                            FlowRouter.go('/main');
+                            // FlowRouter.go('/main');
                         }
                     }
                 );
@@ -291,11 +308,40 @@ export class Dish_Detail extends Component {
                     'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
 
-                FlowRouter.go('/main');
+                // FlowRouter.go('/main');
             }
         });
 
     };
+
+    handleSeeMoreChefStory(chefStoryCooking) {
+        this.setState({ cooking_story_content: chefStoryCooking});
+    };
+
+    handleSeeLessChefStory() {
+        this.setState({ cooking_story_content: ''});
+    }
+
+    renderDishDescription(dishDescr) {
+        var dish_description = '';
+        if (dishDescr.length > 150) {
+            dish_description = dishDescr.substring(0, 150);
+        }
+
+        return (
+            <span>
+                { (dishDescr.length) > 150 ? 
+                    <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handelOpenModal()}>  see more</span></p>
+                    :
+                    <p>{dishDescr}</p>               
+                }
+            </span>
+        );
+    }
+
+    handelOpenModal() {
+        $('#more_dish_descr').modal('open');
+    }
 
     render() {
         var dish_detail = (this.state.data);
@@ -345,7 +391,7 @@ export class Dish_Detail extends Component {
                                                 </div>
                                                 
                                                 <div className="dish-description">
-                                                    <p>{dish_detail.dish_description}</p>
+                                                    {this.renderDishDescription(dish_detail.dish_description)}
                                                 </div>
                                                 
                                                 <div className="row">
@@ -377,19 +423,30 @@ export class Dish_Detail extends Component {
                                 <div className="row chef-story-row">
                                     <div className="col s12 m7 l7 chef-story-content">
                                         <span id="chef-story-title" className="show_dish_detail_wrapper">Chef Story</span>
-                                        {this.getChefInfo()}
+                                        {this.renderChefInfo()}
                                     </div>
                                 </div>
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
-                                        <p className="chef-relate-title">Chef relate dish</p>
+                                        <p className="chef-relate-title">Chef related dishes</p>
                                         <DishListRelate kitchen_id={this.state.data.kitchen_id} />
                                     </div>
                                 </div>
                             </div>
-                        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+                            {/* Show more infor detail dish description */}
+                            <div id="more_dish_descr" className="modal modal-fixed-footer">
+                                <div className="modal-content">
+                                <h5>{dish_detail.dish_name}</h5>
+                                <p>{dish_detail.dish_description}</p>
+                                </div>
+                                <div className="modal-footer">
+                                <a href="#!" className="modal-close waves-effect waves-green btn-flat btn-close-dish-descr">close</a>
+                                </div>
+                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                        </div>
                     : 
-                        <div className="preloader-wrapper small active">
+                        <div className="preloader-wrapper small active loading-dish-detail">
                             <div className="spinner-layer spinner-green-only">
                                 <div className="circle-clipper left">
                                     <div className="circle"></div>
@@ -414,7 +471,7 @@ export default withTracker(props => {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
     };
-  })(Dish_Detail);
+})(Dish_Detail);
 
 $(document).ready(function () {  
       $(window).bind("scroll", function(e) {

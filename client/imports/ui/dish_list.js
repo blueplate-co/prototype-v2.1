@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
@@ -15,18 +13,23 @@ class DishList extends Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       loading: false
     }
   }
 
-  handleClick = (item) => {
-    Meteor.call('dish.view', item._id, item.user_id);
-    Session.set('selectedDish', item);
-    Session.set('selectedItem', 'dish');
-    Session.set('modal', true);
-    this.props.popup(item);
+  // handleClick = (item) => {
+  //   Meteor.call('dish.view', item._id, item.user_id);
+  //   Session.set('selectedDish', item);
+  //   Session.set('selectedItem', 'dish');
+  //   Session.set('modal', true);
+  //   this.props.popup(item);
+  // }
+
+  handleOnViewDish = (dishId) => {
+
+    BlazeLayout.reset();
+    FlowRouter.go("/dish/" + dishId);
   }
 
   renderList = () => {
@@ -41,7 +44,7 @@ class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <a key={index} target="_blank" className="col xl3 l4 m6 s12 dish-wrapper" href={ "/dish/" + item._id }>
+        <div key={index} className="col xl3 l4 m6 s12 dish-wrapper" onClick={() => this.handleOnViewDish(item._id)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -75,7 +78,7 @@ class DishList extends Component {
             ) : ('')
           }
 
-        </a>
+        </div>
       )
     })
   }

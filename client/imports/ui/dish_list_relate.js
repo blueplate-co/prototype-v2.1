@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
 import DishStatus from './dish_status';
 
-import { navbar_find_by } from '../../../imports/functions/find_by';
 
 // App component - represents the whole app
 export class DishListRelate extends Component {
@@ -39,7 +36,7 @@ export class DishListRelate extends Component {
         hasThumbnail = false;
       }
       return (
-        <a key={index} target="_blank" className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" href={ "/dish/" + item._id } onClick={() => this.tracking(item)}>
+        <div key={index} className="col xl4 l4 m6 s12 modal-trigger dish-relate-wrapper" onClick={() => this.tracking(item)}>
           <div className="relate-images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -75,7 +72,7 @@ export class DishListRelate extends Component {
               }
             </div>
           </div>
-        </a>
+        </div>
       )
     })
   }
