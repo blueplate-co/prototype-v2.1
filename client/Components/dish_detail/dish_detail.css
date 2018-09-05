@@ -3,6 +3,18 @@
     height: 368px;
 }
 
+#dish-image-detail {
+    width: 100.3%;
+    height: 250px;
+    padding: 0px;
+    border-radius: 8px 8px 0px 0px;
+    padding-bottom: 15px;
+}
+
+#dish-image-detail .placeholder {
+    border-radius: 8px 8px 0px 0px;
+}
+
 #service-dish-info {
     padding-top: 20px;
 }
@@ -11,7 +23,7 @@
     width: 71%;
     height: auto;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.236073);
-    border-radius: 4px;
+    border-radius: 8px;
     min-height: 100px;
 }
 
@@ -39,15 +51,25 @@
 }
 
 .dish-description {
-    font-style: normal;
-    font-weight: normal;
-    line-height: 25px;
-    font-size: 16px;
-    padding-top: 20px;
-    padding-right: 10px;
+    line-height: 24px;
+    /* font-size: 16px; */
+    padding-top: 25px;
     color: rgba(0, 0, 0, 0.87);
     word-wrap: break-word;
     overflow: hidden;
+}
+
+.dish-descr-detail-text, .dish-time-order {
+    padding-top: 8px;
+}
+
+.grp-dish-info {
+    padding-top: 25px !important;
+}
+
+#time-ordering {
+    line-height: 24px;
+    padding-top: 8px;
 }
 
 .handle-order-dish {
@@ -122,14 +144,11 @@
 
 .chef-story-content {
     background: #F7F7F7;
+    border-radius: 8px;
 }
 
 .chef-story-row {
     margin-right: 16px;
-}
-
-#chef-story-descr {
-    width: 85%;
 }
 
 .chef-name {
@@ -141,11 +160,12 @@
 }
 
 .chef-story-image {
-    padding-top: 61px !important;
+    padding-top: 30px !important;
 }
 
 .chef-name-summary {
-    padding-top: 62px !important;
+    padding-top: 28px !important;
+    margin-left: 35px !important;
 }
 
 .chef-summary {
@@ -188,10 +208,10 @@
     padding-top: 15px !important;
 }
 
-#serving-option-content, #tag-title {
+#serving-option-content, #tag-title, #dish-description-title {
     font-size: 16px;
     letter-spacing: -0.182857px;
-    color: #4A4A4A;
+    color: rgba(0, 0, 0, 0.87);
     font-weight: 600;
     line-height: 20px;
 }
@@ -203,6 +223,7 @@
 
 .dish-story-content {
     text-align: justify;
+    margin-bottom: 40px;
 }
 
 .dish-serving {
@@ -340,6 +361,10 @@
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
 
+    #dish-image-detail {
+        display: none;
+    }
+    
     #detail-dish-info {
         width: 91%;
     }
@@ -355,6 +380,10 @@
     
     #chef-story-title, .chef-name-summary {
         text-align: center;
+    }
+
+    .chef-name-summary {
+        margin-left: 0px !important;
     }
 
     #chef-story-descr {
@@ -397,6 +426,10 @@
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
 
+    #dish-image-detail {
+        display: none;
+    }
+
     #detail-dish-info {
         width: 95%;
     }
@@ -432,6 +465,7 @@
 
     .chef-name-summary {
         padding-top: 20px !important;
+        margin-left: 0px !important;
     }
 
     /* .chef-story-image {
@@ -485,6 +519,10 @@
         flex-direction: column-reverse;
     }
 
+    .grp-dish-info {
+        padding-top: 0px !important;
+    }
+
     #edit_dish, #delete_dish {
         display: none;
     }
@@ -522,6 +560,7 @@
 
     .chef-name-summary {
         padding-top: 40px !important;
+        margin-left: 0px !important;
     }
 
     .btn-order-dish-detail {

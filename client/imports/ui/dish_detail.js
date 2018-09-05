@@ -115,7 +115,7 @@ export class Dish_Detail extends Component {
     renderTags() {
         if (Object.keys(this.state.data).length > 0) {
             if (this.state.data.dish_tags.length == 0) {
-                return("No tags availble");
+                return("No tags available");
             }
             return (
                 this.state.data.dish_tags.map((item, index) => {
@@ -139,13 +139,13 @@ export class Dish_Detail extends Component {
         }
         
         return (
-            <div className="show_dish_detail_wrapper">
+            <div>
                 <a className="col s12 m12 l1 chef-story-image"
                     href={"/kitchen/" + this.state.data.kitchen_id}
                 >
                     <img src={source_img} id="img-chef" width="78" height="78"/>
                 </a>
-                <div className="row col s12 m12 l4 chef-name-summary">
+                <div className="row col s12 m12 l7 chef-name-summary">
                     <a className="col s12 m12 l10 chef-name"
                         href={"/kitchen/" + this.state.data.kitchen_id}
                     >
@@ -166,7 +166,7 @@ export class Dish_Detail extends Component {
                         </ul>
                     </div>
                 </div>
-                <div className="row col s12 m12 l8 dish-story-content">
+                <div className="row col s12 m12 l12 dish-story-content">
                     { (this.state.cooking_story_content.length > 0) ?
                        <p id="chef-story-descr">{this.state.cooking_story_content}
                             <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
@@ -286,6 +286,7 @@ export class Dish_Detail extends Component {
         var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
         var seller_email = seller_detail.emails[0].address;
 
+        this.setState({alreadyRequested: true});
         var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
                      "foodies are requesting it!. Let’s make more good food and more hungry foodies happy.\n" + 
                      "Switch your dish to online here: " + document.location.origin + "/cooking/dishes";
@@ -334,13 +335,16 @@ export class Dish_Detail extends Component {
         }
 
         return (
-            <span>
+            <div className="dish-descr-detail-text">
                 { (dishDescr.length) > 150 ? 
                     <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handelOpenModal()}>  see more</span></p>
                     :
-                    <p>{dishDescr}</p>               
+                    (dishDescr.length == 0 ) ?
+                        <p>No dish description available.</p>
+                    :
+                        <p>{dishDescr}</p>               
                 }
-            </span>
+            </div>
         );
     }
 
@@ -365,6 +369,21 @@ export class Dish_Detail extends Component {
                             <div className="container-fluid">
                                 <div id="service-dish-info" className="row show_dish_detail_wrapper">
                                     <div id="service-option" className="col s12 m7 l7 leftDish">
+                                        
+                                        <div className="row dish-description">
+                                            <p id="dish-description-title">Dish description</p>
+                                            {this.renderDishDescription(dish_detail.dish_description)}
+                                        </div>
+
+                                        <div className="row dish-time-order">
+                                            <p id="dish-description-title">Order advance</p>
+                                            <p id="time-ordering">
+                                                {dish_detail.days > 0 ? dish_detail.days : 0} day 
+                                                {dish_detail.hours > 0 ? " " + dish_detail.hours : " " +0} hour 
+                                                {dish_detail.mins > 0 ? " " + dish_detail.mins : " " + 0} minutes
+                                            </p>
+                                        </div>
+
                                         <div className="row dish-serving">
                                             <p id="serving-option-content">Serving options</p>
                                             {this.renderServingOption()}
@@ -378,8 +397,14 @@ export class Dish_Detail extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="col s12 m5 l5">
+                                    <div className="col s12 m5 l5 grp-dish-info">
                                         <div id="detail-dish-info">
+                                            <div id="dish-image-detail" className="col s12 m12 l12">
+                                                <ProgressiveImages
+                                                    large={ dish_detail.meta.origin }
+                                                    small={ dish_detail.meta.small }
+                                                />
+                                            </div>
                                             <span id="dish-name">{dish_detail.dish_name}</span>
                                             <div className="rating-content">
                                                 <div className="no-margin">
@@ -395,9 +420,7 @@ export class Dish_Detail extends Component {
                                                     </span>
                                                 </div>
                                                 
-                                                <div className="dish-description">
-                                                    {this.renderDishDescription(dish_detail.dish_description)}
-                                                </div>
+                                                
                                                 
                                                 <div className="row">
                                                     <div className="handle-order-dish">
@@ -425,9 +448,9 @@ export class Dish_Detail extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row chef-story-row">
+                                <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 chef-story-content">
-                                        <span id="chef-story-title" className="show_dish_detail_wrapper">Chef Story</span>
+                                        <span id="chef-story-title">Chef Story</span>
                                         {this.renderChefInfo()}
                                     </div>
                                 </div>
