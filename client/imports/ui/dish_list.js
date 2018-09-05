@@ -18,16 +18,7 @@ class DishList extends Component {
     }
   }
 
-  // handleClick = (item) => {
-  //   Meteor.call('dish.view', item._id, item.user_id);
-  //   Session.set('selectedDish', item);
-  //   Session.set('selectedItem', 'dish');
-  //   Session.set('modal', true);
-  //   this.props.popup(item);
-  // }
-
   handleOnViewDish = (dishId) => {
-
     BlazeLayout.reset();
     FlowRouter.go("/dish/" + dishId);
   }

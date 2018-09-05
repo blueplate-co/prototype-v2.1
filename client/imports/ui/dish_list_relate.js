@@ -25,6 +25,9 @@ export class DishListRelate extends Component {
     if (location.hostname == 'www.blueplate.co') {
       fbq('trackCustom', 'ClickOnRelateDish', { user_id: Meteor.userId(), dish_id: item._id, dish_name: item.dish_name });
     }
+
+    BlazeLayout.reset();
+    FlowRouter.go("/dish/" + item._id);
   }
 
   renderList = () => {
