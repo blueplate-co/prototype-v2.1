@@ -41,7 +41,7 @@
 }
 
 .number-buy {
-    color: #56AACD;
+    color: rgba(0, 0, 0, 0.87);
     float: right;
     font-style: normal;
     font-weight: 600;
@@ -183,7 +183,7 @@
 
 .chef-summary-infor {
     display: inline-block;
-    padding: 0px 12px;
+    padding: 0px 20px;
     color: #727272;
 }
 
