@@ -88,8 +88,12 @@ class TopNavigation extends Component {
   };
 
   toggle = () => {
-    this.setState({ sidebarOpen: true });
+    this.setState({ sidebarOpen: this.state.sidebarOpen ? false : true });
   };
+
+  handleGoHome = () => {
+    FlowRouter.go("/main");
+  }
 
   checkKitchenProfileExists = () => {
     if (Kitchen_details.findOne({ user_id: Meteor.userId() })) {
@@ -111,9 +115,9 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
-            // setTimeout(() => {
-            //   this.setState({ sidebarOpen: false });
-            // }, 200);
+            setTimeout(() => {
+              this.setState({ sidebarOpen: true });
+            }, 500);
             FlowRouter.go("/profile/show_homecook_profile");
           }}
         >
@@ -193,6 +197,9 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
+            setTimeout(() => {
+              this.setState({ sidebarOpen: true });
+            }, 500);
             FlowRouter.go("/main");
           }}
         >
@@ -361,81 +368,85 @@ class TopNavigation extends Component {
   render() {
     var sidebarContent = this.renderSideBar();
     return (
-      <Sidebar
-        sidebar={sidebarContent}
-        open={this.state.sidebarOpen}
-        onSetOpen={this.onSetSidebarOpen}
-        styles={styles}
-      >
-        {this.state.search ? this.renderSearchPage() : ""}
-        <div className="">
-          <div className="navbar-fixed z-depth-0">
-            <nav className="z-depth-0">
-              <div className="nav-wrapper white z-depth-0">
-                <a
-                  href=""
-                  onClick={() => this.toggle()}
-                  className="nav_brand_logo left"
-                  data-activates="side_nav"
-                >
-                  <img
-                    src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BPLogo_sysmbol.svg"
-                    className="navbar_logo"
-                    height="40"
-                    width="40"
-                  />
-                  <i className =
-                    {this.state.sidebarOpen
-                      ?
-                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow rotate"
-                      :
-                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow"}
-                  >keyboard_arrow_down</i>
-                </a>
-                <ul className="left">
-                  <li>
-                    <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
-                    {/* <button className="btn nearby">Nearby</button> */}
-                  </li>
-                </ul>
-                <ul className="right">
-                  <li className="icon" onClick={() => this.openProfile()}>
-                    {
-                      (this.state.avatar) ?
-                        <img style={{ width: '35px', height: '35px', borderRadius: '50%', marginTop: '5px' }} src={this.state.avatar} />
-                      :
-                        <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-                    }
-                  </li>
-
-                  <li
-                    onClick={() => {
-                      //- send to Facebook Pixel
-                      if (location.hostname == 'www.blueplate.co') {
-                        fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
-                      }
-                      FlowRouter.go("/shopping_cart");
-                    }}
-                    className="icon"
-                    id="cart-icon"
-                  >
-                    <span id="cart-number">
-                      {this.props.shoppingCart.length}
-                    </span>
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-                  </li>
-                  {
-                    (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
-                    :
-                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
-                  }
-                </ul>
-              </div>
-            </nav>
+      <div>
+        <div className="nav_brand_logo">
+          <div className="display-sidebar-menu" onClick={() => this.toggle()}>
+            <img
+              src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/list.svg"
+              className="navbar_logo"
+              height="20"
+              width="20"
+            />
+          </div>
+          <div
+            onClick={() => this.handleGoHome()}
+            className="display-main-page"
+            data-activates="side_nav"
+          >
+            <img
+              src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BPLogo_sysmbol.svg"
+              className="navbar_logo"
+              height="30"
+              width="30"
+            />
           </div>
         </div>
-      </Sidebar>
+        <Sidebar
+          sidebar={sidebarContent}
+          open={this.state.sidebarOpen}
+          onSetOpen={this.onSetSidebarOpen}
+          styles={styles}
+        >
+          {this.state.search ? this.renderSearchPage() : ""}
+          <div className="">
+            <div className="navbar-fixed z-depth-0">
+              <nav className="z-depth-0">
+                <div className="nav-wrapper white z-depth-0">
+                  <ul className="left">
+                    <li>
+                      <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
+                      {/* <button className="btn nearby">Nearby</button> */}
+                    </li>
+                  </ul>
+                  <ul className="right">
+                    <li className="icon" onClick={() => this.openProfile()}>
+                      {
+                        (this.state.avatar) ?
+                          <img style={{ width: '35px', height: '35px', borderRadius: '50%', marginTop: '5px' }} src={this.state.avatar} />
+                        :
+                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
+                      }
+                    </li>
+
+                    <li
+                      onClick={() => {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                          fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                        }
+                        FlowRouter.go("/shopping_cart");
+                      }}
+                      className="icon"
+                      id="cart-icon"
+                    >
+                      <span id="cart-number">
+                        {this.props.shoppingCart.length}
+                      </span>
+                      <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
+                    </li>
+                    {
+                      (this.state.width <= 450) ?
+                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                      :
+                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                    }
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </Sidebar>
+      </div>
     );
   }
 }

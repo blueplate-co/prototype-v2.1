@@ -33,16 +33,9 @@ nav {
 .nav_brand_logo {
   height: 40px;
   margin-top: 10px;
-}
-
-.nav_logo_arrow {
-  line-height: 40px !important;
-  height: 40px !important;
-  margin-left: 0px !important;
-  vertical-align: middle;
-  -moz-transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear;
+  position: fixed;
+  z-index: 9999;
+  top: 13px;
 }
 
 .nav_logo_arrow.rotate {
@@ -602,5 +595,25 @@ ul.right .icon {
 }
 
 .chef-title-text, .foodie-title-text {
-  margin-top: 32px;
+  margin-top: 80px;
+}
+
+nav ul.left {
+  margin-left: 80px;
+}
+
+.display-sidebar-menu, .display-main-page {
+  display: inline;
+  position: relative;
+  cursor: pointer;
+}
+
+.display-sidebar-menu {
+  top: -7px;
+  left: 15px;
+  margin-right: 10px;
+}
+
+.display-main-page {
+  left: 20px;
 }
