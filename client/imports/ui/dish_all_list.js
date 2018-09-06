@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
+import DishStatus from './dish_status';
 
 // App component - represents the whole app
 class DishAllList extends Component {
@@ -18,6 +18,11 @@ class DishAllList extends Component {
     this.state = {
       loading: false
     }
+  }
+
+  handleOnViewDish(item) {
+    BlazeLayout.reset();
+    FlowRouter.go("/dish/" + item._id);
   }
 
   renderList = () => {
@@ -32,7 +37,7 @@ class DishAllList extends Component {
         hasThumbnail = false;
       }
       return (
-        <a target="_blank" key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" href={ "/dish/" + item._id }>
+        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={() => this.handleOnViewDish(item)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -48,7 +53,19 @@ class DishAllList extends Component {
             <h5 className="dish-title">{ item.dish_name }</h5>
 
           </div>
-          <div className="row no-margin">
+          {
+            (!isNaN(item.dish_selling_price))
+            ? (
+              <div className="row no-margin">
+                <div className="col s12 l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                <div className="col s12 l6 m6 dish-price no-padding text-right">
+                  <DishStatus status={item.online_status}/>
+                </div>
+              </div>
+            ) : ('')
+          }
+
+          <div className="row">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
               {
@@ -58,17 +75,8 @@ class DishAllList extends Component {
               }
             </div>
           </div>
-          {
-            (!isNaN(item.dish_selling_price))
-            ? (
-              <div className="row">
-                <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-              </div>
-            ) : ('')
-          }
 
-
-        </a>
+        </div>
       )
     })
   }
