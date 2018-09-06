@@ -13,6 +13,7 @@ export default class LocationFilter extends Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.onChange = address => this.setState({ address });
+        this.updateDimensions = this.updateDimensions.bind(this);
         this.getCurrentLatLng = this.getCurrentLatLng.bind(this);
         this.state = {
             popup: false,
@@ -22,12 +23,14 @@ export default class LocationFilter extends Component {
             lng: 0,
             customLat: 0,
             customLng: 0,
-            chooseIndex: 0
+            chooseIndex: 0,
+            width: 0
         }
     }
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
+        window.addEventListener("resize", this.updateDimensions);
         Meteor.call('filter.getAddress', (err, res) => {
             this.setState({
                 userAddress: res
@@ -37,6 +40,7 @@ export default class LocationFilter extends Component {
     
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        window.addEventListener("resize", this.updateDimensions);
     }
     
     setWrapperRef(node) {
@@ -124,6 +128,10 @@ export default class LocationFilter extends Component {
         });
     }
 
+    updateDimensions() {
+        this.setState({width: $(window).width(), height: $(window).height()});
+    }
+
     transferLocation() {
         if (this.state.customLat !== 0 && this.state.customLng !== 0) {
             this.setState({
@@ -171,7 +179,7 @@ export default class LocationFilter extends Component {
             onSelect: this.handleSelect
         };      
         return (
-            <span>
+            <span className={(this.state.width<= 768) ? 'filter_wrapper_span_mobile' : 'filter_wrapper_span_dekstop'}>
                 <li ref={this.setWrapperRef} onClick={() => this.locationPopup()} className={ (this.state.lat !== 0 && this.state.lng !== 0) ? 'location-filter active' : 'location-filter' }>
                     <span>Location</span>
                 </li>

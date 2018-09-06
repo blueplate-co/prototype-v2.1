@@ -629,6 +629,15 @@
     font-size: 20px;
     font-weight: 400;
   }
+  .float-map {
+    display: block!important;
+    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/floating+icon.svg') no-repeat #fff;
+    background-size: contain;
+    position: fixed;
+    z-index: 10;
+    bottom: 40px;
+    right: 25px;
+  }
 }
 
 .slick-slider {
@@ -738,4 +747,86 @@
   stroke-linecap:round;
   stroke-linejoin:round;
   stroke-width:6px;
+}
+
+.tabs .tab a {
+  color: rgba(50, 171, 209, 0.82);
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transition: color .28s ease;
+}
+
+.tabs .indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: #32abd1;
+  will-change: left, right;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  background-color: transparent;
+  color:#32abd1;
+}
+
+.search-map-container {
+  position: fixed;
+  height: 400px;
+  right: 15px!important;
+  height: calc(100vh - 80px);
+  z-index: 100;
+}
+
+/*media (max-width: 768px) {
+  .search-map-container {
+    position: absolute;
+    width: 100vw!important;
+    height: calc(100vh - 80px);
+    z-index: 100;
+    right: 0px!important;
+    padding: 0px!important;
+  }
+} */
+
+.info-window {
+  border-radius: 15px;
+  position: relative;
+}
+
+.info-window .banner {
+  width: 100%;
+  height: 113px;
+  background-size: cover;
+  background-position: center center;
+}
+
+.info-window .avatar {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  background-size: cover;
+  background-position: center center;
+  border-radius: 50%;
+  margin-top: -40px;
+  margin-left: 5px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.info-window h1 {
+  font-size: 14px;
+  display: inline-block;
+  width: 200px;
+  margin: 10px 0px!important;
+}
+
+.info-window .story {
+  display: block;
+  width: 200px;
+  color: #000;
+  font-weight: 300;
 }
