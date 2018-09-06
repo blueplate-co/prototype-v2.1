@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
@@ -18,6 +17,11 @@ class DishAllList extends Component {
     this.state = {
       loading: false
     }
+  }
+
+  handleOnViewDish(item) {
+    BlazeLayout.reset();
+    FlowRouter.go("/dish/" + item._id);
   }
 
   renderList = () => {
@@ -32,7 +36,7 @@ class DishAllList extends Component {
         hasThumbnail = false;
       }
       return (
-        <a target="_blank" key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" href={ "/dish/" + item._id }>
+        <div key={index} className="col xl2 l2 m3 s6 modal-trigger dish-wrapper" onClick={() => this.handleOnViewDish(item)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -68,7 +72,7 @@ class DishAllList extends Component {
           }
 
 
-        </a>
+        </div>
       )
     })
   }

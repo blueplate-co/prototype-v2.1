@@ -335,8 +335,8 @@ export class Dish_Detail extends Component {
 
     renderDishDescription(dishDescr) {
         var dish_description = '';
-        if (dishDescr.length > 250) {
-            dish_description = dishDescr.substring(0, 250);
+        if (dishDescr.length > 200) {
+            dish_description = dishDescr.substring(0, 200);
         }
 
         return (
@@ -346,7 +346,7 @@ export class Dish_Detail extends Component {
                         <span className="show-more-descr-dish" onClick= { () => this.handleSeeLessDishDescr(dishDescr)}> see less</span>
                     </p>
                     :
-                    (dishDescr.length) > 250 ? 
+                    (dishDescr.length) > 300 ? 
                         <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handleSeeMoreDishDescr(dishDescr)}>  see more</span></p>
                         :
                         (dishDescr.length == 0 ) ?
