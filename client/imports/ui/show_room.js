@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { withTracker } from 'meteor/react-meteor-data';
 import DishList from './dish_list';
 import MenuList from './menu_list';
 import ShowroomBanner from './showroom_banner';
@@ -14,11 +15,10 @@ import WishDishList from './wish_dish_list';
 import WishMenuList from './wish_menu_list';
 import ListFilter from './list_filter';
 import Modal from './modal';
-
-import ProgressiveImages from './progressive_image';
+import SearchMap from './search_map';
 
 // App component - represents the whole app
-export default class ShowRoom extends Component {
+class ShowRoom extends Component {
 
   constructor(props) {
     super(props);
@@ -26,6 +26,9 @@ export default class ShowRoom extends Component {
       selectedDish: {},
       kitchenExisted: false,
       screen: this.props.screen,
+      tab: 'all',
+      width: 0,
+      showmap: true
     }
   }
 
@@ -41,6 +44,10 @@ export default class ShowRoom extends Component {
     });
   }
 
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
   componentDidMount = () => {
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
@@ -48,7 +55,13 @@ export default class ShowRoom extends Component {
       this.setState({
         kitchenExisted: res
       })
-    })
+    });
+    //- set timeout for delay responsive UI
+    setTimeout(() => {
+      $('.tabs').tabs({});
+      $('.page-footer').hide();
+    }, 500);
+    window.addEventListener('resize', this.handleWindowSizeChange);
   }
 
   renderCategories = () => {
@@ -65,6 +78,24 @@ export default class ShowRoom extends Component {
         </li>
       </ul>
     )
+  }
+
+  changeTab = (tab) => {
+    this.setState({
+      tab: tab
+    })
+  }
+
+  renderMap = () => {
+    if (this.state.width >= 768) {
+      return <SearchMap />;
+    } else {
+      if (this.state.showmap) {
+        return <SearchMap />;
+      } else {
+        return '';
+      }
+    }
   }
 
   render() {
@@ -111,13 +142,45 @@ export default class ShowRoom extends Component {
       case 'search':
         return (
           <div>
-            <div className="row" style={{padding: '20px 10px'}}>
-              <div className="col l12" style={{padding: '0px'}}>
-                <ListFilter />
+            <div className="row">
+              {/* Begin tab component */}
+              <a onClick={() => this.setState({ showmap: true })}className="btn-floating btn-large waves-effect waves-light float-map" style={{display: 'none'}}></a>
+              <div className="row">
+                <div className="col l8 m6 s12">
+                  <ul className="tabs">
+                    <li onClick={() => this.changeTab('all')} className="tab col s3"><a className="active" href="#all">All</a></li>
+                    <li onClick={() => this.changeTab('dishes')} className="tab col s3"><a href="#dishes">Dishes</a></li>
+                    <li onClick={() => this.changeTab('menus')} className="tab col s3"><a href="#menus">Menus</a></li>
+                    <li onClick={() => this.changeTab('kitchens')} className="tab col s3"><a href="#kitchens">Kitchens</a></li>
+                  </ul>
+                  {/* Tab all */}
+                  <div id="all" className="col s12">
+                    <ListFilter tab={this.state.tab}/>
+                    <DishSearchList />
+                    <MenuSearchList popup={ this.handleMenuPopup }/>
+                    <KitchenSearchList />
+                  </div>
+                  {/* Tab dishes */}
+                  <div id="dishes" className="col s12">
+                    <ListFilter tab={this.state.tab}/>
+                    <DishSearchList />
+                  </div>
+                  {/* Tab menus */}
+                  <div id="menus" className="col s12">
+                    <ListFilter tab={this.state.tab}/>
+                    <MenuSearchList popup={ this.handleMenuPopup }/>
+                  </div>
+                  {/* Tab kitchens */}
+                  <div id="kitchens" className="col s12">
+                    <ListFilter tab={this.state.tab}/>
+                  </div>
+                </div>
+                <div className="col l4 m6 s12 search-map-container">
+                {
+                  this.renderMap()
+                }
+                </div>
               </div>
-              <DishSearchList title="Dishes" seemore="" popup={ this.handleDishPopup }/>
-              <MenuSearchList title="Menus" seemore="" popup={ this.handleMenuPopup }/>
-              {/* <KitchenSearchList title="Kitchens" seemore=""/> */}
               <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
             </div>
           </div>
@@ -153,3 +216,9 @@ export default class ShowRoom extends Component {
     }
   }
 }
+
+export default withTracker(props => {
+  return {
+      searchingData: Session.get('search_result')
+  };
+})(ShowRoom);

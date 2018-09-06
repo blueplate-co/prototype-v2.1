@@ -4,11 +4,7 @@ import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
 import Rating from './rating';
-import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
-
-import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
 class MenuSearchList extends Component {
@@ -80,7 +76,7 @@ class MenuSearchList extends Component {
     }
     return this.props.menus.map((item, index) => {
       return (
-        <div key={index} className="col xl3 l3 m6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl4 l4 m6 s6 menu-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style={{ height: '150px' }}>
             <Like type="menu" id={item._id} />
             <div className="slider">
@@ -109,13 +105,27 @@ class MenuSearchList extends Component {
     })
   }
 
+  renderResultTitle = () => {
+    if (Session.get('search_result')) {
+      let keywork = $('#searchQuery').val();
+      if (Session.get('search_result').menu.length > 20) {
+        let overNumber = Session.get('search_result').menu.length - (Session.get('search_result').menu.length % 5);
+        return 'Over ' + overNumber + '+ results for ' + '"'+ keywork +'"';
+      } else {
+        return Session.get('search_result').menu.length + ' menus results for ' + '"'+ keywork +'"';
+      }
+    } else {
+      return 'Menus';
+    }
+  }
+
   render() {
     return (
       <div className='col s12 m12 l12 no-padding list-container'>
         {/* title */}
         <div className="row">
-          <div className="col s6 m6 l6 no-padding">
-            <h5>{ this.props.title }</h5>
+          <div className="col s12 m12 l6 no-padding">
+            <h5>{ this.renderResultTitle() }</h5>
           </div>
           <div className="col s6 m6 l6 text-right no-padding">
             <a>{ this.props.seemore }</a>
@@ -127,7 +137,7 @@ class MenuSearchList extends Component {
             {
               (this.props.listLoading)
               ?
-                <span>...loading</span>
+                <span>Your favorite menus is searching...</span>
               :
                 this.renderList()
             }
