@@ -836,6 +836,8 @@ Template.create_homecook_profile.events({
                   console.log('Error when update district');
                 } else {
                   hide_loading_progress();
+                  var subject = kitchen_name;
+                  Meteor.call('kitchen.email', subject, kitchen_contact);
                   Materialize.toast('Profile created!', 4000);
                   FlowRouter.go('/path_choosing');
                 }
