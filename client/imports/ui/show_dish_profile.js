@@ -16,12 +16,18 @@ export default class ShowDishProfile extends Component {
     }
   }
 
+  handleMenuPopup = (item) => {
+    this.setState({
+      selectedMenu: item
+    });
+  }
+
   render() {
     if (FlowRouter.getParam('homecook_id')) {
       return (
         <div className = "col xl12 l12 m12 s12">
           <DishList title="Dishes" seemore = ""/>
-          <MenuList title = "Menus" seemore = ""/>
+          <MenuList title = "Menus" seemore = "" popup = { this.handleMenuPopup }/>
           <Modal dish = {this.state.selectedDish} menu = {this.state.selectredMenu}/>
         </div>
       )

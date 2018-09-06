@@ -6,6 +6,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
+import DishStatus from './dish_status';
 
 // App component - represents the whole app
 class SelfDishList extends Component {
@@ -62,7 +63,15 @@ class SelfDishList extends Component {
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title full">{ item.dish_name }</h5>
           </div>
+
           <div className="row no-margin">
+            <div className="col s12 l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+            <div className="col s12 l6 m6 dish-price no-padding text-right">
+              <DishStatus status={item.online_status}/>
+            </div>
+          </div>
+
+          <div className="row">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
               {
@@ -71,9 +80,6 @@ class SelfDishList extends Component {
                 : ''
               }
             </div>
-          </div>
-          <div className="row">
-            <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
           </div>
 
         </div>
