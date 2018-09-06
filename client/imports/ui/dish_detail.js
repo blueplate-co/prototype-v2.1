@@ -6,7 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -21,6 +21,7 @@ export class Dish_Detail extends Component {
             kitchen_follows : 0,
             alreadyRequested: false,
             cooking_story_content: '',
+            more_dish_description: ''
         }
     }
     
@@ -181,7 +182,10 @@ export class Dish_Detail extends Component {
                                 </span>
                             </p>
                             :
-                            <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                            (chef_detail.cooking_story.length === 0) ?
+                                <p id="chef-story-descr">No cooking story has been shared yet.</p>
+                            :
+                                <p id="chef-story-descr">{chef_detail.cooking_story}</p>
                     }
                 </div>
             </div>
@@ -202,9 +206,11 @@ export class Dish_Detail extends Component {
     }
 
     dishOrder() {
+        show_loading_progress();
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
         if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
             Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+            hide_loading_progress();
         } else {
             var dish_details = this.state.data;
             var foodie_id = Meteor.userId();
@@ -241,7 +247,6 @@ export class Dish_Detail extends Component {
                                 fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                             }                            
                             Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                            // FlowRouter.go('/main');
                         }
                     }
                 )
@@ -267,11 +272,13 @@ export class Dish_Detail extends Component {
                                 fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                             }
                             Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                            // FlowRouter.go('/main');
                         }
                     }
                 );
             }
+            setTimeout ( () => {
+                hide_loading_progress();
+            }, 500);
         }
     }
     
@@ -313,8 +320,6 @@ export class Dish_Detail extends Component {
                     'blueplate.co',
                     'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
-
-                // FlowRouter.go('/main');
             }
         });
 
@@ -330,26 +335,36 @@ export class Dish_Detail extends Component {
 
     renderDishDescription(dishDescr) {
         var dish_description = '';
-        if (dishDescr.length > 150) {
-            dish_description = dishDescr.substring(0, 150);
+        if (dishDescr.length > 250) {
+            dish_description = dishDescr.substring(0, 250);
         }
 
         return (
             <div className="dish-descr-detail-text">
-                { (dishDescr.length) > 150 ? 
-                    <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handelOpenModal()}>  see more</span></p>
+                { (this.state.more_dish_description.length > 0) ?
+                    <p>{this.state.more_dish_description}  
+                        <span className="show-more-descr-dish" onClick= { () => this.handleSeeLessDishDescr(dishDescr)}> see less</span>
+                    </p>
                     :
-                    (dishDescr.length == 0 ) ?
-                        <p>No dish description available.</p>
-                    :
-                        <p>{dishDescr}</p>               
+                    (dishDescr.length) > 250 ? 
+                        <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handleSeeMoreDishDescr(dishDescr)}>  see more</span></p>
+                        :
+                        (dishDescr.length == 0 ) ?
+                            <p>No dish description available.</p>
+                            :
+                            <p>{dishDescr}</p>     
+                    
                 }
             </div>
         );
     }
 
-    handelOpenModal() {
-        $('#more_dish_descr').modal('open');
+    handleSeeLessDishDescr() {
+        this.setState({ more_dish_description: '' });
+    }
+
+    handleSeeMoreDishDescr(dishDescr) {
+        this.setState({ more_dish_description: dishDescr });
     }
 
     render() {
@@ -414,9 +429,9 @@ export class Dish_Detail extends Component {
                                                     <span><Rating rating={dish_detail.average_rating}/></span>
                                                     <span className="sum-order-dish">{dish_detail.order_count}</span>
                                                     <span className="number-buy">
-                                                        <span id="reduce_order" onClick={this.handleReduceOrder.bind(this)}>-</span>
+                                                        <span id="reduce_order" onClick={this.handleReduceOrder.bind(this)}><i className="fa fa-minus-circle"></i></span>
                                                         <span>{this.state.sumOrder}</span>
-                                                        <span id="add_order" onClick={this.handleAddOrder.bind(this)}>+</span>
+                                                        <span id="add_order" onClick={this.handleAddOrder.bind(this)}><i className="fa fa-plus-circle"></i></span>
                                                     </span>
                                                 </div>
                                                 
@@ -461,17 +476,6 @@ export class Dish_Detail extends Component {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Show more infor detail dish description */}
-                            <div id="more_dish_descr" className="modal modal-fixed-footer">
-                                <div className="modal-content">
-                                <h5>{dish_detail.dish_name}</h5>
-                                <p>{dish_detail.dish_description}</p>
-                                </div>
-                                <div className="modal-footer">
-                                <a href="#!" className="modal-close waves-effect waves-green btn-flat btn-close-dish-descr">close</a>
-                                </div>
-                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">

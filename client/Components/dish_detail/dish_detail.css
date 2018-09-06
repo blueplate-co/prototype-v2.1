@@ -50,6 +50,10 @@
     letter-spacing: -0.45px;
 }
 
+.number-buy span {
+    margin: 0px 7px;
+}
+
 .dish-description {
     line-height: 24px;
     /* font-size: 16px; */
@@ -60,7 +64,9 @@
 }
 
 .dish-descr-detail-text, .dish-time-order {
-    padding-top: 8px;
+    padding-top: 15px;
+    line-height: 24px;
+    text-align: justify;
 }
 
 .grp-dish-info {
@@ -130,6 +136,7 @@
 
 #img-chef {
     border-radius: 50%;
+    background-color: #d8dbdd;
 }
 
 #chef-story-title {
@@ -227,7 +234,7 @@
 }
 
 .dish-serving {
-    margin-right: -50px;
+    padding-top: 15px;
 }
 
 #reduce_order {
@@ -468,9 +475,9 @@
         margin-left: 0px !important;
     }
 
-    /* .chef-story-image {
-        width: 45% !important;
-    } */
+    .dish-serving {
+        margin-right: -50px;
+    }
 
     .chef-story-image {
         padding-top: 25px !important;
@@ -517,6 +524,10 @@
     #service-dish-info {
         display: flex;
         flex-direction: column-reverse;
+    }
+
+    .dish-serving {
+        margin-right: 0px;
     }
 
     .grp-dish-info {
@@ -586,6 +597,7 @@
 .dish-relate-see-more {
     color: #56AACD;
     margin-top: -20px;
+    text-decoration: underline;
 }
 
 .loading-dish-detail {

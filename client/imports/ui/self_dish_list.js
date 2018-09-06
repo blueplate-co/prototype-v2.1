@@ -19,9 +19,10 @@ class SelfDishList extends Component {
   }
 
   handleClick = (item) => {
-    window.open('/dish/' + item._id, '_blank');
+    // window.open('/dish/' + item._id, '_blank');
     // if (item.user_id == Meteor.userId()){
-    //   FlowRouter.go('/cooking/dishes');
+      BlazeLayout.reset();
+      FlowRouter.go('/dish/' + item._id);
     // } else {
     //   Session.set('selectedDish', item);
     //   Session.set('selectedItem', 'dish');

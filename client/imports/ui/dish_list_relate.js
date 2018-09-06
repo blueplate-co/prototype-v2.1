@@ -92,7 +92,7 @@ export class DishListRelate extends Component {
               this.renderList()
           }
         </div>
-        <a className="col s12 m12 l12 text-right dish-relate-see-more" href={"/kitchen/" + this.props.kitchen_id}>... see more</a>
+        <a className="col s12 m12 l12 text-right dish-relate-see-more" href={"/kitchen/" + this.props.kitchen_id}>see more</a>
       </div>
     );
   }
