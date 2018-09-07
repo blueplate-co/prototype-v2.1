@@ -586,7 +586,7 @@ ul.right .icon {
   height: 12px;
 }
 
-#top-navigation-container>div>div>ul>li:not(:nth-child(-n+1)):hover {
+#top-navigation-container>div>div>div>ul>li:not(:nth-child(-n+1)):hover {
   background-color: #56aacd52;
 }
 
@@ -599,7 +599,7 @@ ul.right .icon {
 }
 
 nav ul.left {
-  margin-left: 80px;
+  margin-left: 85px;
 }
 
 .display-sidebar-menu, .display-main-page {
@@ -611,9 +611,16 @@ nav ul.left {
 .display-sidebar-menu {
   top: -7px;
   left: 15px;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .display-main-page {
   left: 20px;
 }
+
+/* Portrait phones and smaller 480
+@media (max-width: 520px) {
+  nav ul.left {
+    margin-left: 90px;
+  }
+} */
