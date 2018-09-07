@@ -65,8 +65,8 @@ class SelfDishList extends Component {
           </div>
 
           <div className="row no-margin">
-            <div className="col s12 l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-            <div className="col s12 l6 m6 dish-price no-padding text-right">
+            <div className="col s6 l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+            <div className="col s6 l6 m6 dish-price no-padding text-right">
               <DishStatus status={item.online_status}/>
             </div>
           </div>
