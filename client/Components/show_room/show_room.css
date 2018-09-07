@@ -777,8 +777,8 @@
 .search-map-container {
   position: fixed;
   height: 400px;
-  right: 15px!important;
-  height: calc(100vh - 80px);
+  right: 10px!important;
+  height: calc(100vh - 295px);
   z-index: 100;
 }
 

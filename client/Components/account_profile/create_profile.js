@@ -728,10 +728,11 @@ Template.create_foodie_profile.events({
             if (err) {
               Materialize.toast('Profile created!', 4000, 'rounded bp-green');
             } else {
-              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+              Meteor.call('user.updateDistrict', district, (err, res) => {
                 if (err) {
                   console.log('Error when update district');
                 } else {
+                  Materialize.toast('Profile created!', 4000, 'rounded bp-green');
                   FlowRouter.go('/main');
                 }
               })

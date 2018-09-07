@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import { withTracker } from 'meteor/react-meteor-data';
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 // Searching map component - represents the whole app
 export class SearchMap extends Component {
@@ -30,6 +30,16 @@ export class SearchMap extends Component {
       })
     }
   };
+
+  componentDidMount = () => {
+    show_loading_progress();
+  }
+
+  componentWillReceiveProps = () => {
+    if (this.props.loaded) {
+      hide_loading_progress();
+    }
+  }
 
   render() {
     return (
