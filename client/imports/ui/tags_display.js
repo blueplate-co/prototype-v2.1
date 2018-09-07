@@ -36,7 +36,7 @@ export default class TagsDisplay extends React.Component {
       },
       chevronLeft: {
         display: 'inline-block',
-        position: 'relative',
+        position: 'absolute',
         left: '0px',
         top: '-21px'
       },
@@ -186,7 +186,7 @@ export default class TagsDisplay extends React.Component {
         <h6>Can't decide? Here's some extra help:</h6>
           {
             this.endOfTagList() ?
-              ""
+              null
             :
               <button
                 className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
@@ -204,7 +204,7 @@ export default class TagsDisplay extends React.Component {
             </span>
           {
             (this.state.move == 0) ?
-              ""
+              null
             :
               <button
                 className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
