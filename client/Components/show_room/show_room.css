@@ -777,21 +777,30 @@
 .search-map-container {
   position: fixed;
   height: 400px;
-  right: 15px!important;
+  right: 10px!important;
   height: calc(100vh - 80px);
   z-index: 100;
 }
 
-/*media (max-width: 768px) {
+@media (max-width: 600px) {
   .search-map-container {
-    position: absolute;
-    width: 100vw!important;
-    height: calc(100vh - 80px);
-    z-index: 100;
-    right: 0px!important;
-    padding: 0px!important;
+    display: none;
   }
-} */
+  #close_map{
+    position: absolute;
+    z-index: 100;
+    right: 6px;
+    top: 50px;
+    font-size: 25px;
+    color: black;
+    display: block!important;
+    cursor: pointer;
+  }
+}
+
+#close_map{
+  display: none;
+}
 
 .info-window {
   border-radius: 15px;

@@ -28,7 +28,7 @@ class ShowRoom extends Component {
       screen: this.props.screen,
       tab: 'all',
       width: 0,
-      showmap: true
+      showmap: false
     }
   }
 
@@ -47,6 +47,12 @@ class ShowRoom extends Component {
   handleWindowSizeChange = () => {
     this.setState({ width: window.innerWidth });
   };
+
+  componentWillReceiveProps = (nextProps, nextState) => {
+    if (nextProps.searchingData !== this.props.searchingData) {
+      this.changeTab(this.state.tab, 1);
+    }
+  }
 
   componentDidMount = () => {
     $("[role=navigation]").height('65px');
@@ -80,22 +86,65 @@ class ShowRoom extends Component {
     )
   }
 
-  changeTab = (tab) => {
-    this.setState({
-      tab: tab
-    })
-  }
-
-  renderMap = () => {
-    if (this.state.width >= 768) {
-      return <SearchMap />;
-    } else {
-      if (this.state.showmap) {
-        return <SearchMap />;
-      } else {
-        return '';
+  get_list_kitchen = (kitchen_id_list) => {
+    // get location of kitchens for map markers
+    for (var i = 0; i < kitchen_id_list.length; ++i) {
+      for (var j = i + 1; j < kitchen_id_list.length; ++j) {
+        if (kitchen_id_list[i] === kitchen_id_list[j])
+          kitchen_id_list.splice(j--, 1);
       }
     }
+    //- get location of item in array
+    var listkitchens = [];
+    for (var i = 0; i < kitchen_id_list.length; i++) {
+      let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
+      listkitchens.push(selected_kitchen);
+    }
+    Session.set('list_kitchen_for_map', listkitchens);
+  }
+
+  changeTab = (tab, time) => {
+    this.setState({
+      tab: tab
+    },() => {
+      //- get unique kitchen id of 3 lists.
+      if (Session.get('search_result')) {
+        let uniqueDishKitchen, uniqueMenuKitchen, uniqueKitchen;
+        if (Session.get('search_result').dish) {
+          uniqueDishKitchen = [...new Set(Session.get('search_result').dish.map(item => item.kitchen_id))];
+        } else {
+          uniqueDishKitchen = [];
+        }
+        if (Session.get('search_result').menu) {
+          uniqueMenuKitchen = [...new Set(Session.get('search_result').menu.map(item => item.kitchen_id))];
+        } else {
+          uniqueMenuKitchen = [];
+        }
+        if (Session.get('search_result').kitchen) {
+          uniqueKitchen = [...new Set(Session.get('search_result').kitchen.map(item => item._id))];
+        } else {
+          uniqueKitchen = [];
+        }
+        switch (tab) {
+          case 'all':
+            let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+            this.get_list_kitchen(kitchen_id_list);
+            break;
+          case 'dishes':
+            this.get_list_kitchen(uniqueDishKitchen);
+            break;
+          case 'menus':
+            this.get_list_kitchen(uniqueMenuKitchen);
+            break;
+          case 'kitchens':
+            this.get_list_kitchen(uniqueKitchen);
+            break;
+        }
+      }
+      if (time == 1) {
+        this.changeTab(tab, 2);
+      }
+    });
   }
 
   render() {
@@ -144,41 +193,38 @@ class ShowRoom extends Component {
           <div>
             <div className="row">
               {/* Begin tab component */}
-              <a onClick={() => this.setState({ showmap: true })}className="btn-floating btn-large waves-effect waves-light float-map" style={{display: 'none'}}></a>
+              <a onClick={() => { this.setState({ showmap: true }); $('.search-map-container').toggle(); }} className="btn-floating btn-large waves-effect waves-light float-map" style={{display: 'none'}}></a>
               <div className="row">
-                <div className="col l8 m6 s12">
+                <div id="search_result_container" className="col l8 m6 s12">
                   <ul className="tabs">
-                    <li onClick={() => this.changeTab('all')} className="tab col s3"><a className="active" href="#all">All</a></li>
-                    <li onClick={() => this.changeTab('dishes')} className="tab col s3"><a href="#dishes">Dishes</a></li>
-                    <li onClick={() => this.changeTab('menus')} className="tab col s3"><a href="#menus">Menus</a></li>
-                    <li onClick={() => this.changeTab('kitchens')} className="tab col s3"><a href="#kitchens">Kitchens</a></li>
+                    <li onClick={() => this.changeTab('all', 1)} className="tab col s3"><a className="active" href="#all">All</a></li>
+                    <li onClick={() => this.changeTab('dishes', 1)} className="tab col s3"><a href="#dishes">Dishes</a></li>
+                    <li onClick={() => this.changeTab('menus', 1)} className="tab col s3"><a href="#menus">Menus</a></li>
+                    <li onClick={() => this.changeTab('kitchens', 1)} className="tab col s3"><a href="#kitchens">Kitchens</a></li>
                   </ul>
                   {/* Tab all */}
+                  <ListFilter tab={this.state.tab}/>
                   <div id="all" className="col s12">
-                    <ListFilter tab={this.state.tab}/>
                     <DishSearchList />
                     <MenuSearchList popup={ this.handleMenuPopup }/>
                     <KitchenSearchList />
                   </div>
                   {/* Tab dishes */}
                   <div id="dishes" className="col s12">
-                    <ListFilter tab={this.state.tab}/>
                     <DishSearchList />
                   </div>
                   {/* Tab menus */}
                   <div id="menus" className="col s12">
-                    <ListFilter tab={this.state.tab}/>
                     <MenuSearchList popup={ this.handleMenuPopup }/>
                   </div>
                   {/* Tab kitchens */}
                   <div id="kitchens" className="col s12">
-                    <ListFilter tab={this.state.tab}/>
+                    <KitchenSearchList />
                   </div>
                 </div>
                 <div className="col l4 m6 s12 search-map-container">
-                {
-                  this.renderMap()
-                }
+                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="fa fa-times"></i>
+                  <SearchMap />
                 </div>
               </div>
               <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
