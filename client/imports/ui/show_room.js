@@ -28,7 +28,7 @@ class ShowRoom extends Component {
       screen: this.props.screen,
       tab: 'all',
       width: 0,
-      showmap: true
+      showmap: false
     }
   }
 
@@ -100,7 +100,6 @@ class ShowRoom extends Component {
       let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
       listkitchens.push(selected_kitchen);
     }
-    debugger
     Session.set('list_kitchen_for_map', listkitchens);
   }
 
@@ -146,18 +145,6 @@ class ShowRoom extends Component {
         this.changeTab(tab, 2);
       }
     });
-  }
-
-  renderMap = () => {
-    if (this.state.width >= 768) {
-      return <SearchMap />;
-    } else {
-      if (this.state.showmap) {
-        return <SearchMap />;
-      } else {
-        return '';
-      }
-    }
   }
 
   render() {
@@ -206,9 +193,9 @@ class ShowRoom extends Component {
           <div>
             <div className="row">
               {/* Begin tab component */}
-              <a onClick={() => this.setState({ showmap: true })}className="btn-floating btn-large waves-effect waves-light float-map" style={{display: 'none'}}></a>
+              <a onClick={() => { this.setState({ showmap: true }); $('.search-map-container').toggle(); }} className="btn-floating btn-large waves-effect waves-light float-map" style={{display: 'none'}}></a>
               <div className="row">
-                <div className="col l8 m6 s12">
+                <div id="search_result_container" className="col l8 m6 s12">
                   <ul className="tabs">
                     <li onClick={() => this.changeTab('all', 1)} className="tab col s3"><a className="active" href="#all">All</a></li>
                     <li onClick={() => this.changeTab('dishes', 1)} className="tab col s3"><a href="#dishes">Dishes</a></li>
@@ -236,9 +223,8 @@ class ShowRoom extends Component {
                   </div>
                 </div>
                 <div className="col l4 m6 s12 search-map-container">
-                {
-                  this.renderMap()
-                }
+                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="fa fa-times"></i>
+                  <SearchMap />
                 </div>
               </div>
               <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
