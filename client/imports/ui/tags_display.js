@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import ReactDOM from 'react-dom';
 
+import { isMobileDevice } from './../../../imports/functions/isMobileDevice.js';
+
 export default class TagsDisplay extends React.Component {
   constructor(props) {
     super(props);
@@ -10,8 +12,6 @@ export default class TagsDisplay extends React.Component {
     this.handleMoveRight = this.handleMoveRight.bind(this);
     this.state = {
       tags: [],
-      initialTouch: 0,
-      touchMovement: 0,
       initialPosition: 0,
       move: 0,
       tagColor: [],
@@ -21,30 +21,56 @@ export default class TagsDisplay extends React.Component {
     }
     this.style = {
       tagWrapper: {
-        paddingTop: '12px',
-        position: 'absolute',
         width: '100%',
-        position: 'sticky',
-        top: '80px',
+        position: 'relative',
         zIndex: '100',
         backgroundColor: 'white',
-        whiteSpace: 'nowrap',
-        transition: 'top 0.3s',
         verticalAlign: 'middle',
         maxHeight: '80px',
-        cursor: 'pointer',
       },
       chevronLeft: {
-        display: 'inline-block',
         position: 'absolute',
         left: '0px',
-        top: '-21px'
+        bottom: '4px',
+        width: '50px',
+        paddingLeft: '0px'
       },
       chevronRight: {
-        display: 'inline-block',
         position: 'absolute',
         right: '0px',
-        bottom: '-9px'
+        bottom: '4px',
+        width: '50px',
+        paddingLeft: '30px',
+        paddingRight: '0px'
+      },
+      tagListSmall: {
+        display: 'inline-block',
+        width: 'auto',
+        position: 'relative',
+        whiteSpace: 'nowrap',
+        overflowX: 'scroll',
+        WebkitOverflowScrolling: 'touch',
+        WebkitScrollbar: 'none',
+      },
+      mask: {
+        width: '100%',
+        position: 'relative',
+        display: 'inline-block',
+        cursor: 'pointer',
+        height: '38px',
+        overflowX: 'hidden',
+      },
+      mobileMask: {
+        width: '100%',
+        position: 'relative',
+        display: 'inline-block',
+        cursor: 'pointer',
+        height: '38px',
+        overflowX: 'scroll',
+        WebkitOverflowScrolling: 'touch',
+        WebkitScrollbar: {
+          display: 'none'
+        },
       }
     }
   }
@@ -99,7 +125,6 @@ export default class TagsDisplay extends React.Component {
     if (! window.innerWidth == this.state.windowSize) {
       this.setState({
         windowSize: window.innerWidth,
-        initialTouch: 0,
         touchMovement: 0,
         move: 0,
       })
@@ -133,13 +158,13 @@ export default class TagsDisplay extends React.Component {
 
   handleMoveLeft = () => {
     this.setState({
-      move: this.state.move - 300,
+      move: this.state.move + 300,
     })
   }
 
   handleMoveRight = (document) => {
     this.setState({
-      move: this.state.move + 300,
+      move: this.state.move - 300,
     })
   }
 
@@ -152,14 +177,7 @@ export default class TagsDisplay extends React.Component {
   }
 
   render() {
-    const styles = {
-      tagListSmall: {
-        display: 'inline-block',
-        width: 'auto',
-        overflowX: 'scroll',
-        position: 'relative',
-        whiteSpace: 'nowrap',
-      },
+    const style = {
       tagListLarge: {
         display: 'inline-block',
         width: 'auto',
@@ -168,52 +186,40 @@ export default class TagsDisplay extends React.Component {
         whiteSpace: 'nowrap',
         transform: 'translateX(' + this.state.move + 'px)',
         transition: 'transform 200ms ease-in-out',
-      },
-      mask: {
-        width: this.state.windowSize < 768 ? '100%' : this.state.move == 0 || this.endOfTagList() ? 'calc(100% - 64px)' : 'calc(100% - 64px - 64px)',
-        overflowX: 'scroll',
-        position: 'relative',
-        display: 'inline-block',
-        cursor: 'pointer',
-        height: 'calc(100% - 2%)',
-        overflowX: 'scroll',
-        WebkitOverflowScrolling: 'touch',
-        WebkitScrollBar: 'none',
       }
     }
     return (
       <div style = {this.style.tagWrapper}>
         <h6>Can't decide? Here's some extra help:</h6>
-          {
-            this.endOfTagList() ?
-              null
-            :
-              <button
-                className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
-                style = {this.style.chevronLeft}
-                onClick={this.handleMoveLeft}
-              >
-                <i className="black-text medium material-icons">chevron_left</i>
-              </button>
-          }
-
-            <span style = {styles.mask} ref="the_mask">
-              <span style = {this.state.windowSize < 768 ? styles.tagListSmall : styles.tagListLarge} ref="tag_list">
-                {this.listTags()}
-              </span>
+          <span style = {isMobileDevice()?this.style.mobileMask:this.style.mask} ref="the_mask">
+            {
+              this.state.move == 0 || isMobileDevice() ?
+                null
+              :
+                <button
+                  className = 'chevronLeft btn-flat transparent z-depth-0 waves-effect waves-light'
+                  style = {this.style.chevronLeft}
+                  onClick={this.handleMoveLeft}
+                >
+                  <i className="black-text large material-icons">chevron_left</i>
+                </button>
+            }
+            <span style = {isMobileDevice() ? this.style.tagListSmall : style.tagListLarge} ref="tag_list">
+              {this.listTags()}
             </span>
-          {
-            (this.state.move == 0) ?
-              null
-            :
-              <button
-                className = 'btn-floating transparent z-depth-0 waves-effect waves-red hide-on-small-only'
-                style = {this.style.chevronRight}
-                onClick = {this.handleMoveRight}
-              >
-                <i className="black-text medium material-icons">chevron_right</i>
-              </button>
-          }
+            {
+              this.endOfTagList() || isMobileDevice() ?
+                null
+              :
+                <button
+                  className = 'chevronRight btn-flat transparent z-depth-0 waves-effect waves-light'
+                  style = {this.style.chevronRight}
+                  onClick = {this.handleMoveRight}
+                >
+                  <i className="black-text large material-icons">chevron_right</i>
+                </button>
+            }
+          </span>
       </div>
     )
   }
