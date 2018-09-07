@@ -350,6 +350,26 @@ export default class ListFilter extends Component {
             result.kitchen = result_kitchen;
             // immutability for search_result_origin, use this filter effect for session search_result
             Session.set('search_result', result);
+            // get location of kitchens for map markers
+            //- get unique kitchen id of 3 lists.
+            let uniqueDishKitchen = [...new Set(result.dish.map(item => item.kitchen_id))];
+            let uniqueMenuKitchen = [...new Set(result.menu.map(item => item.kitchen_id))];
+            let uniqueKitchen = [...new Set(result.kitchen.map(item => item._id))];
+            let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+            // concat 3 arrays and remove duplicated items
+            for (var i = 0; i < kitchen_id_list.length; ++i) {
+            for (var j = i + 1; j < kitchen_id_list.length; ++j) {
+                if (kitchen_id_list[i] === kitchen_id_list[j])
+                kitchen_id_list.splice(j--, 1);
+            }
+            }
+            //- get location of item in array
+            var listkitchens = [];
+            for (var i = 0; i < kitchen_id_list.length; i++) {
+            let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
+            listkitchens.push(selected_kitchen);
+            }
+            Session.set('list_kitchen_for_map', listkitchens);
         } else {
             Materialize.toast('No data for filter.', 4000, 'rounded bp-green');
         }

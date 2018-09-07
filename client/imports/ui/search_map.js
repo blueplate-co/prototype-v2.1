@@ -10,8 +10,7 @@ export class SearchMap extends Component {
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
-      selectedPlace: {},
-      kitchens: []
+      selectedPlace: {}
     }
   }
 
@@ -43,7 +42,7 @@ export class SearchMap extends Component {
 
   render() {
     return (
-      <Map google={this.props.google} onClick={this.onMapClicked} center={{ lat: 22.3249546, lng: 114.1379439}} zoom={11}>
+      <Map google={this.props.google} onClick={this.onMapClicked} center={{ lat: 22.3249546, lng: 114.1379439}} zoom={10}>
         {
           (Session.get('list_kitchen_for_map')) ?
             Session.get('list_kitchen_for_map').map((kitchen, index)=> {
