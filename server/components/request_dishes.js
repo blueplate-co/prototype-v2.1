@@ -30,6 +30,9 @@ Meteor.methods({
     },
 
     'requestdish.sendEmail'(to, from, subject, text) {
+        from === '' ? from = 'michael.lin@blueplate.co' : from;
+        subject === '' ? subject = 'blueplate.co!' : subject;
+        
         check([to, from, subject, text], [String]);
         this.unblock();
         Email.send({ to, from, subject, text });

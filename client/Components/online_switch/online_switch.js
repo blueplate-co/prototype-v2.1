@@ -40,7 +40,7 @@ Template.online_switch.events({
 sentNotificationToRequester = function(dishesRequest) {
   var dish_name = Dishes.findOne({ _id: dishesRequest.dish_id }).dish_name,
       buyer = Profile_details.findOne({ user_id: dishesRequest.buyer_id })
-      byer_name = buyer.last_name + " " + buyer.first_name;
+      buyer_name = buyer.last_name + " " + buyer.first_name;
       
   var site = document.location.origin + "/dish/" + dishesRequest.dish_id;
 
@@ -59,9 +59,9 @@ sentNotificationToRequester = function(dishesRequest) {
         // Send email
         Meteor.call(
           'requestdish.sendEmail',
-          byer_name + " <" + buyer.email + ">",
-          'the.phan@blueplate.co',
-          'blueplate.co!',
+          buyer_name + " <" + buyer.email + ">",
+          '',
+          '',
           'Hey ' + buyer.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
         );
         // console.log('Message sent');

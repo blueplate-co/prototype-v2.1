@@ -316,8 +316,8 @@ export class Dish_Detail extends Component {
                 Meteor.call(
                     'requestdish.sendEmail',
                     kitchen.chef_name + " <" + seller_email + ">",
-                    'the.phan@blueplate.co',
-                    'blueplate.co',
+                    '', /* @param mail from..... default*/
+                    '', /* @param subject - default*/
                     'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
             }

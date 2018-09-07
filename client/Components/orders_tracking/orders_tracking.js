@@ -21,7 +21,9 @@ Template.orders_tracking.helpers({
   'order_sent': function() {
     var orders = Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).fetch(),
         orderIds =[],
-        buyer_name, 
+        buyer, 
+        seller_email,
+        kitchen,
         smsList = {};
 
     orders.map(function(order) {
@@ -37,18 +39,18 @@ Template.orders_tracking.helpers({
           }
         });
   
-        var kitchen = Kitchen_details.findOne({
-          user_id: order.seller_id
-        });
-  
+        kitchen = Kitchen_details.findOne({ user_id: order.seller_id });
+        
+        // Get email Chef from Users collection
+        var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
+        seller_email = seller_detail.emails[0].address;
+
         var kitchen_phone_number = kitchen.kitchen_contact,
             countryCode = getCountryCodeFromKitChen(kitchen);
         
         kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
   
-        buyer_name = Profile_details.findOne({
-          user_id: order.buyer_id
-        }).foodie_name;
+        buyer = Profile_details.findOne({  user_id: order.buyer_id });
   
         var dish = Dishes.findOne({
               _id: order.product_id
@@ -78,12 +80,21 @@ Template.orders_tracking.helpers({
     for (var phoneNumber in smsList) {
       if (smsList.hasOwnProperty(phoneNumber)) {
           var message = smsList[phoneNumber];
-          message = 'New incoming order! ' + buyer_name + ' has just placed ' + message + ' from you.'
-          // Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
-          //   if (!err) {
-          //     console.log('Message sent');
-          //   }
-          // });
+          message = 'New incoming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you.'
+          Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
+            if (!err) {
+              console.log('Message sent');
+
+              // Send email
+              Meteor.call(
+                'requestdish.sendEmail',
+                kitchen.chef_name + " <" + seller_email + ">",
+                '', /* @param mail from..... default*/
+                '', /* @param subject - default*/
+                'Hey ' + kitchen.chef_name + ",\n\n" + message + "\n\n Happy cooking! \n Blueplate"
+              );
+            }
+          });
       }
     }
     
@@ -422,14 +433,26 @@ Template.pending_confirmation.events({
         
         kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
 
+        var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
+        var seller_email = seller_detail.emails[0].address;
+
         var buyer_name = Profile_details.findOne({user_id: buyer_id}).foodie_name,
             message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
             
-        // Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
-        //   if (!err) {
-        //     console.log('Message sent');
-        //   }
-        // });
+        Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
+          if (!err) {
+            console.log('Message sent');
+
+           // Sent email
+           Meteor.call(
+              'requestdish.sendEmail',
+              kitchen.chef_name + " <" + seller_email + ">",
+              '', /* @param mail from..... default*/
+              '', /* @param subject - default*/
+              'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
+          );
+          }
+        });
       })
     }
   },
