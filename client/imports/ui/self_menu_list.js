@@ -99,7 +99,11 @@ class SelfMenuList extends Component {
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
-              <span className="order-count">{ item.order_count }</span>
+              {
+                (parseInt(item.order_count) >= 10)
+                ? <span className="order-count">{ item.order_count }</span>
+                : ''
+              }
             </div>
           </div>
           <div className="row">
@@ -119,8 +123,8 @@ class SelfMenuList extends Component {
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+          <div className="col s6 m6 l6 text-right no-padding manage-menu-text">
+            <a href="/cooking/menus">{ this.props.manageMenu }</a>
           </div>
         </div>
 

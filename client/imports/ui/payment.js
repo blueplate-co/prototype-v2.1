@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 class Modal extends React.Component {
 
@@ -129,6 +130,10 @@ class Payment extends Component {
 	}
 
     componentDidMount() {
+        //- send to Facebook Pixel
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('track', 'ViewContent', { content_name: 'Select Payment', content_ids: Meteor.userId() });
+        }
         if (!Session.get('product')) {
             Materialize.toast('Please complete your order before.', 'rounded bp-green');
             FlowRouter.go('/shopping_cart');
@@ -137,8 +142,12 @@ class Payment extends Component {
     }
 
     choosePayment(payment) {
-        var self = this;
+        show_loading_progress();
         if (payment == 'credits') {
+            //- send to Facebook Pixel
+            if (location.hostname == 'www.blueplate.co') {
+                fbq('trackCustom', 'SelectPayment', { content_name: 'Credits', content_ids: Meteor.userId() });
+            }
             // get current credits of user
             Meteor.call('payment.getCredits', (err, credits) => {
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
@@ -163,7 +172,7 @@ class Payment extends Component {
                     if (trueBalance < total) {
                         // not enough money to pay
                         this.setState({
-                            pendingCost: pendingCost
+                            pendingCost: parseFloat(pendingCost.toString())
                         },() => {
                             this.openModal();
                         })
@@ -204,13 +213,19 @@ class Payment extends Component {
                             })
                         })
                     }
+                    hide_loading_progress();
                 });
             });
         } else {
             // if choose credit card is payment method
+            //- send to Facebook Pixel
+            if (location.hostname == 'www.blueplate.co') {
+                fbq('trackCustom', 'SelectPayment', { content_name: 'Credits Card', content_ids: Meteor.userId() });
+            }
             this.setState({
                 payment: payment
             });
+            hide_loading_progress();
         }
     }
 
@@ -308,6 +323,10 @@ class Payment extends Component {
                     action: false
                 })
             } else {
+                //- send to Facebook Pixel
+                if (location.hostname == 'www.blueplate.co') {
+                    fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
+                }
                 var StripeToken = response.id;
                 var transaction_no = 1;
                 //- add each every product into order collection

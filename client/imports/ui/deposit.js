@@ -13,6 +13,13 @@ export default class Deposit extends Component {
         }
     }
 
+    componentDidMount () {
+        //- send to Facebook Pixel
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('track', 'ViewContent', { content_name: 'TopupPage', content_ids: Meteor.userId() });
+        }
+    }
+
     validationAndCredits() {
         var creditPackage = this.state.creditPackage;
         this.setState({
@@ -35,6 +42,22 @@ export default class Deposit extends Component {
             } else {
                 // use Stripetoken to add this card into Customer account
                 Meteor.call('payment.addCard', response.id);
+                //- send to Facebook Pixel
+                var packageValue = 0;
+                switch (creditPackage) {
+                    case 1:
+                        packageValue = 250;
+                        break;
+                    case 2:
+                        packageValue = 500;
+                        break;
+                    case 3:
+                        packageValue = 1000;
+                        break;
+                }
+                if (location.hostname == 'www.blueplate.co') {
+                    fbq('trackCustom', 'SelectCreditPackage', { content_ids: Meteor.userId(), packageValue: packageValue });
+                }
                 Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function(err, response){
                     if (err) {
                         console.log(err);

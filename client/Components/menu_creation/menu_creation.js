@@ -13,6 +13,11 @@ import {
 
 Template.menu_creation.onRendered(function(){
   window.scrollTo(0,0);
+  $('.tooltip').tipso({
+    speed: 400,
+    position: 'bottom',
+    background: '#343434'
+  })
   this.$('modal').modal({
       dismissible: false, // Modal can be dismissed by clicking outside of the modal
       opacity: .5, // Opacity of modal background

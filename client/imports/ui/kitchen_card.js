@@ -84,7 +84,11 @@ export default class KitchenCard extends Component {
         <div className="row no-margin">
           <div className="col l12 m12 dish-rating no-padding text-left">
             <Rating rating={this.props.averageRating}/>
-            <span className="order-count">{ this.props.orderCount }</span>
+            {
+              (parseInt(this.props.orderCount) >= 10)
+              ? <span className="order-count">{ this.props.orderCount }</span>
+              : ''
+            }
           </div>
         </div>
       </div>

@@ -70,7 +70,8 @@ class TopNavigation extends Component {
       search: false,
       width: window.innerWidth,
       status: "Search",
-      credits: 0
+      credits: 0,
+      avatar: ''
     };
   }
 
@@ -87,8 +88,13 @@ class TopNavigation extends Component {
   };
 
   toggle = () => {
-    this.setState({ sidebarOpen: true });
+    this.setState({ sidebarOpen: this.state.sidebarOpen ? false : true });
   };
+
+  handleGoHome = () => {
+    this.setState({ sidebarOpen: false });
+    FlowRouter.go("/main");
+  }
 
   checkKitchenProfileExists = () => {
     if (Kitchen_details.findOne({ user_id: Meteor.userId() })) {
@@ -101,35 +107,26 @@ class TopNavigation extends Component {
   renderSideBar = () => {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/main");
-            });
-          }}
-        >
-          <span>Search food</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
-        </li>
-        <li className="divider" />
-
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/shopping_cart");
-            });
-          }}
-        >
-          <span>Shopping cart</span>
-          <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-        </li>
-        <li>
-          <span>Notification</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/notification.svg" />
+        <li className="not-cursor foodie-title-text">
+          <span id="menu-foodie-mode-title">Foodie</span>
+          <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foodie_sidebar_icon.svg"/>
         </li>
 
-        <li
+        <li className="switch-chef-text"
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            localStorage.setItem("userMode", "chef");
+            setTimeout(() => {
+              this.setState({ sidebarOpen: true });
+            }, 500);
+            FlowRouter.go("/profile/show_homecook_profile");
+          }}
+        >
+          <span>Switch to cooking</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
+        </li>
+        
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/wish-list");
@@ -137,10 +134,10 @@ class TopNavigation extends Component {
           }}
         >
           <span>Wishlist</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Heart.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/love.svg" />
         </li>
 
-        <li
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/orders_tracking");
@@ -148,24 +145,35 @@ class TopNavigation extends Component {
           }}
         >
           <span>Order Status</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/OrderStatus.svg" />
+          { (this.props.orderStatus.length > 0)
+            ?
+              <span className="notification-status"></span>
+            :
+              ""
+           }
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/status.svg" />
         </li>
 
-        <li className="divider" />
-        <li
+        <li className="visted-color"
           onClick={() => {
-            this.setState({ sidebarOpen: false });
-            localStorage.setItem("userMode", "chef");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: true });
-            }, 300);
+            this.setState({ sidebarOpen: false }, () => {
+              FlowRouter.go("/shopping_cart");
+              //- send to Facebook Pixel
+              if (location.hostname == 'www.blueplate.co') {
+                fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
+              }
+              this.setState({ sidebarOpen: false }, () => {
+                FlowRouter.go("/shopping_cart");
+              });
+            });
           }}
         >
-          <span>Switch to cooking</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+          <span>Shopping cart</span>
+          <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
-        <li className="divider" />
-        <li>
+
+        <li className="help-title-content">
           <span>Help</span>
         </li>
         <li
@@ -180,31 +188,38 @@ class TopNavigation extends Component {
       </ul>
     ) : (
       <ul className="sidebar-container">
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/main");
-            });
-          }}
-        >
-          <span>Search food</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg" />
+
+        <li className="not-cursor chef-title-text">
+          <span id="menu-chef-mode-title">Chef</span>
+          <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef_sidebar_icon.svg" />
         </li>
-        <li className="divider" />
-        <li
+
+        <li className="switch-foodie-text"
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "foodie");
             setTimeout(() => {
               this.setState({ sidebarOpen: true });
-            }, 300);
+            }, 500);
+            FlowRouter.go("/main");
           }}
         >
           <span>Switch to foodie</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Switch.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
-        <li className="divider" />
-        <li
+        
+        <li className="visted-color"
+          onClick={() => {
+            this.setState({ sidebarOpen: false }, () => {
+              this.checkKitchenProfileExists();
+            });
+          }}
+        >
+          <span className="your-kitchen-menu">Your Kitchen</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen.svg" />
+        </li>
+
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/cooking/dashboard");
@@ -212,52 +227,27 @@ class TopNavigation extends Component {
           }}
         >
           <span>Dashboard</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dashboard.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dash.svg" />
         </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              this.checkKitchenProfileExists();
-            });
-          }}
-        >
-          <span>Kitchen profile</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-        </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/cooking/dishes");
-            });
-          }}
-        >
-          <span>Manage dishes</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manage-dish.svg" />
-        </li>
-        <li
-          onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/cooking/menus");
-            });
-          }}
-        >
-          <span>Manage menus</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/manageManage.svg" />
-        </li>
-
-        <li
+        
+        <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/cooking/orders");
             });
           }}
         >
-          <span>Manage orders</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/oven.svg" />
+          <span>Current orders</span>
+          { (this.props.currentOrder.length > 0)
+            ?
+              <span className="notification-status"></span>
+            :
+              ""
+           }
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/curent+order.svg" />
         </li>
 
-        <li className="divider" />
-        <li>
+        <li className="help-title-content">
           <span>Help</span>
         </li>
         <li
@@ -273,11 +263,21 @@ class TopNavigation extends Component {
     );
   };
 
+  removeDeletedItem(arr) {
+    let deleted = arr.filter(element => element.deleted === true);
+    deleted.forEach(f => arr.splice(arr.findIndex(element => element.deleted === f.deleted),1));
+    return arr;
+  }
+
   searching(e) {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
+      //- send to Facebook Pixel
+      if (location.hostname == 'www.blueplate.co') {
+        fbq('track', 'Search', { search_string: queryString });
+      }
       // excute searching when keyword longer than 2 characters
-      if (queryString.length > 2) {
+      if (queryString.length >= 2) {
         // create index search for dish_name
         const dishIndex = new Index({
             collection: Dishes,
@@ -311,14 +311,35 @@ class TopNavigation extends Component {
           menu: [],
           kitchen: []
         }
-        result.dish = dishIndex.search(queryString).mongoCursor.fetch();
-        result.menu = menuIndex.search(queryString).mongoCursor.fetch();
-        result.kitchen = kitchenIndex.search(queryString).mongoCursor.fetch();
+        // filter again to remove all deleted item in array with search in minimongodb
+        result.dish = this.removeDeletedItem(dishIndex.search(queryString).mongoCursor.fetch());
+        result.menu = this.removeDeletedItem(menuIndex.search(queryString).mongoCursor.fetch());
+        result.kitchen = this.removeDeletedItem(kitchenIndex.search(queryString).mongoCursor.fetch());
         Session.set('search_result', result);
+        // get location of kitchens for map markers
+        //- get unique kitchen id of 3 lists.
+        let uniqueDishKitchen = [...new Set(result.dish.map(item => item.kitchen_id))];
+        let uniqueMenuKitchen = [...new Set(result.menu.map(item => item.kitchen_id))];
+        let uniqueKitchen = [...new Set(result.kitchen.map(item => item._id))];
+        let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+        // concat 3 arrays and remove duplicated items
+        for (var i = 0; i < kitchen_id_list.length; ++i) {
+          for (var j = i + 1; j < kitchen_id_list.length; ++j) {
+            if (kitchen_id_list[i] === kitchen_id_list[j])
+              kitchen_id_list.splice(j--, 1);
+          }
+        }
+        //- get location of item in array
+        var listkitchens = [];
+        for (var i = 0; i < kitchen_id_list.length; i++) {
+          let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
+          listkitchens.push(selected_kitchen);
+        }
+        Session.set('list_kitchen_for_map', listkitchens);
         Session.set('search_result_origin', result);
-        FlowRouter.go('/search');
+        FlowRouter.go('/search#all');
       } else {
-        Materialize.toast('Your keyword must longer than 2 characters',4000,"rounded bp-green");
+        Materialize.toast('Your keyword must longer than 1 characters',4000,"rounded bp-green");
       }
     }
   }
@@ -337,6 +358,14 @@ class TopNavigation extends Component {
     window.addEventListener('resize', this.handleWindowSizeChange);
   }
 
+  componentWillReceiveProps() {
+    if (Profile_details.findOne({ user_id: Meteor.userId() })) {
+      this.setState({
+        avatar: Profile_details.findOne({ user_id: Meteor.userId() }).profileImg.large
+      })
+    }
+  }
+
   componentDidMount() {
     var credits = 0;
     Meteor.call('payment.getStripeBalance', (err, res) => {
@@ -345,89 +374,107 @@ class TopNavigation extends Component {
       } else {
         var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
       }
-      credits = parseFloat(parseFloat(this.props.credits) + parseFloat(stripebalance)).toFixed(2);
-      this.setState({
-        credits: credits
+      Meteor.call('payment.getCredits', (err, res) => {
+        credits = parseFloat(parseFloat(res) + parseFloat(stripebalance)).toFixed(2);
+        this.setState({
+          credits: credits
+        });
       });
     });
   }
 
   render() {
     var sidebarContent = this.renderSideBar();
-
     return (
-      <Sidebar
-        sidebar={sidebarContent}
-        open={this.state.sidebarOpen}
-        onSetOpen={this.onSetSidebarOpen}
-        styles={styles}
-      >
-        {this.state.search ? this.renderSearchPage() : ""}
-        <div className="">
-          <div className="navbar-fixed z-depth-0">
-            <nav className="z-depth-0">
-              <div className="nav-wrapper white z-depth-0">
-                <a
-                  href=""
-                  onClick={() => this.toggle()}
-                  className="nav_brand_logo left"
-                  data-activates="side_nav"
-                >
-                  <img
-                    src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BPLogo_sysmbol.svg"
-                    className="navbar_logo"
-                    height="40"
-                    width="40"
-                  />
-                  <i className =
-                    {this.state.sidebarOpen
-                      ?
-                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow rotate"
-                      :
-                      "material-icons bp-blue-text right nav_brand_logo nav_logo_arrow"}
-                  >keyboard_arrow_down</i>
-                </a>
-                <ul className="left">
-                  <li>
-                    <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
-                    {/* <button className="btn nearby">Nearby</button> */}
-                  </li>
-                </ul>
-                <ul className="right">
-                  <li className="icon" onClick={() => this.openProfile()}>
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-                  </li>
-
-                  <li
-                    onClick={() => FlowRouter.go("/shopping_cart")}
-                    className="icon"
-                    id="cart-icon"
-                  >
-                    <span id="cart-number">
-                      {this.props.shoppingCart.length}
-                    </span>
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-                  </li>
-                  {
-                    (this.state.width <= 450) ?
-                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
-                    :
-                      <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
-                  }
-                </ul>
-              </div>
-            </nav>
+      <div>
+        <div className="nav_brand_logo">
+          <div className="display-sidebar-menu" onClick={() => this.toggle()}>
+            <img
+              src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/list.svg"
+              className="navbar_logo"
+              height="20"
+              width="20"
+            />
+          </div>
+          <div
+            onClick={() => this.handleGoHome()}
+            className="display-main-page"
+            data-activates="side_nav"
+          >
+            <img
+              src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/BPLogo_sysmbol.svg"
+              className="navbar_logo"
+              height="30"
+              width="30"
+            />
           </div>
         </div>
-      </Sidebar>
+        <Sidebar
+          sidebar={sidebarContent}
+          open={this.state.sidebarOpen}
+          onSetOpen={this.onSetSidebarOpen}
+          styles={styles}
+        >
+          {this.state.search ? this.renderSearchPage() : ""}
+          <div className="">
+            <div className="navbar-fixed z-depth-0">
+              <nav className="z-depth-0">
+                <div className="nav-wrapper white z-depth-0">
+                  <ul className="left">
+                    <li>
+                      <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
+                      {/* <button className="btn nearby">Nearby</button> */}
+                    </li>
+                  </ul>
+                  <ul className="right">
+                    <li className="icon" onClick={() => this.openProfile()}>
+                      {
+                        (this.state.avatar) ?
+                          <img style={{ width: '35px', height: '35px', borderRadius: '50%', marginTop: '5px' }} src={this.state.avatar} />
+                        :
+                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
+                      }
+                    </li>
+
+                    <li
+                      onClick={() => {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                          fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                        }
+                        FlowRouter.go("/shopping_cart");
+                      }}
+                      className="icon"
+                      id="cart-icon"
+                    >
+                      <span id="cart-number">
+                        {this.props.shoppingCart.length}
+                      </span>
+                      <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
+                    </li>
+                    {
+                      (this.state.width <= 450) ?
+                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                      :
+                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                    }
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </Sidebar>
+      </div>
     );
   }
 }
 
 export default withTracker(props => {
   const handle = Meteor.subscribe("getUserShoppingCart");
+  const profile = Meteor.subscribe("theProfileDetail");
   if (Meteor.user()) {
     Meteor.subscribe('userData');
+    Meteor.subscribe("theProfileDetail");
     var credits = Meteor.user().credits;
   }
   return {
@@ -435,5 +482,22 @@ export default withTracker(props => {
     credits: credits,
     loading: !handle.ready(),
     shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
+    currentOrder: Order_record.find({'seller_id': Meteor.userId(), 'status': 'Created'}).fetch(),
+    orderStatus: Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).fetch()
   };
 })(TopNavigation);
+
+$(document).on('click', ".visted-color, .switch-foodie-text, .switch-chef-text", function() {
+    $(".visted-color").children("span:nth-child(-n+1)").css("color","#212121");
+    $('.your-kitchen-menu').css("color","#212121");
+
+    if ( ($(this).attr('class') !== 'switch-foodie-text') && ( $(this).attr('class') !== 'switch-chef-text') ) {
+      $(this).children("span:nth-child(-n+1)").css("color", "#56AACD");
+    }
+
+    if ($(this).attr('class') === 'switch-chef-text') {
+        setTimeout(() => {
+          $('.your-kitchen-menu').css("color", "#56AACD");
+        }, 10);
+    }
+});

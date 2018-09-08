@@ -196,16 +196,20 @@
   position: relative;
   height: 360px!important;
   margin-bottom: 24px;
+  cursor: pointer;
 }
 
 .menu-wrapper {
   position: relative;
   min-height: 340px!important;
   margin-bottom: 24px;
+  height: 360px;
+  cursor: pointer;
 }
 .kitchen-wrapper {
   position: relative;
   min-height: 375px!important;
+  cursor: pointer;
 }
 
 .seeall {
@@ -239,13 +243,13 @@
 }
 
 .fa-star.checked {
-  color: #56AACD;
+  color: #EEAB21;
 }
 
 .fa-star.empty {
   -webkit-text-fill-color: white;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #56AACD;
+  -webkit-text-stroke-color: #EEAB21;
 }
 
 .order-count {
@@ -491,35 +495,6 @@
   font-weight: bold;
 }
 
-.showroom_banner {
-  height: 350px;
-  vertical-align: baseline;
-  background-color: #B1DBBE;
-  border-radius: 15px;
-  color: white;
-  overflow: hidden;
-  background: url('https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/908_jfpm9gep.jpg');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  padding: 85px 35px !important;
-  padding: 0 0.75rem;
-  display: inline-block;
-}
-
-.banner_logo {
-  position: relative;
-  top: 50px;
-  right: 1px;
-}
-
-.banner h1 {
-  font-size: 2.5rem;
-  color: #fff;
-  vertical-align: middle;
-  margin-top: 65px;
-  margin-left: 3%;
-}
 
 .categories_navigation {
   text-align: center;
@@ -660,6 +635,15 @@
     font-size: 20px;
     font-weight: 400;
   }
+  .float-map {
+    display: block!important;
+    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/floating+icon.svg') no-repeat #fff;
+    background-size: contain;
+    position: fixed;
+    z-index: 10;
+    bottom: 40px;
+    right: 25px;
+  }
 }
 
 .slick-slider {
@@ -769,4 +753,95 @@
   stroke-linecap:round;
   stroke-linejoin:round;
   stroke-width:6px;
+}
+
+.tabs .tab a {
+  color: rgba(50, 171, 209, 0.82);
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transition: color .28s ease;
+}
+
+.tabs .indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: #32abd1;
+  will-change: left, right;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  background-color: transparent;
+  color:#32abd1;
+}
+
+.search-map-container {
+  position: fixed;
+  height: 400px;
+  right: 10px!important;
+  height: calc(100vh - 80px);
+  z-index: 100;
+}
+
+@media (max-width: 600px) {
+  .search-map-container {
+    display: none;
+  }
+  #close_map{
+    position: absolute;
+    z-index: 100;
+    right: 6px;
+    top: 50px;
+    font-size: 25px;
+    color: black;
+    display: block!important;
+    cursor: pointer;
+  }
+}
+
+#close_map{
+  display: none;
+}
+
+.info-window {
+  border-radius: 15px;
+  position: relative;
+}
+
+.info-window .banner {
+  width: 100%;
+  height: 113px;
+  background-size: cover;
+  background-position: center center;
+}
+
+.info-window .avatar {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  background-size: cover;
+  background-position: center center;
+  border-radius: 50%;
+  margin-top: -40px;
+  margin-left: 5px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.info-window h1 {
+  font-size: 14px;
+  display: inline-block;
+  width: 200px;
+  margin: 10px 0px!important;
+}
+
+.info-window .story {
+  display: block;
+  width: 200px;
+  color: #000;
+  font-weight: 300;
 }

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
@@ -15,18 +13,14 @@ class DishList extends Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       loading: false
     }
   }
 
-  handleClick = (item) => {
-    Meteor.call('dish.view', item._id, item.user_id);
-    Session.set('selectedDish', item);
-    Session.set('selectedItem', 'dish');
-    Session.set('modal', true);
-    this.props.popup(item);
+  handleOnViewDish = (dishId) => {
+    BlazeLayout.reset();
+    FlowRouter.go("/dish/" + dishId);
   }
 
   renderList = () => {
@@ -41,7 +35,7 @@ class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl3 l4 m6 s12 dish-wrapper" onClick={() => this.handleOnViewDish(item._id)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
@@ -59,12 +53,21 @@ class DishList extends Component {
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
-              <span className="order-count">{ item.order_count }</span>
+              {
+                (parseInt(item.order_count) >= 10)
+                ? <span className="order-count">{ item.order_count }</span>
+                : ''
+              }
             </div>
           </div>
-          <div className="row">
-            <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-          </div>
+          {
+            (!isNaN(item.dish_selling_price))
+            ? (
+              <div className="row">
+                <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+              </div>
+            ) : ('')
+          }
 
         </div>
       )

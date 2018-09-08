@@ -1,6 +1,4 @@
 <template name = "dishes_selection">
-  {{> confirm_delete}}
-  {{> confirm_multi_delete}}
   {{#if subscription}}
     <table class = "bordered" id="menu_dishes_table">
       <thead>
@@ -17,7 +15,7 @@
       <tbody>
         {{#each user_dishes}}
           <tr>
-            <td width="40px">
+            <td>
               <input class="dishes_checkbox" type="checkbox" id="{{checkbox_id}}" value="{{_id}}"/>
               <label for="{{checkbox_id}}"></label>
             </td>
@@ -29,10 +27,10 @@
             </td>
             <td><div id="dish_image_list_display">{{> get_dish_image}}</div></td>
             <td>
-              <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent" id="edit_dish">
+              <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent tooltip" data-tipso="Edit this dish" id="edit_dish">
                 <i class="material-icons grey-text text-lighten-1">edit</i>
               </a>
-              <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent" href="" id="delete_dish">
+              <a class = "btn-floating waves-effect waves-red z-depth-0 right transparent tooltip" href="" data-tipso="Delete this dish" id="delete_dish">
                 <i class="material-icons grey-text text-lighten-1">delete</i>
               </a>
             </td>
@@ -43,30 +41,4 @@
   {{else}}
     {{> spinner}}
   {{/if}}
-</template>
-
-<template name="confirm_delete">
-  <div id="confirm_delete" class="modal">
-    <div class="modal-content">
-      <h6>Are you sure?</h6>
-      <p>Are you sure to delete this dish?</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a id="confirm" class="modal-action modal-close waves-effect waves-green btn-flat">Sure</a>
-    </div>
-  </div>
-</template>
-
-<template name="confirm_multi_delete">
-  <div id="confirm_multi_delete" class="modal">
-    <div class="modal-content">
-      <h6>Are you sure?</h6>
-      <p>Are you sure to delete these dish?</p>
-    </div>
-    <div class="modal-footer">
-      <a id="cancel_multi" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a id="confirm_multi" class="modal-action modal-close waves-effect waves-green btn-flat">Sure</a>
-    </div>
-  </div>
 </template>

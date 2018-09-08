@@ -33,16 +33,9 @@ nav {
 .nav_brand_logo {
   height: 40px;
   margin-top: 10px;
-}
-
-.nav_logo_arrow {
-  line-height: 40px !important;
-  height: 40px !important;
-  margin-left: 0px !important;
-  vertical-align: middle;
-  -moz-transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear;
+  position: fixed;
+  z-index: 9999;
+  top: 13px;
 }
 
 .nav_logo_arrow.rotate {
@@ -128,7 +121,7 @@ ul.right .icon {
   position: absolute;
   color: #7f7f7f;
   top: 17px;
-  margin-left: 9px;
+  margin-left: 7px;
   font-weight: 500;
 }
 
@@ -143,7 +136,7 @@ ul.right .icon {
 .sidebar-container li img {
   float: right;
   width: 24px;
-  height: 21px;
+  height: 24px;
 }
 
 .sidebar-container .divider {
@@ -156,7 +149,7 @@ ul.right .icon {
 #cart-number-sidebar {
   position: absolute;
   right: 27px;
-  margin-top: 1px;
+  margin-top: 3px;
   color: #838383;
   font-weight: 400;
 }
@@ -554,3 +547,80 @@ ul.right .icon {
     display: none;
   }
 }
+
+
+#menu-foodie-mode-title, #menu-chef-mode-title {
+  font-weight: 600;
+  line-height: 32px;
+  font-size: 24px;
+  color: #56AACD;
+}
+
+#foodie-logo-mode-img, #chef-logo-mode-img {
+  float: left;
+  width: 55px;
+  height: 25px;
+}
+
+#foodies-title-img, #chef-title-img {
+  margin-top: -25px;
+  width: 61px;
+  height: 62px;
+}
+
+.sidebar-container li span {
+  color: #212121;
+}
+
+.switch-foodie-text, .switch-chef-text, .help-title-content {
+  margin-top: 32px;
+}
+
+.notification-status {
+  border-radius: 50%;
+  background-color: #EEAB21;
+  position: absolute;
+  right: 16px;
+  margin-top: -3px;
+  width: 12px;
+  height: 12px;
+}
+
+#top-navigation-container>div>div>div>ul>li:not(:nth-child(-n+1)):hover {
+  background-color: #56aacd52;
+}
+
+.not-cursor {
+  cursor: default !important;
+}
+
+.chef-title-text, .foodie-title-text {
+  margin-top: 80px;
+}
+
+nav ul.left {
+  margin-left: 85px;
+}
+
+.display-sidebar-menu, .display-main-page {
+  display: inline;
+  position: relative;
+  cursor: pointer;
+}
+
+.display-sidebar-menu {
+  top: -7px;
+  left: 15px;
+  margin-right: 15px;
+}
+
+.display-main-page {
+  left: 20px;
+}
+
+/* Portrait phones and smaller 480
+@media (max-width: 520px) {
+  nav ul.left {
+    margin-left: 90px;
+  }
+} */

@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
-import { Mongo } from "meteor/mongo";
 import { Session } from "meteor/session";
-
 import KitchenCard from './kitchen_card';
-
-import { navbar_find_by } from "./../../../imports/functions/find_by";
 
 // App component - represents the whole app
 class KitchenSearchList extends Component {
@@ -17,6 +13,9 @@ class KitchenSearchList extends Component {
   }
 
   renderList = () => {
+    if (this.props.kitchens.length == 0) {
+      return <p>Has no kitchen to be displayed</p>
+    }
     return this.props.kitchens.map((item, index) => {
       return (
         <div key = {index}>
@@ -31,26 +30,37 @@ class KitchenSearchList extends Component {
           />
         </div>
       )
-    });
-  };
+    })
+  }
+
+  renderResultTitle = () => {
+    if (Session.get('search_result')) {
+      let keywork = $('#searchQuery').val();
+      if (Session.get('search_result').kitchen.length > 20) {
+        let overNumber = Session.get('search_result').kitchen.length - (Session.get('search_result').kitchen.length % 5);
+        return 'Over ' + overNumber + '+ results for ' + '"'+ keywork +'"';
+      } else {
+        return Session.get('search_result').kitchen.length + ' kitchens results for ' + '"'+ keywork +'"';
+      }
+    } else {
+      return 'Kitchens';
+    }
+  }
 
   render() {
     return (
       <div className="col s12 m12 l12 no-padding list-container">
         {/* title */}
         <div className="row">
-          <div className="col s6 m6 l6 no-padding">
-            <h5>{this.props.title}</h5>
-          </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{this.props.seemore}</a>
+          <div className="col s12 m12 l6 no-padding">
+            <h5>{this.renderResultTitle()}</h5>
           </div>
         </div>
 
         {/* list items */}
           <div className="row">
             {this.props.listLoading ? (
-              <span>...loading</span>
+              <span>Your favorite kitchen are searching...</span>
             ) : (
               this.renderList()
             )}
@@ -63,26 +73,14 @@ class KitchenSearchList extends Component {
 export default withTracker(props => {
   const handle = Meteor.subscribe("theKitchenDetail");
   var kitchen_results = [];
-  if (Session.get("advanced_search_results")) {
-    for (var i = 0; i < Session.get("advanced_search_results").length; i++) {
-      var kitchen = {
-        id: "",
-        kitchen_name: "",
-        banner: "",
-      };
-      kitchen.id = Session.get("search_result")[i]._id;
-      kitchen.kitchen_name = Session.get("search_result")[i].kitchen_name;
-      if (Session.get("search_result")[i].bannerProfileImg) {
-        kitchen.banner = Session.get("search_result")[i].bannerProfileImg.origin;
-      } else {
-        kitchen.banner = "";
-      }
-      kitchen_results.push(kitchen);
+  if (Session.get('search_result')) {
+    for (var i = 0; i < Session.get('search_result').kitchen.length; i++) {
+      kitchen_results.push(Session.get('search_result').kitchen[i]);
     }
   }
   return {
-    currentUser: Meteor.user(),
-    listLoading: !handle.ready(),
-    kitchens: kitchen_results,
+      currentUser: Meteor.user(),
+      listLoading: !handle.ready(),
+      kitchens: kitchen_results,
   };
 })(KitchenSearchList);

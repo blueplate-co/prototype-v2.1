@@ -57,7 +57,11 @@ class WishDishList extends Component {
           <div className="row no-margin">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
-              <span className="order-count">{ item.order_count }</span>
+              {
+                (parseInt(item.order_count) >= 10)
+                ? <span className="order-count">{ item.order_count }</span>
+                : ''
+              }
             </div>
           </div>
           <div className="row">

@@ -50,6 +50,6 @@ padding: 0px;
     top: 0vh !important;
     height: 100vh !important;
     width: 100vh !important;
-    overflow: scroll !important;
+    /* overflow: scroll !important; */
   }
 }

@@ -3,14 +3,14 @@
   <div class = "container">
     <div class = "section">
 
-        <h5>Available Dishes</h5>
-        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent modal-trigger tooltipped" data-position="bottom" data-delay="50" data-tooltip="Create new dish" href="#add_dish_modal" id="btn_add_dish">
+        <h5>Manage your Dishes</h5>
+        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent modal-trigger tooltip" data-tipso="Create a new dish" href="#add_dish_modal" id="btn_add_dish">
           <i class="material-icons black-text text-lighten-1">add</i>
         </a>
-        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent modal-trigger tooltipped btn_edit_dish" data-position="bottom" data-delay="50" data-tooltip="Edit dish details" href="#edit_dish_modal" id="btn_edit_dish">
+        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent modal-trigger tooltip" data-position="bottom" data-delay="50" data-tipso="Edit dish details" href="#edit_dish_modal" id="btn_edit_dish">
           <i class="material-icons black-text text-lighten-1">edit</i>
         </a>
-        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete dish(es)" href="#" id="btn_delete_dish">
+        <a class = "btn-floating waves-effect waves-red bp-green z-depth-0 left transparent tooltip" data-tipso="Delete a dish" href="#" id="btn_delete_dish">
           <i class="material-icons black-text text-lighten-1">delete</i>
         </a>
   <!-- <a class = "btn-floating grey lighten-1 waves-effect waves-red grey lighten-3 z-depth-0 right transparent" href="#" id="search_dish">
@@ -18,11 +18,8 @@
         </a> -->
 
     </div>
-    <br>
-    <br>
-    <br>
-    <div class = "divider"></div>
-    <div class = "section">
+    <div id = "tbl-manager-dish">
+      <div class = "divider"></div>
       {{> dishes_selection}}
     </div>
   </div>
@@ -33,8 +30,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="" class="modal-action waves-effect waves-green btn-flat" id="modal_add_btn">Save</a>
-      <a href="" id="close_create_dish_modal" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      <a href="" id="close_create_dish_modal" class="waves-effect waves-green btn-flat btn-edit-dish-cancel">close</a>
+      <a href="" class="modal-action waves-effect waves-green btn-flat btn-edit-dish-confirm" id="modal_add_btn">save</a>
     </div>
   </div>
   <div class ="modal modal-fixed-footer edit_dish_modal" id="edit_dish_modal">
@@ -44,8 +41,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" id="modal_update_btn">Save</a>
-      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" id="close_create_dish_modal" >Close</a>
+      <a href="" class="waves-effect waves-green btn-flat btn-edit-dish-cancel" id="close_edit_dish_modal">close</a>
+      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat btn-edit-dish-confirm" id="modal_update_btn">save</a>
     </div>
   </div>
 </template>

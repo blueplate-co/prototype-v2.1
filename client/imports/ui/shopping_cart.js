@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+
 //- empty cart store global in this page
 window.globalCart = [];
 // var kitchen = { id: item, service: "", date: "", time: "", timeStamp: "", address: "" };
@@ -81,6 +82,7 @@ class ShoppingCart extends Component {
                     globalCart[i].address = kitchenAddress;
                     var commaIndex = kitchenAddress.indexOf(",");
                     var shortAddress = kitchenAddress.substring(commaIndex + 1, kitchenAddress.length).trim();
+                    $("#label_" + seller_id).addClass('format-text-label');
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
@@ -93,6 +95,7 @@ class ShoppingCart extends Component {
                     globalCart[i].address = kitchenAddress;
                     var commaIndex = kitchenAddress.indexOf(",");
                     var shortAddress = kitchenAddress.substring(commaIndex + 1, kitchenAddress.length).trim();
+                    $("#label_" + seller_id).addClass('format-text-label');
                     $("#label_" + seller_id).text('Your dishes will be ready at chef’s kitchen at...');
                     $("#address_" + seller_id).val(shortAddress);
                     $("#address_" + seller_id).attr('disabled', !$(this).attr('checked'));
@@ -190,10 +193,13 @@ class ShoppingCart extends Component {
         });
         globalCart.forEach((item, index) => {
             for( var key in item ) {
-                if (item[key] == '') {
+                if (item[key] == '' && key == 'address') {
                     $('#address_' + item.id).addClass('invalid');
                     Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
+                    $('#address_' + item.id).prepend($('#address_' + item.id));
+                    $('#address_' + item.id).focus();
                     valid = false;
+                    return false;
                 } else {
                     $('#address_' + item.id).removeClass('invalid');
                 }
@@ -203,7 +209,6 @@ class ShoppingCart extends Component {
             }
         });
         if (valid) {
-            console.log(globalCart);
             globalCart.forEach((item, index) => {
                 Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
                     if (!err) {
@@ -223,6 +228,11 @@ class ShoppingCart extends Component {
                     }
                 })
             })
+            this.sendSummaryCheckoutDish();
+            //- send to Facebook Pixel
+            if (location.hostname == 'www.blueplate.co') {
+                fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
+            }
             FlowRouter.go('/payment');
         }
     }
@@ -248,9 +258,9 @@ class ShoppingCart extends Component {
                             <span className="detail-title">{ detail.dish_name }</span>
                             <span className="detail-price">HK${ detail.dish_selling_price }</span>
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }>-</span>
+                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle"></i></span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }>+</span>
+                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle"></i></span>
                             </div>
                         </div>
                     </div>
@@ -294,6 +304,7 @@ class ShoppingCart extends Component {
         for (var i = 0; i < product.length; i++) {
             subtotal += parseFloat(product[i].total_price_per_dish);
         }
+        subtotal = subtotal.toFixed(2);
         return (
             <div key={index}>
                 <div className="row kitchen-name">
@@ -352,6 +363,39 @@ class ShoppingCart extends Component {
         }
     }
 
+    // Internal sms: send order info message to admin when has new order
+    sendSummaryCheckoutDish() {
+        var checkSellerName ={};
+        this.props.shoppingCart.map( (item, index) => {
+            if (checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"]) {
+                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] + ", " + item.quantity + " " + item.product_name;
+            } else {
+                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = item.quantity + " " + item.product_name;
+            }
+        });
+
+        for (var chefName in checkSellerName) {
+            if (checkSellerName.hasOwnProperty(chefName)) {
+                var info_buyer = Meteor.user().profile.name + " (email: " + Meteor.user().emails[0].address + ")";
+                var message = "blueplate notification: " + info_buyer + " has just placed " + checkSellerName[chefName] + " from " + chefName;
+
+                // console.log("send message: " + message);
+                Meteor.call('message.sms', "+84989549437", message.trim(), (err, res) => {
+                  if (!err) {
+                    console.log('Message sent');
+                  }
+                });
+            }
+        }
+    };
+
+    componentDidMount() {
+        //- send to Facebook Pixel
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+        }
+    }
+
     componentWillUpdate() {
         //- run google places autocomplete with timeout to make sure HTML is rendered
         setTimeout(() => {
@@ -367,6 +411,7 @@ class ShoppingCart extends Component {
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
             total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
         }
+        total = total.toFixed(2);
         Session.set('product', '');
         return (
             <div className="container">

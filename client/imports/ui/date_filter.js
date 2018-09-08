@@ -15,7 +15,7 @@ export default class DateFilter extends Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.state = {
             popup: false,
-            date: now,
+            date: null,
             focused: false
         }
     }
@@ -60,10 +60,10 @@ export default class DateFilter extends Component {
     clearCriteria() {
         this.setState({
             popup: false,
-            date: moment()
+            date: null
         });
         // should set to current date, not null
-        this.props.actionFilter(moment());
+        this.props.actionFilter(null);
     }
 
     apply() {
@@ -85,7 +85,7 @@ export default class DateFilter extends Component {
                             <span style={{ padding: '20px', display: 'block' }}>When you want to be served?</span>
                             <SingleDatePicker
                                 date={this.state.date} // momentPropTypes.momentObj or null
-                                onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
+                                onDateChange={date => {this.setState({date: date})}} // PropTypes.func.isRequired
                                 focused={this.state.focused} // PropTypes.bool
                                 onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
                                 numberOfMonths={1}

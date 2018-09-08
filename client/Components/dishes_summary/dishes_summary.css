@@ -1,3 +1,22 @@
 .btn-floating {
   margin: 12px;
 }
+
+#tbl-manager-dish {
+  margin-top: 75px;
+}
+
+#btn_edit_dish {
+  display: none;
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+  #tbl-manager-dish {
+    margin-top: 0px;
+  }
+
+  #btn_edit_dish {
+    display: block;
+  }
+}

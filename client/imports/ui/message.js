@@ -6,6 +6,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 import Rating from "./rating";
 import ProgressiveImages from "./progressive_image";
+import { validatePhoneNumber, getCountryCodeFromKitChen, getCountryCodeFromProfile } from '/imports/functions/common';
 
 // App component - represents the whole app
 class Message extends Component {
@@ -77,26 +78,38 @@ class Message extends Component {
         Materialize.toast('Your message must at least 2 characters.', 4000, 'rounded bp-green');
         return false;
       }
-      var receiverId = '';
-      var receiver = {};
+      var receiverId = '',
+          receiver = {},
+          phoneNumber,
+          countryCode,
+          userMessage;
 
       // get info about current conversation
       var conversation = Conversation.findOne({
         _id: this.props.conversation[this.state.index]._id,
       });
 
+      if (!conversation.available) {
+        Materialize.toast('Your conversation has stopped.', 4000, 'rounded bp-green');
+        return false;
+      }
+
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
-        var receiver = Kitchen_details.findOne({
-          "user_id": conversation.seller_id
-        });
-        var receiverId = receiver.user_id;
+        receiver = Kitchen_details.findOne({"user_id": conversation.seller_id});
+        
+        receiverId = receiver.user_id;
+        phoneNumber = receiver.kitchen_contact;
+        countryCode = getCountryCodeFromKitChen(receiver);
+        userMessage = Profile_details.findOne({"user_id": conversation.buyer_id}).foodie_name;
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
-        var receiver = Profile_details.findOne({
-          "user_id": conversation.buyer_id
-        });
-        var receiverId = receiver.user_id;
+        receiver = Profile_details.findOne({"user_id": conversation.buyer_id});
+        
+        receiverId = receiver.user_id;
+        phoneNumber = receiver.mobile;
+        countryCode = getCountryCodeFromProfile(receiver),
+        userMessage = Kitchen_details.findOne({"user_id": conversation.seller_id}).chef_name;
       }
 
       Meteor.call(
@@ -113,30 +126,20 @@ class Message extends Component {
           }
         }
       );
+      
+      var contentMessage = 'Blueplate: ' + userMessage + ', ' + message;
+      phoneNumber = validatePhoneNumber(phoneNumber, countryCode);
 
-
-      // if setting sms is turn on, send sms into receiver
-      // if (setting turn on) {
-        // let rawPhoneNumber = receiver.kitchen_contact;
-        // let phonenumber;
-        // if (rawPhoneNumber.indexOf('+') > -1) {
-        //   // full format phonenumber +852xxxxxxxx
-        //   phonenumber = rawPhoneNumber;
-        // } else {
-        //   if (rawPhoneNumber[0] !== '0') {
-        //     // for number is not have 0 at first 123xxxxxx
-        //     phonenumber = '+852' + rawPhoneNumber;
-        //   } else {
-        //     // for number is have 0 at first 0123xxxxx
-        //     phonenumber = '+852' + rawPhoneNumber.slice(1, rawPhoneNumber.length);
-        //   }
-        // }
-        // Meteor.call("message.sms", phonenumber, message, (err, res) => {
-        //   if (!err) {
-        //     console.log('Chatting message sent');
-        //   }
-        // });
-      // }
+      Meteor.call(
+        'message.sms',
+        phoneNumber,
+        contentMessage.trim(),
+        (err, res) => {
+          if (!err) {
+            console.log(err);
+          }
+        }
+      );
     }
   }
 
@@ -209,8 +212,7 @@ class Message extends Component {
             var unread;
             let user_id = item.user_id;
             let conversation = Conversation.findOne({
-              $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
-              available: true
+              $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }]
             });
             let conversation_id = conversation._id;
             // get all unseen messages in available conversation
@@ -335,8 +337,7 @@ class Message extends Component {
     // get detail info of current conservation
     if (this.props.conversation[this.state.index]) {
       var conversation = Conversation.findOne({
-        _id: this.props.conversation[this.state.index]._id,
-        available: true
+        _id: this.props.conversation[this.state.index]._id
       });
 
       if (Meteor.userId() == conversation.buyer_id) {
@@ -409,8 +410,7 @@ export default withTracker(props => {
 
   // get all conversation
   all_conversation = Conversation.find({
-    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }],
-    available: true
+    $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() }]
   }).fetch();
 
   // get all messages

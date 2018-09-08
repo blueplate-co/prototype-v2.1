@@ -9,5 +9,12 @@ Meteor.methods({
   },
   'kitchen_follows.get' (user_id) {
     return KitchenLikes.find({user_id: user_id}).fetch().length
+  },
+  'check_kitchen.get' (user_id) {
+    if (!Kitchen_details.findOne({user_id: user_id})) {
+      return false;
+    } else {
+      return true;
+    }
   }
 })

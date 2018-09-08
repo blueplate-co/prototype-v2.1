@@ -1,0 +1,158 @@
+#confirm_edit_message.confirm_message_popup {
+    top: 25% !important;
+    min-height: 20% !important;
+    width: 50% !important;
+    border-radius: 15px !important;
+}
+
+.confirm_submit {
+    background-color: #56AACD;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    width: 23%;
+    padding: 4px;
+    margin-right: 2%;
+}
+
+.confirm_cancel {
+    color: #56AACD;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    width: 23%;
+    border: 1px solid #56AACD;
+    padding: 4px;
+    margin-right: 2%;
+}
+
+#confirm_title_message {
+    font-size: 18px;
+    color: #000000;
+    font-weight: 600;
+    opacity: 0.87;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 110px !important;
+        width: 40% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 110px !important;
+        width: 40% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 20% !important;
+        height: 26% !important;
+        width: 50% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 20% !important;
+        height: 26%;
+        width: 50% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 20% !important;
+        width: 54% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 23% !important;
+        height: 155px !important;
+        min-height: 20% !important;
+        width: 54% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 72% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 23% !important;
+        min-height: 110px;
+        height: 155px !important;
+        width: 72% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+    #confirm_edit_message.confirm_message_popup {
+        top: 0% !important;
+        height: 100% !important;
+        width: 100% !important;
+        border-radius: 0px !important;
+    }
+
+    #confirm_delete_message.confirm_message_popup {
+        top: 0% !important;
+        height: 100% !important;
+        width: 100% !important;
+        border-radius: 0px !important;
+    }
+}

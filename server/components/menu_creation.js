@@ -48,7 +48,7 @@ Meteor.methods({
       menu_tags: menu_tags,
       updatedAt: new Date(),
       order_count: 0,
-      average_rating: 0,
+      average_rating: 5,
       deleted: false
     }, (err, res) => {
       if (res) {

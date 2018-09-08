@@ -1,5 +1,6 @@
 .filter_wrapper_span_mobile {
     position: initial;
+    
 }
 
 .filter_wrapper_span_dekstop {
@@ -8,7 +9,7 @@
 
 .filter-list {
     display: inline-block;
-    margin: 25px 0px;
+    margin: 15px 0px;
     width: 100%;
 }
 
@@ -288,11 +289,18 @@
     .searchinput {
         position: absolute;
         top: 7px;
-        left: 85px;
+        left: 100px;
         width: 45%!important;
         padding: 0px 10px;
         margin-left: 0px!important;
         margin-top: 15px!important;
         border-radius: 15px!important;
+    }
+
+    .filter-list {
+        display: inline-flex;
+        margin: 15px 0px;
+        width: 100%;
+        overflow-x: scroll;
     }
 }

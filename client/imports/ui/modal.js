@@ -358,8 +358,19 @@ export default class Modal extends Component {
                         <div className="row">
                             <div className="col l8 s10 m8 offset-l1 offset-m2 offset-s2">
                                 <Rating rating={ this.state.item.average_rating } />
-                                <span className="order-count">{ this.state.item.order_count }</span>
-                                <p className="price">$ { this.state.item.dish_selling_price }</p>
+                                {
+                                    (parseInt(this.state.item.order_count) >= 10)
+                                    ? <span className="order-count">{ this.state.item.order_count }</span>
+                                    : ''
+                                }
+                                {
+                                    (!isNaN(this.state.item.dish_selling_price))
+                                    ? (
+                                    <div className="row">
+                                        <div className="col l12 m12 dish-price no-padding text-left">$ { this.state.item.dish_selling_price }</div>
+                                    </div>
+                                    ) : ('')
+                                }
                                 {/**<span className="qty">
                                     <span className="decreaseQty" onClick={ this.decreaseQty } >-</span>
                                     <span className="number">{ this.state.qty }</span>

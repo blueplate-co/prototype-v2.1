@@ -58,6 +58,8 @@ Meteor.methods({
     check(dish_tags, Match.Any);
     console.log('backend:' + imgMeta);
 
+    console.log(dish_selling_price);
+
     Dishes.update({
       _id: dish_id
     }, {
@@ -115,6 +117,9 @@ Meteor.methods({
         order_count: count
       }
     });
+  },
+  'dish.get_detail' (dish_id) {
+    return Dishes.findOne({ _id: dish_id });
   }
 });
 

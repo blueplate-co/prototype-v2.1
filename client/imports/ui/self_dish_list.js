@@ -6,6 +6,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
+import DishStatus from './dish_status';
 
 // App component - represents the whole app
 class SelfDishList extends Component {
@@ -19,13 +20,15 @@ class SelfDishList extends Component {
   }
 
   handleClick = (item) => {
-    if (item.user_id == Meteor.userId()){
-      FlowRouter.go('/cooking/dishes');
-    } else {
-      Session.set('selectedDish', item);
-      Session.set('selectedItem', 'dish');
-      this.props.popup(item);
-    }
+    // window.open('/dish/' + item._id, '_blank');
+    // if (item.user_id == Meteor.userId()){
+      BlazeLayout.reset();
+      FlowRouter.go('/dish/' + item._id);
+    // } else {
+    //   Session.set('selectedDish', item);
+    //   Session.set('selectedItem', 'dish');
+    //   this.props.popup(item);
+    // }
   }
 
   renderList = () => {
@@ -60,14 +63,23 @@ class SelfDishList extends Component {
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title full">{ item.dish_name }</h5>
           </div>
+
           <div className="row no-margin">
-            <div className="col l12 m12 dish-rating no-padding text-left">
-              <Rating rating={item.average_rating}/>
-              <span className="order-count">{ item.order_count }</span>
+            <div className="col s6 l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+            <div className="col s6 l6 m6 dish-price no-padding text-right">
+              <DishStatus status={item.online_status}/>
             </div>
           </div>
+
           <div className="row">
-            <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+            <div className="col l12 m12 dish-rating no-padding text-left">
+              <Rating rating={item.average_rating}/>
+              {
+                (parseInt(item.order_count) >= 10)
+                ? <span className="order-count">{ item.order_count }</span>
+                : ''
+              }
+            </div>
           </div>
 
         </div>
@@ -83,8 +95,8 @@ class SelfDishList extends Component {
           <div className="col s6 m6 l6 no-padding">
             <h5>{ this.props.title }</h5>
           </div>
-          <div className="col s6 m6 l6 text-right no-padding">
-            <a>{ this.props.seemore }</a>
+          <div className="col s6 m6 l6 text-right no-padding manage-dish-text">
+            <a href="/cooking/dishes">{ this.props.manageDish }</a>
           </div>
         </div>
 

@@ -444,9 +444,10 @@ Template.create_dishes_form.events({
     var user_id = Meteor.userId();
     var dish_name = event.target.dish_name.value;
     var dish_cost = event.target.dish_cost.value;
-    var dish_selling_price = parseInt(event.target.dish_selling_price.value) + (parseInt(event.target.dish_selling_price.value) * 0.15); // add fee 15% into selling price
+    var dish_selling_price = parseFloat(event.target.dish_selling_price.value * 1.15).toFixed(2); // add fee 15% into selling price
     if (dish_name.trim().length == "" || dish_selling_price.toString().trim().length == "" || Session.get('tempImages') == "") {
       Materialize.toast("Sorry we can't save your dish. We need to have at least your dish image, dish name and selling price to save", 6000, 'rounded bp-green');
+      scrollToFieldRequired('dish_name', 'invalid');
       return false;
     } else {
       var dish_description = event.target.dish_description.value;
@@ -454,10 +455,14 @@ Template.create_dishes_form.events({
       var hours = event.target.hours.value;
       var mins = event.target.mins.value;
       var cooking_time = (parseInt(days) * 24 * 60) + (parseInt(hours) * 60) + parseInt(mins);
+      
       if (cooking_time === 0) {
         Materialize.toast("Cooking time must greater than 0 mins", 6000, 'rounded bp-green');
+        // Scroll to field required
+        scrollToFieldRequired('days', 'validateFieldRequired');
         return true;
       }
+
       var dish_profit = dish_selling_price - dish_cost;
       // Ingredients_temporary.find({}).forEach(function(doc) {
       //   Ingredients.insert(doc);
@@ -476,13 +481,24 @@ Template.create_dishes_form.events({
       }
       if (!Session.get('serving_option_tags')) {
         Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+        // Scroll to field required
+        scrollToFieldRequired('create_Delivery', 'invalid');
         return false;
       } else {
         if (Session.get('serving_option_tags').length == 0) {
           Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
+          scrollToFieldRequired('create_Delivery');
           return false;
         }
       }
+      
+      if (dish_selling_price == 0) {
+        Materialize.toast("Dish sell price must greater than 0", 6000, 'rounded bp-green');
+        // Scroll to field required
+        scrollToFieldRequired('dish_selling_price', 'invalid');
+        return true;
+      }
+
       Meteor.call('dish.insert', Session.get('image_id'), user_id, kitchen_id, dish_name, dish_description, Session.get('serving_option_tags'), cooking_time, days, hours, mins,
         dish_cost, dish_selling_price, dish_profit, Session.get('allergy_tags'), Session.get('dietary_tags'), dish_tags, new Date(), new Date(), false, false,
         //- adding meta data for different image sizes
@@ -546,7 +562,8 @@ Template.create_dishes_form.events({
       return true;
     }
     var dish_cost = $('#dish_cost').val();
-    var dish_selling_price = parseInt($('#dish_selling_price').val()) + (parseInt($('#dish_selling_price').val()) * 0.15);
+    var dish_selling_price = parseFloat($('#dish_selling_price').val() * 1.15);
+    console.log(dish_selling_price); // add 15% fee
     var dish_profit = dish_selling_price - dish_cost;
 
     var dish_tags = $('#dish_tags').material_chip('data')
@@ -613,3 +630,18 @@ let changeImgName = function(imgPath)
   return milliseconds + '_' + uniqid()+ '.' + extension
 
 }
+
+let scrollToFieldRequired = function(el, styleSheet) {
+  var $el = $('#' + el);
+  $el.addClass(styleSheet);
+  $('#add_dish_modal_content').animate({
+    scrollTo: $el.offset().top
+  }, 500);
+  $el.focus();
+};
+
+$(document).on("keydown", "#dish_tags", function(event) {
+    if (event.keyCode == 13) {
+      $(this).find(".chip").addClass("dirty_field");
+    }
+});

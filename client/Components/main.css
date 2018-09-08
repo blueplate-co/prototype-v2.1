@@ -62,15 +62,15 @@ body p {
 }
 
 .card {
-  border-radius: 20px   !important;
+  border-radius: 10px   !important;
   display: inline-block;
   border-color: #B1DBBE;
   border-width: medium;
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .card-action {
-  border-radius: 0px 0px 20px 20px !important;
+  border-radius: 0px 0px 10px 10px !important;
 }
 
 /* modal responsive settings */
@@ -147,4 +147,59 @@ body p {
     column-count:         5;
     column-gap:           6px;
   }
+}
+
+/* Common style use for all site */
+.validateFieldRequired:focus:not([readonly]) {
+  border: 1px solid #EA6055 !important;
+  box-shadow: 0 1px 0 0 #EA6055 !important;
+}
+
+/* .intl-tel-input .form-control {
+  padding-left: 35px;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag {
+  padding: 0;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #dbe0e2;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag .iti-flag {
+  background: none;
+  margin-top: 0;
+  top: 0;
+  position: relative;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag .iti-flag .arrow {
+  top:33%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+} */
+
+.intl-tel-input .country-list .iti-flag {
+  display: none;
+}
+
+.btn-edit-dish-confirm {
+  background-color: #56AACD;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  text-transform: lowercase;
+}
+
+.btn-edit-dish-cancel {
+  color: #56AACD;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  border: 1px solid #56AACD;
+  text-transform: lowercase;
 }

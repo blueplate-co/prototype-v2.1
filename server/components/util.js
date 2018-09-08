@@ -1,6 +1,4 @@
-import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
 
 var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
 
@@ -15,6 +13,14 @@ Meteor.publish("userData", function() {
   } else {
     this.ready();
   }
+});
+
+Meteor.publish("userEmail", function() {
+    return Meteor.users.find({}, {fields: {emails: 1}});
+});
+
+Meteor.publish("theBonusHistory", function() {
+  return Bonus_history.find({});
 });
 
 Meteor.methods({
@@ -82,4 +88,61 @@ Meteor.methods({
 
     return result;
   },
+  "util.giveBonusForStaff"(email, amount) {
+    try {
+        // check history in current month, is reached limit of quota
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var history = Bonus_history.find({
+          "email": email,
+          "date": {'$gte': firstDay, '$lte': lastDay}
+        }).fetch();
+        var sum = 0;
+        for (var i = 0; i< history.length; i++) {
+          sum += history[i].amount;
+        }
+        var sumOf = parseInt(sum) + parseInt(amount);
+        console.log('Sum of: ' + sumOf);
+        console.log('History: ');
+        console.log(JSON.stringify(history));
+        if (sumOf > 2000) {
+          return {
+            status: 'error',
+            message: 'Out of limit of this month.'
+          }
+        }
+
+        var user = Meteor.users.findOne(
+          { emails: { $elemMatch: { address: email } } }
+        );
+        if (!user) {
+          return {
+            status: 'error',
+            message: 'User not found.'
+          }
+        }
+        var user_id = user._id;
+        var buyerCredits = user.credits;
+        Meteor.users.update(
+            {
+              _id: user_id,
+            },
+            {
+              $set: {
+                  credits: parseInt(buyerCredits + parseInt(amount)),
+              },
+            }
+        ,() => {
+          // add history only when tranfer done
+          Bonus_history.insert({
+            email: email,
+            date: new Date(),
+            amount: amount
+          });
+        });
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 });

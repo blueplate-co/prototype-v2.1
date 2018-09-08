@@ -93,6 +93,26 @@ Meteor.methods({
           }, function(err, customer) {
             if (!err) {
               console.log(customer);
+              // update balance of seller
+              // FIRST, get Stripe balance of seller
+              Meteor.call('payment.getStripeBalanceOfSpecific', seller_id, function (err, res) {
+                let sellerCustomerId = Meteor.users.findOne({ _id: seller_id }).stripe_id;
+                let sellerBalance = parseFloat(res.account_balance / 100).toFixed(2);
+                console.log('Current seller balance: ' + sellerBalance);
+                var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
+                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(amount.toString()))).toFixed(2);
+                console.log('Amount: ' + amount);
+                console.log('New balance when seller sold: ' + newBalance);
+                updatedCustomer(sellerCustomerId, {
+                  account_balance: parseInt(parseFloat(newBalance) * 100 / 1.15) // convert to int number and convert to cent number
+                }, function(err, customer) {
+                  if (!err) {
+                    console.log('Update seller successful');
+                  } else {
+                    console.log(err);
+                  }
+                });
+              });
             } else {
               console.log(err);
             }
@@ -125,7 +145,7 @@ Meteor.methods({
                     console.log('New Amount: ' + newAmount);
                     var balance = customer.account_balance; // in cent
                     console.log('Balance of current user: ' + balance);
-                    var newBalance = Math.floor(balance + ( newAmount * 100 / 1.15 )); // balance convert into cent
+                    var newBalance = Math.floor(balance + ( amount * 100 / 1.15 )); // balance convert into cent
                     console.log('New balance of seller: ' + newBalance);
                     var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
                     updatedCustomer(sellerCustomerId, {
@@ -196,7 +216,8 @@ Meteor.methods({
       rating: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      paymentType: paymentType
+      paymentType: paymentType,
+      send_sms: true
     })
   },
 
@@ -275,5 +296,14 @@ Meteor.methods({
           console.log('test');
         }
       })
+  },
+  'order_record.update_send_sms'(order_id) {
+    Order_record.update({
+      _id: order_id}, {
+        $set:{
+          send_sms: false,
+          updatedAt: new Date()
+        }
+    });
   },
 });

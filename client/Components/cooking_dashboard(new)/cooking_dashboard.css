@@ -5,7 +5,7 @@
 .cards {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 10px;
+  grid-gap: 25px;
 }
 
 .cards .card {
@@ -40,18 +40,24 @@
 }
 
 .dashboard-balance {
-  grid-column: span 8;
+  grid-column: span 7;
   display: grid !important;
   grid-template-columns: repeat(2, 1fr);
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits-background.svg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 30% auto;
   background-position-y: center;
   background-position-x: center;
   background-color: #56aacd;
   height: 200px;
   padding: 20px;
   color: #fff;
+}
+
+.dashboard-balance .price {
+  font-size: 2.75rem;
+  display: block;
+  margin: 20px 0px;
 }
 
 .dashboard-balance .infor-pane {
@@ -93,14 +99,14 @@
 .dashboard-totalviews {
   background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/views-background.svg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 45% auto;
   background-position-y: center;
   background-position-x: center;
   background-color: #eeab21;
   height: 200px;
   padding: 20px;
   color: #fff;
-  grid-column: span 4;
+  grid-column: span 5;
 }
 
 .dashboard-totalviews .totalview-content * {
