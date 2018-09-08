@@ -56,9 +56,8 @@ export default class TagsDisplay extends React.Component {
         width: '100%',
         position: 'relative',
         display: 'inline-block',
-        cursor: 'pointer',
         height: '38px',
-        overflowX: 'hidden',
+        overflow: 'hidden'
       },
       mobileMask: {
         width: '100%',

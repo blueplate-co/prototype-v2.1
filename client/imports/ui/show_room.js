@@ -233,19 +233,13 @@ class ShowRoom extends Component {
             <TagsDisplay />
               <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
             <div className="row">
-              <ShowroomBanner />
+              <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
-<<<<<<< HEAD
             <div className = "row">
               <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
             </div>
             <div className = "row">
               <KitchenList title="Kitchens" seemore="see all"/>
-=======
-            <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
-            <div className="row">
-            <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
->>>>>>> develop_new
             </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>

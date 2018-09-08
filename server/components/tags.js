@@ -185,7 +185,7 @@ Meteor.methods({
                   menus_id: [],
                   kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
                   count: 0,
-                  createAt: new Date()
+                  createdAt: new Date()
                 })
                 console.log(tag_name + ': tag creation done. Updating dish_id: ' + _id + ' to Tag collection')
                 Tags.update({tag_name: tag_name},{$push: {dishes_id: _id}})
@@ -203,6 +203,8 @@ Meteor.methods({
                 }
               }
             }
+            //update total count of the tag
+            Meteor.call('tags_total_count.update', tag_name)
           }
           //update total count of the tag
           Meteor.call('tags_total_count.update', tag_name)
@@ -228,7 +230,8 @@ Meteor.methods({
                   dishes_id: [],
                   menus_id: [],
                   kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
-                  createAt: new Date()
+                  count: 0,
+                  createdAt: new Date()
                 })
                 console.log(tag_name + ': tag creation done. Updating menu_id: ' + _id + ' to Tag collection')
                 Tags.update({tag_name: tag_name},{$push: {menus_id: _id}})
@@ -246,9 +249,9 @@ Meteor.methods({
                 }
               }
             }
+            //update total count of the tag
+            Meteor.call('tags_total_count.update', tag_name)
           }
-          //update total count of the tag
-          Meteor.call('tags_total_count.update', tag_name)
           console.log("********** OPERATION ENDED **********")
         break;
         case "Kitchen_details":
@@ -271,7 +274,8 @@ Meteor.methods({
                   dishes_id: [],
                   menus_id: [],
                   kitchens_id: [], //Although it is called kitchens_id, the _id that pass over is actually the User ID, from Meteor.userId()
-                  createAt: new Date()
+                  count: 0,
+                  createdAt: new Date()
                 })
                 console.log(tag_name + ': tag creation done. Updating kitchens_id: ' + _id + ' to Tag collection')
                 Tags.update({tag_name: tag_name},{$push: {kitchens_id: _id}})
@@ -289,9 +293,9 @@ Meteor.methods({
                 }
               }
             }
+            //update total count of the tag
+            Meteor.call('tags_total_count.update', tag_name)
           }
-          //update total count of the tag
-          Meteor.call('tags_total_count.update', tag_name)
           console.log("********** OPERATION ENDED **********")
         break;
       }
