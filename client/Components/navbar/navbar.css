@@ -493,14 +493,14 @@ ul.right .icon {
 }
 
 .nearby {
-  width: 130px!important;
   margin-left: 10px!important;
-  margin-top: -7px!important;
-  font-size: 1rem!important;
-  background-color: #fff!important;
-  color: #000!important;
+  margin-top: 5px!important;
   height: 47px;
+  width: 47px;
   border-radius: 5px!important;
+  background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg) center center no-repeat;
+  background-size: 70%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1024px) {

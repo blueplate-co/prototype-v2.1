@@ -106,6 +106,14 @@ class MenuSearchList extends Component {
   }
 
   renderResultTitle = () => {
+    if (Session.get('search_nearby')) {
+      if (Session.get('search_result').menu.length > 20) {
+        let overNumber = Session.get('search_result').menu.length - (Session.get('search_result').menu.length % 5);
+        return 'Over ' + overNumber + '+ results around you';
+      } else {
+        return Session.get('search_result').menu.length + ' menus results around';
+      }
+    }
     if (Session.get('search_result')) {
       let keywork = $('#searchQuery').val();
       if (Session.get('search_result').menu.length > 20) {

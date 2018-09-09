@@ -3,6 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import Sidebar from "react-sidebar";
 import { Index, MinimongoEngine } from 'meteor/easy:search';
+import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 const styles = {
   root: {
@@ -337,6 +338,7 @@ class TopNavigation extends Component {
         }
         Session.set('list_kitchen_for_map', listkitchens);
         Session.set('search_result_origin', result);
+        Session.set('search_nearby', false);
         FlowRouter.go('/search#all');
       } else {
         Materialize.toast('Your keyword must longer than 1 characters',4000,"rounded bp-green");
@@ -363,6 +365,56 @@ class TopNavigation extends Component {
       this.setState({
         avatar: Profile_details.findOne({ user_id: Meteor.userId() }).profileImg.large
       })
+    }
+  }
+
+  nearby = () => {
+    show_loading_progress();
+    if( navigator.geolocation ) {
+      // Call getCurrentPosition with success and failure callbacks
+      navigator.geolocation.getCurrentPosition((position) => {
+        // when success
+        Meteor.call('mapping.nearby', position.coords.latitude, position.coords.longitude, 10, (err, res) => {
+          if (!err) {
+            console.log(res);
+            //- result store all result from get search nearby
+            var result = {
+              dish: [],
+              menu: [],
+              kitchen: []
+            };
+            result.kitchen = res;
+            for (var i = 0; i < res.length; i++) {
+              var single_dish = Dishes.findOne({ kitchen_id: res[i]._id, deleted: false });
+              if (single_dish) {
+                result.dish.push(single_dish);
+              }
+            }
+            for (var j = 0; j < res.length; j++) {
+              var single_menu = Menu.findOne({ kitchen_id: res[j]._id, deleted: false });
+              if (single_menu) {
+                result.menu.push(single_menu);
+              }
+            }
+            Session.set('search_result', result);
+            Session.set('search_result_origin', result);
+            Session.set('list_kitchen_for_map', res);
+            FlowRouter.go('/search#all');
+            Session.set('search_nearby', true);
+            hide_loading_progress();
+          } else {
+            hide_loading_progress();
+            Materialize.toast("No kitchen in your range.", 4000, 'rounded bp-red');
+          }
+        });
+      }, (err) => {
+        // when fail
+        hide_loading_progress();
+        Materialize.toast(err.message, 4000, 'rounded bp-green');
+      });
+    } else {
+      hide_loading_progress();
+      Materialize.toast("Sorry, your browser does not support geolocation services.", 4000, 'rounded bp-red');
     }
   }
 
@@ -423,7 +475,8 @@ class TopNavigation extends Component {
                   <ul className="left">
                     <li>
                       <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
-                      {/* <button className="btn nearby">Nearby</button> */}
+                    </li>
+                    <li className="nearby" title="Nearby you" onClick={() => this.nearby()}>
                     </li>
                   </ul>
                   <ul className="right">
