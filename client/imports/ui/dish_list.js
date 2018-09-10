@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
+import DishStatus from './dish_status';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
 
@@ -50,7 +51,23 @@ class DishList extends Component {
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
             <h5 className="dish-title">{ item.dish_name }</h5>
           </div>
-          <div className="row no-margin">
+
+          {
+            (!isNaN(item.dish_selling_price))
+            ? (
+              <div className="row no-margin">
+                <div className="col l6 m6 s6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                {(this.props.showStatus) === "true" ? 
+                  <div className="col l6 m6 s6 no-padding">
+                    <DishStatus status={item.online_status} />
+                  </div>
+                  :
+                  ""              
+                }
+              </div>
+            ) : ('')
+          }
+          <div className="row">
             <div className="col l12 m12 dish-rating no-padding text-left">
               <Rating rating={item.average_rating}/>
               {
@@ -60,14 +77,6 @@ class DishList extends Component {
               }
             </div>
           </div>
-          {
-            (!isNaN(item.dish_selling_price))
-            ? (
-              <div className="row">
-                <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-              </div>
-            ) : ('')
-          }
 
         </div>
       )
