@@ -178,6 +178,7 @@ Meteor.methods({
                 if (Tags.findOne({tag_name: tag_name, dishes_id: _id})) {
                   console.log(_id + " is already existed in " + tag_name)
                 } else {
+                  Tag.update({tag_name: tag_name},{$pull: {dishes_id: null}})
                   Tags.update({tag_name: tag_name},{$push: {dishes_id: _id}})
                 }
               }
@@ -210,6 +211,7 @@ Meteor.methods({
                 if (Tags.findOne({tag_name: tag_name, menus_id: _id})) {
                   console.log(_id + " is already existed in " + tag_name)
                 } else {
+                  Tag.update({tag_name: tag_name},{$pull: {menus_id: null}})
                   Tags.update({tag_name: tag_name},{$push: {menus_id: _id}})
                 }
               }
@@ -239,6 +241,7 @@ Meteor.methods({
                 if (Tags.findOne({tag_name: tag_name, kitchens_id: _id})) {
                   console.log(_id + " is already existed in " + tag_name)
                 } else {
+                  Tag.update({tag_name: tag_name},{$pull: {kitchens_id: null}})
                   Tags.update({tag_name: tag_name},{$push: {kitchens_id: _id}})
                 }
               }
