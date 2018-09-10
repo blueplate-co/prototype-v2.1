@@ -10,7 +10,9 @@ export class SearchMap extends Component {
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
-      selectedPlace: {}
+      selectedPlace: {},
+      lat: null,
+      lng: null
     }
   }
 
@@ -36,13 +38,31 @@ export class SearchMap extends Component {
 
   componentWillReceiveProps = () => {
     if (this.props.loaded) {
+      var lat = 0;
+      var lng = 0;
+      if (Session.get('search_nearby')) {
+        if( navigator.geolocation ) {
+          // Call getCurrentPosition with success and failure callbacks
+          navigator.geolocation.getCurrentPosition((position) => {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+          });
+        }
+      } else {
+        lat = 22.3249546;
+        lng = 114.1379439;
+      }
+      this.setState({
+        lat: lat,
+        lng: lng
+      })
       hide_loading_progress();
     }
   }
 
   render() {
     return (
-      <Map google={this.props.google} onClick={this.onMapClicked} center={{ lat: 22.3249546, lng: 114.1379439}} zoom={10}>
+      <Map google={this.props.google} onClick={this.onMapClicked} center={{ lat: this.state.lat, lng: this.state.lng }} zoom={10}>
         {
           (Session.get('list_kitchen_for_map')) ?
             Session.get('list_kitchen_for_map').map((kitchen, index)=> {

@@ -34,6 +34,14 @@ class KitchenSearchList extends Component {
   }
 
   renderResultTitle = () => {
+    if (Session.get('search_nearby')) {
+      if (Session.get('search_result').kitchen.length > 20) {
+        let overNumber = Session.get('search_result').kitchen.length - (Session.get('search_result').kitchen.length % 5);
+        return 'Over ' + overNumber + '+ results around you';
+      } else {
+        return Session.get('search_result').kitchen.length + ' kitchens results around you';
+      }
+    }
     if (Session.get('search_result')) {
       let keywork = $('#searchQuery').val();
       if (Session.get('search_result').kitchen.length > 20) {
