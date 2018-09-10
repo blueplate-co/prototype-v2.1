@@ -13,6 +13,7 @@ export default class TagsUtil extends Component {
       errorMessages: [],
       resultMessages: [],
       tags: [],
+      transferStatus: 0,
     }
   }
 
@@ -50,12 +51,14 @@ export default class TagsUtil extends Component {
             resultMessages: [...prevState.resultMessages, result]
           }))
           request ++
+          this.setState({transferStatus: request})
         }
         if (error) {
           this.setState(prevState => ({
             errorMessages: [...prevState.errorMessages, error]
           }))
           request ++
+          this.setState({transferStatus: request})
         }
       })
       if (request == i) {
@@ -98,7 +101,8 @@ export default class TagsUtil extends Component {
       loading: false,
       errorMessages: [],
       resultMessages: [],
-      tags: []
+      tags: [],
+      transferStatus: 0,
     })
   }
 
@@ -159,6 +163,12 @@ export default class TagsUtil extends Component {
             <div className = "card bp-red">
               {this.errorMsg()}
             </div>
+            {
+              this.state.tags.length?
+                <p>Status: {this.state.transferStatus?this.state.transferStatus:'0'} / {this.state.tags.length}</p>
+              :
+                null
+            }
             {this.renderStep()}
           </div>
         </div>

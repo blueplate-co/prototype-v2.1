@@ -11,6 +11,7 @@ Meteor.methods({
     var dish_tags = Dishes.distinct("dish_tags.tag");
     var menu_tags = Menu.distinct("menu_tags.tag");
     var kitchen_tags = Kitchen_details.distinct("kitchen_tags.tag");
+    var kitchen_speciality_tags = Kitchen_details.distinct("kitchen_speciality.tag");
     for (i=0; i < dish_tags.length; i++) {
       tags.push(dish_tags[i])
     }
@@ -19,6 +20,9 @@ Meteor.methods({
     }
     for (i=0; i< kitchen_tags.length; i++) {
       tags.push(kitchen_tags[i])
+    }
+    for (i=0; i< kitchen_speciality_tags.length; i++) {
+      tags.push(kitchen_speciality_tags[i])
     }
     return tags;
   },
@@ -52,7 +56,11 @@ Meteor.methods({
       Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
 
       Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
-        kitchens_id.push(kitchen._id)
+        kitchens_id.push(kitchen.user_id)
+      })
+      Kitchen_details.find({kitchen_speciality: {tag: tag_name}}).forEach((kitchen) => {
+        console.log('kitchen_speciality': kitchen)
+        kitchens_id.push(kitchen.user_id)
       })
       console.log("Kitchen Array: " + kitchens_id)
       Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
@@ -72,7 +80,10 @@ Meteor.methods({
       Tags.update({tag_name: tag_name},{$addToSet: {menus_id: {$each: menus_id}}})
 
       Kitchen_details.find({kitchen_tags: {tag: tag_name}}).forEach((kitchen) => {
-        kitchens_id.push(kitchen._id)
+        kitchens_id.push(kitchen.user_id)
+      })
+      Kitchen_details.find({kitchen_speciality: {tag: tag_name}}).forEach((kitchen) => {
+        kitchens_id.push(kitchen.user_id)
       })
       console.log("Kitchen Array: " + kitchens_id)
       Tags.update({tag_name: tag_name},{$addToSet: {kitchens_id: {$each: kitchens_id}}})
