@@ -114,7 +114,7 @@ Template.edit_foodie_profile.onRendered(function () {
 let validateFieldRequired = function(el) {
   var $el = $('#' + el),
       value = $el.val();
-      
+
   if (value == null || value === '' || value.length == 0) {
     $el.addClass('invalid');
     $('#edit_foodie_profile').animate({
@@ -152,7 +152,7 @@ Template.edit_foodie_profile.events({
     const office_address_conversion = Session.get('office_address_conversion');
     const profileImg = Session.get('profileImg');
     const bannerProfileImg = Session.get('bannerProfileImg');
-    
+
     if (!validateFieldRequired('mobile')) {
       Materialize.toast('Mobile number is required', 4000, 'rounded bp-green');
       return;
@@ -162,7 +162,7 @@ Template.edit_foodie_profile.events({
       Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
-    
+
     //Step 2
     const about_myself = $('#about_myself').val();
 
@@ -256,7 +256,7 @@ Template.edit_homecook_profile.onRendered(function () {
     $('#kitchen_contact').intlTelInput({
       initialCountry: "HK",
       utilsScript: "../intlTelInput/utils.js"
-    });   
+    });
   }, 1000);
 
   /**this.$('# edit_homecook_stepper').activateStepper({
@@ -276,6 +276,34 @@ Template.edit_homecook_profile.onRendered(function () {
     //activate dropdown
     this.$('select').material_select();
 
+   Session.set('deleted_tags', [])
+
+   Meteor.call('tag_autocomplete.get', (err, data) => {
+     var autocompleteOptions = {data}
+     autocompleteOptions.limit = 5;
+     autocompleteOptions.minLength = 1;
+     this.$('#kitchen_speciality').material_chip({
+       data: get_homecook_profile.kitchen_speciality,
+       autocompleteOptions: autocompleteOptions
+     });
+     this.$('#kitchen_tags').material_chip({
+       data: get_homecook_profile.kitchen_tags,
+       autocompleteOptions: autocompleteOptions
+     });
+   })
+   
+   this.$('#kitchen_speciality').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+
+   this.$('#kitchen_tags').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+
     //activate characterCounter
     this.$('input#input_text, textarea#cooking_exp').characterCounter();
     this.$('input#input_text, textarea#cooking_story').characterCounter();
@@ -288,12 +316,6 @@ Template.edit_homecook_profile.onRendered(function () {
     Session.set('profileImg', get_homecook_profile.profileImg)
     Session.set('bannerProfileImg', get_homecook_profile.bannerProfileImg)
 
-    this.$('#kitchen_speciality').material_chip({
-      data: get_homecook_profile.kitchen_speciality
-    });
-    this.$('#kitchen_tags').material_chip({
-      data: get_homecook_profile.kitchen_tags
-    });
 
   }, 1000);
 });
@@ -361,6 +383,7 @@ Template.edit_homecook_profile.events({
         house_rule,
         Session.get('profileImg'),
         Session.get('bannerProfileImg'),
+        Session.get('deleted_tags'),
 
         function (err) {
           hide_loading_progress();
@@ -374,10 +397,11 @@ Template.edit_homecook_profile.events({
                   if (err) {
                     console.log('Error when update district');
                   } else {
+                    Session.set('deleted_tags', []);
                     Materialize.toast('Profile updated!', 4000);
                     FlowRouter.go('/profile/show_homecook_profile');
                   }
-                })  
+                })
               }
             });
           }

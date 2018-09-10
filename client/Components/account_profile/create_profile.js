@@ -383,6 +383,29 @@ Template.create_homecook_profile.onRendered(function () {
     });
   }, 1000);
 
+   Session.set('deleted_tags', [])
+   Meteor.call('tag_autocomplete.get', (err, data) => {
+     var autocompleteOptions = {data}
+     autocompleteOptions.limit = 5;
+     autocompleteOptions.minLength = 1;
+     this.$('#kitchen_speciality').material_chip({
+       autocompleteOptions: autocompleteOptions
+     });
+     this.$('#kitchen_tags').material_chip({
+       autocompleteOptions: autocompleteOptions
+     });
+   })
+   this.$('#kitchen_speciality').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+   this.$('#kitchen_tags').on('chip.delete', function(e, chip){
+     var deleted_tags = Session.get('deleted_tags')
+     deleted_tags.push(chip.tag);
+     Session.set('deleted_tags', deleted_tags);
+   });
+
   //activate dropdown
   this.$('#kitchen_address_country').material_select();
   this.$('#kitchen_contact_country').material_select();
@@ -391,37 +414,6 @@ Template.create_homecook_profile.onRendered(function () {
   this.$('input#input_text, textarea#cooking_exp').characterCounter();
   this.$('input#input_text, textarea#cooking_story').characterCounter();
   this.$('input#input_text, textarea#house_rule').characterCounter();
-
-  /**     this.$('#create_homecook_stepper').activateStepper({
-        linearStepsNavigation: true, //allow navigation by clicking on the next and previous steps on linear steppers
-        autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
-        autoFormCreation: true, //control the auto generation of a form around the stepper (in case you want to disable it)
-        showFeedbackLoader: false //set if a loading screen will appear while feedbacks functions are running
-     });**/
-
-  this.$('#kitchen_speciality').material_chip({
-    data: [{
-      tag: 'Italian',
-    }, {
-      tag: 'Cheese',
-    }, {
-      tag: 'Carbonara',
-    }],
-
-
-  });
-
-  this.$('#kitchen_tags').material_chip({
-    data: [{
-      tag: 'Seaview',
-    }, {
-      tag: 'Roof top',
-    }, {
-      tag: 'Bring your own wine',
-    }],
-
-
-  });
 
 })
 
@@ -839,6 +831,7 @@ Template.create_homecook_profile.events({
                   hide_loading_progress();
                   var subject = kitchen_name;
                   Meteor.call('kitchen.email', subject, kitchen_contact);
+                  Session.set('deleted_tags', []);
                   Materialize.toast('Profile created!', 4000);
                   FlowRouter.go('/path_choosing');
                 }

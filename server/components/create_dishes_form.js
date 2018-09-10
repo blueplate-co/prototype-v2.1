@@ -7,6 +7,7 @@ import {
 import {
   check
 } from 'meteor/check';
+import { Session } from 'meteor/session';
 
 Shopping_cart = new Mongo.Collection('shopping_cart');
 Dishes = new Mongo.Collection('dishes');
@@ -238,7 +239,7 @@ Meteor.methods({
 
 // insert Dish into db
 Meteor.methods({
-  'dish.insert': function(
+  'dish.insert' (
     image_id,
     user_id,
     kitchen_id,
@@ -262,6 +263,7 @@ Meteor.methods({
     //- insert the image different sizes
     imgMeta
   ) {
+    var dish_id = "";
     console.log('image meta data', imgMeta);
     // check it before insert
     check(image_id, Match.Any);
@@ -307,6 +309,10 @@ Meteor.methods({
       deleted: false,
       //- insert meta data for image sizes
       meta: imgMeta
+    }, (err, res) => {
+      if (res) {
+        Meteor.call('new_tags.upsert', dish_tags, "Dishes", res)
+      }
     });
   }
 });
@@ -314,7 +320,7 @@ Meteor.methods({
 let changeImgName = function(imgPath)
 {
 
-  //- return new name DateTime in milliseconds + unique ID 
+  //- return new name DateTime in milliseconds + unique ID
   let currentDate = new Date()
   var milliseconds = currentDate.getMilliseconds()
   //- uniqid

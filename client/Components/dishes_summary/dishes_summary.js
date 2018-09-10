@@ -68,11 +68,11 @@ Template.dishes_summary.events({
     event.preventDefault();
     var hasChangeField = $('.dirty_field'),
         bChangeField = hasChangeField.length > 0;
-        
+
     if (bChangeField) {
       open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
         // Cancel
-        
+
       }, () => {
         $('#add_dish_modal').modal('close');
 
@@ -92,11 +92,11 @@ Template.dishes_summary.events({
     event.preventDefault();
     var hasChangeField = $('.dirty_field'),
         bChangeField = hasChangeField.length > 0;
-    
+
     if (bChangeField) {
       open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
         // Cancel
-        
+
       }, () => {
         $('#edit_dish_modal').modal('close');
 
@@ -196,9 +196,15 @@ Template.dishes_summary.events({
           }
       }
       // Add chips to tagging section
-      console.log($('.chips-placeholder'))
-      console.log(get_dish.dish_tags);
-      $('#dish_tags').material_chip({data:get_dish.dish_tags});
+      Meteor.call('tag_autocomplete.get', (err, data) => {
+        var autocompleteOptions = {data}
+        autocompleteOptions.limit = 5;
+        autocompleteOptions.minLength = 1;
+        $('#dish_tags').material_chip({
+          data: get_dish.dish_tags,
+          autocompleteOptions: autocompleteOptions
+        });
+      })
 
       // Store all the values in Sessions
       Session.set('selected_dishes_id',get_dish._id);
@@ -219,9 +225,15 @@ Template.dishes_summary.events({
 
       setTimeout(() => {
         // Add chips to tagging section
-        console.log($('.chips-placeholder'))
-        console.log(get_dish.dish_tags);
-        $('#dish_tags').material_chip({data:get_dish.dish_tags});
+        Meteor.call('tag_autocomplete.get', (err, data) => {
+          var autocompleteOptions = {data}
+          autocompleteOptions.limit = 5;
+          autocompleteOptions.minLength = 1;
+          $('#dish_tags').material_chip({
+            data: get_dish.dish_tags,
+            autocompleteOptions: autocompleteOptions
+          });
+        })
       }, 500);
     }
   },

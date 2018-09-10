@@ -15,6 +15,7 @@ import WishDishList from './wish_dish_list';
 import WishMenuList from './wish_menu_list';
 import ListFilter from './list_filter';
 import Modal from './modal';
+import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 
 // App component - represents the whole app
@@ -152,12 +153,7 @@ class ShowRoom extends Component {
       case 'all_dish':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
-            <DishAllList title="All dishes" seemore=""/>
+            <DishAllList title="All dishes" seemore=""/ >
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
@@ -165,11 +161,6 @@ class ShowRoom extends Component {
       case 'all_menu':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
             <MenuAllList title="All Menus" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
@@ -178,11 +169,6 @@ class ShowRoom extends Component {
       case 'all_kitchen':
         return (
           <div>
-            <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
-            </div>
             <KitchenAllList title="All Kitchens" seemore="" popup={ this.handleDishPopup }/>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
@@ -244,17 +230,17 @@ class ShowRoom extends Component {
       default:
         return (
           <div>
+            <TagsDisplay />
+              <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
             <div className="row">
-              <div className="col xl12 l12 m12 s12 categories_navigation">
-                { this.renderCategories() }
-              </div>
+              <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
-            <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
-            <div className="row">
-            <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
+            <div className = "row">
+              <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
             </div>
-            <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
-            <KitchenList title="Kitchens" seemore="see all"/>
+            <div className = "row">
+              <KitchenList title="Kitchens" seemore="see all"/>
+            </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
