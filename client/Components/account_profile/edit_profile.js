@@ -278,14 +278,26 @@ Template.edit_homecook_profile.onRendered(function () {
 
    Session.set('deleted_tags', [])
 
-   this.$('#kitchen_speciality').material_chip({data:get_homecook_profile.kitchen_speciality});
+   Meteor.call('tag_autocomplete.get', (err, data) => {
+     var autocompleteOptions = {data}
+     autocompleteOptions.limit = 5;
+     autocompleteOptions.minLength = 1;
+     this.$('#kitchen_speciality').material_chip({
+       data: get_homecook_profile.kitchen_speciality,
+       autocompleteOptions: autocompleteOptions
+     });
+     this.$('#kitchen_tags').material_chip({
+       data: get_homecook_profile.kitchen_tags,
+       autocompleteOptions: autocompleteOptions
+     });
+   })
+   
    this.$('#kitchen_speciality').on('chip.delete', function(e, chip){
      var deleted_tags = Session.get('deleted_tags')
      deleted_tags.push(chip.tag);
      Session.set('deleted_tags', deleted_tags);
    });
 
-   this.$('#kitchen_tags').material_chip({data:get_homecook_profile.kitchen_tags});
    this.$('#kitchen_tags').on('chip.delete', function(e, chip){
      var deleted_tags = Session.get('deleted_tags')
      deleted_tags.push(chip.tag);

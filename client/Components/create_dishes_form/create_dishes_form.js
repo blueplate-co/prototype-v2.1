@@ -421,8 +421,15 @@ Template.dietary_preferences.events({
 
 
 Template.tagging.onRendered(function() {
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    $('#dish_tags').material_chip({
+      autocompleteOptions: autocompleteOptions
+    });
+  })
   Session.set('deleted_tags', [])
-  $('#dish_tags').material_chip();
   $('#dish_tags').on('chip.delete', function(e, chip){
     var deleted_tags = Session.get('deleted_tags')
     deleted_tags.push(chip.tag);
@@ -455,7 +462,7 @@ Template.create_dishes_form.events({
       var hours = event.target.hours.value;
       var mins = event.target.mins.value;
       var cooking_time = (parseInt(days) * 24 * 60) + (parseInt(hours) * 60) + parseInt(mins);
-      
+
       if (cooking_time === 0) {
         Materialize.toast("Cooking time must greater than 0 mins", 6000, 'rounded bp-green');
         // Scroll to field required
@@ -491,7 +498,7 @@ Template.create_dishes_form.events({
           return false;
         }
       }
-      
+
       if (dish_selling_price == 0) {
         Materialize.toast("Dish sell price must greater than 0", 6000, 'rounded bp-green');
         // Scroll to field required

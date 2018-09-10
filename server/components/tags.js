@@ -238,6 +238,14 @@ Meteor.methods({
         break;
       }
   },
+  'tag_autocomplete.get'() {
+    var tag_names = Tags.find({}, {tag_name: 1}).fetch();
+    var data = {}
+    for (i=0; i < tag_names.length; i++) {
+      data[tag_names[i].tag_name.toString()] = null;
+    }
+    return data;
+  },
   'tag_result.get'(tag) {
     var result = {
       dish: [],

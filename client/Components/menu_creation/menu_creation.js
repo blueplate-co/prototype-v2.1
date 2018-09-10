@@ -72,7 +72,14 @@ Template.menu_creation_content.onCreated( function(){
 
 Template.menu_creation_content.onRendered(function(template){
   Session.set('deleted_tags', [])
-  this.$('#menu_tags').material_chip();
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    $('#menu_tags').material_chip({
+      autocompleteOptions: autocompleteOptions
+    });
+  })
   $('#menu_tags').on('chip.delete', function(e, chip){
     var deleted_tags = Session.get('deleted_tags')
     deleted_tags.push(chip.tag);
@@ -467,7 +474,15 @@ Template.edit_content.events({
 
 Template.menu_tags.onRendered(function(){
   var menu_tags_init = Session.get('menu_tags');
-  this.$('#edit_menu_tags').material_chip({data: menu_tags_init});
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    this.$('#edit_menu_tags').material_chip({
+      data: menu_tags_init,
+      autocompleteOptions: autocompleteOptions
+    });
+  })
   Session.set('deleted_tags', [])
   $('#edit_menu_tags').on('chip.delete', function(e, chip){
     var deleted_tags = Session.get('deleted_tags')
