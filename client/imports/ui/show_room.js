@@ -153,7 +153,7 @@ class ShowRoom extends Component {
       case 'all_dish':
         return (
           <div>
-            <DishAllList title="All dishes" seemore="" popup={ this.handleDishPopup }/>
+            <DishAllList title="All dishes" seemore=""/ >
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
           </div>
         )
@@ -231,7 +231,7 @@ class ShowRoom extends Component {
         return (
           <div>
             <TagsDisplay />
-              <DishList title="Dishes Highlight" seemore="see all" popup={ this.handleDishPopup }/>
+              <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
             <div className="row">
               <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>

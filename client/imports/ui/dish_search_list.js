@@ -80,6 +80,14 @@ class DishSearchList extends Component {
   }
 
   renderResultTitle = () => {
+    if (Session.get('search_nearby')) {
+      if (Session.get('search_result').dish.length > 20) {
+        let overNumber = Session.get('search_result').dish.length - (Session.get('search_result').dish.length % 5);
+        return 'Over ' + overNumber + '+ results around you';
+      } else {
+        return Session.get('search_result').dish.length + ' dishes results around you';
+      }
+    }
     if (Session.get('search_result')) {
       let keywork = $('#searchQuery').val();
       if (Session.get('search_result').dish.length > 20) {

@@ -22,5 +22,15 @@ Meteor.methods({
   }
 });
 
+Meteor.methods({
+  'mapping.nearby'(lat, lng, radius) {
+    var searched_kitchen = Kitchen_details.find({
+      kitchen_address_conversion: {"$geoWithin": {"$centerSphere": [[ lng, lat], radius/6371]}}
+    }).fetch();
+    return searched_kitchen;
+  }
+});
+
+
 //the problem right now is MongoDb take lng, lat, but google map takes lat, lng
 //I need to convert the document fields to mongodb order to make "find" works
