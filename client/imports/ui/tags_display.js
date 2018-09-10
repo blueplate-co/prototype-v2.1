@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import ReactDOM from 'react-dom';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
 
 import { isMobileDevice } from './../../../imports/functions/isMobileDevice.js';
 
@@ -10,6 +12,7 @@ export default class TagsDisplay extends React.Component {
     super(props);
     this.handleMoveLeft = this.handleMoveLeft.bind(this);
     this.handleMoveRight = this.handleMoveRight.bind(this);
+    this.handleTagSelect = this.handleTagSelect.bind(this);
     this.state = {
       tags: [],
       initialPosition: 0,
@@ -23,7 +26,6 @@ export default class TagsDisplay extends React.Component {
       tagWrapper: {
         width: '100%',
         position: 'relative',
-        zIndex: '100',
         backgroundColor: 'white',
         verticalAlign: 'middle',
         maxHeight: '80px',
@@ -145,13 +147,43 @@ export default class TagsDisplay extends React.Component {
         display: 'inline-block',
         overflow: 'visible',
         fontSize: '16px',
+        position: 'relative',
         zIndex: '1000',
         backgroundColor: this.state.tagColor[index],
         cursor: 'pointer',
       };
       return (
-          <a key = {index} className = "chip" style = {tagStyle} onClick={()=> Session.set('tag_selected', item)}>{item.tag_name}</a>
+          <a key = {index} className = "chip" style = {tagStyle} onClick={() => this.handleTagSelect(item)}>{item.tag_name}</a>
       )
+    })
+  }
+
+  handleTagSelect(item) {
+    FlowRouter.go('/search#all');
+    $('#searchQuery').val(item.tag_name);
+    Meteor.call('tag_result.get', item, (err, res) => {
+      Session.set('search_result', res)
+      // get location of kitchens for map markers
+      //- get unique kitchen id of 3 lists.
+      let uniqueDishKitchen = [...new Set(res.dish.map(item => item.kitchen_id))];
+      let uniqueMenuKitchen = [...new Set(res.menu.map(item => item.kitchen_id))];
+      let uniqueKitchen = [...new Set(res.kitchen.map(item => item._id))];
+      let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+      // concat 3 arrays and remove duplicated items
+      for (var i = 0; i < kitchen_id_list.length; ++i) {
+        for (var j = i + 1; j < kitchen_id_list.length; ++j) {
+          if (kitchen_id_list[i] === kitchen_id_list[j])
+            kitchen_id_list.splice(j--, 1);
+        }
+      }
+      //- get location of item in array
+      var listkitchens = [];
+      for (var i = 0; i < kitchen_id_list.length; i++) {
+        let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
+        listkitchens.push(selected_kitchen);
+      }
+      Session.set('list_kitchen_for_map', listkitchens);
+      Session.set('search_result_origin', res);
     })
   }
 
