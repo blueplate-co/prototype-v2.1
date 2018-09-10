@@ -26,7 +26,7 @@ export default class ShowDishProfile extends Component {
     if (FlowRouter.getParam('homecook_id')) {
       return (
         <div className = "col xl12 l12 m12 s12">
-          <DishList title="Dishes" seemore = ""/>
+          <DishList title="Dishes" seemore = "" showStatus="true"/>
           <MenuList title = "Menus" seemore = "" popup = { this.handleMenuPopup }/>
           <Modal dish = {this.state.selectedDish} menu = {this.state.selectredMenu}/>
         </div>
