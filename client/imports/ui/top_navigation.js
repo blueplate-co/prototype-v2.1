@@ -120,6 +120,7 @@ class TopNavigation extends Component {
             setTimeout(() => {
               this.setState({ sidebarOpen: true });
             }, 500);
+            BlazeLayout.reset();
             FlowRouter.go("/profile/show_homecook_profile");
           }}
         >
