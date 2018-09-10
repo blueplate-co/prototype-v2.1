@@ -33,8 +33,8 @@ h6 {
 
 .bp-green {
   background-color: #B1DBBE;
-  opacity: 0.87;
   color: #000000;
+  opacity: 1;
 }
 
 .bp-green:hover {
@@ -51,7 +51,6 @@ h6 {
 }
 
 html {
-  height: 70vh;
   font-family: 'Montserrat', sans-serif;
   overflow-y: auto;
   overflow-x: hidden;

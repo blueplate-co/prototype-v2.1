@@ -9,8 +9,12 @@ import {
 } from 'meteor/check';
 import {
   Match
-} from 'meteor/check'
+} from 'meteor/check';
+import {
+  Session
+} from 'meteor/session';
 import { log } from 'util';
+
 
 Meteor.methods({
   'dish.remove' (dish_id) {
@@ -23,6 +27,12 @@ Meteor.methods({
         deleted: true
       }
     });
+    var deleted_tags = [];
+    var tags = Dishes.findOne({_id: dish_id}).dish_tags
+    for (i=0; i < tags.length; i++) {
+      deleted_tags.push(tags[i].tag)
+    }
+    Meteor.call('tags.remove', deleted_tags, "Dishes", dish_id)
   },
   'dish_image.remove' (image_id) {
     // check format
@@ -31,7 +41,7 @@ Meteor.methods({
       _id: image_id
     });
   },
-  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, days, hours, mins, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, dish_tags, imgMeta) {
+  'dish.update' (dish_id, image_id, user_id, kitchen_id, dish_name, dish_description, serving_option, cooking_time, days, hours, mins, dish_cost, dish_selling_price, dish_profit, allergy_tags, dietary_tags, dish_tags, imgMeta, deleted_tags) {
     check(dish_id, String);
     check(image_id, String);
     check(user_id, String);
@@ -74,6 +84,8 @@ Meteor.methods({
         updatedAt: new Date()
       }
     });
+    Meteor.call('new_tags.upsert', dish_tags, "Dishes", dish_id)
+    Meteor.call('tags.remove', deleted_tags, "Dishes", dish_id)
   },
   'dish.online' (dish_id, status) {
     // check format data before excute action

@@ -105,7 +105,7 @@ Meteor.methods({
     profile_picture
   ) {
     Profile_details.update({
-      user_id: Meteor.userId() 
+      user_id: Meteor.userId()
     }, {
       $set: {
         foodie_name: name,
@@ -130,7 +130,8 @@ Meteor.methods({
     kitchen_tags,
     house_rule,
     profileImg,
-    bannerProfileImg
+    bannerProfileImg,
+    deleted_tags
   ) {
     console.log('is banner empty? ', _.isEmpty(bannerProfileImg));
     if(!_.isEmpty(bannerProfileImg)) //- if chef change banner's images
@@ -179,6 +180,9 @@ Meteor.methods({
         }
       })
     }
+    Meteor.call('new_tags.upsert', kitchen_tags, "Kitchen_details", Meteor.userId())
+    Meteor.call('new_tags.upsert', kitchen_speciality, "Kitchen_details", Meteor.userId())
+    Meteor.call('tags.remove', deleted_tags, "Kitchen_details", Meteor.userId())
   },
 
   'kitchen_details.syncFromProfile' (
@@ -187,7 +191,7 @@ Meteor.methods({
     profile_picture
   ) {
     Kitchen_details.update({
-      user_id: Meteor.userId() 
+      user_id: Meteor.userId()
     }, {
       $set: {
         chef_name: name,

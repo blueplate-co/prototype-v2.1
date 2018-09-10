@@ -421,7 +421,20 @@ Template.dietary_preferences.events({
 
 
 Template.tagging.onRendered(function() {
-  $('#dish_tags').material_chip();
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    $('#dish_tags').material_chip({
+      autocompleteOptions: autocompleteOptions
+    });
+  })
+  Session.set('deleted_tags', [])
+  $('#dish_tags').on('chip.delete', function(e, chip){
+    var deleted_tags = Session.get('deleted_tags')
+    deleted_tags.push(chip.tag);
+    Session.set('deleted_tags', deleted_tags);
+  });
 });
 
 Template.create_dishes_form.onCreated( function(){
@@ -449,7 +462,7 @@ Template.create_dishes_form.events({
       var hours = event.target.hours.value;
       var mins = event.target.mins.value;
       var cooking_time = (parseInt(days) * 24 * 60) + (parseInt(hours) * 60) + parseInt(mins);
-      
+
       if (cooking_time === 0) {
         Materialize.toast("Cooking time must greater than 0 mins", 6000, 'rounded bp-green');
         // Scroll to field required
@@ -485,7 +498,7 @@ Template.create_dishes_form.events({
           return false;
         }
       }
-      
+
       if (dish_selling_price == 0) {
         Materialize.toast("Dish sell price must greater than 0", 6000, 'rounded bp-green');
         // Scroll to field required
@@ -530,6 +543,7 @@ Template.create_dishes_form.events({
         Session.set('ingredient_temp', []);
         Session.set('tempImages', []);
         Session.set('imgMeta', []);
+        Session.set('delted_tags', []);
         $('#dish_tags').material_chip({
           data: [],
         });
@@ -581,6 +595,7 @@ Template.create_dishes_form.events({
       Session.get('dietary_tags'),
       dish_tags,
       Session.get('imgMeta'),
+      Session.get('deleted_tags'),
       function(err) {
         if (err) {
           Materialize.toast('Oops! Error update dish. Please try again. ' + err.message, 4000, "rounded bp-green");
@@ -598,6 +613,7 @@ Template.create_dishes_form.events({
               Session.set('ingredient_temp', []);
               Session.set('selected_dishes_id', null);
               Session.set('imgMeta', []);
+              Session.set('deleted_tags', []);
         }
       }
     );

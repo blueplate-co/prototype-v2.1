@@ -1,3 +1,9 @@
+.tagWrapper {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 90px;
+}
+
 .large_dish_display {
   border-radius: 20px!important;
   width: 685px!important;

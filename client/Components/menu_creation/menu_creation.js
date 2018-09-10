@@ -71,7 +71,20 @@ Template.menu_creation_content.onCreated( function(){
 });
 
 Template.menu_creation_content.onRendered(function(template){
-  this.$('#menu_tags').material_chip();
+  Session.set('deleted_tags', [])
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    $('#menu_tags').material_chip({
+      autocompleteOptions: autocompleteOptions
+    });
+  })
+  $('#menu_tags').on('chip.delete', function(e, chip){
+    var deleted_tags = Session.get('deleted_tags')
+    deleted_tags.push(chip.tag);
+    Session.set('deleted_tags', deleted_tags);
+  });
   this.$('select').material_select();
   this.$('.modal').modal({
       dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -128,6 +141,7 @@ Template.menu_creation_content.events({
     };
     Session.keys = {};
     $('div.modal').scrollTop(0);
+    Session.set('deleted_tags', []);
   },
   'click #create_menu': function(event, template) {
     event.preventDefault;
@@ -256,6 +270,7 @@ Template.menu_creation_content.events({
     $('#menu_tags').material_chip({
       data: [],
     });
+    Session.set('deleted_tags', []);
 
     var checkboxes = document.getElementsByClassName("dishes_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
@@ -365,7 +380,7 @@ Template.edit_content.helpers({
     var user_dishes = Dishes.find({"user_id": Meteor.userId(), "deleted": false}).fetch();
     user_dishes.map((item, index) => {
       item.dish_selling_price = Math.round(item.dish_selling_price / 1.15)
-    });  
+    });
     return user_dishes;
   },
   'is_checked': function() {
@@ -408,6 +423,7 @@ Template.edit_content.events({
         document.getElementById(dishes_id[i]).checked = "checked";
       };
     }
+    Session.set('deleted_tags', []);
     Session.set('menu_id', this._id);
     $('#edit_menu_modal').modal('close');
   },
@@ -431,12 +447,14 @@ Template.edit_content.events({
     };
 
     var menu_tags = $('#edit_menu_tags').material_chip('data')
+    var deleted_tags = Session.get('deleted_tags')
 
     if (menu_name && menu_selling_price && dishes_id) {
-      Meteor.call('menu.update', menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, function(err){
+      Meteor.call('menu.update', menu_id, menu_name, menu_description, menu_selling_price, min_order, lead_hours,lead_days, serving_option, dishes_id, image_id, menu_tags, deleted_tags, function(err){
           if (err) {
             Materialize.toast('Oops! Error when update your menu. Please try again. ' + err.message, 4000, 'rounded bp-green');
           } else {
+            Session.set('deleted_tags', [])
             Materialize.toast('Menu updated!', 4000, 'rounded bp-green');
           }
       });
@@ -456,5 +474,19 @@ Template.edit_content.events({
 
 Template.menu_tags.onRendered(function(){
   var menu_tags_init = Session.get('menu_tags');
-  this.$('#edit_menu_tags').material_chip({data: menu_tags_init});
+  Meteor.call('tag_autocomplete.get', (err, data) => {
+    var autocompleteOptions = {data}
+    autocompleteOptions.limit = 5;
+    autocompleteOptions.minLength = 1;
+    this.$('#edit_menu_tags').material_chip({
+      data: menu_tags_init,
+      autocompleteOptions: autocompleteOptions
+    });
+  })
+  Session.set('deleted_tags', [])
+  $('#edit_menu_tags').on('chip.delete', function(e, chip){
+    var deleted_tags = Session.get('deleted_tags')
+    deleted_tags.push(chip.tag);
+    Session.set('deleted_tags', deleted_tags);
+  });
 })
