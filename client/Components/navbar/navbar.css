@@ -505,45 +505,59 @@ ul.right .icon {
 
 @media screen and (max-width: 1024px) {
   .nearby {
-    width: 130px!important;
-    margin-left: 480px!important;
-    margin-top: -7px!important;
+    width: 50px;
+    margin-left: 445px!important;
+    margin-top: 5px!important;
     font-size: 1rem!important;
     background-color: #fff!important;
     color: #000!important;
-    height: 47px;
+    height: 50px;
     border-radius: 5px!important;
+    background-size: 70%;
   }
 }
 
 @media screen and (max-width: 920px) {
   .nearby {
-    width: 130px!important;
-    margin-left: 385px!important;
-    margin-top: -7px!important;
+    width: 50px;
+    margin-left: 345px!important;
+    margin-top: 5px!important;
     font-size: 1rem!important;
     background-color: #fff!important;
     color: #000!important;
-    height: 47px;
+    height: 50px;
     border-radius: 5px!important;
+    background-size: 70%;
   }
 }
 
 @media screen and (max-width: 768px) {
   .nearby {
-    width: 130px!important;
-    margin-left: 350px!important;
-    margin-top: -7px!important;
+    width: 50px;
+    margin-left: 445px!important;
+    margin-top: 5px!important;
     font-size: 1rem!important;
     background-color: #fff!important;
     color: #000!important;
-    height: 47px;
+    height: 50px;
     border-radius: 5px!important;
+    background-size: 70%;
   }
 }
 
 @media screen and (max-width: 500px) {
   .nearby {
+    width: 50px;
+    margin-left: 200px!important;
+    margin-top: 5px!important;
+    font-size: 1rem!important;
+    background-color: #fff!important;
+    color: #000!important;
+    height: 50px;
+    border-radius: 5px!important;
+    background-size: 70%;
+  }
+  .navbar-fixed ul.right {
     display: none;
   }
 }
