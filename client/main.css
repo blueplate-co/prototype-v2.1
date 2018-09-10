@@ -82,6 +82,11 @@ body p {
   border-radius: 0px 0px 10px 10px !important;
 }
 
+/* Custom for chat.io */
+#chatio-container {
+  left: 0px;
+}
+
 /* modal responsive settings */
 
 /* desktop and above */
