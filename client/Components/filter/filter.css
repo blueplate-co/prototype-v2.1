@@ -46,11 +46,14 @@
 }
 
 .list-filter-content-location li:before {
-    content: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg');
+    content: '';
     position: relative;
     height: 30px;
+    width: 30px;
     top: 1px;
     left: -5px;
+    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/location-icon.svg') center center no-repeat;
+    background-size: contain;
 }
 
 .list-filter-content-location li:hover {

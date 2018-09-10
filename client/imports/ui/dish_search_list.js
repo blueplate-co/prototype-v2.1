@@ -39,7 +39,7 @@ class DishSearchList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl4 l4 m6 s6 dish-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl4 l4 m6 s12 dish-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {

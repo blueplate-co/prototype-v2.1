@@ -76,7 +76,7 @@ class MenuSearchList extends Component {
     }
     return this.props.menus.map((item, index) => {
       return (
-        <div key={index} className="col xl4 l4 m6 s6 menu-wrapper" onClick={ () => this.handleClick(item) }>
+        <div key={index} className="col xl4 l4 m6 s12 menu-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail" style={{ height: '150px' }}>
             <Like type="menu" id={item._id} />
             <div className="slider">
