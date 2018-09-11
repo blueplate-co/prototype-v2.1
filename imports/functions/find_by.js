@@ -26,8 +26,8 @@ export function navbar_find_by(collection){
               '_id': {$in: kitchen_id},
               'serving_option': method,
               //'user_id':{$ne: Meteor.userId()},
-              'kitchen_address_conversion.lng':{$ne: null},
-              'kitchen_address_conversion.lat':{$ne: null}
+              //'kitchen_address_conversion.lng':{$ne: null},
+              //'kitchen_address_conversion.lat':{$ne: null}
             });
             //console.log(searched_result);
             Session.set('searched_result', searched_result.fetch());
@@ -50,8 +50,8 @@ export function navbar_find_by(collection){
               var searched_result = Collections[collection].find({
                 '_id': {$in: kitchen_id},
                 //'user_id':{$ne: Meteor.userId()},
-                'kitchen_address_conversion.lng':{$ne: null},
-                'kitchen_address_conversion.lat':{$ne: null}
+                //'kitchen_address_conversion.lng':{$ne: null},
+                //'kitchen_address_conversion.lat':{$ne: null}
               });
               //console.log(searched_result);
               Session.set('searched_result', searched_result.fetch());
@@ -70,8 +70,8 @@ export function navbar_find_by(collection){
       var searched_result = Collections[collection].find({
         'serving_option': method,
         //'user_id':{$ne: Meteor.userId()},
-        'kitchen_address_conversion.lng':{$ne: null},
-        'kitchen_address_conversion.lat':{$ne: null}
+        //'kitchen_address_conversion.lng':{$ne: null},
+        //'kitchen_address_conversion.lat':{$ne: null}
       })
       Session.set('searched_result', searched_result.fetch());
     } else {
@@ -79,8 +79,8 @@ export function navbar_find_by(collection){
       //console.log(collection + 'location: F, method: F');
       var searched_result = Collections[collection].find({
         //'user_id':{$ne: Meteor.userId()},
-        'kitchen_address_conversion.lng':{$ne: null},
-        'kitchen_address_conversion.lat':{$ne: null}
+        //'kitchen_address_conversion.lng':{$ne: null},
+        //'kitchen_address_conversion.lat':{$ne: null}
       })
       Session.set('searched_result', searched_result.fetch());
     }
