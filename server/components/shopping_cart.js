@@ -2,11 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { FilesCollection } from 'meteor/ostrio:files';
 import { Match } from 'meteor/check';
 import { check } from 'meteor/check';
+import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 Order_record = new Mongo.Collection('order_record');
 
 Meteor.methods({
-  'chargeCard': function(stripeToken, amount, description, buyer_id, seller_id, paymentType) {
+  'chargeCard': function(stripeToken, amount, description, buyer_id, seller_id, paymentType, transaction_no) {
     if (paymentType == 'card') {
       console.log('Payment by credits card');
       var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
@@ -18,7 +19,25 @@ Meteor.methods({
       var charge = Meteor.wrapAsync(stripe.charges.create, stripe.charges);
       console.log('BEGINNING CHARGE');
       console.log('Amount: ' + amount);
-      chargeAmount = parseFloat((amount + ( amount * 0.034 ) + 2.35).toFixed(2));
+      // get all detail transaction
+      var transactions = Transactions.find({
+        'buyer_id': buyer_id,
+        'seller_id': seller_id,
+        'transaction_no': transaction_no
+      }).fetch();
+      // re-calculate amount of transaction, because maybe have promotion dishes
+      var promotion_amount = 0;
+      for (var i = 0; i < transactions.length; i++) {
+        var order_id = transactions[i].order[0];
+        var product_id = Order_record.find({ _id: order_id }).product_id;
+        if (checking_promotion_dish(product_id).length > 0) {
+          promotion_amount += parseFloat(transactions[i].amount * get_amount_promotion(product_id));
+        } else {
+          promotion_amount += transactions[i].amount;
+        }
+      }
+      console.log('Promotion amount when charge: ' + promotion_amount);
+      chargeAmount = parseFloat((promotion_amount + ( promotion_amount * 0.034 ) + 2.35).toFixed(2));
       console.log('Charge amount: ' + chargeAmount);
       charge({
         amount: chargeAmount * 100,
@@ -83,11 +102,28 @@ Meteor.methods({
       Meteor.call('payment.getStripeBalanceOfSpecific', buyer_id, function (err, res) {
         let balance = parseFloat(res.account_balance / 100).toFixed(2);
         // if balance is enough to pay amount
-        if (parseFloat(amount) < parseFloat(balance)) {
+        // get all detail transaction
+        var transactions = Transactions.find({
+          'buyer_id': buyer_id,
+          'seller_id': seller_id,
+          'transaction_no': transaction_no
+        }).fetch();
+        // re-calculate amount of transaction, because maybe have promotion dishes
+        var promotion_amount = 0;
+        for (var i = 0; i < transactions.length; i++) {
+          var order_id = transactions[i].order[0];
+          var product_id = Order_record.find({ _id: order_id }).product_id;
+          if (checking_promotion_dish(product_id).length > 0) {
+            promotion_amount += parseFloat(transactions[i].amount * get_amount_promotion(product_id));
+          } else {
+            promotion_amount += transactions[i].amount;
+          }
+        }
+        if (parseFloat(promotion_amount) < parseFloat(balance)) {
           var buyerCustomerId = Meteor.users.findOne({ _id: buyer_id }).stripe_id; // get Stripe id of buyer_id
           // update balance of buyer
           var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
-          var newBalance = parseFloat(balance - amount).toFixed(2);
+          var newBalance = parseFloat(balance - promotion_amount).toFixed(2);
           updatedCustomer(buyerCustomerId, {
             account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
           }, function(err, customer) {

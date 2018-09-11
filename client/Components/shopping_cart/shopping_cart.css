@@ -52,6 +52,17 @@ i.remove_button {
 .detail-product .detail-price {
   display: block;
   padding-left: 20px;
+  color: #56aacd;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.detail-product .detail-old-price {
+  display: block;
+  padding-left: 20px;
+  text-decoration: line-through;
+  font-size: 18px;
+  color: #727272;
 }
 
 .detail-product .detail-thumbnail {

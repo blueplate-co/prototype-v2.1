@@ -483,7 +483,7 @@ Template.request_card.events({
         //- calculation sum of transactions
         var amount = transaction.reduce(function(total, item){ return total + item.amount }, 0);
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
-        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType);
+        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, transaction_no);
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);

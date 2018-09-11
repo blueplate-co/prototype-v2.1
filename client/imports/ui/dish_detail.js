@@ -7,6 +7,7 @@ import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
+import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -422,9 +423,18 @@ export class Dish_Detail extends Component {
                                             </div>
                                             <span id="dish-name">{dish_detail.dish_name}</span>
                                             <div className="rating-content">
-                                                <div className="no-margin">
-                                                    <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>
-                                                </div>
+                                                {
+                                                    (checking_promotion_dish(dish_detail._id).length > 0) ?
+                                                        <div className="row">
+                                                            <div id="dish-price" className="col l4 m4 dish-price no-padding text-left">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</div>
+                                                            <div className="dish-old-price col l5 m5 dish-price no-padding text-left" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</div>
+                                                            <span className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</span>
+                                                        </div>
+                                                    :
+                                                        <div className="no-margin">
+                                                            <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>
+                                                        </div>
+                                                }
                                                 <div className="rating-detail">
                                                     <span><Rating rating={dish_detail.average_rating}/></span>
                                                     <span className="sum-order-dish">{dish_detail.order_count}</span>

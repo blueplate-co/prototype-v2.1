@@ -3,6 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
+import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 class Modal extends React.Component {
 
@@ -153,7 +154,11 @@ class Payment extends Component {
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
                 var total = 0;
                 for (var i = 0; i < shoppingCart.length; i++) {
-                    total += parseFloat(shoppingCart[i].total_price_per_dish);
+                    if (checking_promotion_dish(shoppingCart[i].product_id).length > 0) {
+                        total += parseFloat(shoppingCart[i].total_price_per_dish * get_amount_promotion(shoppingCart[i].product_id));
+                    } else {
+                        total += parseFloat(shoppingCart[i].total_price_per_dish);
+                    }
                 }
                 // get Stripe balance
                 Meteor.call('payment.getStripeBalance', (err, res) => {
@@ -165,7 +170,11 @@ class Payment extends Component {
                     }).fetch();
                     var pendingCost = 0;
                     for (var i = 0; i < pendingOrder.length; i++) {
-                        pendingCost += pendingOrder[i].total_price;
+                        if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
+                            pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
+                        } else {
+                            pendingCost += pendingOrder[i].total_price;
+                        }
                     }
                     var trueBalance = (parseFloat(credits) + parseFloat(balance)) - parseFloat(pendingCost);
                     // sum of two wallet is not enough to pay
