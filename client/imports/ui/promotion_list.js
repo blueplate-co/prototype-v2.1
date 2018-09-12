@@ -19,6 +19,10 @@ class PromotionList extends React.Component {
 
   handleOnViewDish = (dishId) => {
     BlazeLayout.reset();
+    //- tracking access promotion
+    if (location.hostname == 'www.blueplate.co') {
+      fbq('trackCustom', 'SelectPromotionDish', { dish_id: dishId, user_id: Meteor.userId() });
+    }
     FlowRouter.go("/dish/" + dishId);
   }
 
