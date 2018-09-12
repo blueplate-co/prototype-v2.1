@@ -238,7 +238,7 @@
 
 @media screen and (max-width: 920px) {
     .searchinput {
-      width: 300px !important;
+      width: calc(100vw - 300px) !important;
       padding: 0px 10px!important;
       border-radius: 15px!important;
       margin-bottom: 0px !important;
@@ -276,7 +276,7 @@
         left: 0px;
     }
     .searchinput {
-        width: calc(100vw - 230px) !important;
+        width: calc(100vw - 300px) !important;
         padding: 0px 10px!important;
         border-radius: 15px!important;
         margin-bottom: 0px !important;
@@ -293,7 +293,7 @@
 
 @media screen and (max-width: 500px) {
     .searchinput {
-        width: calc(100vw - 230px) !important;
+        width: calc(100vw - 195px) !important;
         padding: 0px 10px;
         margin-left: 0px!important;
         border-radius: 15px!important;

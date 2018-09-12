@@ -472,7 +472,7 @@ class TopNavigation extends Component {
                       <i className="material-icons bp-blue-text center-align">location_on</i>
                     </li>
                   </ul>
-                  <ul className="right">
+                  <ul className="right hide-on-small-only">
                     {
                       (this.state.width <= 850) ?
                         <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
