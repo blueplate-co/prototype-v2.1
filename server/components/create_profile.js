@@ -229,6 +229,22 @@ Meteor.methods({
     } else {
       return "";
     }
+  },
+  'ordering.createProfileOrder' (ordering_obj) {
+    var user_details = Meteor.users.findOne({"_id": Meteor.userId()});
+    var email_address = user_details.emails[0].address;
+    Profile_details.insert({
+      user_id: Meteor.userId(),
+      foodie_name: ordering_obj.name_ordering,
+      first_name: ordering_obj.first_name_order,
+      last_name: ordering_obj.last_name_order,
+      email: email_address,
+      mobile: ordering_obj.phone_ordering,
+      home_address: ordering_obj.address_ordering,
+      home_address_conversion: ordering_obj.address_conversion,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
   }
 });
 

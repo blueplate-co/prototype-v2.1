@@ -336,14 +336,6 @@
     z-index: 10004 !important;
 }
 
-#ordering-popup, #modal-overlay {
-    z-index: 10003 !important;
-}
-
-.order-infor-overlay {
-    z-index: 10002 !important;
-}
-
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
     .service-option-select img {

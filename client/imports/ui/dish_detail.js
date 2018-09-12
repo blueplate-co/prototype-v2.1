@@ -219,13 +219,11 @@ export class Dish_Detail extends Component {
     dishOrder() {
         show_loading_progress();
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-        if ((typeof foodie_details !== 'undefined' || foodie_details.foodie_name !== '')) {
+        if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
             hide_loading_progress();
-            Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+            // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
             
             this.openInfoOrdering();
-
-            $('.modal-overlay').addClass("order-infor-overlay");
         } else {
             var dish_details = this.state.data;
             var foodie_id = Meteor.userId();
@@ -312,8 +310,8 @@ export class Dish_Detail extends Component {
             utilsScript: "../intlTelInput/utils.js"
         });
 
-        $('.dirty_field').remove('.dirty_field');
-        
+        $('.dirty_field').removeClass('dirty_field');
+
         $('#ordering-popup').modal('open');
     }
     

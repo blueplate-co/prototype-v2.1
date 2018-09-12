@@ -93,6 +93,7 @@ class TopNavigation extends Component {
   };
 
   handleGoHome = () => {
+    $('.modal').modal('close');
     this.setState({ sidebarOpen: false });
     FlowRouter.go("/main");
   }

@@ -38,9 +38,6 @@ export default class InfoOrder extends Component {
     scrollToFieldRequired(el, styleSheet) {
         var $el = $('#' + el);
         $el.addClass(styleSheet);
-        $('#ordering-popup').animate({
-          scrollTo: $el.offset().top
-        }, 500);
         $el.focus();
     };
 
@@ -59,24 +56,43 @@ export default class InfoOrder extends Component {
         } else {
             $('#ordering-popup').modal('close');
         }
-    }
+    };
 
     handleOnSaveOrderingInfo() {
         var ordering_info = this.state.order_obj;
         if (!this.validateInforOrdering(ordering_info)) {
             return;
         }
+        this.createFoodiesName(this.state.order_obj.name_ordering);
 
         $('#ordering-popup').removeClass('.dirty_field');
         $('#ordering-popup').modal('close');
 
-        Meteor.call('ordering.syncProfileAndKitchen', ordering_info, (err, res) => {
+        Meteor.call('ordering.createProfileOrder', ordering_info, (err, res) => {
             if (!err) {
                 console.log('Create info success');
             }
         });
         console.log(this.state.order_obj);
     };
+
+    createFoodiesName(fullName) {
+        var first_name = '',
+            last_name = '';
+
+        if (fullName.indexOf(" ") > 0) {
+            first_name = fullName.substr(0, fullName.indexOf(" "));
+            last_name = fullName.substr(fullName.indexOf(" "));
+        } else {
+            first_name = fullName;
+            last_name = fullName;
+        }
+        var order_info = this.state.order_obj;
+        order_info["first_name_order"] = first_name;
+        order_info["last_name_order"] = last_name;
+
+        this.setState({ order_obj: order_info });
+    }
 
     validateInforOrdering(ordering_info) {
         if (ordering_info.name_ordering == '') {
@@ -101,7 +117,7 @@ export default class InfoOrder extends Component {
 
     render() {
         return (
-            <div id="ordering-popup" className="modal modal-fixed-footer">
+            <div id="ordering-popup" className="modal modal-fixed-footer ordering-popup-infor">
                 <div className="modal-content">
                     <h5>Please fill your info before order</h5>
                     <div className="input-field col s6">

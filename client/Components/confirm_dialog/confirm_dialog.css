@@ -149,10 +149,18 @@
         border-radius: 0px !important;
     }
 
+    #confirm_edit_message .modal-content {
+        margin-top: 50px;
+    }
+
     #confirm_delete_message.confirm_message_popup {
         top: 0% !important;
         height: 100% !important;
         width: 100% !important;
         border-radius: 0px !important;
+    }
+
+    #confirm_delete_message .modal-content {
+        margin-top: 50px;
     }
 }

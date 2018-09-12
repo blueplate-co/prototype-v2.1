@@ -1,0 +1,75 @@
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+    #ordering-popup.ordering-popup-infor {
+        height: 48% !important;
+        width: 56% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 23%;
+        height: 60% !important;
+        width: 50% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 23% !important;
+        height: 59% !important;
+        width: 54% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 23% !important;
+        height: 58% !important;
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 690px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 13% !important;
+        height: 85% !important;
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #ordering-popup.ordering-popup-infor {
+        height: 73% !important;
+        width: 72% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 0% !important;
+        height: 100% !important;
+        width: 100% !important;
+        border-radius: 0px !important;
+    }
+
+    #ordering-popup .modal-content {
+        margin-top: 50px;
+    }
+}
