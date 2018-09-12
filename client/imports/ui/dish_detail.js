@@ -6,6 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
+import InfoOrder from './info_order.js';
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 // Dish detail component
@@ -21,7 +22,16 @@ export class Dish_Detail extends Component {
             kitchen_follows : 0,
             alreadyRequested: false,
             cooking_story_content: '',
-            more_dish_description: ''
+            more_dish_description: '',
+            order_obj: {
+                name_ordering: '',
+                address_ordering: '',
+                phone_ordering: '',
+                address_conversion: {
+                    lng: '',
+                    lat: ''
+                }
+            }
         }
     }
     
@@ -208,9 +218,13 @@ export class Dish_Detail extends Component {
     dishOrder() {
         show_loading_progress();
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-        if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
-            Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+        if ((typeof foodie_details !== 'undefined' || foodie_details.foodie_name !== '')) {
             hide_loading_progress();
+            Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+            
+            this.openInfoOrdering();
+
+            $('.modal-overlay').addClass("order-infor-overlay");
         } else {
             var dish_details = this.state.data;
             var foodie_id = Meteor.userId();
@@ -280,6 +294,26 @@ export class Dish_Detail extends Component {
                 hide_loading_progress();
             }, 500);
         }
+    }
+
+    openInfoOrdering() {
+        // Clear data info
+        var order_info = this.state.order_obj;
+        order_info.name_ordering = '';
+        order_info.address_ordering = '';
+        order_info.address_conversion.lat = '';
+        order_info.address_conversion.lng = '';
+        order_info.phone_ordering = '';
+        this.setState( { order_obj: order_info});
+
+        $('#phone_ordering').intlTelInput({
+            initialCountry: "HK",
+            utilsScript: "../intlTelInput/utils.js"
+        });
+
+        $('.dirty_field').remove('.dirty_field');
+        
+        $('#ordering-popup').modal('open');
     }
     
     handleOnRequestDish() {
@@ -435,8 +469,6 @@ export class Dish_Detail extends Component {
                                                     </span>
                                                 </div>
                                                 
-                                                
-                                                
                                                 <div className="row">
                                                     <div className="handle-order-dish">
                                                         { (dish_detail.online_status) ? 
@@ -476,6 +508,8 @@ export class Dish_Detail extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                            <InfoOrder order_obj={this.state.order_obj} />
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">
@@ -505,8 +539,8 @@ export default withTracker(props => {
     };
 })(Dish_Detail);
 
-$(document).ready(function () {  
-      $(window).bind("scroll", function(e) {
+$(document).ready(function () {
+    $(window).bind("scroll", function(e) {
           var top = $(window).scrollTop();
         if (412 < top && top < 1360) {
           $("#detail-dish-info").addClass("dish-scroll-fix-top");
@@ -519,5 +553,5 @@ $(document).ready(function () {
         } else {
             $("#detail-dish-info").removeClass("dish-scroll-bottom");
         }
-      });
+    });
   });

@@ -115,6 +115,34 @@ Meteor.methods({
     });
   },
 
+  'ordering.syncProfileAndKitchen' (ordering_obj) {
+    Profile_details.update({
+      user_id: Meteor.userId()
+    }, {
+      $set: {
+        foodie_name: ordering_obj.name_ordering,
+        mobile: ordering_obj.phone_ordering,
+        home_address: ordering_obj.address_ordering,
+        home_address_conversion: ordering_obj.address_conversion,
+        updatedAt: new Date()
+      }
+    });
+
+    Kitchen_details.update({
+      user_id: Meteor.userId()
+    }, {
+      $set: {
+        chef_name: ordering_obj.name_ordering,
+        kitchen_contact: ordering_obj.phone_ordering,
+        kitchen_address: ordering_obj.address_ordering,
+        kitchen_address_conversion: ordering_obj.address_conversion,
+        updatedAt: new Date()
+      }
+    });
+
+
+  },
+
   'kitchen_details.update' (
     kitchen_name,
     chef_name,
