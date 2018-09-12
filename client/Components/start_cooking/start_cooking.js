@@ -664,7 +664,7 @@ Template.request_card.events({
                 profile_foodies.first_name + " <" + profile_foodies.email + ">",
                 '', /* @param mail from..... default*/
                 '', /* @param subject - default*/
-                'Hey ' + profile_foodies.first_name + ",\n\n" + content + "\n\n Bon appetite! \n Blueplate"
+                'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
               );
             }
           });
@@ -731,7 +731,7 @@ Template.order_card.events({
                 profile_foodies.first_name + " <" + profile_foodies.email + ">",
                 '', /* @param mail from..... default*/
                 '', /* @param subject - default*/
-                'Hey ' + profile_foodies.first_name + ",\n\n" + content + "\n\n Bon appetite! \n Blueplate"
+                'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
               );
             }
           });

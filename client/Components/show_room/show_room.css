@@ -873,3 +873,7 @@
   display: block;
   float: right;
 }
+
+.list-promotion-container .dish-wrapper {
+  margin-bottom: 0px;
+}

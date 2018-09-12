@@ -288,12 +288,22 @@
     margin-left: 5px;
 }
 
-.btn-close-dish-descr {
+.btn-info-ordering-close {
     color: #56AACD;
     font-size: 18px;
     font-weight: 600;
     border-radius: 30px;
     border: 1px solid #56AACD;
+    text-transform: lowercase;
+}
+
+.btn-info-ordering-confirm {
+    margin-left: 3% !important;
+    background-color: #56AACD;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
     text-transform: lowercase;
 }
 
@@ -320,6 +330,18 @@
         top: 1196px;
         width: 26% !important;
     }
+}
+
+.pac-container {
+    z-index: 10004 !important;
+}
+
+#ordering-popup, #modal-overlay {
+    z-index: 10003 !important;
+}
+
+.order-infor-overlay {
+    z-index: 10002 !important;
 }
 
 /* Landscape tablets and medium desktops */

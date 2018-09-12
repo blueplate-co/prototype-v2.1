@@ -86,8 +86,8 @@ body p {
 
 }
 
-.minimized .minimized--noAvatar .minimized--bubble {
-  border-radius: 100% !important;
+#chatio-eye-grabber-container {
+  left: 0px;
 }
 /* modal responsive settings */
 

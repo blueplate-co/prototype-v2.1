@@ -17,6 +17,7 @@ import ListFilter from './list_filter';
 import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
+import PromotionList from './promotion_list';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
@@ -231,7 +232,10 @@ class ShowRoom extends Component {
         return (
           <div>
             <TagsDisplay />
+            <PromotionList title="Special Discount" />
+            <div className="row">
               <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
+            </div>
             <div className="row">
               <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>

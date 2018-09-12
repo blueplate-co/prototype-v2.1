@@ -30,19 +30,18 @@ const dish_list = [
         id: 'FTJhJZqgnDZcwsskn',
         amount: 0.5
     }
-]
+];
+
+export function get_promotion_list(dish_id) {
+    return dish_list;
+};
+
 export function checking_promotion_dish(dish_id) {
     return dish_list.filter(item => {
         return item.id === dish_id
     })
 };
 
-
-/**
- * Get amount promotion of dish id
- * 
- * @param {*} dish_id dish id
- */
 export function get_amount_promotion(dish_id) {
     var result = dish_list.filter(item => {
         return item.id === dish_id
