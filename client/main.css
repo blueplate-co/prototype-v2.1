@@ -83,9 +83,12 @@ body p {
 
 /* Custom for chat.io */
 #chatio-container {
-  left: 0px;
+
 }
 
+.minimized .minimized--noAvatar .minimized--bubble {
+  border-radius: 100% !important;
+}
 /* modal responsive settings */
 
 /* desktop and above */
