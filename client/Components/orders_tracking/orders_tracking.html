@@ -2,71 +2,51 @@
   <div class = 'container'>
     <div class = 'row'>
       <div class = 'col l12 m12 s12'>
-        <div class = 'section'>
-          <h5>Pending Orders</h5>
-          <div class = 'orders_wrapper valign-wrapper' id='pending_order_wrapper'>
-            {{#if order}}
-              <div class = 'row'>
-                {{#each order_sent}}
-                  {{> pending_confirmation}}
-                {{/each}}
-              </div>
-            {{else}}
-              <div class = 'row'>
-                <div class = 'col l12 m12 s12 offset-l4'>
-                  <h5 class ='center-align white-text'>no new orders</h5>
-                </div>
-              </div>
-            {{/if}}
-          </div>
-        </div>
+        <ul class = 'tabs tabs-fixed-width'>
+          <li class = "tab col s3"><a href = "#pending_order_wrapper">Pending</a></li>
+          <li class  = "tab col s3"><a href = "#confirmed_order_wrapper">Confirmed</a></li>
+          <li class = "tab col s3"><a href = "#ready_to_serve_wrapper">Ready</a></li>
+        </ul>
       </div>
-      <div class = 'col l12 m12 s12'>
-        <div class = 'section'>
-          <h5>Confirmed Orders</h5>
-          <div class = 'orders_wrapper valign-wrapper' id='confirmed_order_wrapper'>
-            {{#if cooking}}
-              <div class = 'row'>
-                {{#each order_cooking}}
-                  {{>foodies_confirmed_order}}
-                {{/each}}
-              </div>
-            {{else}}
-            <div class = 'row'>
-              <div class = 'col l12 m12 s12 offset-l4'>
-                <h5 class ='center-align white-text'>no pending dishes</h5>
-              </div>
-            </div>
-            {{/if}}
+      <div class = 'orders_wrapper' id='pending_order_wrapper'>
+        {{#if order}}
+          {{#each order_sent}}
+            {{> pending_confirmation}}
+          {{/each}}
+        {{else}}
+          <div class = 'empty_text_wrapper'>
+            <h5 class ='grey-text center-align'>no new orders</h5>
           </div>
-        </div>
+        {{/if}}
       </div>
-      <div class = 'col l12 m12 s12'>
-        <div class = 'section'>
-          <h5>Orders Ready to Serve</h5>
-          <div class = 'orders_wrapper valign-wrapper' id='ready_to_serve_wrapper'>
-            {{#if ready_to_serve}}
-              <div class = 'row'>
-                {{#each order_ready}}
-                  {{> ready_card}}
-                {{/each}}
-              </div>
-            {{else}}
-            <div class = 'row'>
-              <div class = 'col l12 m12 s12 offset-l4'>
-                <h5 class ='center-align white-text'>no dishes ready to serve</h5>
-              </div>
-            </div>
-            {{/if}}
+      <div class = 'orders_wrapper' id='confirmed_order_wrapper'>
+        {{#if cooking}}
+          {{#each order_cooking}}
+            {{>foodies_confirmed_order}}
+          {{/each}}
+        {{else}}
+          <div class = 'empty_text_wrapper'>
+            <h5 class ='grey-text center-align'>no pending dishes</h5>
           </div>
-        </div>
+        {{/if}}
+      </div>
+      <div class = 'orders_wrapper' id='ready_to_serve_wrapper'>
+        {{#if ready_to_serve}}
+          {{#each order_ready}}
+            {{> ready_card}}
+          {{/each}}
+        {{else}}
+          <div class = 'empty_text_wrapper'>
+            <h5 class ='grey-text center-align'>no dishes ready to serve</h5>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>
 </template>
 
 <template name = 'pending_confirmation'>
-  <div class ='card sticky-action request_card'>
+  <div class ='card sticky-action request_card z-depth-6'>
     <div class = 'card-image'>
       <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
@@ -103,18 +83,7 @@
       {{/each}}
       status:
       <div class = "valign-wrapper">
-        <div class="preloader-wrapper small active">
-          <div class="spinner-layer spinner-red-only">
-            <div class="circle-clipper left">
-              <div class="circle"></div>
-            </div><div class="gap-patch">
-              <div class="circle"></div>
-            </div><div class="circle-clipper right">
-              <div class="circle"></div>
-            </div>
-          </div>
-        </div>
-        <span class = 'valign' style = 'margin: 12px;'><strong>Waiting for confirmation...</strong></span>
+        <span class = 'valign' style = 'margin: 12px;'><strong>Waiting for chef confirmation.</strong></span>
       </div>
     </div>
     <div class = 'card-action'>
@@ -127,7 +96,7 @@
 
 <template name = 'foodies_confirmed_order'>
   {{set_timer}}
-  <div class ='card request_card'>
+  <div class ='card request_card z-depth-6'>
     <div class = 'card-image'>
       <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
@@ -145,7 +114,7 @@
         <div class = 'row'>
           <table>
             <tbody>
-              <td><a class ='cooking_card_profile_picture dasdas' style="background-image: url({{get_dish_image}})"></a></td>
+              <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_dish_image}})"></a></td>
               <td><strong>{{get_dish_name}}</strong></td>
               <td><strong>x{{get_dish_qty}}</strong></td>
             </tbody>
@@ -159,7 +128,7 @@
             <div class = 'row'>
               <table>
                 <tbody>
-                  <td><a class ='cooking_card_profile_picture dasdastttt' style="background-image: url({{get_menu_dish_image}})"></a></td>
+                  <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_menu_dish_image}})"></a></td>
                   <td><strong>{{get_menu_dish_name}}</strong></td>
                   <td><strong>x{{get_menu_qty}}</strong></td>
                 </tbody>
@@ -190,7 +159,7 @@
 
 <template name = 'ready_card'>
   {{check_transaction_closed}}
-  <div class ='card sticky-action request_card'>
+  <div class ='card sticky-action request_card z-depth-6'>
     <div class = 'card-image'>
       <a class ='btn-floating grey lighten-1 cooking_card_profile_picture' style="background-image: url({{kitchen_profile_picture}})"></a>
       <h6 id = 'foodie_name' style='line-height: 40px;'>{{get_kitchen_name}}</h6>
