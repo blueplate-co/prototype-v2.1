@@ -67,43 +67,45 @@ export class SearchMap extends Component {
           (Session.get('list_kitchen_for_map')) ?
             Session.get('list_kitchen_for_map').map((kitchen, index)=> {
               let banner = '';
-              if (kitchen.bannerProfileImg) {
-                banner = kitchen.bannerProfileImg.origin;
-              } else {
-                banner = '';
-              }
-              let avatar = '';
-              if (kitchen.profileImg) {
-                avatar = kitchen.profileImg.origin;
-              } else {
-                avatar = '';
-              }
-              let story = '';
-              if (kitchen.cooking_story) {
-                if (kitchen.cooking_story.length > 105) {
-                  story = kitchen.cooking_story.slice(0, 100) + '...';
+              if (kitchen) {
+                if (kitchen.bannerProfileImg) {
+                  banner = kitchen.bannerProfileImg.origin;
                 } else {
-                  story = kitchen.cooking_story;
+                  banner = '';
                 }
-              } else {
-                avatar = '';
+                let avatar = '';
+                if (kitchen.profileImg) {
+                  avatar = kitchen.profileImg.origin;
+                } else {
+                  avatar = '';
+                }
+                let story = '';
+                if (kitchen.cooking_story) {
+                  if (kitchen.cooking_story.length > 105) {
+                    story = kitchen.cooking_story.slice(0, 100) + '...';
+                  } else {
+                    story = kitchen.cooking_story;
+                  }
+                } else {
+                  avatar = '';
+                }
+                return (
+                  (kitchen.kitchen_address_conversion === null) ?
+                  ""
+                  :
+                  <Marker
+                    key = {index}
+                    name = {kitchen.kitchen_name}
+                    title = {kitchen.kitchen_address}
+                    index = {kitchen._id}
+                    banner = {banner}
+                    avatar = {avatar}
+                    story = {story}
+                    position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
+                    onClick = {this.onMarkerClick}
+                  />
+                )
               }
-              return (
-                (kitchen.kitchen_address_conversion === null) ?
-                ""
-                :
-                <Marker
-                  key = {index}
-                  name = {kitchen.kitchen_name}
-                  title = {kitchen.kitchen_address}
-                  index = {kitchen._id}
-                  banner = {banner}
-                  avatar = {avatar}
-                  story = {story}
-                  position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
-                  onClick = {this.onMarkerClick}
-                />
-              )
             })
           : ''
         }

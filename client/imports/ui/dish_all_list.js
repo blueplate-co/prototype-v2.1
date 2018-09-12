@@ -8,6 +8,7 @@ import Like from './like_button';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
+import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
 class DishAllList extends Component {
@@ -40,6 +41,11 @@ class DishAllList extends Component {
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {
+              (checking_promotion_dish(item._id).length > 0) ?
+                <span className="promotion_tag">{ '- ' + get_amount_promotion(item._id) * 100 + ' %' }</span>
+              : ''
+            }
+            {
               (hasThumbnail) ?
                 <ProgressiveImages
                   large={ item.meta.large }
@@ -67,9 +73,16 @@ class DishAllList extends Component {
           {
             (!isNaN(item.dish_selling_price))
             ? (
-              <div className="row">
-                <div className="coll6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
-              </div>
+              (checking_promotion_dish(item._id).length > 0) ?
+                <div className="row">
+                  <div className="col l3 m3 dish-price no-padding text-left">$ { item.dish_selling_price * get_amount_promotion(item._id) }</div>
+                  <div className="col l9 m9 dish-old-price no-padding text-left">$ { item.dish_selling_price }</div>
+                </div>
+              : (
+                <div className="row">
+                  <div className="col l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                </div>
+              )
             ) : ('')
           }
 

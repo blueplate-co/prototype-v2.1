@@ -5,32 +5,30 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
-import DishStatus from './dish_status';
+import { get_promotion_list, checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
-import { navbar_find_by } from './../../../imports/functions/find_by';
-import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
-
-// App component - represents the whole app
-class DishList extends Component {
+class PromotionList extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      data: []
     }
   }
 
   handleOnViewDish = (dishId) => {
     BlazeLayout.reset();
+    //- tracking access promotion
+    if (location.hostname == 'www.blueplate.co') {
+      fbq('trackCustom', 'SelectPromotionDish', { dish_id: dishId, user_id: Meteor.userId() });
+    }
     FlowRouter.go("/dish/" + dishId);
   }
 
   renderList = () => {
-    if (this.props.dishes.length == 0) {
-      return <p>Has no dishes to be displayed</p>
-    }
     let hasThumbnail;
-    return this.props.dishes.map((item, index) => {
+    return this.props.data.map((item, index) => {
       if (item.meta) {
         hasThumbnail = true;
       } else {
@@ -91,57 +89,43 @@ class DishList extends Component {
 
   render() {
     return (
-      <div className='col s12 m12 l12 no-padding list-container'>
-        {/* title */}
-        <div className="row">
-          <div className="col s6 m6 l6 no-padding">
-            <h5>{ this.props.title }</h5>
-          </div>
-          <div className="col s6 m6 l6 text-right no-padding seeall">
-            <a href="/see_all/dish">{ this.props.seemore }</a>
-          </div>
-        </div>
-
-        {/* list items */}
-        <div className="row">
-          {
-            (this.props.listLoading)
-            ?
-              <span>...loading</span>
-            :
-              this.renderList()
-          }
-        </div>
-      </div>
+        (this.props.data.length > 0) ?
+            <div className='col s12 m12 l12 no-padding list-container list-promotion-container' style={{minHeight: '380px'}}>
+                {/* title */}
+                <div className="row">
+                <div className="col s6 m6 l6 no-padding">
+                    <h5>{ this.props.title }</h5>
+                </div>
+                </div>
+                {
+                    <div className="row" style={{ marginBottom: '0px' }}>
+                    {
+                        (this.props.listLoading) ?
+                        <span>Special thing is coming for you...</span>
+                        :
+                            this.renderList()
+                        }
+                    </div>
+                }
+            </div>
+        : (<div></div>)
     );
   }
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (FlowRouter.getParam('homecook_id')) {
-    kitchen_id[0] = FlowRouter.getParam('homecook_id')
-  } else {
-    if (kitchen_info) {
-      for (i = 0; i < kitchen_info.length; i++) {
-        kitchen_id[i] = kitchen_info[i]._id;
-      }
+    const handle = Meteor.subscribe('theDishes');
+    var promotion_dishes = get_promotion_list();
+    var result = [];
+    if (promotion_dishes.length > 0) {
+        for (var i = 0; i < promotion_dishes.length; i++) {
+            var single_dish = Dishes.findOne({ _id: promotion_dishes[i].id });
+            result.push(single_dish);
+        }
     }
-  }
-  if (FlowRouter.getParam('homecook_id')) {
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}}).fetch(),
+        data: result
     };
-  } else {
-    return {
-        currentUser: Meteor.user(),
-        listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}, limit: 8 }).fetch(),
-    };
-  }
-})(DishList);
+  })(PromotionList);

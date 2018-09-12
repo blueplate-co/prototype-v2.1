@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import ProgressiveImages from './progressive_image';
 import ChefAvatar from '../ui/chef_avatar';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 
 //- empty cart store global in this page
@@ -188,6 +188,7 @@ class ShoppingCart extends Component {
     // when user click checkout button
     handleCheckout() {
         var valid = true;
+        debugger
         globalCart.forEach((item, index) => {
             item.address = $('#address_' + item.id).val();
         });
@@ -256,7 +257,20 @@ class ShoppingCart extends Component {
                         <div className="col s9 m9 l11 xl11 product-info">
                             <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id) }></span>
                             <span className="detail-title">{ detail.dish_name }</span>
-                            <span className="detail-price">HK${ detail.dish_selling_price }</span>
+                            {
+                                (checking_promotion_dish(detail._id).length > 0) ?
+                                (
+                                    <span style={{ display: 'inline-flex'}}>
+                                        <span className="detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
+                                        <span className="detail-old-price">HK${ detail.dish_selling_price }</span>
+                                    </span>
+                                )
+                                : (
+                                    <span class="detail-price">
+                                        <span className="detail-price">HK${ detail.dish_selling_price }</span>
+                                    </span>
+                                )
+                            }
                             <div className="quantity-control">
                                 <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle"></i></span>
                                 <span>{ item.quantity }</span>
@@ -302,7 +316,11 @@ class ShoppingCart extends Component {
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0,10);
         for (var i = 0; i < product.length; i++) {
-            subtotal += parseFloat(product[i].total_price_per_dish);
+            if (checking_promotion_dish(product[i].product_id).length > 0) {
+                subtotal += parseFloat(product[i].total_price_per_dish * get_amount_promotion(product[i].product_id))
+            } else {
+                subtotal += parseFloat(product[i].total_price_per_dish);
+            }
         }
         subtotal = subtotal.toFixed(2);
         return (
@@ -409,7 +427,11 @@ class ShoppingCart extends Component {
     render() {
         var total = 0;
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
-            total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
+            if (checking_promotion_dish(this.props.shoppingCart[i].product_id).length > 0) {
+                total += parseFloat(this.props.shoppingCart[i].total_price_per_dish * get_amount_promotion(this.props.shoppingCart[i].product_id))
+            } else {
+                total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
+            }
         }
         total = total.toFixed(2);
         Session.set('product', '');

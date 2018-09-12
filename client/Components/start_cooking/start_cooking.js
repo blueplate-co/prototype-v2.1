@@ -14,6 +14,10 @@ Meteor.subscribe('listAllOrdersSeller');
 Meteor.subscribe('listAllOrdersBuyer');
 Meteor.subscribe('listAllTransactions');
 
+Template.start_cooking.onRendered(function() {
+  this.$('ul.tabs').tabs();
+})
+
 Template.start_cooking.helpers({
   'cooking': function () {
     var cooking = Order_record.find({
@@ -483,7 +487,7 @@ Template.request_card.events({
         //- calculation sum of transactions
         var amount = transaction.reduce(function(total, item){ return total + item.amount }, 0);
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
-        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType);
+        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, transaction_no);
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);
@@ -645,7 +649,7 @@ Template.request_card.events({
           var profile_foodies = Profile_details.findOne({ user_id: buyer_id}),
               foodie_phone_number = profile_foodies.mobile;
               country_code = getCountryCodeFromProfile(profile_foodies);
-          
+
           foodie_phone_number = validatePhoneNumber(foodie_phone_number, country_code);
 
           var seller_name = Kitchen_details.findOne({user_id: seller_id}).chef_name,
