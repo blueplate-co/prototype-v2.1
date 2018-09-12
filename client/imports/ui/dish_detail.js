@@ -219,7 +219,7 @@ export class Dish_Detail extends Component {
     dishOrder() {
         show_loading_progress();
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-        if ((typeof foodie_details !== 'undefined' || foodie_details.foodie_name !== '')) {
+        if ((typeof foodie_details == 'undefined' || foodie_details.foodie_name == '')) {
             hide_loading_progress();
             Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
             
@@ -460,8 +460,8 @@ export class Dish_Detail extends Component {
                                                 {
                                                     (checking_promotion_dish(dish_detail._id).length > 0) ?
                                                         <div className="row">
-                                                            <div id="dish-price" className="col l4 m4 dish-price no-padding text-left">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</div>
-                                                            <div className="dish-old-price col l5 m5 dish-price no-padding text-left" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</div>
+                                                            <div id="dish-price" className="col l4 m4 s12 dish-price no-padding text-left">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</div>
+                                                            <div className="dish-old-price col l5 m5 s12 dish-price no-padding text-left" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</div>
                                                             <span className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</span>
                                                         </div>
                                                     :

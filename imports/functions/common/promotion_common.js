@@ -11,10 +11,6 @@
 //     {
 //         id: 'jc4eWDq66ghmogQFC',
 //         amount: 0.5
-//     },
-//     {
-//         id: 'ofkBkFd2dQwvKbTRM',
-//         amount: 0.5
 //     }
 // ]
 const dish_list = [
