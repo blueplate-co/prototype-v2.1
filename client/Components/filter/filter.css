@@ -1,6 +1,6 @@
 .filter_wrapper_span_mobile {
     position: initial;
-    
+
 }
 
 .filter_wrapper_span_dekstop {
@@ -209,7 +209,7 @@
 }
 
 .searchinput {
-    margin-left: 20px!important;
+    margin-left: 18px!important;
     width: 600px !important;
     color: #000;
     border-radius: 15px!important;
@@ -220,27 +220,30 @@
     background-image: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/search-icon.svg');
     background-position: 97% 50%;
     background-repeat: no-repeat;
+    margin-bottom: 0px !important;
+    position: relative;
+    top: -5px;
 }
 
 @media screen and (max-width: 1024px) {
     .searchinput {
-      position: absolute;
-      top: 21px;
-      left: 100px;
       width: 400px !important;
       padding: 0px 10px!important;
       border-radius: 15px!important;
+      margin-bottom: 0px !important;
+      position: relative;
+      top: -5px;
     }
 }
 
 @media screen and (max-width: 920px) {
     .searchinput {
-      position: absolute;
-      top: 21px;
-      left: 100px;
-      width: 300px !important;
+      width: calc(100vw - 300px) !important;
       padding: 0px 10px!important;
       border-radius: 15px!important;
+      margin-bottom: 0px !important;
+      position: relative;
+      top: -5px;
     }
 }
 
@@ -273,12 +276,12 @@
         left: 0px;
     }
     .searchinput {
-        position: absolute;
-        top: 21px;
-        left: 100px;
-        width: 60% !important;
+        width: calc(100vw - 300px) !important;
         padding: 0px 10px!important;
         border-radius: 15px!important;
+        margin-bottom: 0px !important;
+        position: relative;
+        top: -5px;
     }
     #cart-icon {
         display: none!important;
@@ -290,14 +293,13 @@
 
 @media screen and (max-width: 500px) {
     .searchinput {
-        position: absolute;
-        top: 7px;
-        left: 100px;
-        width: 45%!important;
+        width: calc(100vw - 195px) !important;
         padding: 0px 10px;
         margin-left: 0px!important;
-        margin-top: 15px!important;
         border-radius: 15px!important;
+        margin-bottom: 0px!important;
+        position: relative;
+        top: -5px;
     }
 
     .filter-list {
