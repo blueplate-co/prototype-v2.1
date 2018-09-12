@@ -10,11 +10,9 @@
       </div>
       <div class = 'orders_wrapper' id='pending_order_wrapper'>
         {{#if order}}
-          <div class = 'row'>
-            {{#each order_sent}}
-              {{> pending_confirmation}}
-            {{/each}}
-          </div>
+          {{#each order_sent}}
+            {{> pending_confirmation}}
+          {{/each}}
         {{else}}
           <div class = 'empty_text_wrapper'>
             <h5 class ='grey-text center-align'>no new orders</h5>
@@ -23,11 +21,9 @@
       </div>
       <div class = 'orders_wrapper' id='confirmed_order_wrapper'>
         {{#if cooking}}
-          <div class = 'row'>
-            {{#each order_cooking}}
-              {{>foodies_confirmed_order}}
-            {{/each}}
-          </div>
+          {{#each order_cooking}}
+            {{>foodies_confirmed_order}}
+          {{/each}}
         {{else}}
           <div class = 'empty_text_wrapper'>
             <h5 class ='grey-text center-align'>no pending dishes</h5>
@@ -36,11 +32,9 @@
       </div>
       <div class = 'orders_wrapper' id='ready_to_serve_wrapper'>
         {{#if ready_to_serve}}
-          <div class = 'row'>
-            {{#each order_ready}}
-              {{> ready_card}}
-            {{/each}}
-          </div>
+          {{#each order_ready}}
+            {{> ready_card}}
+          {{/each}}
         {{else}}
           <div class = 'empty_text_wrapper'>
             <h5 class ='grey-text center-align'>no dishes ready to serve</h5>
@@ -120,7 +114,7 @@
         <div class = 'row'>
           <table>
             <tbody>
-              <td><a class ='cooking_card_profile_picture dasdas' style="background-image: url({{get_dish_image}})"></a></td>
+              <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_dish_image}})"></a></td>
               <td><strong>{{get_dish_name}}</strong></td>
               <td><strong>x{{get_dish_qty}}</strong></td>
             </tbody>
@@ -134,7 +128,7 @@
             <div class = 'row'>
               <table>
                 <tbody>
-                  <td><a class ='cooking_card_profile_picture dasdastttt' style="background-image: url({{get_menu_dish_image}})"></a></td>
+                  <td><a class ='cooking_card_profile_picture' style="background-image: url({{get_menu_dish_image}})"></a></td>
                   <td><strong>{{get_menu_dish_name}}</strong></td>
                   <td><strong>x{{get_menu_qty}}</strong></td>
                 </tbody>

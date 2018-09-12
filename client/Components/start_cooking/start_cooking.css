@@ -1,8 +1,9 @@
 .request_card {
-  overflow: visible;
   position: relative;
   height: auto;
-  min-width: 250px !important;
+  overflow-x: visible;
+  white-space: normal;
+  width: 250px !important;
   margin: 6px !important;
   vertical-align: top;
 }

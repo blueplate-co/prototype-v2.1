@@ -22,11 +22,9 @@
       </div>
       <div class = 'orders_wrapper' id='confirmed_order_wrapper'>
         {{#if cooking}}
-          <div class = 'row'>
-            {{#each order_cooking}}
-              {{>order_card}}
-            {{/each}}
-          </div>
+          {{#each order_cooking}}
+            {{>order_card}}
+          {{/each}}
         {{else}}
           <div class = 'empty_text_wrapper'>
             <h5 class ='grey-text center-align'>no pending dishes</h5>
@@ -35,11 +33,9 @@
       </div>
       <div class = 'orders_wrapper' id='ready_to_serve_wrapper'>
         {{#if ready_to_serve}}
-          <div class = 'row'>
-            {{#each order_ready}}
-              {{> chef_ready_card}}
-            {{/each}}
-          </div>
+          {{#each order_ready}}
+            {{> chef_ready_card}}
+          {{/each}}
         {{else}}
           <div class = 'empty_text_wrapper'>
             <h5 class ='grey-text center-align'>no dishes ready to serve</h5>
