@@ -14,6 +14,10 @@ Meteor.subscribe('listAllOrdersSeller');
 Meteor.subscribe('listAllOrdersBuyer');
 Meteor.subscribe('listAllTransactions');
 
+Template.start_cooking.onRendered(function() {
+  this.$('ul.tabs').tabs();
+})
+
 Template.start_cooking.helpers({
   'cooking': function () {
     var cooking = Order_record.find({
@@ -645,7 +649,7 @@ Template.request_card.events({
           var profile_foodies = Profile_details.findOne({ user_id: buyer_id}),
               foodie_phone_number = profile_foodies.mobile;
               country_code = getCountryCodeFromProfile(profile_foodies);
-          
+
           foodie_phone_number = validatePhoneNumber(foodie_phone_number, country_code);
 
           var seller_name = Kitchen_details.findOne({user_id: seller_id}).chef_name,

@@ -10,6 +10,7 @@ Template.orders_tracking.onRendered(function(){
     position: 'bottom',
     background: '#343434'
   })
+  this.$('ul.tabs').tabs();
 });
 
 Template.orders_tracking.helpers({
@@ -21,7 +22,7 @@ Template.orders_tracking.helpers({
   'order_sent': function() {
     var orders = Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).fetch(),
         orderIds =[],
-        buyer, 
+        buyer,
         seller_email,
         kitchen,
         smsList = {};
@@ -38,30 +39,30 @@ Template.orders_tracking.helpers({
             console.log('Updated send_sms order record.');
           }
         });
-  
+
         kitchen = Kitchen_details.findOne({ user_id: order.seller_id });
-        
+
         // Get email Chef from Users collection
         var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
         seller_email = seller_detail.emails[0].address;
 
         var kitchen_phone_number = kitchen.kitchen_contact,
             countryCode = getCountryCodeFromKitChen(kitchen);
-        
+
         kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
-  
+
         buyer = Profile_details.findOne({  user_id: order.buyer_id });
-  
+
         var dish = Dishes.findOne({
               _id: order.product_id
             });
-  
+
         if (!dish) {
           // send SMS when is a menu
           var menu_name = Menu.findOne({
             _id: order.product_id
           }).menu_name;
-  
+
           if (smsList[kitchen_phone_number]) {
             smsList[kitchen_phone_number] = smsList[kitchen_phone_number]+", " + menu_name;
           } else {
@@ -97,7 +98,7 @@ Template.orders_tracking.helpers({
           });
       }
     }
-    
+
     return orderIds
   },
   'cooking': function() {
@@ -372,10 +373,10 @@ Template.pending_confirmation.events({
     }).fetch()
 
     product.forEach(cancel_order)
-    
+
     show_loading_progress();
     function cancel_order(array_value, index) {
-      
+
       setTimeout(function() {
         var order = array_value
         var trans_no = parseInt(String(order.transaction_no))
@@ -420,7 +421,7 @@ Template.pending_confirmation.events({
         buyer_id: buyer_id,
         seller_id: seller_id
       });
-      
+
       Meteor.call('message.disableConversation', conversation._id, (err, res) => {
         if (!err) {
           console.log('Disabled conversation');
@@ -430,7 +431,7 @@ Template.pending_confirmation.events({
         var kitchen = Kitchen_details.findOne({user_id: seller_id}),
             kitchen_phone_number = kitchen.kitchen_contact,
             countryCode = getCountryCodeFromKitChen(kitchen);
-        
+
         kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
 
         var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
@@ -438,7 +439,7 @@ Template.pending_confirmation.events({
 
         var buyer_name = Profile_details.findOne({user_id: buyer_id}).foodie_name,
             message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
-            
+
         Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
           if (!err) {
             console.log('Message sent');
