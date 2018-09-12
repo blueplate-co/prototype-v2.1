@@ -114,21 +114,6 @@ class TopNavigation extends Component {
           <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foodie_sidebar_icon.svg"/>
         </li>
 
-        <li className="switch-chef-text"
-          onClick={() => {
-            this.setState({ sidebarOpen: false });
-            localStorage.setItem("userMode", "chef");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: true });
-            }, 500);
-            BlazeLayout.reset();
-            FlowRouter.go("/profile/show_homecook_profile");
-          }}
-        >
-          <span>Switch to cooking</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
-        </li>
-        
         <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -176,8 +161,19 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
 
-        <li className="help-title-content">
-          <span>Help</span>
+        <li className="switch-chef-text"
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            localStorage.setItem("userMode", "chef");
+            setTimeout(() => {
+              this.setState({ sidebarOpen: true });
+            }, 500);
+            BlazeLayout.reset();
+            FlowRouter.go("/profile/show_homecook_profile");
+          }}
+        >
+          <span>Switch to cooking</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
           onClick={() =>
@@ -197,20 +193,6 @@ class TopNavigation extends Component {
           <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef_sidebar_icon.svg" />
         </li>
 
-        <li className="switch-foodie-text"
-          onClick={() => {
-            this.setState({ sidebarOpen: false });
-            localStorage.setItem("userMode", "foodie");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: true });
-            }, 500);
-            FlowRouter.go("/main");
-          }}
-        >
-          <span>Switch to foodie</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
-        </li>
-        
         <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -232,7 +214,7 @@ class TopNavigation extends Component {
           <span>Dashboard</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dash.svg" />
         </li>
-        
+
         <li className="visted-color"
           onClick={() => {
             this.setState({ sidebarOpen: false }, () => {
@@ -250,8 +232,18 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/curent+order.svg" />
         </li>
 
-        <li className="help-title-content">
-          <span>Help</span>
+        <li className="switch-foodie-text"
+          onClick={() => {
+            this.setState({ sidebarOpen: false });
+            localStorage.setItem("userMode", "foodie");
+            setTimeout(() => {
+              this.setState({ sidebarOpen: true });
+            }, 500);
+            FlowRouter.go("/main");
+          }}
+        >
+          <span>Switch to foodie</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
           onClick={() =>
@@ -470,7 +462,6 @@ class TopNavigation extends Component {
           styles={styles}
         >
           {this.state.search ? this.renderSearchPage() : ""}
-          <div className="">
             <div className="navbar-fixed z-depth-0">
               <nav className="z-depth-0">
                 <div className="nav-wrapper white z-depth-0">
@@ -478,19 +469,17 @@ class TopNavigation extends Component {
                     <li>
                       <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
                     </li>
-                    <li className="nearby" title="Nearby you" onClick={() => this.nearby()}>
+                    <li className="nearby waves-effect waves-light white" title="Nearby you" onClick={() => this.nearby()}>
+                      <i className="material-icons bp-blue-text center-align">location_on</i>
                     </li>
                   </ul>
-                  <ul className="right">
-                    <li className="icon" onClick={() => this.openProfile()}>
-                      {
-                        (this.state.avatar) ?
-                          <img style={{ width: '35px', height: '35px', borderRadius: '50%', marginTop: '5px' }} src={this.state.avatar} />
-                        :
-                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-                      }
-                    </li>
-
+                  <ul className="right hide-on-small-only">
+                    {
+                      (this.state.width <= 850) ?
+                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                      :
+                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                    }
                     <li
                       onClick={() => {
                         //- send to Facebook Pixel
@@ -507,17 +496,18 @@ class TopNavigation extends Component {
                       </span>
                       <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
                     </li>
-                    {
-                      (this.state.width <= 450) ?
-                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
-                      :
-                        <a style={{ display: 'inline-block', marginTop: '10px' }} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '48px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
-                    }
+                    <li className="icon" onClick={() => this.openProfile()}>
+                      {
+                        (this.state.avatar) ?
+                          <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
+                        :
+                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
+                      }
+                    </li>
                   </ul>
                 </div>
               </nav>
             </div>
-          </div>
         </Sidebar>
       </div>
     );

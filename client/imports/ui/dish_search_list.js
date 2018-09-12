@@ -85,8 +85,6 @@ class DishSearchList extends Component {
               )
             ) : ('')
           }
-
-
         </div>
       )
     })

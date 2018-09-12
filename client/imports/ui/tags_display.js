@@ -148,7 +148,7 @@ export default class TagsDisplay extends React.Component {
         overflow: 'visible',
         fontSize: '16px',
         position: 'relative',
-        zIndex: '1000',
+        zIndex: '5',
         backgroundColor: this.state.tagColor[index],
         cursor: 'pointer',
       };
