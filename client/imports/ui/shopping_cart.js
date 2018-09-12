@@ -266,7 +266,7 @@ class ShoppingCart extends Component {
                                     </span>
                                 )
                                 : (
-                                    <span class="detail-price">
+                                    <span className="detail-price">
                                         <span className="detail-price">HK${ detail.dish_selling_price }</span>
                                     </span>
                                 )

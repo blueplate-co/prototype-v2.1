@@ -400,7 +400,6 @@ Template.request_card.events({
     }).fetch()
 
     product.forEach(add_order_to_transaction)
-
     charge_card(buyer_id, seller_id, trans_no, paymentType) //used timeout to make sure transaction insert finished before charing card
 
 
@@ -487,7 +486,7 @@ Template.request_card.events({
         //- calculation sum of transactions
         var amount = transaction.reduce(function(total, item){ return total + item.amount }, 0);
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
-        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, transaction_no);
+        Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, trans_no);
       }, 3 * 1000)
     }
     Meteor.call('notification.confirm_order', seller_id, buyer_id);
