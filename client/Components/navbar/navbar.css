@@ -4,6 +4,7 @@ nav {
 
 .navbar-fixed {
   height: 64px;
+  z-index: 994;
 }
 
 .nvarbar-fixed li {
@@ -121,14 +122,17 @@ nav {
 
 ul.right .icon {
   cursor: pointer;
-  height: relative;
   width: auto;
   height: 35px;
-  margin: 15px;
+  margin: 0px 15px;
+  display: flex;
+  align-items: center;
+
 }
 
 ul.right .icon img {
   float: right;
+  vertical-align: middle;
 }
 
 ul.right {
@@ -651,12 +655,13 @@ nav ul.left {
 }
 
 .display-sidebar-menu {
-  top: -7px;
+  top: -3px;
   left: 15px;
   margin-right: 12px;
 }
 
 .display-main-page {
+  top: 2px;
   left: 20px;
 }
 
