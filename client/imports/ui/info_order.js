@@ -6,9 +6,17 @@ export default class InfoOrder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            order_obj: this.props.order_obj
+            order_obj: this.props.order_obj,
+            foodies_name: Meteor.user().profile.name
         }
     };
+
+    componentDidMount() {
+        $('#phone_ordering').intlTelInput({
+            initialCountry: "HK",
+            utilsScript: "../intlTelInput/utils.js"
+        });
+    }
 
     handleOnChange(field, ev) {
         var order_info = this.state.order_obj;
@@ -25,7 +33,6 @@ export default class InfoOrder extends Component {
                 order_info.address_ordering = autocomplete.getPlace().formatted_address;
                 order_info.address_conversion.lng = autocomplete.getPlace().geometry.location.lng();
                 order_info.address_conversion.lat = autocomplete.getPlace().geometry.location.lat();
-                console.log(order_info);
             });
         }
         order_info[field] = ev.target.value;
@@ -60,6 +67,8 @@ export default class InfoOrder extends Component {
 
     handleOnSaveOrderingInfo() {
         var ordering_info = this.state.order_obj;
+        this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
+
         if (!this.validateInforOrdering(ordering_info)) {
             return;
         }
@@ -73,7 +82,6 @@ export default class InfoOrder extends Component {
                 console.log('Create info success');
             }
         });
-        console.log(this.state.order_obj);
     };
 
     createFoodiesName(fullName) {
@@ -120,10 +128,15 @@ export default class InfoOrder extends Component {
             <div id="ordering-popup" className="modal modal-fixed-footer ordering-popup-infor">
                 <div className="modal-content">
                     <h5>Please fill your info before order</h5>
-                    <div className="input-field col s6">
-                        <input id="name_ordering" type="text" className="form_field" value={this.state.order_obj.name_ordering} onChange={this.handleOnChange.bind(this, 'name_ordering')}/>
-                        <label className="active" htmlFor="name_ordering">name</label>
-                    </div>
+                    {
+                        (this.state.foodies_name !== 'undefined' && this.state.foodies_name !== '') ?
+                            ''
+                        :
+                            <div className="input-field col s6">
+                                <input id="name_ordering" type="text" className="form_field" value={this.state.order_obj.name_ordering} onChange={this.handleOnChange.bind(this, 'name_ordering')}/>
+                                <label className="active" htmlFor="name_ordering">name</label>
+                            </div>
+                    }
                     <div className="input-field col s6">
                         <input id="address_ordering" type="text" className="form_field" value={this.state.order_obj.address_ordering || ''} onChange={this.handleOnChange.bind(this, 'address_ordering')}/>
                         <label className="active" htmlFor="address_ordering">address</label>
