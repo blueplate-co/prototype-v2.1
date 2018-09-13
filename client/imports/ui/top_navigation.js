@@ -93,6 +93,7 @@ class TopNavigation extends Component {
   };
 
   handleGoHome = () => {
+    $('.modal').modal('close');
     this.setState({ sidebarOpen: false });
     FlowRouter.go("/main");
   }
@@ -355,8 +356,9 @@ class TopNavigation extends Component {
 
   componentWillReceiveProps() {
     if (Profile_details.findOne({ user_id: Meteor.userId() })) {
+      var profile_img = Profile_details.findOne({ user_id: Meteor.userId() }).profileImg;
       this.setState({
-        avatar: Profile_details.findOne({ user_id: Meteor.userId() }).profileImg.large
+        avatar: profile_img !== undefined ? profile_img.large : "source image not found"
       })
     }
   }
