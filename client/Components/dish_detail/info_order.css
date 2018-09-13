@@ -1,6 +1,6 @@
 
 #ordering-popup.ordering-popup-infor {
-    min-height: 53% !important;
+    min-height: 50% !important;
     height: auto !important;
 }
 
@@ -50,7 +50,7 @@
 @media (max-width: 690px) {
     #ordering-popup.ordering-popup-infor {
         top: 13% !important;
-        height: 60% !important;
+        /* height: 60% !important; */
         width: 62% !important;
         border-radius: 15px !important;
         overflow: hidden !important;
