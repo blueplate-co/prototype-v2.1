@@ -67,7 +67,7 @@ export default class InfoOrder extends Component {
 
     handleOnSaveOrderingInfo() {
         var ordering_info = this.state.order_obj;
-        this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
+        this.state.foodies_name !== undefined && this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
 
         if (!this.validateInforOrdering(ordering_info)) {
             return;
@@ -80,6 +80,7 @@ export default class InfoOrder extends Component {
         Meteor.call('ordering.createProfileOrder', ordering_info, (err, res) => {
             if (!err) {
                 console.log('Create info success');
+                this.props.handleOnSaveOrderingInfo();
             }
         });
     };
@@ -129,7 +130,7 @@ export default class InfoOrder extends Component {
                 <div className="modal-content">
                     <h5>Please fill your info before order</h5>
                     {
-                        (this.state.foodies_name !== 'undefined' && this.state.foodies_name !== '') ?
+                        (this.state.foodies_name !== undefined && this.state.foodies_name !== '') ?
                             ''
                         :
                             <div className="input-field col s6">
@@ -139,7 +140,7 @@ export default class InfoOrder extends Component {
                     }
                     <div className="input-field col s6">
                         <input id="address_ordering" type="text" className="form_field" value={this.state.order_obj.address_ordering || ''} onChange={this.handleOnChange.bind(this, 'address_ordering')}/>
-                        <label className="active" htmlFor="address_ordering">address</label>
+                        <label className="active" htmlFor="address_ordering">delivery address</label>
                     </div>
                     <div className="input-field col s6">
                         <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
