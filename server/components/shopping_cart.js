@@ -145,11 +145,12 @@ Meteor.methods({
                 let sellerBalance = parseFloat(res.account_balance / 100).toFixed(2);
                 console.log('Current seller balance: ' + sellerBalance);
                 var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
-                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(amount.toString()))).toFixed(2);
-                console.log('Amount: ' + amount);
+                var real_amount = amount / 1.15;
+                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(real_amount.toString()))).toFixed(2);
+                console.log('Real amount: ' + real_amount);
                 console.log('New balance when seller sold: ' + newBalance);
                 updatedCustomer(sellerCustomerId, {
-                  account_balance: parseInt(parseFloat(newBalance) * 100 / 1.15) // convert to int number and convert to cent number
+                  account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
                 }, function(err, customer) {
                   if (!err) {
                     console.log('Update seller successful');
