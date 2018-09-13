@@ -256,9 +256,10 @@ ul.right {
 
 .chat-panel-wrapper {
   min-height: 30px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  border-radius: 10px 10px 0px 0px;
+  /*box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);*/
+  border-radius: 10px;
   transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  height: calc(100vh - 80px);
 }
 
 .chat-panel-wrapper .chat-header {
@@ -337,7 +338,7 @@ ul.right {
 }
 
 .chat-panel-wrapper .chat-content-wrapper {
-  height: 350px;
+  height: calc(100% - 60px);
   background-color: rgb(247, 247, 247);
 }
 
@@ -432,12 +433,13 @@ ul.right {
 
 .chat-panel-wrapper .chat-content-wrapper .list-message {
   width: 100%;
-  height: 250px;
+  height: calc(100% - 100px);
   white-space: nowrap;
   overflow-y: scroll;
 }
 
 .chat-panel-wrapper .chat-content-wrapper .list-message ul {
+  height: calc(100% - 140px - 25px);
   padding: 0px 15px;
   margin: 0px;
 }
@@ -487,6 +489,7 @@ ul.right {
   width: 100%;
   padding: 3px 5px;
   display: inline-flex;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .chat-panel-wrapper .chat-content-wrapper .typing-container input {
@@ -495,7 +498,7 @@ ul.right {
   height: 33px;
   border: none;
   color: #000;
-  width: 250px;
+  width: 95%;
   font-size: 0.9rem !important;
   margin: 0px 0px 5px 10px;
   padding: 0px 10px;
