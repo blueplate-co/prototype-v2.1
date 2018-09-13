@@ -57,6 +57,11 @@ class ShowRoom extends Component {
   }
 
   componentDidMount = () => {
+    Session.set('list_kitchen_for_map', null);
+    Session.set('search_result', null)
+    Session.set('search_result_origin', null);
+    Session.set('search_nearby', false);
+    $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
     Meteor.call('check_kitchen.get', Meteor.userId(), (err, res) => {
