@@ -21,11 +21,11 @@ export default class DishStatus extends Component {
         return (
             <span>
                 {status ?
-                    <li style={onlineContent} className="small brightness_1 text-right">
+                    <li style={onlineContent} className="small brightness_1">
                         <span style={dishStatusText}>online</span>
                     </li>
                 :
-                    <li style={offlineContent} className="small brightness_1 text-right">
+                    <li style={offlineContent} className="small brightness_1">
                         <span style={dishStatusText}>offline</span>
                     </li>
                 }
