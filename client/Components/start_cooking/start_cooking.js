@@ -109,7 +109,8 @@ Template.order_card.helpers({
     var foodie = Profile_details.findOne({
       'user_id': buyer_id
     });
-    return foodie.profileImg.origin;
+
+    return foodie.profileImg != undefined ? foodie.profileImg.origin : util.getDefaultFoodiesImage();
   },
   'get_dish_serving': function () {
     return Order_record.findOne({

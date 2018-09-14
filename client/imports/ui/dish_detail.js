@@ -141,7 +141,7 @@ export class Dish_Detail extends Component {
 
     renderChefInfo() {
         var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
-            source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "",
+            source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : util.getDefaultChefImage(),
             cooking_story_content = chef_detail.cooking_story;
 
         if (chef_detail.cooking_story.length > 100) { 

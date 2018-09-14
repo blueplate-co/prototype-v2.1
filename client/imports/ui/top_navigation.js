@@ -364,7 +364,7 @@ class TopNavigation extends Component {
     if (Profile_details.findOne({ user_id: Meteor.userId() })) {
       var profile_img = Profile_details.findOne({ user_id: Meteor.userId() }).profileImg;
       this.setState({
-        avatar: profile_img !== undefined ? profile_img.large : "source image not found"
+        avatar: !profile_img ? util.getDefaultFoodiesImage() : profile_img.large
       })
     }
   }

@@ -1,4 +1,17 @@
 
+window.util = window.util || {};
+(function() {
+  "use strict";  //  Safe wrapper for use strict.
+
+  util.getDefaultFoodiesImage = function () {
+    return 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foody.svg';
+  };
+
+  util.getDefaultChefImage = function () {
+    return 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef.svg';
+  };
+
+}());
 /**
  * Validate phone number
  * 
