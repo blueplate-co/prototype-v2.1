@@ -61,7 +61,7 @@ export default class ProgressiveImages extends Component {
         };
 
         // 2: load large image
-        if (placeholder.dataset) {
+        if ( (typeof placeholder) !== 'undefined' && placeholder !== null && placeholder.dataset) {
             var imgLarge = new Image();
             imgLarge.src = placeholder.dataset.large;
             imgLarge.onload = function () {
