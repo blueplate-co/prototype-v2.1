@@ -95,6 +95,12 @@ class TopNavigation extends Component {
   handleGoHome = () => {
     $('.modal').modal('close');
     this.setState({ sidebarOpen: false });
+    Session.set('list_kitchen_for_map', null);
+    Session.set('search_result', null)
+    Session.set('search_result_origin', null);
+    Session.set('search_nearby', false);
+    $('#searchQuery').val('');
+    Session.set()
     FlowRouter.go("/main");
   }
 
