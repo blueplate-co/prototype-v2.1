@@ -260,9 +260,9 @@ class ShoppingCart extends Component {
                             {
                                 (checking_promotion_dish(detail._id).length > 0) ?
                                 (
-                                    <span style={{ display: 'inline-flex'}}>
-                                        <span className="detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
-                                        <span className="detail-old-price">HK${ detail.dish_selling_price }</span>
+                                    <span>
+                                        <span className="col l1 m3 s12 detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
+                                        <span className="col l3 m3 s12 detail-old-price">HK${ detail.dish_selling_price }</span>
                                     </span>
                                 )
                                 : (

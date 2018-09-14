@@ -462,12 +462,12 @@ export class Dish_Detail extends Component {
                                                 />
                                             </div>
                                             <span id="dish-name">{dish_detail.dish_name}</span>
-                                            <div className="rating-content">
+                                            <div className="rating-content dish-detail-info">
                                                 {
                                                     (checking_promotion_dish(dish_detail._id).length > 0) ?
                                                         <ul className="promotion-price-list">
                                                             <li id="dish-price" className="dish-price no-padding">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</li>
-                                                            <li className="dish-old-price dish-price no-padding" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</li>
+                                                            <li className="dish-old-price no-padding" style={{ fontStyle: 'normal', fontWeight: '400', fontSize: '1.5rem', lineHeight: '32px', marginRight: '15px' }}>$ { dish_detail.dish_selling_price }</li>
                                                             <li className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</li>
                                                         </ul>
                                                     :
