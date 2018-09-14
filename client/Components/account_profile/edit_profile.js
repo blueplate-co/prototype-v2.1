@@ -324,7 +324,6 @@ Template.edit_homecook_profile.onRendered(function () {
 Template.edit_homecook_profile.events({
     'blur #kitchen_address': function () {
       address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
-
     },
 
     'click #edit_homecook_button': function () {
@@ -334,7 +333,7 @@ Template.edit_homecook_profile.events({
       const chef_name = $('#chef_name').val();
       const kitchen_address_country = $('#kitchen_address_country').val();
       const kitchen_address = $('#kitchen_address').val();
-      const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+      var kitchen_address_conversion = {};
       const kitchen_contact_country = $('#kitchen_contact_country').val();
       const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
       const serving_option = Session.get('serving_option_tags');
@@ -354,6 +353,26 @@ Template.edit_homecook_profile.events({
 
       //Step 4
       const house_rule = $('#house_rule').val();
+
+      var geocoder = new google.maps.Geocoder();
+      if (kitchen_address.trim().length > 0) {
+        geocoder.geocode({'address': String(kitchen_address)}, function(results,status){
+          if (status == 'OK') {
+            var latlng = [];
+            var latlng = {
+              lng: results[0].geometry.location.lng(),
+              lat: results[0].geometry.location.lat()
+            };
+            kitchen_address_conversion = latlng;
+          } else {
+            Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green");
+            return;
+          }
+        });
+      } else {
+        Materialize.toast('Address is required.', 4000, "rounded bp-green");
+        return;
+      }
 
       if (district == '') {
         hide_loading_progress();

@@ -749,7 +749,7 @@ Template.create_homecook_profile.events({
     const chef_name = $('#chef_name').val();
     const kitchen_address_country = $('#kitchen_address_country').val();
     const kitchen_address = $('#kitchen_address').val();
-    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    var kitchen_address_conversion = {};
     const kitchen_contact_country = $('#kitchen_contact_country').val();
     const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
     const serving_option = Session.get('serving_option_tags');
@@ -778,6 +778,26 @@ Template.create_homecook_profile.events({
     if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
       hide_loading_progress();
       Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+      return;
+    }
+
+    var geocoder = new google.maps.Geocoder();
+    if (kitchen_address.trim().length > 0) {
+      geocoder.geocode({'address': String(kitchen_address)}, function(results,status){
+        if (status == 'OK') {
+          var latlng = [];
+          var latlng = {
+            lng: results[0].geometry.location.lng(),
+            lat: results[0].geometry.location.lat()
+          };
+          kitchen_address_conversion = latlng;
+        } else {
+          Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green");
+          return;
+        }
+      });
+    } else {
+      Materialize.toast('Address is required.', 4000, "rounded bp-green");
       return;
     }
 
