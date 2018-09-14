@@ -57,10 +57,10 @@ class ShowRoom extends Component {
   }
 
   componentDidMount = () => {
-    Session.set('list_kitchen_for_map', null);
-    Session.set('search_result', null)
-    Session.set('search_result_origin', null);
-    Session.set('search_nearby', false);
+    // Session.set('list_kitchen_for_map', null);
+    // Session.set('search_result', null)
+    // Session.set('search_result_origin', null);
+    // Session.set('search_nearby', false);
     $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
@@ -215,7 +215,7 @@ class ShowRoom extends Component {
                   </div>
                 </div>
                 <div className="col l4 m6 s12 search-map-container">
-                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="fa fa-times"></i>
+                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="material-icons">close</i>
                   <SearchMap />
                 </div>
               </div>
