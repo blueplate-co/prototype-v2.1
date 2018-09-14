@@ -25,6 +25,10 @@ const dish_list = [
     {
         id: 'FTJhJZqgnDZcwsskn',
         amount: 0.5
+    },
+    {
+        id: 'X7NoJSfjDLJxbgGAF',
+        amount: 0.5
     }
 ];
 

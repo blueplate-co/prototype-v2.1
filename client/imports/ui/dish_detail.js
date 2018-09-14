@@ -465,11 +465,11 @@ export class Dish_Detail extends Component {
                                             <div className="rating-content">
                                                 {
                                                     (checking_promotion_dish(dish_detail._id).length > 0) ?
-                                                        <div className="row">
-                                                            <div id="dish-price" className="col l4 m4 s12 dish-price no-padding text-left">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</div>
-                                                            <div className="dish-old-price col l5 m5 s12 dish-price no-padding text-left" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</div>
-                                                            <span className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</span>
-                                                        </div>
+                                                        <ul className="promotion-price-list">
+                                                            <li id="dish-price" className="dish-price no-padding">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</li>
+                                                            <li className="dish-old-price dish-price no-padding" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</li>
+                                                            <li className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</li>
+                                                        </ul>
                                                     :
                                                         <div className="no-margin">
                                                             <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>

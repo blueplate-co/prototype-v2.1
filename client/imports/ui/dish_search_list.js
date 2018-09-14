@@ -74,10 +74,10 @@ class DishSearchList extends Component {
             (!isNaN(item.dish_selling_price))
             ? (
               (checking_promotion_dish(item._id).length > 0) ?
-                <div className="row">
-                  <div className="col l3 m3 dish-price no-padding text-left">$ { item.dish_selling_price * get_amount_promotion(item._id) }</div>
-                  <div className="col l9 m9 dish-old-price no-padding text-left">$ { item.dish_selling_price }</div>
-                </div>
+                <ul className="promotion-price-list">
+                  <li className="dish-price no-padding">$ { item.dish_selling_price * get_amount_promotion(item._id) }</li>
+                  <li className="dish-old-price no-padding">$ { item.dish_selling_price }</li>
+                </ul>
               : (
                 <div className="row">
                   <div className="col l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
