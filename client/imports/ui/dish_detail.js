@@ -352,6 +352,7 @@ export class Dish_Detail extends Component {
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
+                hide_loading_progress();
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
                 if (location.hostname == 'www.blueplate.co') {
@@ -372,6 +373,9 @@ export class Dish_Detail extends Component {
                     '', /* @param subject - default*/
                     'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
+            } else {
+                Materialize.toast('Can not request Dish now, please try later!', 4000, 'rounded bp-green');
+                hide_loading_progress();
             }
         });
 
