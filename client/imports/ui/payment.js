@@ -135,7 +135,7 @@ class Payment extends Component {
         if (location.hostname == 'www.blueplate.co') {
             fbq('track', 'ViewContent', { content_name: 'Select Payment', content_ids: Meteor.userId() });
         }
-        if (!Session.get('product')) {
+        if (!localStorage.getItem('globalCart')) {
             Materialize.toast('Please complete your order before.', 'rounded bp-green');
             FlowRouter.go('/shopping_cart');
             return true;
@@ -225,6 +225,7 @@ class Payment extends Component {
                     hide_loading_progress();
                 });
             });
+            localStorage.setItem('globalCart', '');
         } else {
             // if choose credit card is payment method
             //- send to Facebook Pixel
@@ -315,6 +316,7 @@ class Payment extends Component {
     }
 
     validationCardAndCharge() {
+        show_loading_progress();
         ccNum = $('#card_no').val();
         cvc = $('#cvc_no').val();
         expMo = $('#exp_month').val();
@@ -333,6 +335,7 @@ class Payment extends Component {
         }, function (status, response) {
             if (response.error) {
                 Materialize.toast(response.error.message, 'rounded bp-green');
+                hide_loading_progress();
                 this.setState({
                     action: false
                 })
@@ -361,11 +364,13 @@ class Payment extends Component {
                     Meteor.call('payment.addCard', StripeToken);
                     Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
                         if (err) {
+                            hide_loading_progress();
                             Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                             this.setState({
                                 action: false
                             })
                         } else {
+                            hide_loading_progress();
                             Meteor.call('shopping_cart.remove', item._id)
                             Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                             Session.clear;
@@ -374,7 +379,9 @@ class Payment extends Component {
                         }
                     })
                 })
+                hide_loading_progress();
             }
+            localStorage.setItem('globalCart', '');
         })
     }
 

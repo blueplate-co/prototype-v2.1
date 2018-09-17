@@ -162,3 +162,13 @@ i.remove_button {
   font-size: 0.8rem !important;
   transform: translateY(-140%);
 }
+
+.view-detail-dish:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #56AACD;
+}
+
+.detail-title {
+  width: fit-content;
+}
