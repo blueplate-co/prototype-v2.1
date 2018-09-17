@@ -32,7 +32,8 @@ export class Dish_Detail extends Component {
                     lng: '',
                     lat: ''
                 }
-            }
+            },
+            action: ''
         }
     }
     
@@ -290,22 +291,32 @@ export class Dish_Detail extends Component {
         }, 500);
     }
 
+    handleOnDishAction() {
+        if (this.state.action === "orderDish") {
+            this.dishOrder();
+        } else if (this.state.action === "requestDish") {
+            this.dishRequest();
+        }
+    }
+
     /**
      * Check info foodies
      * If not exist: get info and create new foodies_profile
      * Else: create order info
      */
-    checkFoodiesInfor() {
+    checkFoodiesInfor(actionFoodies) {
         show_loading_progress();
-        var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-        if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
-            hide_loading_progress();
-            // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-            
-            this.openInfoOrdering();
-        } else {
-            this.dishOrder();
-        }
+        this.setState({ action: actionFoodies}, () => {
+            var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+            if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
+                hide_loading_progress();
+                // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+    
+                this.openInfoOrdering();
+            } else {
+                this.handleOnDishAction();
+            }
+        });
     }
 
     openInfoOrdering() {
@@ -323,7 +334,7 @@ export class Dish_Detail extends Component {
         $('#ordering-popup').modal('open');
     }
     
-    handleOnRequestDish() {
+    dishRequest() {
         var dish_id = this.state.data._id
             buyer_id = Meteor.userId(),
             seller_id = this.state.data.kitchen_id;
@@ -488,13 +499,13 @@ export class Dish_Detail extends Component {
                                                 <div className="row">
                                                     <div className="handle-order-dish">
                                                         { (dish_detail.online_status) ? 
-                                                            <span className="btn-order-dish-detail" onClick={() => this.checkFoodiesInfor()}>order</span>
+                                                            <span className="btn-order-dish-detail" onClick={() => this.checkFoodiesInfor("orderDish")}>order</span>
                                                             :
                                                             (this.state.alreadyRequested) ?
                                                                 <p id="dish-request-infor">Your request has sent. We will notify you when chef make it ready again</p>
                                                                 :
                                                                 <div>
-                                                                    <span className="btn-order-dish-detail" onClick = {() => this.handleOnRequestDish()}>request</span>
+                                                                    <span className="btn-order-dish-detail" onClick = {() => this.checkFoodiesInfor("requestDish")}>request</span>
                                                                     <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p>
                                                                 </div>
                                                         }
@@ -525,7 +536,7 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
 
-                            <InfoOrder order_obj={this.state.order_obj} handleOnSaveOrderingInfo={() => this.dishOrder()}/>
+                            <InfoOrder order_obj={this.state.order_obj} handleOnSaveOrderingInfo={() => this.handleOnDishAction()}/>
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">
