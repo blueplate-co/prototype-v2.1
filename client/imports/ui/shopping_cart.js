@@ -435,9 +435,11 @@ class ShoppingCart extends Component {
             }
         });
 
+        var foodie_name = Profile_details.findOne({user_id: Meteor.userId()}).foodie_name,
+            info_buyer = foodie_name + " (email: " + Meteor.user().emails[0].address + ")";
+
         for (var chefName in checkSellerName) {
             if (checkSellerName.hasOwnProperty(chefName)) {
-                var info_buyer = Meteor.user().profile.name + " (email: " + Meteor.user().emails[0].address + ")";
                 var message = "blueplate notification: " + info_buyer + " has just placed " + checkSellerName[chefName] + " from " + chefName;
 
                 // console.log("send message: " + message);
