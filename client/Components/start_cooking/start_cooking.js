@@ -255,7 +255,7 @@ Template.request_card.helpers({
     var foodie = Profile_details.findOne({
       'user_id': String(this)
     });
-    return foodie.profileImg.origin;
+    return foodie.profileImg != undefined ? foodie.profileImg.origin : util.getDefaultFoodiesImage();
 
   },
 
@@ -806,7 +806,7 @@ Template.chef_ready_card.helpers({
     var foodie = Profile_details.findOne({
       'user_id': this.buyer_id
     });
-    return foodie.profileImg.origin;
+    return foodie.profileImg != undefined ? foodie.profileImg.origin : util.getDefaultFoodiesImage();
 
   },
 
