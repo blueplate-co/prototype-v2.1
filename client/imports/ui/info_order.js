@@ -112,15 +112,16 @@ export default class InfoOrder extends Component {
             this.scrollToFieldRequired('address_ordering', 'invalid');
             Materialize.toast('Address is required.', 4000, 'rounded bp-green');
             return false;
-        } else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
-            this.scrollToFieldRequired('address_ordering', 'invalid');
-            Materialize.toast('Please select correct address!', 4000, 'rounded bp-green');
-            return false;
         } else if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
             this.scrollToFieldRequired('phone_ordering', 'invalid');
             Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
             return false;
-        }
+        } 
+    //     else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
+    //        this.scrollToFieldRequired('address_ordering', 'invalid');
+    //        Materialize.toast('Please select correct address!', 4000, 'rounded bp-green');
+    //        return false;
+    //    }
         return true;
     };
 
