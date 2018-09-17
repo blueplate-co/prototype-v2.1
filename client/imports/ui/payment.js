@@ -259,7 +259,12 @@ class Payment extends Component {
                 Materialize.toast(response.error.message, 'rounded bp-green');
             } else {
                 // use Stripetoken to add this card into Customer account
-                Meteor.call('payment.addCard', response.id);
+                Meteor.call('payment.addCard', response.id, (err, res) => {
+                    if (err) {
+                        Materialize.toast(err.message, 4000, 'rounded bp-green');
+                        return false;
+                    }
+                });
                 console.log('Package to choose' + creditPackage);
                 Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function (err, response) {
                     if (err) {
