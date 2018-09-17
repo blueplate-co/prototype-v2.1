@@ -65,12 +65,19 @@ export class DishListRelate extends Component {
           </div>
           <div className="row">
             <div className="col l12 m12 dish-rating no-padding text-left">
-              <Rating rating={item.average_rating}/>
-              {
-                (parseInt(item.order_count) >= 10)
-                ? <span className="order-dish-count">{ item.order_count }</span>
-                : ''
-              }
+              <div className="row no-margin" style={{ width: '100%' }}>
+                <div className="col l6 m6 s6 no-padding">
+                  <Rating rating={item.average_rating}/>
+                  {
+                    (parseInt(item.order_count) >= 10)
+                    ? <span className="order-dish-count">{ item.order_count }</span>
+                    : ''
+                  }
+                </div>
+                <div className="col l6 m6 s6 text-right no-padding">
+                  <DishStatus status={item.online_status} />
+                </div>
+              </div>
             </div>
             {
               (!isNaN(item.dish_selling_price))
@@ -81,11 +88,10 @@ export class DishListRelate extends Component {
                       <li className="dish-price no-padding">$ { item.dish_selling_price * get_amount_promotion(item._id) }</li>
                       <li className="dish-old-price no-padding">$ { item.dish_selling_price }</li>
                     </ul>
-                    <DishStatus status={item.online_status} />
                   </div>
                 : (
                   <div className="row">
-                    <div className="col l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                    <div className="col l6 m6 s12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
                   </div>
                 )
               ) : ('')

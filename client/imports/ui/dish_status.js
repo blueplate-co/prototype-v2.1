@@ -7,7 +7,8 @@ const onlineContent = {
         color: '#B6B6B6'
     },
     dishStatusText = {
-        marginLeft: '-6px'
+        marginLeft: '-6px',
+        textAlign: 'right'
     }
 
 export default class DishStatus extends Component {

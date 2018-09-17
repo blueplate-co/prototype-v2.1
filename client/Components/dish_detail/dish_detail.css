@@ -130,6 +130,7 @@
 
 .dish-rating {
     width: 100%;
+    display: inline-flex;
 }
 
 .chef-location {
