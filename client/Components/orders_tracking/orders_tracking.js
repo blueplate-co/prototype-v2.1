@@ -127,7 +127,7 @@ Template.orders_tracking.helpers({
 Template.pending_confirmation.helpers({
   'kitchen_profile_picture': function(){
     var foodie = Kitchen_details.findOne({'user_id': String(this)})
-    return foodie.profileImg.origin;
+    return foodie.profileImg != undefined ? foodie.profileImg.origin : util.getDefaultFoodiesImage();
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': String(this)})
@@ -236,7 +236,7 @@ Template.foodies_confirmed_order.helpers({
   'kitchen_profile_picture': function(){
     var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
     var kitchen = Kitchen_details.findOne({'user_id': seller_id})
-    return kitchen.profileImg.origin;
+    return kitchen.profileImg != undefined ? kitchen.profileImg.origin : util.getDefaultChefImage();
   },
   'get_kitchen_name': function() {
     var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
@@ -476,8 +476,8 @@ Template.ready_card.helpers({
     }
   },
   'kitchen_profile_picture': function(){
-    var foodie = Kitchen_details.findOne({'user_id': this.seller_id})
-    return foodie.profileImg.origin;
+    var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})
+    return kitchen.profileImg != undefined ? kitchen.profileImg.origin : util.getDefaultChefImage();
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})

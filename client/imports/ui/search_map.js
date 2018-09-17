@@ -77,7 +77,7 @@ export class SearchMap extends Component {
                 if (kitchen.profileImg) {
                   avatar = kitchen.profileImg.origin;
                 } else {
-                  avatar = '';
+                  avatar = util.getDefaultChefImage();
                 }
                 let story = '';
                 if (kitchen.cooking_story) {
@@ -87,7 +87,7 @@ export class SearchMap extends Component {
                     story = kitchen.cooking_story;
                   }
                 } else {
-                  avatar = '';
+                  avatar = util.getDefaultChefImage();
                 }
                 return (
                   (kitchen.kitchen_address_conversion === null) ?
