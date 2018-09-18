@@ -8,7 +8,7 @@ import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
-import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -306,17 +306,33 @@ export class Dish_Detail extends Component {
      */
     checkFoodiesInfor(actionFoodies) {
         show_loading_progress();
-        this.setState({ action: actionFoodies}, () => {
-            var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-            if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
-                hide_loading_progress();
-                // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-    
-                this.openInfoOrdering();
-            } else {
-                this.handleOnDishAction();
+        // logged in
+        if (Meteor.userId()) {
+            // logged in with user_id, email
+            this.setState({ action: actionFoodies}, () => {
+                var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+                if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
+                    hide_loading_progress();
+                    // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+                    this.openInfoOrdering();
+                } else {
+                    this.handleOnDishAction();
+                }
+            });
+            // check if have already cookies, create a promotion balance for this user
+            if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                    if (!err) {
+                        delete_cookies('promotion');
+                        console.log('OK');
+                    }
+                });
             }
-        });
+        } else {
+            //- not logged in
+            Materialize.toast('Must signup or login.', 4000, 'rounded bp-green');
+            //- display signin/login popup
+        }
     }
 
     openInfoOrdering() {

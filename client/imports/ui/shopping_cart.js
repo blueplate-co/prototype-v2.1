@@ -188,7 +188,6 @@ class ShoppingCart extends Component {
     // when user click checkout button
     handleCheckout() {
         var valid = true;
-        debugger
         globalCart.forEach((item, index) => {
             item.address = $('#address_' + item.id).val();
         });

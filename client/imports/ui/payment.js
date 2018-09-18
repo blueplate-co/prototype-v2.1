@@ -163,66 +163,69 @@ class Payment extends Component {
                 // get Stripe balance
                 Meteor.call('payment.getStripeBalance', (err, res) => {
                     let balance = parseFloat(res.account_balance / 100).toFixed(2);
-                    // check pending order of buyer
-                    var pendingOrder = Order_record.find({
-                        buyer_id: Meteor.userId(),
-                        status: 'Created'
-                    }).fetch();
-                    var pendingCost = 0;
-                    for (var i = 0; i < pendingOrder.length; i++) {
-                        if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
-                            pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
-                        } else {
-                            pendingCost += pendingOrder[i].total_price;
+                    Meteor.call('promotion.check_history', (err, res) => {
+                        let promotion_credits = res.balance;
+                        // check pending order of buyer
+                        var pendingOrder = Order_record.find({
+                            buyer_id: Meteor.userId(),
+                            status: 'Created'
+                        }).fetch();
+                        var pendingCost = 0;
+                        for (var i = 0; i < pendingOrder.length; i++) {
+                            if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
+                                pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
+                            } else {
+                                pendingCost += pendingOrder[i].total_price;
+                            }
                         }
-                    }
-                    var trueBalance = (parseFloat(credits) + parseFloat(balance)) - parseFloat(pendingCost);
-                    // sum of two wallet is not enough to pay
-                    if (trueBalance < total) {
-                        // not enough money to pay
-                        this.setState({
-                            pendingCost: parseFloat(pendingCost.toString())
-                        },() => {
-                            this.openModal();
-                        })
-                        // Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
-                        // self.setState({
-                        //     payment: payment
-                        // });
-                    } else {
-                        // enough money to pay
-                        var StripeToken = '';
-                        var transaction_no = 1;
-                        //- add each every product into order collection
-                        var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
-                        shoppingCart.map(function (item, index) {
-                            var kitchenOrderInfo;
-                            //- get information order which user set in previous step
-                            for (var i = 0; i < Session.get('product').length; i++) {
-                                if (item.seller_id == Session.get('product')[i].id) {
-                                    kitchenOrderInfo = Session.get('product')[i];
-                                }
-                            }
-
-                            var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
-                            if (transaction) {
-                                transaction_no = parseInt(transaction.transaction_no) + 1
-                            }
-                            // no need add card because, if user has credit, thet must have already credit card
-                            Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
-                                if (err) {
-                                    Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-                                } else {
-                                    Meteor.call('shopping_cart.remove', item._id);
-                                    Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
-                                    Session.clear;
-                                    Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
-                                    FlowRouter.go('/orders_tracking');
-                                }
+                        var trueBalance = (parseFloat(credits) + parseFloat(balance) + parseFloat(promotion_credits)) - parseFloat(pendingCost);
+                        // sum of two wallet is not enough to pay
+                        if (trueBalance < total) {
+                            // not enough money to pay
+                            this.setState({
+                                pendingCost: parseFloat(pendingCost.toString())
+                            },() => {
+                                this.openModal();
                             })
-                        })
-                    }
-                    hide_loading_progress();
+                            // Materialize.toast('Not enough credits to pay.', 'rounded bp-green');
+                            // self.setState({
+                            //     payment: payment
+                            // });
+                        } else {
+                            // enough money to pay
+                            var StripeToken = '';
+                            var transaction_no = 1;
+                            //- add each every product into order collection
+                            var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+                            shoppingCart.map(function (item, index) {
+                                var kitchenOrderInfo;
+                                //- get information order which user set in previous step
+                                for (var i = 0; i < Session.get('product').length; i++) {
+                                    if (item.seller_id == Session.get('product')[i].id) {
+                                        kitchenOrderInfo = Session.get('product')[i];
+                                    }
+                                }
+
+                                var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
+                                if (transaction) {
+                                    transaction_no = parseInt(transaction.transaction_no) + 1
+                                }
+                                // no need add card because, if user has credit, thet must have already credit card
+                                Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
+                                    if (err) {
+                                        Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                                    } else {
+                                        Meteor.call('shopping_cart.remove', item._id);
+                                        Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
+                                        Session.clear;
+                                        Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
+                                        FlowRouter.go('/orders_tracking');
+                                    }
+                                })
+                            })
+                        }
+                        hide_loading_progress();
+                    });
                 });
             });
         } else {

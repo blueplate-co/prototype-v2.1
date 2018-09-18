@@ -14,7 +14,6 @@ import {
 import React from 'react';
 import { render } from 'react-dom';
 
-// import for show room react component
 import LandingDishList from '../../imports/ui/landing_dish_list.js';
 
 
@@ -30,6 +29,30 @@ Template.landing_page.onRendered(function () {
   Session.set('popup_appeared', false);
   this.$('#login_modal').modal();
   this.$('.collapsible').collapsible();
+
+  //- procedure for promotion $50HKD
+  var url_string = window.location.href; //window.location.href
+  var url = new URL(url_string);
+  var promotion = url.searchParams.get("promotion");
+  // check if already have cookies
+  var dc = document.cookie;
+  var prefix = "promotion" + "=";
+  var begin = dc.indexOf(prefix);
+  if (begin == -1 && promotion) {
+    document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    //- if user is logged in
+    if (Meteor.userId()) {
+      Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+        if (err) {
+          Materialize.toast(err, 4000, 'rounded bp-green');
+        } 
+      });
+    }
+    setTimeout(() => {
+      this.$('#promotion_modal').modal();
+      $('#promotion_modal').modal('open');
+    }, 2500);
+  }
 
   render (<LandingDishList />, document.getElementById('landing_dishes_list'));
   // everything is loaded

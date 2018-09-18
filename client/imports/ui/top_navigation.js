@@ -429,8 +429,20 @@ class TopNavigation extends Component {
       }
       Meteor.call('payment.getCredits', (err, res) => {
         credits = parseFloat(parseFloat(res) + parseFloat(stripebalance)).toFixed(2);
-        this.setState({
-          credits: credits
+        var promotion_credits = 0;
+        Meteor.call('promotion.check_history', (err, res) => {
+          if (!err) {
+            if (res) {
+              promotion_credits = res.balance;
+              this.setState({
+                credits: (parseFloat(promotion_credits.toString()) + parseFloat(credits.toString())).toFixed(2)
+              });
+            } else {
+              this.setState({
+                credits: (parseFloat(credits.toString())).toFixed(2)
+              });
+            }
+          }
         });
       });
     });
