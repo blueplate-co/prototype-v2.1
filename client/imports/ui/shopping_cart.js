@@ -323,6 +323,8 @@ class ShoppingCart extends Component {
         var sellerName = product[0].seller_name;
         var subtotal = 0;
         var curr = new Date();
+        var seller_images = '';
+        var kitchen_id = '';
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0,10);
         for (var i = 0; i < product.length; i++) {
@@ -337,11 +339,22 @@ class ShoppingCart extends Component {
             defaultTimePicker = globalCart[index].time,
             defaultDate = this.formatDateOrder(globalCart[index].date);
 
+        // get user avatar from user_id
+        let kitchen_details = Kitchen_details.findOne({ user_id: seller_id });
+        if (kitchen_details && kitchen_details.profileImg) {
+            seller_images = kitchen_details.profileImg.origin;
+            kitchen_id = kitchen_details._id;
+        } else {
+            var chef_avatar = kitchen_details.profileImg != undefined ? kitchen_details.profileImg.origin : util.getDefaultChefImage();
+            seller_images = chef_avatar;
+            kitchen_id = kitchen_details._id;
+        }
+
         return (
             <div key={index}>
                 <div className="row kitchen-name">
                     { sellerName }'s kitchen
-                    <ChefAvatar userId={seller_id} />
+                    <ChefAvatar kitchenId={kitchen_id} profileimages={seller_images} />
                 </div>
                 <div className="row">
                     <div className="col s4">
