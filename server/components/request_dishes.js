@@ -16,7 +16,7 @@ Meteor.methods({
     },
 
     'requestdish.find_dish_notification' (dishId) {
-        return RequestDishes.findOne({ dish_id: dishId, sent_notification: false});
+        return RequestDishes.find({ dish_id: dishId, sent_notification: false}).fetch();
     },
 
     'requestdish.update' (requestId) {

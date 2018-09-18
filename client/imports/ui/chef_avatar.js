@@ -13,23 +13,38 @@ export default class ChefAvatar extends Component {
   }
 
   componentWillMount = () => {
-    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0 && avatar[0].profileImg) {
+    let kitchen_details = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
+    if (kitchen_details.length > 0 && kitchen_details[0].profileImg) {
       this.setState({
-        profileImages: avatar[0].profileImg.origin,
-        kitchenId: avatar[0]._id
+        profileImages: kitchen_details[0].profileImg.origin,
+        kitchenId: kitchen_details[0]._id
       })
+    } else if (kitchen_details.length > 0) {
+      var chef_avatar = kitchen_details[0].profileImg != undefined ? kitchen_details[0].profileImg.origin : util.getDefaultChefImage();
+
+      this.setState({
+        profileImages: chef_avatar,
+        kitchenId: kitchen_details[0]._id
+      });
     }
   }
 
   componentWillReceiveProps = () => {
-    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0 && avatar[0].profileImg) {
+    let kitchen_details = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
+    if (kitchen_details.length > 0 && kitchen_details[0].profileImg) {
       this.setState({
-        profileImages: avatar[0].profileImg.origin,
-        kitchenId: avatar[0]._id
+        profileImages: kitchen_details[0].profileImg.origin,
+        kitchenId: kitchen_details[0]._id
       })
+    } else if (kitchen_details.length > 0) {
+      var chef_avatar = kitchen_details[0].profileImg != undefined ? kitchen_details[0].profileImg.origin : util.getDefaultChefImage();
+
+      this.setState({
+        profileImages: chef_avatar,
+        kitchenId: kitchen_details[0]._id
+      });
     }
+
   }
 
   kitchenLink = () => {
@@ -42,7 +57,11 @@ export default class ChefAvatar extends Component {
         ?
             <div className="chef-avatar-container"></div>
         :
-            <a className="chef-avatar-container close-modal" style={{ backgroundImage: `url( ${ this.state.profileImages } )` }} onClick={() => {$('.modal-overlay').remove(); FlowRouter.go(this.kitchenLink())}}></a>
+            <a className="chef-avatar-container close-modal" 
+              style={{ backgroundImage: `url( ${ this.state.profileImages } )` }} 
+              onClick={() => {$('.modal-overlay').remove(); FlowRouter.go(this.kitchenLink())}}>
+
+            </a>
     );
   }
 

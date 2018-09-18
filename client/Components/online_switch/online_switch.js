@@ -22,7 +22,9 @@ Template.online_switch.events({
           if (switch_status) { // Only check when status switch from false to true
             Meteor.call('requestdish.find_dish_notification',  dish_id, (err, res) => {
               if (res != null) {
-                sentNotificationToRequester(res);
+                res.map( (item, idx) => {
+                  sentNotificationToRequester(item);
+                });
               }
             });
           }
