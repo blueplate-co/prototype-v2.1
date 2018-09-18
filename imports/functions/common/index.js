@@ -2,6 +2,7 @@
 import { validatePhoneNumber, getCountryCodeFromKitChen, getCountryCodeFromProfile } from './validation_common';
 import { show_loading_progress, hide_loading_progress, open_dialog_edit_confirm, open_dialog_delete_confirm } from './message_common';
 import { checking_promotion_kitchen } from './promotion_common';
+import { check_admin } from './admin_common';
 
 export {
     validatePhoneNumber,
@@ -11,5 +12,6 @@ export {
     hide_loading_progress,
     open_dialog_edit_confirm,
     open_dialog_delete_confirm,
-    checking_promotion_kitchen
+    checking_promotion_kitchen,
+    check_admin
 }

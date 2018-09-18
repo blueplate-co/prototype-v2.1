@@ -12,6 +12,8 @@ import {
 } from '/imports/functions/get_checkboxes_value.js';
 
 import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 
 
@@ -231,9 +233,15 @@ Template.edit_foodie_profile.events({
 
 Template.edit_homecook_profile.helpers({
   'get_homecook_profile': function () {
-    return Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    });
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      return Kitchen_details.findOne({
+        'user_id': getCookie('fake_userid')
+      });
+    } else {
+      return Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    }
   },
 
 })
@@ -386,7 +394,14 @@ Template.edit_homecook_profile.events({
         return;
       }
 
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+        user_id = getCookie('fake_userid');
+      } else {
+        user_id = Meteor.userId();
+      }
+
       Meteor.call('kitchen_details.update',
+        user_id,
         kitchen_name,
         chef_name,
         kitchen_address_country,
