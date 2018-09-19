@@ -18,6 +18,8 @@ import {
 } from '/imports/functions/get_checkboxes_value.js';
 
 import './create_dishes_form.html';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 
 // Meteor.subscribe('files.images.all');
@@ -553,11 +555,19 @@ Template.create_dishes_form.events({
   'click .update_dish_submit_btn': function(event) {
     event.preventDefault();
     console.log('updating...');
-    var kitchen = Kitchen_details.findOne({
-      user_id: Meteor.userId()
-    });
-    var kitchen_id = kitchen._id;
-    var user_id = Meteor.userId();
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      var kitchen = Kitchen_details.findOne({
+        user_id: getCookie('fake_userid')
+      });
+      var kitchen_id = kitchen._id;
+      var user_id = getCookie('fake_userid');
+    } else {
+      var kitchen = Kitchen_details.findOne({
+        user_id: Meteor.userId()
+      });
+      var kitchen_id = kitchen._id;
+      var user_id = Meteor.userId();
+    }
     var dish_name = $('#dish_name').val();
     var dish_description = $('#dish_description').val();
     var days = $('#days').val();

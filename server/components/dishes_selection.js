@@ -65,7 +65,7 @@ Meteor.methods({
     }, {
       $set: {
         image_id: image_id,
-        user_id: Meteor.userId(),
+        user_id: user_id,
         kitchen_id: kitchen_id,
         dish_name: dish_name,
         dish_description: dish_description,

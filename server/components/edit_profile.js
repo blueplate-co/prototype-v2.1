@@ -115,6 +115,7 @@ Meteor.methods({
     });
   },
   'kitchen_details.update' (
+    user_id,
     kitchen_name,
     chef_name,
     kitchen_address_country,
@@ -136,7 +137,7 @@ Meteor.methods({
     if(!_.isEmpty(bannerProfileImg)) //- if chef change banner's images
     {
       Kitchen_details.update({
-        user_id: Meteor.userId()
+        user_id: user_id
       }, {
         $set: {
           kitchen_name:kitchen_name,
