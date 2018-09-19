@@ -1,0 +1,74 @@
+[
+  {
+    "districtName": "Central and Western",
+    "region": "Hong Kong Island"
+  },
+  {
+    "districtName": "Eastern",
+    "region": "Hong Kong Island"
+  },
+  {
+    "districtName": "Southern",
+    "region": "Hong Kong Island"
+  },
+  {
+    "districtName": "Wan Chai",
+    "region": "Hong Kong Island"
+  },
+  {
+    "districtName": "Sham Shui Po",
+    "region": "Kowloon"
+  },
+  {
+    "districtName": "Kowloon City",
+    "region": "Kowloon"
+  },
+  {
+    "districtName": "Kwun Tong",
+    "region": "Kowloon"
+  },
+  {
+    "districtName": "Wong Tai Sin",
+    "region": "Kowloon"
+  },
+  {
+    "districtName": "Yau Tsim Mong",
+    "region": "Kowloon"
+  },
+  {
+    "districtName": "Islands",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Kwai Tsing",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "North",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Sai Kung",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Sha Tin",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Tai Po",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Tsuen Wan",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Tuen Mun",
+    "region": "New Territories"
+  },
+  {
+    "districtName": "Yuen Long",
+    "region": "New Territories"
+  }
+]

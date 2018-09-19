@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 // Searching map component - represents the whole app
 export class SearchMap extends Component {
@@ -33,7 +32,7 @@ export class SearchMap extends Component {
   };
 
   componentDidMount = () => {
-    show_loading_progress();
+    util.show_loading_progress();
   }
 
   componentWillReceiveProps = () => {
@@ -56,7 +55,7 @@ export class SearchMap extends Component {
         lat: lat,
         lng: lng
       })
-      hide_loading_progress();
+      util.hide_loading_progress();
     }
   }
 

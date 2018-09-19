@@ -3,7 +3,6 @@ import { withTracker } from "meteor/react-meteor-data";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import Sidebar from "react-sidebar";
 import { Index, MinimongoEngine } from 'meteor/easy:search';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 const styles = {
   root: {
@@ -72,7 +71,8 @@ class TopNavigation extends Component {
       width: window.innerWidth,
       status: "Search",
       credits: 0,
-      avatar: ''
+      avatar: '',
+      isLogin: Meteor.userId() != undefined ? true : false
     };
   }
 
@@ -89,7 +89,12 @@ class TopNavigation extends Component {
   };
 
   toggle = () => {
-    this.setState({ sidebarOpen: this.state.sidebarOpen ? false : true });
+    this.setState({ 
+      sidebarOpen: this.state.sidebarOpen ? false : true, 
+      isLogin: Meteor.userId() != undefined ? true : false
+    }, () => {
+      this.state.isLogin ? "" : localStorage.setItem("userMode", "foodie");
+    });
   };
 
   handleGoHome = () => {
@@ -112,6 +117,29 @@ class TopNavigation extends Component {
     }
   };
 
+  checkAccessPermission = (access_path) => {
+    if (!Meteor.user() && !Meteor.loggingIn()) {
+      this.setState({ sidebarOpen: false });
+      util.loginAccession(access_path);
+    } else {
+      FlowRouter.go("/" + access_path);
+    }
+  }
+
+  checkIsLoginAccn = () => {
+    this.setState({ sidebarOpen: false });
+    if (this.state.isLogin) {
+      util.show_loading_progress();
+      Meteor.logout(() => {
+        util.hide_loading_progress();
+        this.setState({ isLogin: false })
+        FlowRouter.go("/");
+      })
+    } else {
+      util.loginAccession("");
+    }
+  }
+
   renderSideBar = () => {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
@@ -122,9 +150,7 @@ class TopNavigation extends Component {
 
         <li className="visted-color"
           onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/wish-list");
-            });
+            this.checkAccessPermission("wish-list");
           }}
         >
           <span>Wishlist</span>
@@ -171,24 +197,32 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
-            setTimeout(() => {
-              this.setState({ sidebarOpen: true });
-            }, 500);
-            BlazeLayout.reset();
-            FlowRouter.go("/profile/show_homecook_profile");
+            if (!Meteor.user() && !Meteor.loggingIn()) {
+              util.loginAccession("/profile/show_homecook_profile");
+            } else {
+              setTimeout(() => {
+                this.setState({ sidebarOpen: true });
+              }, 500);
+              BlazeLayout.reset();
+              FlowRouter.go("/profile/show_homecook_profile");
+            }
           }}
         >
           <span>Switch to cooking</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
-          onClick={() =>
-            Meteor.logout(() => {
-              FlowRouter.go("/");
-            })
+          onClick={() => {
+              this.checkIsLoginAccn();
+            }
           }
         >
-          <span>Logout</span>
+          {
+            this.state.isLogin ? 
+              <span>Logout</span>
+            :
+              <span>Log in</span>
+          }
         </li>
       </ul>
     ) : (
@@ -252,13 +286,17 @@ class TopNavigation extends Component {
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
-          onClick={() =>
-            Meteor.logout(() => {
-              FlowRouter.go("/");
-            })
+          onClick={() => {
+              this.checkIsLoginAccn();
+            }
           }
         >
-          <span>Logout</span>
+          {
+            this.state.isLogin ?
+              <span>Logout</span>
+            :
+              <span>Log in</span>
+          }
         </li>
       </ul>
     );
@@ -370,7 +408,7 @@ class TopNavigation extends Component {
   }
 
   nearby = () => {
-    show_loading_progress();
+    util.show_loading_progress();
     if( navigator.geolocation ) {
       // Call getCurrentPosition with success and failure callbacks
       navigator.geolocation.getCurrentPosition((position) => {
@@ -402,19 +440,19 @@ class TopNavigation extends Component {
             Session.set('list_kitchen_for_map', res);
             FlowRouter.go('/search#all');
             Session.set('search_nearby', true);
-            hide_loading_progress();
+            util.hide_loading_progress();
           } else {
-            hide_loading_progress();
+            util.hide_loading_progress();
             Materialize.toast("No kitchen in your range.", 4000, 'rounded bp-red');
           }
         });
       }, (err) => {
         // when fail
-        hide_loading_progress();
+        util.hide_loading_progress();
         Materialize.toast(err.message, 4000, 'rounded bp-green');
       });
     } else {
-      hide_loading_progress();
+      util.hide_loading_progress();
       Materialize.toast("Sorry, your browser does not support geolocation services.", 4000, 'rounded bp-red');
     }
   }

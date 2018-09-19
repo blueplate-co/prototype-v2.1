@@ -41,6 +41,7 @@ Template.login_modal.events({
   'click #login, keypress': function(event){
     if (event.which === 1||event.which === 13){
 
+      var path_access = $('#path_access').val();
       var email = $('#login_email').val().trim();
       var password = $('#login_password').val().trim();
 
@@ -97,7 +98,12 @@ Template.login_modal.events({
               FlowRouter.go("/followup");
             } else {
               Bert.alert('Login successfully!' , 'success', 'fixed-top');
-              FlowRouter.go("/main");
+
+              path_access != null && path_access.length > 0 ?
+                FlowRouter.go(path_access)
+              :
+                FlowRouter.go("/");
+
             }
 
           } else {

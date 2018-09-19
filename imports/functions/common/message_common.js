@@ -1,13 +1,4 @@
 
-
-export function show_loading_progress() {
-    $('#showLoadFull').css('display', 'block');
-};
-
-export function hide_loading_progress() {
-    $('#showLoadFull').css('display', 'none');
-};
-
 /**
  * Show popup confirm dialog
  * 

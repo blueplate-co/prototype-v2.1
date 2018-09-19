@@ -12,9 +12,10 @@ Template.screen.onRendered(function(){
     $(".modal-overlay").remove();
     // ** //
   } else {
-    FlowRouter.go('/');
-    localStorage.setItem("loggedIn", false);
-    Materialize.toast('Please login before access.', 4000, 'rounded bp-green');
+    // FlowRouter.go('/');
+    // localStorage.setItem("loggedIn", false);
+    // util.loginAccession("");
+    // Materialize.toast('Please login before access.', 4000, 'rounded bp-green');
   }
 });
 

@@ -11,6 +11,39 @@ window.util = window.util || {};
     return 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef.svg';
   };
 
+  util.loginAccession = function(path_access) {
+    $('#login_modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      ready: function() {
+         $(".overlay").remove();
+      }, // Callback for Modal open. Modal and trigger parameters available
+      complete: function() {
+          $(".overlay").remove();
+      } // Callback for Modal close
+    });
+    $('#path_access').val(path_access);
+    $('#login_modal').modal('open');
+  };
+
+  util.validationEmail = function(email) {
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      if(filter.test(email)){
+        return true;
+      }
+      return false;
+  };
+
+  util.show_loading_progress = function() {
+    $('#showLoadFull').css('display', 'block');
+  };
+
+  util.hide_loading_progress = function() {
+    $('#showLoadFull').css('display', 'none');
+  };
+
 }());
 /**
  * Validate phone number

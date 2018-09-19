@@ -2,7 +2,6 @@ import { search_distinct_order_record_orders_tracking } from '/imports/functions
 import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
 
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 Template.orders_tracking.onRendered(function(){
   $('.tooltip').tipso({
@@ -374,7 +373,7 @@ Template.pending_confirmation.events({
 
     product.forEach(cancel_order)
 
-    show_loading_progress();
+    util.show_loading_progress();
     function cancel_order(array_value, index) {
 
       setTimeout(function() {
@@ -426,7 +425,7 @@ Template.pending_confirmation.events({
         if (!err) {
           console.log('Disabled conversation');
         }
-        hide_loading_progress();
+        util.hide_loading_progress();
         // send SMS for cancel
         var kitchen = Kitchen_details.findOne({user_id: seller_id}),
             kitchen_phone_number = kitchen.kitchen_contact,

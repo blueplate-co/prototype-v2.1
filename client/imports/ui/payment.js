@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 class Modal extends React.Component {
@@ -143,7 +142,7 @@ class Payment extends Component {
     }
 
     choosePayment(payment) {
-        show_loading_progress();
+        util.show_loading_progress();
         if (payment == 'credits') {
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
@@ -224,7 +223,7 @@ class Payment extends Component {
                                 })
                             })
                         }
-                        hide_loading_progress();
+                        util.hide_loading_progress();
                     });
                 });
             });
@@ -238,7 +237,7 @@ class Payment extends Component {
             this.setState({
                 payment: payment
             });
-            hide_loading_progress();
+            util.hide_loading_progress();
         }
     }
 
@@ -319,7 +318,7 @@ class Payment extends Component {
     }
 
     validationCardAndCharge() {
-        show_loading_progress();
+        util.show_loading_progress();
         ccNum = $('#card_no').val();
         cvc = $('#cvc_no').val();
         expMo = $('#exp_month').val();
@@ -338,7 +337,7 @@ class Payment extends Component {
         }, function (status, response) {
             if (response.error) {
                 Materialize.toast(response.error.message, 'rounded bp-green');
-                hide_loading_progress();
+                util.hide_loading_progress();
                 this.setState({
                     action: false
                 })
@@ -367,13 +366,13 @@ class Payment extends Component {
                     Meteor.call('payment.addCard', StripeToken);
                     Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
                         if (err) {
-                            hide_loading_progress();
+                            util.hide_loading_progress();
                             Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                             this.setState({
                                 action: false
                             })
                         } else {
-                            hide_loading_progress();
+                            util.hide_loading_progress();
                             Meteor.call('shopping_cart.remove', item._id)
                             Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                             Session.clear;
@@ -382,7 +381,7 @@ class Payment extends Component {
                         }
                     })
                 })
-                hide_loading_progress();
+                util.hide_loading_progress();
             }
             localStorage.setItem('globalCart', '');
         })

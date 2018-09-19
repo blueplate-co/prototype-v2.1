@@ -7,7 +7,6 @@ import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 // Dish detail component
@@ -26,14 +25,12 @@ export class Dish_Detail extends Component {
             more_dish_description: '',
             order_obj: {
                 name_ordering: '',
-                address_ordering: '',
+                district_ordering: '',
+                email_ordering: '',
                 phone_ordering: '',
-                address_conversion: {
-                    lng: '',
-                    lat: ''
-                }
             },
-            action: ''
+            action: '',
+            isOpen: false
         }
     }
     
@@ -218,7 +215,7 @@ export class Dish_Detail extends Component {
     }
 
     dishOrder() {
-        show_loading_progress();
+        util.show_loading_progress();
 
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
         var dish_details = this.state.data;
@@ -232,7 +229,6 @@ export class Dish_Detail extends Component {
         var dish_name = dish_details.dish_name;
         var ready_time = dish_details.cooking_time;
         var quantity = this.state.sumOrder;
-
 
         var serving_option = this.state.data.serving_option;
         var address = Session.get('address');
@@ -250,13 +246,13 @@ export class Dish_Detail extends Component {
                 total_price_per_dish,
                 function(err) {
                     if (err) {
-                        Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                        Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
                         if (location.hostname == 'www.blueplate.co') {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }                            
-                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
                     }
                 }
             )
@@ -287,7 +283,7 @@ export class Dish_Detail extends Component {
             );
         }
         setTimeout ( () => {
-            hide_loading_progress();
+            util.hide_loading_progress();
         }, 500);
     }
 
@@ -305,14 +301,14 @@ export class Dish_Detail extends Component {
      * Else: create order info
      */
     checkFoodiesInfor(actionFoodies) {
-        show_loading_progress();
+        util.show_loading_progress();
         // logged in
         if (Meteor.userId()) {
             // logged in with user_id, email
             this.setState({ action: actionFoodies}, () => {
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
                 if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
-                    hide_loading_progress();
+                    util.hide_loading_progress();
                     // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
                     this.openInfoOrdering();
                 } else {
@@ -330,8 +326,9 @@ export class Dish_Detail extends Component {
             }
         } else {
             //- not logged in
-            Materialize.toast('Must signup or login.', 4000, 'rounded bp-green');
-            //- display signin/login popup
+            this.setState({ action: actionFoodies});
+            util.hide_loading_progress();
+            this.openInfoOrdering();
         }
     }
 
@@ -339,14 +336,14 @@ export class Dish_Detail extends Component {
         // Clear data info
         var order_info = this.state.order_obj;
         order_info.name_ordering = '';
-        order_info.address_ordering = '';
-        order_info.address_conversion.lat = '';
-        order_info.address_conversion.lng = '';
+        order_info.district_ordering = '';
+        order_info.email_ordering = '';
         order_info.phone_ordering = '';
         this.setState( { order_obj: order_info});
 
         $('.dirty_field').removeClass('dirty_field');
 
+        this.setState({ isOpen: true});
         $('#ordering-popup').modal('open');
     }
     
@@ -368,7 +365,7 @@ export class Dish_Detail extends Component {
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
-                hide_loading_progress();
+                util.hide_loading_progress();
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
                 if (location.hostname == 'www.blueplate.co') {
@@ -391,7 +388,7 @@ export class Dish_Detail extends Component {
                 );
             } else {
                 Materialize.toast('Can not request Dish now, please try later!', 4000, 'rounded bp-green');
-                hide_loading_progress();
+                util.hide_loading_progress();
             }
         });
 
@@ -437,6 +434,10 @@ export class Dish_Detail extends Component {
 
     handleSeeMoreDishDescr(dishDescr) {
         this.setState({ more_dish_description: dishDescr });
+    }
+
+    closeOrderingPopup() {
+        this.setState({ isOpen: false});
     }
 
     render() {
@@ -556,7 +557,10 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
 
-                            <InfoOrder order_obj={this.state.order_obj} handleOnSaveOrderingInfo={() => this.handleOnDishAction()}/>
+                            <InfoOrder isOpen={this.state.isOpen} order_obj={this.state.order_obj}
+                                handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
+                                closeOrderingPopup = { () => this.closeOrderingPopup()}
+                            />
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">
