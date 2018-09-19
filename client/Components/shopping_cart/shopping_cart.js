@@ -421,8 +421,7 @@ function order_record_insert(array_value) {
     } else {
       var ready_time = Session.get('ready_time_ms')
       var total_price = cart_details.total_price_per_dish
-      var stripeToken = Session.get('token_no')
-      debugger
+      var stripeToken = Session.get('token_no');
       var transaction = Transactions.findOne({ 'buyer_id': buyer_id, 'seller_id': seller_id }, { sort: { transaction_no: -1 } });
       if (transaction) {
         var transaction_no = parseInt(transaction.transaction_no) + 1

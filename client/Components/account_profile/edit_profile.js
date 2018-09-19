@@ -400,6 +400,12 @@ Template.edit_homecook_profile.events({
         user_id = Meteor.userId();
       }
 
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+        var user_id = getCookie('fake_userid');
+      } else {
+        var user_id = Meteor.userId();
+      }
+
       Meteor.call('kitchen_details.update',
         user_id,
         kitchen_name,
