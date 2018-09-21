@@ -4,13 +4,30 @@
     height: auto !important;
 }
 
+#ordering-popup.modal-footer {
+    border-radius: 0 0 20px 20px!important;
+}
+
+.intl-tel-input .country-list {
+    position: absolute;
+    z-index: 10010!important;
+}
+
+#ordering-popup.modal.modal-fixed-footer .modal-content {
+    overflow-y: initial!important;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         /* height: 55% !important; */
         width: 43% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+        overflow-y: initial!important;
     }
 
     .email_ordering {
@@ -27,12 +44,16 @@
 
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         top: 23% !important;
         /* height: 60% !important; */
         width: 50% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+        overflow-y: initial!important;
     }
 
     .email_ordering {
@@ -48,12 +69,16 @@
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         top: 23% !important;
         /* height: 59% !important; */
         width: 54% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+        overflow-y: initial!important;
     }
 
     #have-accn-text {
@@ -68,7 +93,9 @@
 
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
-
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #have-accn-text {
         text-align: left;
         float: none !important;
@@ -88,6 +115,9 @@
 }
 
 @media (max-width: 690px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         top: 13% !important;
         /* height: 60% !important; */
@@ -98,6 +128,9 @@
 }
 
 @media (max-width: 640px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         /* height: 65% !important; */
         width: 72% !important;
@@ -108,6 +141,9 @@
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
     #ordering-popup.ordering-popup-infor {
         top: 0% !important;
         height: 100% !important;
