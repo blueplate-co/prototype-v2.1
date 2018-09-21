@@ -1,9 +1,15 @@
 import { search_distinct_order_record_orders_tracking } from '/imports/functions/orders_tracking.js';
 import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
 
 Template.orders_tracking.onRendered(function(){
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/orders_tracking');
+  }
+
   $('.tooltip').tipso({
     speed: 400,
     position: 'bottom',

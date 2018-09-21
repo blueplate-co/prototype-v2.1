@@ -125,7 +125,7 @@ class TopNavigation extends Component {
   checkAccessPermission = (access_path) => {
     this.setState({ sidebarOpen: false });
     if (!Meteor.user() && !Meteor.loggingIn()) {
-      util.loginAccession(access_path);
+      util.loginAccession("/" + access_path);
     } else {
       FlowRouter.go("/" + access_path);
     }

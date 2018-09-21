@@ -28,10 +28,15 @@ const ShowroomBanner = props => {
   }
 
   handleClick = () => {
-    if (props.kitchenExisted) {
-      FlowRouter.go('/profile/show_homecook_profile')
+    if  (Meteor.userId()) {
+      if (props.kitchenExisted) {
+        FlowRouter.go('/profile/show_homecook_profile')
+      } else {
+        FlowRouter.go('/profile/create_homecook_profile')
+      }
     } else {
-      FlowRouter.go('/profile/create_homecook_profile')
+      FlowRouter.go('/')
+      util.loginAccession("/profile/show_homecook_profile");
     }
   }
 
