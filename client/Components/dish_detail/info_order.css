@@ -13,6 +13,10 @@
     z-index: 10010!important;
 }
 
+#ordering-popup.modal.modal-fixed-footer .modal-content {
+    overflow-y: initial!important;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     #ordering-popup.modal-footer {
