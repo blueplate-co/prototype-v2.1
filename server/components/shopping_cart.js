@@ -3,6 +3,11 @@ import { FilesCollection } from 'meteor/ostrio:files';
 import { Match } from 'meteor/check';
 import { check } from 'meteor/check';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+var logger = require('logzio-nodejs').createLogger({
+  token: 'zesEwGtDiMRKZOkAxJocElJJStpdXWMD',
+  host: 'listener.logz.io',
+  type: 'nodejs'
+});
 
 Order_record = new Mongo.Collection('order_record');
 
@@ -268,6 +273,15 @@ Meteor.methods({
                             $set: {
                                 'credits': parseFloat((credits - newAmount).toFixed(2))
                             }
+                        });
+                        //- sending log to logz
+                        logger.log({
+                          message: buyer_id + `'s credits balance was updated.`,
+                          level: 'INFO',
+                          type: 'PAYMENT',
+                          previous_balance: credits,
+                          balance: parseFloat((credits - newAmount).toFixed(2)),
+                          date: new Date()
                         });
                         console.log("Buyer's credits updated: " + parseFloat((credits - newAmount).toFixed(2)));
                       } else {
