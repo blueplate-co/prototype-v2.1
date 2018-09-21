@@ -77,10 +77,14 @@ class TopNavigation extends Component {
   }
 
   openProfile = () => {
-    if (Profile_details.findOne({ user_id: Meteor.userId() })) {
-      FlowRouter.go("/profile/edit_foodie_profile");
+    if (Meteor.userId()) {
+      if (Profile_details.findOne({ user_id: Meteor.userId() })) {
+        FlowRouter.go("/profile/edit_foodie_profile");
+      } else {
+        FlowRouter.go("/profile");
+      }
     } else {
-      FlowRouter.go("/profile");
+      util.loginAccession('/profile/edit_foodie_profile');
     }
   };
 
@@ -89,6 +93,7 @@ class TopNavigation extends Component {
   };
 
   toggle = () => {
+    $('.modal').modal('close');
     this.setState({ 
       sidebarOpen: this.state.sidebarOpen ? false : true, 
       isLogin: Meteor.userId() != undefined ? true : false
@@ -118,8 +123,8 @@ class TopNavigation extends Component {
   };
 
   checkAccessPermission = (access_path) => {
+    this.setState({ sidebarOpen: false });
     if (!Meteor.user() && !Meteor.loggingIn()) {
-      this.setState({ sidebarOpen: false });
       util.loginAccession(access_path);
     } else {
       FlowRouter.go("/" + access_path);
@@ -159,9 +164,7 @@ class TopNavigation extends Component {
 
         <li className="visted-color"
           onClick={() => {
-            this.setState({ sidebarOpen: false }, () => {
-              FlowRouter.go("/orders_tracking");
-            });
+            this.checkAccessPermission('orders_tracking');
           }}
         >
           <span>Order Status</span>
@@ -554,12 +557,7 @@ class TopNavigation extends Component {
                       <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
                     </li>
                     <li className="icon" onClick={() => this.openProfile()}>
-                      {
-                        (this.state.avatar) ?
-                          <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
-                        :
-                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg" />
-                      }
+                      <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
                     </li>
                   </ul>
                 </div>

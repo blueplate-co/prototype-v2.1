@@ -304,10 +304,10 @@ export default class SignUp extends Component {
         return (
           <div className = "section">
             <div className = "row">
-              <h5 className = "bp-red-text center-align">Thanks for showing your interest to join the food revolution! There are 3 questions we would like to check with you.</h5>
+              <h5 className = "bp-red-text center-align join-food-signup">Thanks for showing your interest to join the food revolution! There are 3 questions we would like to check with you.</h5>
             </div>
             <div className = "row">
-              <h3 className = "bp-red-text center-align">Do you love making food, or you rather prefer eating?</h3>
+              <h3 className = "bp-red-text center-align make-food-signup">Do you love making food, or you rather prefer eating?</h3>
             </div>
             <div className = "row">
               <h5 className = "bp-red-text center-align">I am a</h5>
@@ -330,7 +330,7 @@ export default class SignUp extends Component {
               <h5 className = "bp-red-text center-align">2 more questions!</h5>
             </div>
             <div className = "row">
-              <h2 className = "bp-red-text center-align">Which district do you live in?</h2>
+              <h2 className = "bp-red-text center-align district-question-text">Which district do you live in?</h2>
             </div>
             <div className = "row">
               <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={(this.state.district)?this.state.district:""}>

@@ -8,3 +8,86 @@
   top: 1px;
   right: 1px;
 }
+
+.signup-non-btn {
+  border: none;
+  background: none;
+  float: right;
+}
+
+.signup-non-btn:focus {
+  background: none;
+}
+
+#login_modal.login-page-modal {
+  min-height: 50% !important;
+  height: auto !important;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+  #login_modal.login-page-modal {
+      /* height: 55% !important; */
+      width: 43% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  #login_modal.login-page-modal {
+      top: 23% !important;
+      width: 50% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  #login_modal.login-page-modal {
+      top: 23% !important;
+      width: 54% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+
+  #login_modal.login-page-modal {
+      top: 23% !important;
+      width: 62% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+@media (max-width: 690px) {
+  #login_modal.login-page-modal {
+      top: 13% !important;
+      width: 62% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #login_modal.login-page-modal {
+      width: 72% !important;
+      border-radius: 15px !important;
+      overflow: hidden !important;
+  }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+  #login_modal.login-page-modal {
+      top: 0% !important;
+      height: 100% !important;
+      width: 100% !important;
+      border-radius: 0px !important;
+  }
+}

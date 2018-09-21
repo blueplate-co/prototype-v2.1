@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email'
+import { Accounts } from 'meteor/accounts-base';
 
 RequestDishes = new Mongo.Collection("request_dishes");
 
@@ -42,4 +43,18 @@ Meteor.methods({
     'requestdish.find_dish_request' (dishId, buyerId) {
         return RequestDishes.findOne({ dish_id: dishId, buyer_id: buyerId, sent_notification: false});
     },
+    'dish.send_welcome_email'(userId, content) {
+        Accounts.emailTemplates.resetPassword = {
+            subject(user) {
+                return "Blueplate.co - Welcome";
+            },
+            text(user, url) {
+                let urlWithoutHash = url.replace('#/', ''),
+                emailBody = content + `\n\t${urlWithoutHash}\n\nBest regards,\nAlan Anderson`;
+                console.log(urlWithoutHash)
+                return emailBody;
+            }
+        }
+        Accounts.sendResetPasswordEmail(userId);
+    }
 });

@@ -19,6 +19,16 @@ Template.screen.onRendered(function(){
   }
 });
 
+Template.screen.events({
+  'click .chef_signup': function() {
+    $('#login_modal').modal('close');
+    //- send to Facebook Pixel
+    if (location.hostname == 'www.blueplate.co') {
+      fbq('trackCustom', 'ClickSignUp');
+    }
+  }
+});
+
 Template.msgDialog_content.onRendered(function () {
   Meteor.setTimeout(function() {
     var message_window = $("#messages_wrap").height();

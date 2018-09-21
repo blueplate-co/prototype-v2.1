@@ -30,7 +30,6 @@ export class Dish_Detail extends Component {
                 phone_ordering: '',
             },
             action: '',
-            isOpen: false
         }
     }
     
@@ -138,67 +137,74 @@ export class Dish_Detail extends Component {
     };
 
     renderChefInfo() {
-        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
-            source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : util.getDefaultChefImage(),
-            cooking_story_content = chef_detail.cooking_story;
+        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id});            
 
-        if (chef_detail.cooking_story.length > 100) { 
-            cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
-        } else {
-            cooking_story_content = chef_detail.cooking_story
-        }
-        
-        return (
-            <div>
-                <a className="col s12 m12 l1 chef-story-image"
-                    href={"/kitchen/" + this.state.data.kitchen_id}
-                >
-                    <img src={source_img} id="img-chef" width="78" height="78"/>
-                </a>
-                <div className="row col s12 m12 l7 chef-name-summary">
-                    <a className="col s12 m12 l10 chef-name"
+        if (chef_detail != undefined) {
+            var source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : util.getDefaultChefImage(),
+                cooking_story_content = chef_detail.cooking_story;
+
+            if (chef_detail.cooking_story.length > 100) { 
+                cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
+            } else {
+                cooking_story_content = chef_detail.cooking_story
+            }
+            
+            return (
+                <div>
+                    <a className="col s12 m12 l1 chef-story-image"
                         href={"/kitchen/" + this.state.data.kitchen_id}
                     >
-                        {chef_detail.chef_name}
+                        <img src={source_img} id="img-chef" width="78" height="78"/>
                     </a>
-                    <div className="col s12 m12 l10 chef-summary">
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.summary_order }</li>
-                            <li>Tried</li>
-                        </ul>
-                        <li className="dot-text-style">&bull;</li>
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
-                        </ul>
-                        <li className="dot-text-style">&bull;</li>
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
-                        </ul>
+                    <div className="row col s12 m12 l7 chef-name-summary">
+                        <a className="col s12 m12 l10 chef-name"
+                            href={"/kitchen/" + this.state.data.kitchen_id}
+                        >
+                            {chef_detail.chef_name}
+                        </a>
+                        <div className="col s12 m12 l10 chef-summary">
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.summary_order }</li>
+                                <li>Tried</li>
+                            </ul>
+                            <li className="dot-text-style">&bull;</li>
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
+                            </ul>
+                            <li className="dot-text-style">&bull;</li>
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="row col s12 m12 l12 dish-story-content">
+                        { (this.state.cooking_story_content.length > 0) ?
+                           <p id="chef-story-descr">{this.state.cooking_story_content}
+                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
+                                    see less
+                                </span>
+                           </p>
+                            :
+                            (chef_detail.cooking_story.length > 100) ?
+                                <p id="chef-story-descr">{cooking_story_content}
+                                    <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
+                                        see more
+                                    </span>
+                                </p>
+                                :
+                                (chef_detail.cooking_story.length === 0) ?
+                                    <p id="chef-story-descr">No cooking story has been shared yet.</p>
+                                :
+                                    <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                        }
                     </div>
                 </div>
-                <div className="row col s12 m12 l12 dish-story-content">
-                    { (this.state.cooking_story_content.length > 0) ?
-                       <p id="chef-story-descr">{this.state.cooking_story_content}
-                            <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
-                                see less
-                            </span>
-                       </p>
-                        :
-                        (chef_detail.cooking_story.length > 100) ?
-                            <p id="chef-story-descr">{cooking_story_content}
-                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
-                                    see more
-                                </span>
-                            </p>
-                            :
-                            (chef_detail.cooking_story.length === 0) ?
-                                <p id="chef-story-descr">No cooking story has been shared yet.</p>
-                            :
-                                <p id="chef-story-descr">{chef_detail.cooking_story}</p>
-                    }
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <span>loading...</span>
+            );
+        }
     };
 
     handleReduceOrder() {
@@ -342,8 +348,6 @@ export class Dish_Detail extends Component {
         this.setState( { order_obj: order_info});
 
         $('.dirty_field').removeClass('dirty_field');
-
-        this.setState({ isOpen: true});
         $('#ordering-popup').modal('open');
     }
     
@@ -434,10 +438,6 @@ export class Dish_Detail extends Component {
 
     handleSeeMoreDishDescr(dishDescr) {
         this.setState({ more_dish_description: dishDescr });
-    }
-
-    closeOrderingPopup() {
-        this.setState({ isOpen: false});
     }
 
     render() {
@@ -557,9 +557,9 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
 
-                            <InfoOrder isOpen={this.state.isOpen} order_obj={this.state.order_obj}
+                            <InfoOrder order_obj={this.state.order_obj}
                                 handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
-                                closeOrderingPopup = { () => this.closeOrderingPopup()}
+                                dish_id ={ this.state.data._id}
                             />
                         </div>
                     : 

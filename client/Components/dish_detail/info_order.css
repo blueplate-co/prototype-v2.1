@@ -12,6 +12,17 @@
         border-radius: 15px !important;
         overflow: hidden !important;
     }
+
+    .email_ordering {
+        width: 52%;
+        display: inline-block;
+    }
+    
+    #district-option {
+        float: right;
+        display: inline-block;
+        padding-top: 15px;
+    }
 }
 
 /* Landscape tablets and medium desktops */
@@ -22,6 +33,16 @@
         width: 50% !important;
         border-radius: 15px !important;
         overflow: hidden !important;
+    }
+
+    .email_ordering {
+        width: 55%;
+        display: inline-block;
+    }
+    
+    #district-option {
+        display: inline-block;
+        padding-top: 15px;
     }
 }
 
@@ -119,17 +140,6 @@
 
 #email-distric-display {
     display: inline;
-}
-
-.email_ordering {
-    width: 52%;
-    display: inline-block;
-}
-
-#district-option {
-    float: right;
-    display: inline-block;
-    padding-top: 15px;
 }
 
 #district_ordering {
