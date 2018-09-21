@@ -10,6 +10,7 @@ export default class InfoOrder extends Component {
         this.state = {
             order_obj: this.props.order_obj,
             foodies_name: Meteor.user() ? Meteor.user().profile.name : "",
+            bHasFoodiesProfile: false
         }
     };
 
@@ -18,6 +19,11 @@ export default class InfoOrder extends Component {
             initialCountry: "HK",
             utilsScript: "../intlTelInput/utils.js"
         });
+
+        var profile_detail = Profile_details.findOne({"user_id": Meteor.userId()});
+        if (profile_detail != undefined && profile_detail.email != '') {
+            this.setState({ bHasFoodiesProfile: true });
+        }
     }
 
     handleOnChange(field, ev) {
@@ -86,20 +92,42 @@ export default class InfoOrder extends Component {
         }
         util.show_loading_progress();
         this.createFoodiesName(this.state.order_obj.name_ordering);
-        this.createUserInfo(ordering_info, password);
+
+        /**
+         * If don't have account, will create new account
+         */
+        if (!Meteor.userId()) {
+            this.createUserInfo(ordering_info, password);
+        }
         
-        Meteor.call('ordering.createProfileOrder', ordering_info, (err, res) => {
-            if (!err) {
-                $('#ordering-popup').removeClass('.dirty_field');
-                $('#ordering-popup').modal('close');
-                this.props.handleOnSaveOrderingInfo();
-
-                this.sendWelcomeEmail(ordering_info.name_ordering, ordering_info.email_ordering, password);
-            }
-        });
-
-
+        this.handleFoodiesProfile(ordering_info);
     };
+
+    /**
+     * Create or update foodies profile if users has exist but
+     * have no foodies profile.
+     */
+    handleFoodiesProfile(ordering_info) {
+        if (!this.state.bHasFoodiesProfile) {
+            // Create new profile
+            Meteor.call('ordering.createProfileOrder', ordering_info, (err, res) => {
+                if (!err) {
+                    $('#ordering-popup').removeClass('.dirty_field');
+                    $('#ordering-popup').modal('close');
+                    this.props.handleOnSaveOrderingInfo();
+                }
+            });
+        } else {
+            // Update profile
+            Meteor.call('ordering.updateProfileOrder', ordering_info, (err, res) => {
+                if (!err) {
+                    $('#ordering-popup').removeClass('.dirty_field');
+                    $('#ordering-popup').modal('close');
+                    this.props.handleOnSaveOrderingInfo();
+                }
+            })
+        }
+    }
 
     sendWelcomeEmail(name, email, password) {
         var content =   "Hi " + name + ",\n\n" +
@@ -138,6 +166,7 @@ export default class InfoOrder extends Component {
                 Meteor.call('manualVerifyEmail');
                 //- create Stripe user id for that user register
                 Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+                this.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
             }
         });
     }
@@ -165,22 +194,26 @@ export default class InfoOrder extends Component {
             this.scrollToFieldRequired('name_ordering', 'invalid');
             Materialize.toast('Name is required.', 4000, 'rounded bp-green');
             return false;
-        } else if (ordering_info.district_ordering.trim() == '') {
-            this.scrollToFieldRequired('district_ordering', 'invalid');
-            Materialize.toast('Please select your district.', 4000, 'rounded bp-green');
-            return false;
-        } else if (ordering_info.email_ordering.trim() == '') {
-            this.scrollToFieldRequired('email', 'invalid');
-            Materialize.toast('Email is required.', 4000, 'rounded bp-green');
-            return false;
-        } else if (!util.validationEmail(ordering_info.email_ordering)) {
-            this.scrollToFieldRequired('email', 'invalid');
-            Materialize.toast('Email is not valid format.', 4000, 'rounded bp-green');
-            return false;
-        } else if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
-            this.scrollToFieldRequired('phone_ordering', 'invalid');
-            Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
-            return false;
+        } 
+        
+        if (!this.state.bHasFoodiesProfile) {
+            if (ordering_info.email_ordering.trim() == '') {
+                this.scrollToFieldRequired('email', 'invalid');
+                Materialize.toast('Email is required.', 4000, 'rounded bp-green');
+                return false;
+            }  else if (ordering_info.district_ordering.trim() == '') {
+                this.scrollToFieldRequired('district_ordering', 'invalid');
+                Materialize.toast('Please select your district.', 4000, 'rounded bp-green');
+                return false;
+            } else if (!util.validationEmail(ordering_info.email_ordering)) {
+                this.scrollToFieldRequired('email', 'invalid');
+                Materialize.toast('Email is not valid format.', 4000, 'rounded bp-green');
+                return false;
+            } else if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
+                this.scrollToFieldRequired('phone_ordering', 'invalid');
+                Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+                return false;
+            } 
         } 
     //     else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
     //        this.scrollToFieldRequired('address_ordering', 'invalid');
@@ -222,28 +255,37 @@ export default class InfoOrder extends Component {
                                 <label className="active" htmlFor="name_ordering">name</label>
                             </div>
                     }
-                    <div id="email-distric-display">
-                        <div className="input-field col s6 email_ordering">
-                            <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
-                            <label className="active" htmlFor="email_ordering">email</label>
-                        </div>
-                        <div id="district-option">
-                            <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
-                                <option value="">Choose a district</option>
-                                {
-                                    districts.map((item, index) => {
-                                        return (
-                                        <option key = {index} value = {item.districtName}>{item.districtName}</option>
-                                        )
-                                    })
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div className="input-field col s6">
-                        <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
-                        <label className="active" htmlFor="phone_ordering">phone number</label>
-                    </div>
+
+                    {
+                        (this.state.bHasFoodiesProfile) ? 
+                        ''
+                        :
+                        <span>
+                                <div id="email-distric-display">
+                                    <div className="input-field col s6 email_ordering">
+                                        <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
+                                        <label className="active" htmlFor="email_ordering">email</label>
+                                    </div>
+                                    <div id="district-option">
+                                        <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
+                                            <option value="">Choose a district</option>
+                                            {
+                                                districts.map((item, index) => {
+                                                    return (
+                                                        <option key = {index} value = {item.districtName}>{item.districtName}</option>
+                                                        )
+                                                    })
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="input-field col s6">
+                                    <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
+                                    <label className="active" htmlFor="phone_ordering">phone number</label>
+                                </div>
+                            </span>
+                    }
+
                 </div>
                 <div className="modal-footer get-info">
                     <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>

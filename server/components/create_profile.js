@@ -245,6 +245,19 @@ Meteor.methods({
       createdAt: new Date(),
       updatedAt: new Date()
     });
+  },
+
+  'ordering.updateProfileOrder' (ordering_obj) {
+    Profile_details.update({
+      user_id: Meteor.userId()
+    }, {
+      $set: {
+        foodie_name: ordering_obj.name_ordering,
+        first_name: ordering_obj.first_name_order,
+        last_name: ordering_obj.last_name_order
+      }
+    })
+
   }
 });
 
