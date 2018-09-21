@@ -77,6 +77,11 @@ class ShowRoom extends Component {
           Materialize.toast(err, 4000, 'rounded bp-green');
         } else {
           delete_cookies('promotion');
+          setTimeout(() => {
+            $('#promotion_modal').modal();
+            $('#promotion_modal').modal('open');
+          }, 1000);
+          //- end promotion modal
         }
       });
     } else {
@@ -85,11 +90,6 @@ class ShowRoom extends Component {
         document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
       }
     }
-    setTimeout(() => {
-      $('#promotion_modal').modal();
-      $('#promotion_modal').modal('open');
-    }, 2000);
-    //- end promotion modal
 
     $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
