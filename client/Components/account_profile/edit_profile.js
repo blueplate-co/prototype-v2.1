@@ -47,6 +47,10 @@ Template.edit_foodie_profile.helpers({
 });
 
 Template.edit_foodie_profile.onRendered(function () {
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/orders_tracking');
+  }
 
   setTimeout(() => {
     // google places autocomplete
@@ -60,14 +64,16 @@ Template.edit_foodie_profile.onRendered(function () {
       utilsScript: "../intlTelInput/utils.js"
     });
     // get district for user
-    Meteor.call('user.getDistrict', (err, res) => {
-      if (!err) {
-        var district = res;
-        $('#district').val(district);
-      } else {
-        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
-      }
-    });
+    if (Meteor.userId()) {
+      Meteor.call('user.getDistrict', (err, res) => {
+        if (!err) {
+          var district = res;
+          $('#district').val(district);
+        } else {
+          Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+        }
+      });
+    }
   }, 1000);
 
   //activate dropdown
@@ -246,20 +252,26 @@ Template.edit_homecook_profile.helpers({
 })
 
 Template.edit_homecook_profile.onRendered(function () {
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/profile/show_homecook_profile');
+  }
 
   setTimeout(() => {
     // add google places autocomplete
     var input = document.getElementById('kitchen_address');
     new google.maps.places.Autocomplete(input);
     // get district for user
-    Meteor.call('user.getDistrict', (err, res) => {
-      if (!err) {
-        var district = res;
-        $('#district').val(district);
-      } else {
-        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
-      }
-    });
+    if (Meteor.userId()) {
+      Meteor.call('user.getDistrict', (err, res) => {
+        if (!err) {
+          var district = res;
+          $('#district').val(district);
+        } else {
+          Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+        }
+      });
+    }
     $('#kitchen_contact').intlTelInput({
       initialCountry: "HK",
       utilsScript: "../intlTelInput/utils.js"

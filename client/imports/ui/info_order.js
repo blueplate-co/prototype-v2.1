@@ -144,6 +144,7 @@ export default class InfoOrder extends Component {
     }
 
     createUserInfo(user, password) {
+        var that = this;
         Accounts.createUser({
             email: user.email_ordering,
             password: password,
@@ -162,11 +163,11 @@ export default class InfoOrder extends Component {
                 if (location.hostname == 'www.blueplate.co') {
                     fbq('trackCustom', 'CompleteRegistration', { fullname: user.name_ordering, email: user.email_ordering });
                 }
-
+        
                 Meteor.call('manualVerifyEmail');
                 //- create Stripe user id for that user register
                 Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
-                this.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
+                that.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
             }
         });
     }

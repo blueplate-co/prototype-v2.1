@@ -34,8 +34,9 @@ Template.show_homecook_profile.onCreated(function() {
 })
 
 Template.show_homecook_profile.onRendered(function() {
-  var instance = Template.instance()
-  instance._id.set(FlowRouter.getParam("homecook_id"))
+  var instance = Template.instance();
+  instance._id.set(FlowRouter.getParam("homecook_id"));
+  
   if (!instance._id.get()) {
     var user = Meteor.userId()
     //own kitchen
@@ -51,15 +52,25 @@ Template.show_homecook_profile.onRendered(function() {
   } else {
     var user = instance._id.get()
   // other kitchen profile
-    var user_id = Kitchen_details.findOne({'_id': user}).user_id;
+    var kitchen_detail = Kitchen_details.findOne({'_id': user}),
+        user_id = '';
+    if (kitchen_detail != undefined) {
+      user_id = kitchen_detail.user_id
+    }
     Meteor.call('kitchen_likes.get', user_id, (error, result) => {
-      instance.kitchen_likes.set(result)
+      if (!error) {
+        instance.kitchen_likes.set(result)
+      }
     })
     Meteor.call('kitchen_tried.get', user_id, (error, result) => {
-      instance.kitchen_tried.set(result)
+      if (!error) {
+        instance.kitchen_tried.set(result)
+      }
     })
     Meteor.call('kitchen_follows.get', user_id, (error, result) => {
-      instance.kitchen_follows.set(result)
+      if (!error) {
+        instance.kitchen_follows.set(result)
+      }
     })
   }
 })
