@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { open_dialog_edit_confirm } from '/imports/functions/common';
 import { Accounts } from 'meteor/accounts-base';
 import districts from '/imports/functions/common/districts_common.json';
-
+import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 export default class InfoOrder extends Component {
     constructor(props) {
@@ -169,6 +169,15 @@ export default class InfoOrder extends Component {
                 this.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
             }
         });
+        // check if have already cookies, create a promotion balance for this user
+        if (getCookie('promotion') !== -1) {
+            Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                if (!err) {
+                    delete_cookies('promotion');
+                    console.log('OK');
+                }
+            });
+        }
     }
 
     createFoodiesName(fullName) {

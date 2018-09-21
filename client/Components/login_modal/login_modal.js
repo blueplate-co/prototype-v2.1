@@ -3,6 +3,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Blaze } from 'meteor/blaze';
+import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 import './login_modal.html';
 
@@ -103,7 +104,15 @@ Template.login_modal.events({
                 FlowRouter.go(path_access)
               :
                 FlowRouter.go("/");
-
+              // check if have already cookies, create a promotion balance for this user
+              if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                    if (!err) {
+                        delete_cookies('promotion');
+                        console.log('OK');
+                    }
+                });
+              }
             }
 
           } else {

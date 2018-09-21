@@ -70,23 +70,25 @@ class ShowRoom extends Component {
     var dc = document.cookie;
     var prefix = "promotion" + "=";
     var begin = dc.indexOf(prefix);
-    if (begin == -1 && promotion) {
-      document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-      //- if user is logged in
-      if (Meteor.userId()) {
-        Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
-          if (err) {
-            Materialize.toast(err, 4000, 'rounded bp-green');
-          } else {
-            delete_cookies('promotion');
-          }
-        });
+    //- when user already logged in, just apply promotion program for they
+    if (Meteor.userId()) {
+      Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+        if (err) {
+          Materialize.toast(err, 4000, 'rounded bp-green');
+        } else {
+          delete_cookies('promotion');
+        }
+      });
+    } else {
+      //- when user not logged in, create a cookies to store this program
+      if (begin == -1 && promotion) {
+        document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
       }
-      setTimeout(() => {
-        $('#promotion_modal').modal();
-        $('#promotion_modal').modal('open');
-      }, 2000);
     }
+    setTimeout(() => {
+      $('#promotion_modal').modal();
+      $('#promotion_modal').modal('open');
+    }, 2000);
     //- end promotion modal
 
     $('#searchQuery').val('');

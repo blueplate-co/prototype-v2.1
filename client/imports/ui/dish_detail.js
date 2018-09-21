@@ -296,6 +296,15 @@ export class Dish_Detail extends Component {
     handleOnDishAction() {
         if (this.state.action === "orderDish") {
             this.dishOrder();
+            // check if have already cookies, create a promotion balance for this user
+            if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                    if (!err) {
+                        delete_cookies('promotion');
+                        console.log('OK');
+                    }
+                });
+            }
         } else if (this.state.action === "requestDish") {
             this.dishRequest();
         }
@@ -321,15 +330,6 @@ export class Dish_Detail extends Component {
                     this.handleOnDishAction();
                 }
             });
-            // check if have already cookies, create a promotion balance for this user
-            if (getCookie('promotion') !== -1) {
-                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
-                    if (!err) {
-                        delete_cookies('promotion');
-                        console.log('OK');
-                    }
-                });
-            }
         } else {
             //- not logged in
             this.setState({ action: actionFoodies});
