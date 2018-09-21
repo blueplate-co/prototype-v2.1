@@ -111,7 +111,7 @@ class TopNavigation extends Component {
     Session.set('search_nearby', false);
     $('#searchQuery').val('');
     Session.set()
-    FlowRouter.go("/main");
+    FlowRouter.go("/");
   }
 
   checkKitchenProfileExists = () => {

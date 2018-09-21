@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 
 //- empty cart store global in this page
@@ -469,6 +470,15 @@ class ShoppingCart extends Component {
         //- send to Facebook Pixel
         if (location.hostname == 'www.blueplate.co') {
             fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+        }
+        // check if have already cookies, create a promotion balance for this user
+        if (getCookie('promotion') !== -1) {
+            Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                if (!err) {
+                    delete_cookies('promotion');
+                    console.log('OK');
+                }
+            });
         }
     }
 

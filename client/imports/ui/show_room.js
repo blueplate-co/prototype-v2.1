@@ -61,6 +61,34 @@ class ShowRoom extends Component {
     // Session.set('search_result', null)
     // Session.set('search_result_origin', null);
     // Session.set('search_nearby', false);
+
+    //- procedure for promotion $50HKD
+    var url_string = window.location.href; //window.location.href
+    var url = new URL(url_string);
+    var promotion = url.searchParams.get("promotion");
+    // check if already have cookies
+    var dc = document.cookie;
+    var prefix = "promotion" + "=";
+    var begin = dc.indexOf(prefix);
+    if (begin == -1 && promotion) {
+      document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      //- if user is logged in
+      if (Meteor.userId()) {
+        Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+          if (err) {
+            Materialize.toast(err, 4000, 'rounded bp-green');
+          } else {
+            delete_cookies('promotion');
+          }
+        });
+      }
+      setTimeout(() => {
+        $('#promotion_modal').modal();
+        $('#promotion_modal').modal('open');
+      }, 2000);
+    }
+    //- end promotion modal
+
     $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
@@ -251,6 +279,15 @@ class ShowRoom extends Component {
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <div id="promotion_modal" className="modal">
+              <div className="modal-content">
+                <h4>🎉 Congratulation 🎉</h4>
+                <p>You receive $50HKD from Blueplate successful. Signup or login to enjoy the gift</p>
+              </div>
+              <div className="modal-footer">
+                <a href="#!" className="modal-close waves-effect waves-green btn-flat">OK</a>
+              </div>
+            </div>
           </div>
         )
         break;
