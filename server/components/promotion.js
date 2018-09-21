@@ -30,6 +30,8 @@ Meteor.methods({
                                     return 'Applied promotion program for user successful';
                                 }
                             });
+                        } else {
+                            return new Error('Promotion history already existed.')
                         }
                     }
                 });

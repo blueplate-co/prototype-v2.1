@@ -18,6 +18,7 @@ import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
+import { delete_cookies } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
