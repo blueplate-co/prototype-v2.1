@@ -104,8 +104,8 @@ Template.login_modal.events({
               :
                 FlowRouter.go("/");
               // check if have already cookies, create a promotion balance for this user
-              if (getCookie('promotion') !== -1) {
-                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+              if (getCookie('promotion').length > 0) {
+                Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
                     if (!err) {
                         delete_cookies('promotion');
                         console.log('OK');

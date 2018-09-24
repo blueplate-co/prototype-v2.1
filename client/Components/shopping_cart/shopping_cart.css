@@ -107,13 +107,17 @@ i.remove_button {
 
 .subtotal {
   font-size: 16px;
-  margin: 20px 0px 40px 0px;
+  margin: 10px 0px 30px 0px;
+}
+
+.discount {
+  font-size: 16px;
+  margin: 0px;
 }
 
 .total {
   font-size: 25px;
   font-weight: bold;
-  margin: 20px 0px;
 }
 
 .no-background .rc-time-picker input {

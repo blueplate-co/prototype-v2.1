@@ -25,6 +25,14 @@
     background-size: contain;
 }
 
+#card.disable {
+    background: url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/card.svg') no-repeat;
+    background-position: center center;
+    background-size: contain;
+    -webkit-filter: grayscale(100%);
+    filter: gray;
+}
+
 .payment-wrapper .text {
     bottom: 10px;
     margin-left: auto;

@@ -139,6 +139,7 @@ class TopNavigation extends Component {
         util.hide_loading_progress();
         this.setState({ isLogin: false })
         FlowRouter.go("/");
+        location.href = '/';
       })
     } else {
       util.loginAccession("");

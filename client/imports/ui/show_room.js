@@ -73,22 +73,29 @@ class ShowRoom extends Component {
     var begin = dc.indexOf(prefix);
     //- when user already logged in, just apply promotion program for they
     if (Meteor.userId() && promotion) {
-      Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
-        if (err) {
-          Materialize.toast(err, 4000, 'rounded bp-green');
-        } else {
-          delete_cookies('promotion');
-          setTimeout(() => {
-            $('#promotion_modal').modal();
-            $('#promotion_modal').modal('open');
-          }, 1000);
-          //- end promotion modal
+      Meteor.call('promotion.check_history', (err, res) => {
+        if (!res) { // this user not already have promotion before
+          Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+            if (err) {
+              Materialize.toast(err, 4000, 'rounded bp-green');
+            } else {
+                setTimeout(() => {
+                  $('#promotion_modal').modal();
+                  $('#promotion_modal').modal('open');
+                }, 1000);
+              //- end promotion modal
+            }
+          });
         }
       });
     } else {
       //- when user not logged in, create a cookies to store this program
       if (begin == -1 && promotion) {
         document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        setTimeout(() => {
+          $('#promotion_modal').modal();
+          $('#promotion_modal').modal('open');
+        }, 1000);
       }
     }
 
@@ -282,16 +289,35 @@ class ShowRoom extends Component {
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
-            <div id="promotion_modal" className="modal">
-              <div className="modal-content">
-                <h4>🎉 Congratulation 🎉</h4>
-                <p>You receive $50HKD from Blueplate successful. Signup or login to enjoy the gift</p>
-              </div>
-              <div className="modal-footer">
-                <a href="#!" className="modal-close waves-effect waves-green btn-flat">OK</a>
-              </div>
+              {
+                (Meteor.userId()) ? (
+                  <div id="promotion_modal" className="modal">
+                    <div className="modal-content">
+                      <h4>🎉 Congratulation 🎉</h4>
+                      <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Click here to collect it</p>
+                    </div>
+                    <div className="modal-footer">
+                      <a href="#!" className="modal-close waves-effect waves-green btn-flat" onClick={ () => location.href = '/' }>Collect</a>
+                    </div>
+                  </div>
+                ) : (
+                  <div id="promotion_modal" className="modal">
+                    <div className="modal-content">
+                      <h4>🎉 Congratulation 🎉</h4>
+                      <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Login now to collect it</p>
+                      <p></p>
+                      <p>
+                        <span>Haven't got account?</span>
+                        <a className= "modal-trigger chef_signup" href="#signup_modal"> Sign up</a>
+                      </p> 
+                    </div>
+                    <div className="modal-footer">
+                      <a href="#!" className="modal-close waves-effect waves-green btn-flat" onClick={ () => util.loginAccession("") } >Login</a>
+                    </div>
+                  </div>
+                )
+              }
             </div>
-          </div>
         )
         break;
     }
