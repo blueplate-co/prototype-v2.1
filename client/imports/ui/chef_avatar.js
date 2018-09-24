@@ -12,37 +12,21 @@ export default class ChefAvatar extends Component {
     }
   }
 
-  componentWillMount = () => {
-    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0 && avatar[0].profileImg) {
-      this.setState({
-        profileImages: avatar[0].profileImg.origin,
-        kitchenId: avatar[0]._id
-      })
-    }
-  }
-
-  componentWillReceiveProps = () => {
-    let avatar = Kitchen_details.find({ user_id: this.props.userId }, { limit: 1 }).fetch();
-    if (avatar.length > 0 && avatar[0].profileImg) {
-      this.setState({
-        profileImages: avatar[0].profileImg.origin,
-        kitchenId: avatar[0]._id
-      })
-    }
-  }
-
   kitchenLink = () => {
-    return '/kitchen/' + this.state.kitchenId;
+    return '/kitchen/' + this.props.kitchenId;
   }
 
   render() {
     return (
-        (!this.state.profileImages)
+        (!this.props.profileimages)
         ?
             <div className="chef-avatar-container"></div>
         :
-            <a className="chef-avatar-container close-modal" style={{ backgroundImage: `url( ${ this.state.profileImages } )` }} onClick={() => {$('.modal-overlay').remove(); FlowRouter.go(this.kitchenLink())}}></a>
+            <a className="chef-avatar-container close-modal" 
+              style={{ backgroundImage: `url( ${ this.props.profileimages } )` }} 
+              onClick={() => {$('.modal-overlay').remove(); FlowRouter.go(this.kitchenLink())}}>
+
+            </a>
     );
   }
 

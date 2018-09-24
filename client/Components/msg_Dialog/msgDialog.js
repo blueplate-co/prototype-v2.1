@@ -12,9 +12,20 @@ Template.screen.onRendered(function(){
     $(".modal-overlay").remove();
     // ** //
   } else {
-    FlowRouter.go('/');
-    localStorage.setItem("loggedIn", false);
-    Materialize.toast('Please login before access.', 4000, 'rounded bp-green');
+    // FlowRouter.go('/');
+    // localStorage.setItem("loggedIn", false);
+    // util.loginAccession("");
+    // Materialize.toast('Please login before access.', 4000, 'rounded bp-green');
+  }
+});
+
+Template.screen.events({
+  'click .chef_signup': function() {
+    $('#login_modal').modal('close');
+    //- send to Facebook Pixel
+    if (location.hostname == 'www.blueplate.co') {
+      fbq('trackCustom', 'ClickSignUp');
+    }
   }
 });
 

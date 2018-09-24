@@ -5,8 +5,6 @@ import './create_profile.html';
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
-
 
 profile_images = new FilesCollection({
   collectionName: 'profile_images',
@@ -743,13 +741,13 @@ Template.create_homecook_profile.events({
   },
   'click #create_homecook_button': function (event, template) {
     event.preventDefault();
-    show_loading_progress();
+    util.show_loading_progress();
     //Step 1
     const kitchen_name = $('#kitchen_name').val();
     const chef_name = $('#chef_name').val();
     const kitchen_address_country = $('#kitchen_address_country').val();
     const kitchen_address = $('#kitchen_address').val();
-    const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+    var kitchen_address_conversion = {};
     const kitchen_contact_country = $('#kitchen_contact_country').val();
     const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
     const serving_option = Session.get('serving_option_tags');
@@ -770,24 +768,46 @@ Template.create_homecook_profile.events({
     const house_rule = $('#house_rule').val();
 
     if (district == '') {
-      hide_loading_progress();
+      util.hide_loading_progress();
       Materialize.toast('District field is required.', 4000, 'rounded bp-green');
       return;
     }
 
     if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
-      hide_loading_progress();
+      util.hide_loading_progress();
       Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
       return;
     }
 
+    var geocoder = new google.maps.Geocoder();
+    if (kitchen_address.trim().length > 0) {
+      geocoder.geocode({'address': String(kitchen_address)}, function(results,status){
+        if (status == 'OK') {
+          var latlng = [];
+          var latlng = {
+            lng: results[0].geometry.location.lng(),
+            lat: results[0].geometry.location.lat()
+          };
+          kitchen_address_conversion = latlng;
+        } else {
+          util.hide_loading_progress();
+          Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green");
+          return;
+        }
+      });
+    } else {
+      util.hide_loading_progress();
+      Materialize.toast('Address is required.', 4000, "rounded bp-green");
+      return;
+    }
+
     if (!Session.get('serving_option_tags')) {
-      hide_loading_progress();
+      util.hide_loading_progress();
       Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
       return false;
     } else {
       if (Session.get('serving_option_tags').length == 0) {
-        hide_loading_progress();
+        util.hide_loading_progress();
         Materialize.toast('Please choose your serving option.', 4000, "rounded bp-green");
         return false;
       }
@@ -813,22 +833,22 @@ Template.create_homecook_profile.events({
       Session.get('bannerProfileImg'),
 
       function (err) {
-        hide_loading_progress();
+        util.hide_loading_progress();
         if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
         else {
-          hide_loading_progress();
+          util.hide_loading_progress();
           Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
             if (err) {
-              hide_loading_progress();
+              util.hide_loading_progress();
               Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
             } else {
-              hide_loading_progress();
+              util.hide_loading_progress();
               Meteor.call('user.updateDistrict', district, (err, res) => {
                 if (err) {
-                  hide_loading_progress();
+                  util.hide_loading_progress();
                   console.log('Error when update district');
                 } else {
-                  hide_loading_progress();
+                  util.hide_loading_progress();
                   var subject = kitchen_name;
                   Meteor.call('kitchen.email', subject, kitchen_contact);
                   Session.set('deleted_tags', []);
@@ -3482,4 +3502,18 @@ let changeImgName = function (imgPath) {
 
   return milliseconds + '_' + uniqid() + '.' + extension
 
+}
+
+
+let sendEmailWelcomeToNewChef = function(name) {
+  var content = "Dear " + name +",\n\n Thank you for registering with Blueplate. We look forward to seeing" +
+                " the delicious dishes you have to offer! Currently we have a newcomer’s promotion. " +
+                "Complete your Kitchen profile by adding your district address, your profile image, your " + 
+                "banner image and your phone number. Also make sure you have 4 items ready for selling, " +
+                "and you will be eligible for a minimum of 200 HKD cash price, as well as a chance to be " +
+                "featured in an interview. Please note that your phone number will not be released to the public, " +
+                "it will only be used to send you SMS messages regarding the status of your orders. " +
+                "To better understand how we can help your business, we would welcome the opportunity to " +
+                "meet with you in a face to face. \n\nContact us anytime and we will set this up. " +
+                "Keith Chan Community Specialist \nkeith.chan@blueplate.co (91746003) \nBlueplate Technologies Limited."
 }

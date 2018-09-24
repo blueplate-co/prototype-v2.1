@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 // Searching map component - represents the whole app
 export class SearchMap extends Component {
@@ -33,7 +32,7 @@ export class SearchMap extends Component {
   };
 
   componentDidMount = () => {
-    show_loading_progress();
+    util.show_loading_progress();
   }
 
   componentWillReceiveProps = () => {
@@ -56,7 +55,7 @@ export class SearchMap extends Component {
         lat: lat,
         lng: lng
       })
-      hide_loading_progress();
+      util.hide_loading_progress();
     }
   }
 
@@ -77,7 +76,7 @@ export class SearchMap extends Component {
                 if (kitchen.profileImg) {
                   avatar = kitchen.profileImg.origin;
                 } else {
-                  avatar = '';
+                  avatar = util.getDefaultChefImage();
                 }
                 let story = '';
                 if (kitchen.cooking_story) {
@@ -87,7 +86,7 @@ export class SearchMap extends Component {
                     story = kitchen.cooking_story;
                   }
                 } else {
-                  avatar = '';
+                  avatar = util.getDefaultChefImage();
                 }
                 return (
                   (kitchen.kitchen_address_conversion === null) ?

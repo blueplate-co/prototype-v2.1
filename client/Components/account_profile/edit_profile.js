@@ -11,7 +11,8 @@ import {
   get_checkboxes_value
 } from '/imports/functions/get_checkboxes_value.js';
 
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 
 
@@ -46,6 +47,10 @@ Template.edit_foodie_profile.helpers({
 });
 
 Template.edit_foodie_profile.onRendered(function () {
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/orders_tracking');
+  }
 
   setTimeout(() => {
     // google places autocomplete
@@ -59,14 +64,16 @@ Template.edit_foodie_profile.onRendered(function () {
       utilsScript: "../intlTelInput/utils.js"
     });
     // get district for user
-    Meteor.call('user.getDistrict', (err, res) => {
-      if (!err) {
-        var district = res;
-        $('#district').val(district);
-      } else {
-        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
-      }
-    });
+    if (Meteor.userId()) {
+      Meteor.call('user.getDistrict', (err, res) => {
+        if (!err) {
+          var district = res;
+          $('#district').val(district);
+        } else {
+          Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+        }
+      });
+    }
   }, 1000);
 
   //activate dropdown
@@ -231,28 +238,40 @@ Template.edit_foodie_profile.events({
 
 Template.edit_homecook_profile.helpers({
   'get_homecook_profile': function () {
-    return Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    });
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      return Kitchen_details.findOne({
+        'user_id': getCookie('fake_userid')
+      });
+    } else {
+      return Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    }
   },
 
 })
 
 Template.edit_homecook_profile.onRendered(function () {
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/profile/show_homecook_profile');
+  }
 
   setTimeout(() => {
     // add google places autocomplete
     var input = document.getElementById('kitchen_address');
     new google.maps.places.Autocomplete(input);
     // get district for user
-    Meteor.call('user.getDistrict', (err, res) => {
-      if (!err) {
-        var district = res;
-        $('#district').val(district);
-      } else {
-        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
-      }
-    });
+    if (Meteor.userId()) {
+      Meteor.call('user.getDistrict', (err, res) => {
+        if (!err) {
+          var district = res;
+          $('#district').val(district);
+        } else {
+          Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+        }
+      });
+    }
     $('#kitchen_contact').intlTelInput({
       initialCountry: "HK",
       utilsScript: "../intlTelInput/utils.js"
@@ -324,17 +343,16 @@ Template.edit_homecook_profile.onRendered(function () {
 Template.edit_homecook_profile.events({
     'blur #kitchen_address': function () {
       address_geocode('kitchen_address_conversion', $('#kitchen_address').val(), 'kitchen address');
-
     },
 
     'click #edit_homecook_button': function () {
       //Step 1
-      show_loading_progress();
+      util.show_loading_progress();
       const kitchen_name = $('#kitchen_name').val();
       const chef_name = $('#chef_name').val();
       const kitchen_address_country = $('#kitchen_address_country').val();
       const kitchen_address = $('#kitchen_address').val();
-      const kitchen_address_conversion = Session.get('kitchen_address_conversion');
+      var kitchen_address_conversion = {};
       const kitchen_contact_country = $('#kitchen_contact_country').val();
       const kitchen_contact = $('#kitchen_contact').intlTelInput("getNumber");
       const serving_option = Session.get('serving_option_tags');
@@ -355,19 +373,51 @@ Template.edit_homecook_profile.events({
       //Step 4
       const house_rule = $('#house_rule').val();
 
+      var geocoder = new google.maps.Geocoder();
+      if (kitchen_address.trim().length > 0) {
+        geocoder.geocode({'address': String(kitchen_address)}, function(results,status){
+          if (status == 'OK') {
+            var latlng = [];
+            var latlng = {
+              lng: results[0].geometry.location.lng(),
+              lat: results[0].geometry.location.lat()
+            };
+            kitchen_address_conversion = latlng;
+          } else {
+            Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green");
+            return;
+          }
+        });
+      } else {
+        Materialize.toast('Address is required.', 4000, "rounded bp-green");
+        return;
+      }
+
       if (district == '') {
-        hide_loading_progress();
+        util.hide_loading_progress();
         Materialize.toast('District field is required.', 4000, 'rounded bp-green');
         return;
       }
 
       if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
-        // hide_loading_progress();
         Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
         return;
       }
 
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+        user_id = getCookie('fake_userid');
+      } else {
+        user_id = Meteor.userId();
+      }
+
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+        var user_id = getCookie('fake_userid');
+      } else {
+        var user_id = Meteor.userId();
+      }
+
       Meteor.call('kitchen_details.update',
+        user_id,
         kitchen_name,
         chef_name,
         kitchen_address_country,
@@ -386,7 +436,7 @@ Template.edit_homecook_profile.events({
         Session.get('deleted_tags'),
 
         function (err) {
-          hide_loading_progress();
+          util.hide_loading_progress();
           if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
           else {
             Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {

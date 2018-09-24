@@ -3,6 +3,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Blaze } from 'meteor/blaze';
+import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 import './login_modal.html';
 
@@ -40,7 +41,7 @@ Template.login_modal.events({
   },
   'click #login, keypress': function(event){
     if (event.which === 1||event.which === 13){
-
+      var path_access = $('#path_access').val();
       var email = $('#login_email').val().trim();
       var password = $('#login_password').val().trim();
 
@@ -50,7 +51,6 @@ Template.login_modal.events({
         return false;
       } **/
 
-
       //- basic validation
       var isOK = false;
       //- check null
@@ -58,46 +58,60 @@ Template.login_modal.events({
       {
         Bert.alert('Please check your email and password', 'danger','growl-top-right');
         return false;
-      }else{
+      } else {
 
         //- with all the data
         //- checking email
-        if(!validateEmail(email))
-        {
+        if(!validateEmail(email)) {
           Bert.alert('Please provide a valid email address', 'danger','growl-top-right');
           $('#login_email').focus();
           return false;
-        }else{
-          $('#loginLoader').show(); // show the loader
+        } else {
+          // $('#loginLoader').show(); // show the loader
           // console.log('this email address is ok');
+          util.show_loading_progress();
           isOK = true;
         }
 
       }
 
-
       //- if validate is ok
       // if (email || password) {
-      if(isOK){
+      if (isOK) {
         Meteor.loginWithPassword(email, password, function(error){
 
           //- check meteor email verified
           // console.log('meteor email is verified %s', Meteor.user().emails[0].verified);
 
           if (error) {
-            $('#loginLoader').hide(); // hide the loader
+            // $('#loginLoader').hide(); // hide the loader
+            util.hide_loading_progress()
             Bert.alert( error.reason, 'danger','growl-top-right');
             // return false;
           }
-          else if (Meteor.user().emails[0].verified === true){
-            $('#loginLoader').hide(); // hide the loader
+          else if (Meteor.user().emails[0].verified === true) {
+            // $('#loginLoader').hide(); // hide the loader
+            util.hide_loading_progress()
             localStorage.setItem("loggedIn", true);
             $('#login_modal').modal('close');
             if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
               FlowRouter.go("/followup");
             } else {
               Bert.alert('Login successfully!' , 'success', 'fixed-top');
-              FlowRouter.go("/main");
+
+              path_access != null && path_access.length > 0 ?
+                FlowRouter.go(path_access)
+              :
+                FlowRouter.go("/");
+              // check if have already cookies, create a promotion balance for this user
+              if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                    if (!err) {
+                        delete_cookies('promotion');
+                        console.log('OK');
+                    }
+                });
+              }
             }
 
           } else {
@@ -105,12 +119,14 @@ Template.login_modal.events({
             //- logout
             Meteor.logout(function(err){
              if (err) {
-              $('#loginLoader').hide(); // hide the loader
-               Bert.alert(err.reason, "danger", "growl-top-right");
+              // $('#loginLoader').hide(); // hide the loader
+              util.hide_loading_progress()
+              Bert.alert(err.reason, "danger", "growl-top-right");
              } else {
-              $('#loginLoader').hide(); // hide the loader
-               Session.clear();
-               Bert.alert( 'Please verify your email before login!', 'danger','growl-top-right' );
+              // $('#loginLoader').hide(); // hide the loader
+              util.hide_loading_progress()
+              Session.clear();
+              Bert.alert( 'Please verify your email before login!', 'danger','growl-top-right' );
              }
            });
 
@@ -118,7 +134,8 @@ Template.login_modal.events({
         });
       }
       else {
-        $('#loginLoader').hide(); // hide the loader
+        // $('#loginLoader').hide(); // hide the loader
+        util.hide_loading_progress()
         Bert.alert('Please check your email, password and try again!', "danger", "growl-top-right");
         // return false;
       }

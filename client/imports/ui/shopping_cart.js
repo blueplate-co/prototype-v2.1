@@ -7,10 +7,11 @@ import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 
 //- empty cart store global in this page
-window.globalCart = [];
+window.globalCart = localStorage.getItem("globalCart");
 // var kitchen = { id: item, service: "", date: "", time: "", timeStamp: "", address: "" };
 
 // Shopping cart component
@@ -31,9 +32,15 @@ class ShoppingCart extends Component {
             for (var j = 0; j < unique.length; j++) {
                 if (globalCart[i].id !== unique[j]) {
                     globalCart.splice(i, 1);
+                    localStorage.setItem('globalCart', globalCart);
                 }
             }
         }
+
+        if (globalCart.length == 0) {
+            localStorage.setItem('globalCart', '');
+        }
+        
         Meteor.call('shopping_cart.remove', id);
     }
 
@@ -109,7 +116,7 @@ class ShoppingCart extends Component {
     handleChangeAddress(event, seller_id) {
         for (var i = 0; i < globalCart.length; i++) {
             if (globalCart[i].id == seller_id) {
-                globalCart[i].address = $("#address_" + seller_id).val();
+                globalCart[i].address = event.target.value;
             }
         }
     }
@@ -129,24 +136,22 @@ class ShoppingCart extends Component {
                 serve_date = Date.parse(serve_date);
                 globalCart[i].timeStamp = serve_date;
             }
+        }
+        var readytime = [];
+        this.props.shoppingCart.map(function(item, index){
+            var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
+            readytime.push(specificReadytime);
+        });
 
-            var readytime = [];
-            this.props.shoppingCart.map(function(item, index){
-                var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
-                readytime.push(specificReadytime);
-            });
-
-            for (var i = 0; i < readytime.length; i++) {
-                if (globalCart[i].timeStamp < readytime[i]) {
-                    $('.rc-time-picker-input').addClass('invalid');
-                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
-                    globalCart[i].timeStamp = '';
-                    return true;
-                } else {
-                    $('.rc-time-picker-input').removeClass('invalid');
-                }
+        for (var i = 0; i < readytime.length; i++) {
+            if (globalCart[i].timeStamp < readytime[i]) {
+                $('.rc-time-picker-input').addClass('invalid');
+                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
+                globalCart[i].timeStamp = '';
+                return true;
+            } else {
+                $('.rc-time-picker-input').removeClass('invalid');
             }
-
         }
     }
 
@@ -166,21 +171,22 @@ class ShoppingCart extends Component {
                 globalCart[i].timeStamp = serve_date;
             }
 
-            var readytime = [];
-            this.props.shoppingCart.map(function(item, index){
-                var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
-                readytime.push(specificReadytime);
-            });
+        }
 
-            for (var i = 0; i < readytime.length; i++) {
-                if (globalCart[i].timeStamp < readytime[i]) {
-                    $('#date').addClass('invalid');
-                    Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
-                    globalCart[i].timeStamp = '';
-                    return true;
-                } else {
-                    $('#date').removeClass('invalid');
-                }
+        var readytime = [];
+        this.props.shoppingCart.map(function(item, index){
+            var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
+            readytime.push(specificReadytime);
+        });
+
+        for (var i = 0; i < readytime.length; i++) {
+            if (globalCart[i].timeStamp < readytime[i]) {
+                $('#date').addClass('invalid');
+                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
+                globalCart[i].timeStamp = '';
+                return true;
+            } else {
+                $('#date').removeClass('invalid');
             }
         }
     }
@@ -188,7 +194,6 @@ class ShoppingCart extends Component {
     // when user click checkout button
     handleCheckout() {
         var valid = true;
-        debugger
         globalCart.forEach((item, index) => {
             item.address = $('#address_' + item.id).val();
         });
@@ -206,7 +211,9 @@ class ShoppingCart extends Component {
                 }
             }
             if (valid) {
+                localStorage.setItem('globalCart', JSON.stringify(globalCart));
                 Session.set('product', globalCart);
+                // globalCart = [];
             }
         });
         if (valid) {
@@ -237,6 +244,10 @@ class ShoppingCart extends Component {
             FlowRouter.go('/payment');
         }
     }
+    
+    handleOnViewDetailDish(dish_id) {
+        FlowRouter.go("/dish/" + dish_id);
+    }
 
     renderSingleProduct(product) {
         return product.map((item, index) => {
@@ -252,21 +263,21 @@ class ShoppingCart extends Component {
                 (
                     <div key={index} className="row detail-product">
                         <div className="col s3 m3 l1 xl1">
-                            <div className="detail-thumbnail" style={{ backgroundImage: "url(" + detail.meta.large + ")" }} ></div>
+                            <div className="detail-thumbnail view-detail-dish" style={{ backgroundImage: "url(" + detail.meta.large + ")" }} onClick={() => this.handleOnViewDetailDish(item.product_id)}></div>
                         </div>
                         <div className="col s9 m9 l11 xl11 product-info">
                             <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id) }></span>
-                            <span className="detail-title">{ detail.dish_name }</span>
+                            <span className="detail-title view-detail-dish" onClick={() => this.handleOnViewDetailDish(item.product_id)}>{ detail.dish_name }</span>
                             {
                                 (checking_promotion_dish(detail._id).length > 0) ?
                                 (
-                                    <span style={{ display: 'inline-flex'}}>
-                                        <span className="detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
-                                        <span className="detail-old-price">HK${ detail.dish_selling_price }</span>
+                                    <span>
+                                        <span className="col l1 m3 s12 detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
+                                        <span className="col l3 m3 s12 detail-old-price">HK${ detail.dish_selling_price }</span>
                                     </span>
                                 )
                                 : (
-                                    <span class="detail-price">
+                                    <span className="detail-price">
                                         <span className="detail-price">HK${ detail.dish_selling_price }</span>
                                     </span>
                                 )
@@ -313,6 +324,8 @@ class ShoppingCart extends Component {
         var sellerName = product[0].seller_name;
         var subtotal = 0;
         var curr = new Date();
+        var seller_images = '';
+        var kitchen_id = '';
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0,10);
         for (var i = 0; i < product.length; i++) {
@@ -323,27 +336,42 @@ class ShoppingCart extends Component {
             }
         }
         subtotal = subtotal.toFixed(2);
+        var address = globalCart[index].address,
+            defaultTimePicker = globalCart[index].time,
+            defaultDate = this.formatDateOrder(globalCart[index].date);
+
+        // get user avatar from user_id
+        let kitchen_details = Kitchen_details.findOne({ user_id: seller_id });
+        if (kitchen_details && kitchen_details.profileImg) {
+            seller_images = kitchen_details.profileImg.origin;
+            kitchen_id = kitchen_details._id;
+        } else {
+            var chef_avatar = kitchen_details.profileImg != undefined ? kitchen_details.profileImg.origin : util.getDefaultChefImage();
+            seller_images = chef_avatar;
+            kitchen_id = kitchen_details._id;
+        }
+
         return (
             <div key={index}>
                 <div className="row kitchen-name">
                     { sellerName }'s kitchen
-                    <ChefAvatar userId={seller_id} />
+                    <ChefAvatar kitchenId={kitchen_id} profileimages={seller_images} />
                 </div>
                 <div className="row">
                     <div className="col s4">
-                        <select className="browser-default no-border" onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
-                            <option value="" disabled selected>Service Options</option>
+                        <select className="browser-default no-border" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                            <option value="" disabled>Service Options</option>
                             { this.renderServingOption(seller_id) }
                         </select>
                     </div>
                     <div className="col s4">
-                        <input defaultValue={ date } id="date" type="date" placeholder="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
+                        <input defaultValue={ defaultDate } id="date" type="date" placeholder="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
                     </div>
                     <div className="col s4 no-background">
                         <TimePicker
                             showSecond={false}
                             className=""
-                            defaultValue={moment().add(1, 'hours')}
+                            defaultValue={moment(defaultTimePicker, "HH:mm")}
                             onChange={(value) => this.handleChangeTime(value, seller_id)}
                         />
                     </div>
@@ -351,7 +379,7 @@ class ShoppingCart extends Component {
                 <div className="row">
                     <div className="input-field col s12">
                         <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label>
-                        <input id={"address_" + seller_id} name={"address_" + seller_id} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                        <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
                     </div>
                 </div>
                 { this.renderSingleProduct(product) }
@@ -363,16 +391,45 @@ class ShoppingCart extends Component {
         )
     }
 
+    formatDateOrder(dateOrder) {
+        var arrDateOrder = dateOrder.split("/"),
+            year = arrDateOrder[2],
+            month = arrDateOrder[1],
+            date = arrDateOrder[0];
+        
+        return year + "-" + month + "-" + date;
+    }
+
     renderListKitchen() {
         //- get unique seller_id
-        globalCart = [];
+        globalCart = localStorage.getItem("globalCart");
+        var hasLocalStorage = false;
+        if (typeof globalCart != 'object' && globalCart != "" ) {
+            hasLocalStorage = true;
+            globalCart = JSON.parse(globalCart);
+        }
+
         let unique = [...new Set(this.props.shoppingCart.map(item => item.seller_id))];
         if (unique.length > 0) {
             return (
                 unique.map((item, index) => {
                     //- create new object to store all information about this kitchen
                     var kitchen = { id: item, service: "", date: moment(event.target.value).format('DD/MM/YYYY'), time: moment().add(1, 'hours').format('HH:mm'), timeStamp: moment().add(moment.duration(1, 'hours')).valueOf(), address: "" };
-                    globalCart.push(kitchen);
+                    if (!hasLocalStorage) {
+                        hasLocalStorage = true;
+                        globalCart = [];
+                    }
+
+                    if (globalCart.length > 0) {
+                        globalCart.map( (cartItem, idx) => {
+                            if (cartItem.id != item ) {
+                                globalCart.push(kitchen);
+                            }
+                        });
+                    } else {
+                        globalCart.push(kitchen);
+                    }
+
                     return this.renderKitchen(item, index);
                 })
             )
@@ -392,9 +449,11 @@ class ShoppingCart extends Component {
             }
         });
 
+        var foodie_name = Profile_details.findOne({user_id: Meteor.userId()}).foodie_name,
+            info_buyer = foodie_name + " (email: " + Meteor.user().emails[0].address + ")";
+
         for (var chefName in checkSellerName) {
             if (checkSellerName.hasOwnProperty(chefName)) {
-                var info_buyer = Meteor.user().profile.name + " (email: " + Meteor.user().emails[0].address + ")";
                 var message = "blueplate notification: " + info_buyer + " has just placed " + checkSellerName[chefName] + " from " + chefName;
 
                 // console.log("send message: " + message);
@@ -411,6 +470,15 @@ class ShoppingCart extends Component {
         //- send to Facebook Pixel
         if (location.hostname == 'www.blueplate.co') {
             fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
+        }
+        // check if have already cookies, create a promotion balance for this user
+        if (getCookie('promotion') !== -1) {
+            Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                if (!err) {
+                    delete_cookies('promotion');
+                    console.log('OK');
+                }
+            });
         }
     }
 

@@ -1,9 +1,14 @@
 import { Blaze } from 'meteor/blaze'
 import { checkboxes_recall } from '/imports/functions/checkboxes_recall.js'
 import { open_dialog_edit_confirm, open_dialog_delete_confirm } from '/imports/functions/common';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/cooking/dishes');
+  }
   $('.modal').modal({
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
     opacity: .5, // Opacity of modal background

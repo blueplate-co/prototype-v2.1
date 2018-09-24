@@ -203,3 +203,9 @@ body p {
   border: 1px solid #56AACD;
   text-transform: lowercase;
 }
+
+select:focus {
+  outline: none;
+  border-radius: 22px !important;
+  border-color: #26a69a !important;
+}

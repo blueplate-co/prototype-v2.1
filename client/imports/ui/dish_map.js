@@ -31,13 +31,21 @@ export class DishMap extends Component {
       height: '100%', // 75vh similarly will take up roughly 75% of the height of the screen. px also works.
       borderRadius: '8px'
     }
-    var kitchen = Kitchen_details.findOne({user_id: this.props.kitchenId});
+    var kitchen = Kitchen_details.findOne({user_id: this.props.kitchenId}),
+        lat = '', 
+        lng = '';
+
+    if (kitchen != undefined) {
+      lat = kitchen.kitchen_address_conversion != undefined ? kitchen.kitchen_address_conversion.lat : '',
+      lng = kitchen.kitchen_address_conversion != undefined ? kitchen.kitchen_address_conversion.lng : '';
+    }
+
     return (
         <Map
           google = {this.props.google}
           zoom = {17}
           style = {style}
-          initialCenter= {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
+          initialCenter= {{lat: lat, lng: lng}}
           onClick = {this.onMapClicked}
         >
         {kitchen.kitchen_address_conversion === null ? 

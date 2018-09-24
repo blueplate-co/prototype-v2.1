@@ -14,7 +14,6 @@ import {
 import React from 'react';
 import { render } from 'react-dom';
 
-// import for show room react component
 import LandingDishList from '../../imports/ui/landing_dish_list.js';
 
 

@@ -1,10 +1,15 @@
 import { search_distinct_order_record_orders_tracking } from '/imports/functions/orders_tracking.js';
 import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
 
 Template.orders_tracking.onRendered(function(){
+  if(!Meteor.userId()){ 
+    FlowRouter.go("/");
+    util.loginAccession('/orders_tracking');
+  }
+
   $('.tooltip').tipso({
     speed: 400,
     position: 'bottom',
@@ -16,7 +21,7 @@ Template.orders_tracking.onRendered(function(){
 Template.orders_tracking.helpers({
   'order': function() {
     var order = Order_record.find({'buyer_id': Meteor.userId(), 'status': 'Created'}).count()
-    console.log('Order: ' + order)
+    // console.log('Order: ' + order)
     return order
   },
   'order_sent': function() {
@@ -36,7 +41,7 @@ Template.orders_tracking.helpers({
         // Update state send_sms field after sms was sent to Chef
         Meteor.call('order_record.update_send_sms', order._id, (err, res) => {
           if (!err) {
-            console.log('Updated send_sms order record.');
+            // console.log('Updated send_sms order record.');
           }
         });
 
@@ -84,7 +89,7 @@ Template.orders_tracking.helpers({
           message = 'New incoming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you.'
           Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
             if (!err) {
-              console.log('Message sent');
+              // console.log('Message sent');
 
               // Send email
               Meteor.call(
@@ -103,12 +108,12 @@ Template.orders_tracking.helpers({
   },
   'cooking': function() {
     var cooking = Order_record.find({'buyer_id': Meteor.userId(), 'status': "Cooking"}).count()
-    console.log('Cooking: ' + cooking)
+    // console.log('Cooking: ' + cooking)
     return cooking
   },
   'order_cooking': function() {
     var cooking = search_distinct_order_record_orders_tracking('_id', 'Cooking')
-    console.log(cooking)
+    // console.log(cooking)
     return cooking
   },
   'order_ready': function() {
@@ -119,7 +124,7 @@ Template.orders_tracking.helpers({
       'buyer_id': Meteor.userId(),
       $or: [{'status': 'Ready'},{'status': 'Completed'}]
     }).count()
-    console.log('Ready: ' + ready_to_serve)
+    // console.log('Ready: ' + ready_to_serve)
     return ready_to_serve
   }
 })
@@ -127,7 +132,7 @@ Template.orders_tracking.helpers({
 Template.pending_confirmation.helpers({
   'kitchen_profile_picture': function(){
     var foodie = Kitchen_details.findOne({'user_id': String(this)})
-    return foodie.profileImg.origin;
+    return foodie.profileImg != undefined ? foodie.profileImg.origin : util.getDefaultFoodiesImage();
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': String(this)})
@@ -236,7 +241,7 @@ Template.foodies_confirmed_order.helpers({
   'kitchen_profile_picture': function(){
     var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
     var kitchen = Kitchen_details.findOne({'user_id': seller_id})
-    return kitchen.profileImg.origin;
+    return kitchen.profileImg != undefined ? kitchen.profileImg.origin : util.getDefaultChefImage();
   },
   'get_kitchen_name': function() {
     var seller_id = Order_record.findOne({'_id': String(this)}).seller_id
@@ -347,7 +352,7 @@ Template.foodies_confirmed_order.helpers({
       'buyer_id': Meteor.userId(),
       'status': "Ready"
     })
-    console.log('Ready: ' + ready_to_serve)
+    // console.log('Ready: ' + ready_to_serve)
     return ready_to_serve
   }
 });
@@ -374,7 +379,7 @@ Template.pending_confirmation.events({
 
     product.forEach(cancel_order)
 
-    show_loading_progress();
+    util.show_loading_progress();
     function cancel_order(array_value, index) {
 
       setTimeout(function() {
@@ -424,9 +429,9 @@ Template.pending_confirmation.events({
 
       Meteor.call('message.disableConversation', conversation._id, (err, res) => {
         if (!err) {
-          console.log('Disabled conversation');
+          // console.log('Disabled conversation');
         }
-        hide_loading_progress();
+        util.hide_loading_progress();
         // send SMS for cancel
         var kitchen = Kitchen_details.findOne({user_id: seller_id}),
             kitchen_phone_number = kitchen.kitchen_contact,
@@ -442,7 +447,7 @@ Template.pending_confirmation.events({
 
         Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
           if (!err) {
-            console.log('Message sent');
+            // console.log('Message sent');
 
            // Sent email
            Meteor.call(
@@ -465,7 +470,8 @@ Template.ready_card.helpers({
     var total_orders = orders.length;
     var order_rated = 0;
     for (i = 0; i < total_orders; i++) {
-      if (Order_record.findOne({_id: orders[i]}).status == 'Closed') {
+      var order_record = Order_record.findOne({_id: orders[i]});
+      if (order_record != undefined && order_record.status == 'Closed') {
         order_rated += 1;
         //console.log(order_rated);
       }
@@ -476,8 +482,8 @@ Template.ready_card.helpers({
     }
   },
   'kitchen_profile_picture': function(){
-    var foodie = Kitchen_details.findOne({'user_id': this.seller_id})
-    return foodie.profileImg.origin;
+    var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})
+    return kitchen.profileImg != undefined ? kitchen.profileImg.origin : util.getDefaultChefImage();
   },
   'get_kitchen_name': function() {
     var kitchen = Kitchen_details.findOne({'user_id': this.seller_id})

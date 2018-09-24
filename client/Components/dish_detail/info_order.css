@@ -1,0 +1,158 @@
+
+#ordering-popup.ordering-popup-infor {
+    min-height: 50% !important;
+    height: auto !important;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+    #ordering-popup.ordering-popup-infor {
+        /* height: 55% !important; */
+        width: 43% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    .email_ordering {
+        width: 52%;
+        display: inline-block;
+    }
+    
+    #district-option {
+        float: right;
+        display: inline-block;
+        padding-top: 15px;
+    }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 23% !important;
+        /* height: 60% !important; */
+        width: 50% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    .email_ordering {
+        width: 55%;
+        display: inline-block;
+    }
+    
+    #district-option {
+        display: inline-block;
+        padding-top: 15px;
+    }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+    #ordering-popup.ordering-popup-infor {
+        top: 23% !important;
+        /* height: 59% !important; */
+        width: 54% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+
+    #have-accn-text {
+        text-align: left;
+        float: none !important;
+    }
+
+    #ordering-popup .get-info {
+        height: 90px;
+    }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+    #have-accn-text {
+        text-align: left;
+        float: none !important;
+    }
+
+    #ordering-popup .get-info {
+        height: 90px;
+    }
+
+    #ordering-popup.ordering-popup-infor {
+        top: 23% !important;
+        /* height: 58% !important; */
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 690px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
+    #ordering-popup.ordering-popup-infor {
+        top: 13% !important;
+        /* height: 60% !important; */
+        width: 62% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
+    #ordering-popup.ordering-popup-infor {
+        /* height: 65% !important; */
+        width: 72% !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+    #ordering-popup.modal-footer {
+        border-radius: 0 0 20px 20px!important;
+    }
+    #ordering-popup.ordering-popup-infor {
+        top: 0% !important;
+        height: 100% !important;
+        width: 100% !important;
+        border-radius: 0px !important;
+    }
+
+    #ordering-popup .modal-content {
+        margin-top: 50px;
+    }
+}
+
+#have-accn-text {
+    margin-top: 10px;
+    margin-left: 10px;
+    float: left;
+}
+
+.handle-login-text {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#btn-back-to-info {
+    position: absolute;
+    font-size: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+#email-distric-display {
+    display: inline;
+}
+
+#district_ordering {
+    border: 1px solid #9e9e9e;
+    padding-left: 10px;
+    border-radius: 20px;
+    background-color: transparent;
+}

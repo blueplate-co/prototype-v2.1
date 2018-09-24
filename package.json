@@ -19,6 +19,7 @@
     "jquery": "^3.3.1",
     "kraken": "^0.3.5",
     "lodash": "^4.17.10",
+    "logzio-nodejs": "^0.4.15",
     "materialize-css": "^0.99.0",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.22.2",

@@ -18,6 +18,7 @@ import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
+import { delete_cookies } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
@@ -57,6 +58,41 @@ class ShowRoom extends Component {
   }
 
   componentDidMount = () => {
+    // Session.set('list_kitchen_for_map', null);
+    // Session.set('search_result', null)
+    // Session.set('search_result_origin', null);
+    // Session.set('search_nearby', false);
+
+    //- procedure for promotion $50HKD
+    var url_string = window.location.href; //window.location.href
+    var url = new URL(url_string);
+    var promotion = url.searchParams.get("promotion");
+    // check if already have cookies
+    var dc = document.cookie;
+    var prefix = "promotion" + "=";
+    var begin = dc.indexOf(prefix);
+    //- when user already logged in, just apply promotion program for they
+    if (Meteor.userId() && promotion) {
+      Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+        if (err) {
+          Materialize.toast(err, 4000, 'rounded bp-green');
+        } else {
+          delete_cookies('promotion');
+          setTimeout(() => {
+            $('#promotion_modal').modal();
+            $('#promotion_modal').modal('open');
+          }, 1000);
+          //- end promotion modal
+        }
+      });
+    } else {
+      //- when user not logged in, create a cookies to store this program
+      if (begin == -1 && promotion) {
+        document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      }
+    }
+
+    $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
     localStorage.setItem('userMode', 'foodie');
     Meteor.call('check_kitchen.get', Meteor.userId(), (err, res) => {
@@ -210,7 +246,7 @@ class ShowRoom extends Component {
                   </div>
                 </div>
                 <div className="col l4 m6 s12 search-map-container">
-                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="fa fa-times"></i>
+                  <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="material-icons">close</i>
                   <SearchMap />
                 </div>
               </div>
@@ -246,6 +282,15 @@ class ShowRoom extends Component {
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
             <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <div id="promotion_modal" className="modal">
+              <div className="modal-content">
+                <h4>🎉 Congratulation 🎉</h4>
+                <p>You receive $50HKD from Blueplate successful. Signup or login to enjoy the gift</p>
+              </div>
+              <div className="modal-footer">
+                <a href="#!" className="modal-close waves-effect waves-green btn-flat">OK</a>
+              </div>
+            </div>
           </div>
         )
         break;

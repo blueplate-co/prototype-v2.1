@@ -1,5 +1,7 @@
 
 import { open_dialog_delete_confirm } from '/imports/functions/common';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 Template.dishes_selection.onRendered(function(){
   this.$('select').material_select();
@@ -78,7 +80,11 @@ Template.dishes_selection.helpers({
     return Template.instance().user_dishes.ready();
   },
   'user_dishes': function() {
-    var current_user = Meteor.userId();
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      var current_user = getCookie('fake_userid');
+    } else {
+      var current_user = Meteor.userId();
+    }
     var user_dishes = Dishes.find({"user_id": current_user, "deleted": false}).fetch();
     user_dishes.map((item, index) => {
       item.dish_selling_price = parseFloat(item.dish_selling_price / 1.15).toFixed(2);

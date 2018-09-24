@@ -31,25 +31,97 @@ padding: 0px;
 }
 
 #signup_modal {
-  min-height: 565px !important;
+  min-height: 585px !important;
+  height: auto !important;
+  overflow: scroll;
 }
 
-@media (max-width: 768px) {
-  .modal {
-    border-radius: 0px !important;
-    top: 0vh !important;
-    height: 100vh !important;
-    width: 100vh !important;
-    overflow: scroll !important;
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+  #signup_modal {
+      top: 8% !important;
+      width: 53% !important;
+      border-radius: 15px !important;
   }
 }
 
-@media (max-height: 680px) {
-  .modal {
-    border-radius: 0px !important;
-    top: 0vh !important;
-    height: 100vh !important;
-    width: 100vh !important;
-    /* overflow: scroll !important; */
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  #signup_modal {
+      top: 13% !important;
+      width: 60% !important;
+      border-radius: 15px !important;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  #signup_modal {
+      top: 13% !important;
+      width: 64% !important;
+      border-radius: 15px !important;
+  }
+
+  .make-food-signup {
+    font-size: 21.5px;
+  }
+
+  .join-food-signup {
+    font-size: 19px
+  }
+
+  .district-question-text {
+    font-size: 24px;
+  }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+
+  #signup_modal {
+      top: 13% !important;
+      width: 69% !important;
+      border-radius: 15px !important;
+  }
+
+  .make-food-signup {
+    font-size: 20.5px;
+  }
+
+  .join-food-signup {
+    font-size: 18px
+  }
+
+  .district-question-text {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 640px) {
+  #signup_modal {
+      width: 82% !important;
+      border-radius: 15px !important;
+  }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+  #signup_modal {
+      top: 0% !important;
+      height: 100% !important;
+      width: 100% !important;
+      border-radius: 0px !important;
+  }
+
+  .make-food-signup {
+    font-size: 18.5px;
+  }
+
+  .join-food-signup {
+    font-size: 16px
+  }
+
+  .district-question-text {
+    font-size: 21px;
   }
 }

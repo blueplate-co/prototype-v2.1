@@ -7,8 +7,7 @@ import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
-import { show_loading_progress, hide_loading_progress } from '/imports/functions/common';
-import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -26,13 +25,11 @@ export class Dish_Detail extends Component {
             more_dish_description: '',
             order_obj: {
                 name_ordering: '',
-                address_ordering: '',
+                district_ordering: '',
+                email_ordering: '',
                 phone_ordering: '',
-                address_conversion: {
-                    lng: '',
-                    lat: ''
-                }
-            }
+            },
+            action: '',
         }
     }
     
@@ -140,67 +137,74 @@ export class Dish_Detail extends Component {
     };
 
     renderChefInfo() {
-        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id}),
-            source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : "",
-            cooking_story_content = chef_detail.cooking_story;
+        var chef_detail = Kitchen_details.findOne({user_id: this.state.data.user_id});            
 
-        if (chef_detail.cooking_story.length > 100) { 
-            cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
-        } else {
-            cooking_story_content = chef_detail.cooking_story
-        }
-        
-        return (
-            <div>
-                <a className="col s12 m12 l1 chef-story-image"
-                    href={"/kitchen/" + this.state.data.kitchen_id}
-                >
-                    <img src={source_img} id="img-chef" width="78" height="78"/>
-                </a>
-                <div className="row col s12 m12 l7 chef-name-summary">
-                    <a className="col s12 m12 l10 chef-name"
+        if (chef_detail != undefined) {
+            var source_img = chef_detail.profileImg != null ? chef_detail.profileImg.origin : util.getDefaultChefImage(),
+                cooking_story_content = chef_detail.cooking_story;
+
+            if (chef_detail.cooking_story.length > 100) { 
+                cooking_story_content = chef_detail.cooking_story.substring(0, 100) 
+            } else {
+                cooking_story_content = chef_detail.cooking_story
+            }
+            
+            return (
+                <div>
+                    <a className="col s12 m12 l1 chef-story-image"
                         href={"/kitchen/" + this.state.data.kitchen_id}
                     >
-                        {chef_detail.chef_name}
+                        <img src={source_img} id="img-chef" width="78" height="78"/>
                     </a>
-                    <div className="col s12 m12 l10 chef-summary">
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.summary_order }</li>
-                            <li>Tried</li>
-                        </ul>
-                        <li className="dot-text-style">&bull;</li>
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
-                        </ul>
-                        <li className="dot-text-style">&bull;</li>
-                        <ul className="chef-summary-infor no-margin">
-                            <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
-                        </ul>
+                    <div className="row col s12 m12 l7 chef-name-summary">
+                        <a className="col s12 m12 l10 chef-name"
+                            href={"/kitchen/" + this.state.data.kitchen_id}
+                        >
+                            {chef_detail.chef_name}
+                        </a>
+                        <div className="col s12 m12 l10 chef-summary">
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.summary_order }</li>
+                                <li>Tried</li>
+                            </ul>
+                            <li className="dot-text-style">&bull;</li>
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
+                            </ul>
+                            <li className="dot-text-style">&bull;</li>
+                            <ul className="chef-summary-infor no-margin">
+                                <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="row col s12 m12 l12 dish-story-content">
+                        { (this.state.cooking_story_content.length > 0) ?
+                           <p id="chef-story-descr">{this.state.cooking_story_content}
+                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
+                                    see less
+                                </span>
+                           </p>
+                            :
+                            (chef_detail.cooking_story.length > 100) ?
+                                <p id="chef-story-descr">{cooking_story_content}
+                                    <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
+                                        see more
+                                    </span>
+                                </p>
+                                :
+                                (chef_detail.cooking_story.length === 0) ?
+                                    <p id="chef-story-descr">No cooking story has been shared yet.</p>
+                                :
+                                    <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                        }
                     </div>
                 </div>
-                <div className="row col s12 m12 l12 dish-story-content">
-                    { (this.state.cooking_story_content.length > 0) ?
-                       <p id="chef-story-descr">{this.state.cooking_story_content}
-                            <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
-                                see less
-                            </span>
-                       </p>
-                        :
-                        (chef_detail.cooking_story.length > 100) ?
-                            <p id="chef-story-descr">{cooking_story_content}
-                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
-                                    see more
-                                </span>
-                            </p>
-                            :
-                            (chef_detail.cooking_story.length === 0) ?
-                                <p id="chef-story-descr">No cooking story has been shared yet.</p>
-                            :
-                                <p id="chef-story-descr">{chef_detail.cooking_story}</p>
-                    }
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <span>loading...</span>
+            );
+        }
     };
 
     handleReduceOrder() {
@@ -217,83 +221,120 @@ export class Dish_Detail extends Component {
     }
 
     dishOrder() {
-        show_loading_progress();
+        util.show_loading_progress();
+
         var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
-        if ((typeof foodie_details !== 'undefined' || foodie_details.foodie_name !== '')) {
-            hide_loading_progress();
-            Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-            
-            this.openInfoOrdering();
+        var dish_details = this.state.data;
+        var foodie_id = Meteor.userId();
+        var homecook_id = dish_details.user_id;
+        var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
+        var foodie_name = foodie_details.foodie_name;
+        var homecook_name =  homecook_details.chef_name;
+        var dish_id = dish_details._id;
+        var dish_price = dish_details.dish_selling_price;
+        var dish_name = dish_details.dish_name;
+        var ready_time = dish_details.cooking_time;
+        var quantity = this.state.sumOrder;
 
-            $('.modal-overlay').addClass("order-infor-overlay");
+        var serving_option = this.state.data.serving_option;
+        var address = Session.get('address');
+        //check if the dish has been put in shopping check_shopping_cart
+        var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
+        var total_price_per_dish = 0;
+        
+        if (order) {
+            var order_id = order._id;
+            quantity = parseInt(order.quantity) + this.state.sumOrder;
+            total_price_per_dish = parseInt(dish_price) * quantity;
+            Meteor.call('shopping_cart.update',
+                order_id,
+                quantity,
+                total_price_per_dish,
+                function(err) {
+                    if (err) {
+                        Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
+                    } else {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
+                        }                            
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
+                    }
+                }
+            )
         } else {
-            var dish_details = this.state.data;
-            var foodie_id = Meteor.userId();
-            var homecook_id = dish_details.user_id;
-            var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
-            var foodie_name = foodie_details.foodie_name;
-            var homecook_name =  homecook_details.chef_name;
-            var dish_id = dish_details._id;
-            var dish_price = dish_details.dish_selling_price;
-            var dish_name = dish_details.dish_name;
-            var ready_time = dish_details.cooking_time;
-            var quantity = this.state.sumOrder;
-
-
-            var serving_option = this.state.data.serving_option;
-            var address = Session.get('address');
-            //check if the dish has been put in shopping check_shopping_cart
-            var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
-            var total_price_per_dish = 0;
-            if (order) {
-                var order_id = order._id;
-                quantity = parseInt(order.quantity) + this.state.sumOrder;
-                total_price_per_dish = parseInt(dish_price) * quantity;
-                Meteor.call('shopping_cart.update',
-                    order_id,
-                    quantity,
-                    total_price_per_dish,
-                    function(err) {
-                        if (err) {
-                            Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-                        } else {
-                            //- send to Facebook Pixel
-                            if (location.hostname == 'www.blueplate.co') {
-                                fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
-                            }                            
-                            Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
+            Meteor.call('shopping_cart.insert',
+                foodie_id,
+                homecook_id,
+                foodie_name,
+                homecook_name,
+                address,
+                serving_option,
+                ready_time,
+                dish_id,
+                dish_name,
+                quantity,
+                dish_price,
+                function(err) {
+                    if (err) {
+                        Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                    } else {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
                     }
-                )
-            } else {
-                Meteor.call('shopping_cart.insert',
-                    foodie_id,
-                    homecook_id,
-                    foodie_name,
-                    homecook_name,
-                    address,
-                    serving_option,
-                    ready_time,
-                    dish_id,
-                    dish_name,
-                    quantity,
-                    dish_price,
-                    function(err) {
-                        if (err) {
-                            Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-                        } else {
-                            //- send to Facebook Pixel
-                            if (location.hostname == 'www.blueplate.co') {
-                                fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
-                            }
-                            Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-                        }
+                }
+            );
+        }
+        setTimeout ( () => {
+            util.hide_loading_progress();
+        }, 500);
+    }
+
+    handleOnDishAction() {
+        if (this.state.action === "orderDish") {
+            this.dishOrder();
+            // check if have already cookies, create a promotion balance for this user
+            if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
+                    if (!err) {
+                        delete_cookies('promotion');
+                        console.log('OK');
                     }
-                );
+                });
             }
-            setTimeout ( () => {
-                hide_loading_progress();
-            }, 500);
+        } else if (this.state.action === "requestDish") {
+            this.dishRequest();
+        }
+    }
+
+    /**
+     * Check info foodies
+     * If not exist: get info and create new foodies_profile
+     * Else: create order info
+     */
+    checkFoodiesInfor(actionFoodies) {
+        util.show_loading_progress();
+        // logged in
+        if (Meteor.userId()) {
+            // logged in with user_id, email
+            this.setState({ action: actionFoodies}, () => {
+                var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+                if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
+                    util.hide_loading_progress();
+                    // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+                    this.openInfoOrdering();
+                } else {
+                    this.handleOnDishAction();
+                }
+            });
+        } else {
+            //- not logged in
+            this.setState({ action: actionFoodies});
+            util.hide_loading_progress();
+            this.openInfoOrdering();
         }
     }
 
@@ -301,23 +342,16 @@ export class Dish_Detail extends Component {
         // Clear data info
         var order_info = this.state.order_obj;
         order_info.name_ordering = '';
-        order_info.address_ordering = '';
-        order_info.address_conversion.lat = '';
-        order_info.address_conversion.lng = '';
+        order_info.district_ordering = '';
+        order_info.email_ordering = '';
         order_info.phone_ordering = '';
         this.setState( { order_obj: order_info});
 
-        $('#phone_ordering').intlTelInput({
-            initialCountry: "HK",
-            utilsScript: "../intlTelInput/utils.js"
-        });
-
-        $('.dirty_field').remove('.dirty_field');
-        
+        $('.dirty_field').removeClass('dirty_field');
         $('#ordering-popup').modal('open');
     }
     
-    handleOnRequestDish() {
+    dishRequest() {
         var dish_id = this.state.data._id
             buyer_id = Meteor.userId(),
             seller_id = this.state.data.kitchen_id;
@@ -335,6 +369,7 @@ export class Dish_Detail extends Component {
 
         Meteor.call('requestdish.insert', dish_id, buyer_id, seller_id, (err, res) => {
             if (!err) {
+                util.hide_loading_progress();
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
                 if (location.hostname == 'www.blueplate.co') {
@@ -355,6 +390,9 @@ export class Dish_Detail extends Component {
                     '', /* @param subject - default*/
                     'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
+            } else {
+                Materialize.toast('Can not request Dish now, please try later!', 4000, 'rounded bp-green');
+                util.hide_loading_progress();
             }
         });
 
@@ -456,14 +494,14 @@ export class Dish_Detail extends Component {
                                                 />
                                             </div>
                                             <span id="dish-name">{dish_detail.dish_name}</span>
-                                            <div className="rating-content">
+                                            <div className="rating-content dish-detail-info">
                                                 {
                                                     (checking_promotion_dish(dish_detail._id).length > 0) ?
-                                                        <div className="row">
-                                                            <div id="dish-price" className="col l4 m4 dish-price no-padding text-left">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</div>
-                                                            <div className="dish-old-price col l5 m5 dish-price no-padding text-left" style={{ fontStyle: 'normal', fontWeight: '600', fontSize: '24px', lineHeight: '32px' }}>$ { dish_detail.dish_selling_price }</div>
-                                                            <span className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</span>
-                                                        </div>
+                                                        <ul className="promotion-price-list">
+                                                            <li id="dish-price" className="dish-price no-padding">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</li>
+                                                            <li className="dish-old-price no-padding" style={{ fontStyle: 'normal', fontWeight: '400', fontSize: '1.5rem', lineHeight: '32px', marginRight: '15px' }}>$ { dish_detail.dish_selling_price }</li>
+                                                            <li className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</li>
+                                                        </ul>
                                                     :
                                                         <div className="no-margin">
                                                             <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>
@@ -482,13 +520,13 @@ export class Dish_Detail extends Component {
                                                 <div className="row">
                                                     <div className="handle-order-dish">
                                                         { (dish_detail.online_status) ? 
-                                                            <span className="btn-order-dish-detail" onClick={this.dishOrder.bind(this)}>order</span>
+                                                            <span className="btn-order-dish-detail" onClick={() => this.checkFoodiesInfor("orderDish")}>order</span>
                                                             :
                                                             (this.state.alreadyRequested) ?
                                                                 <p id="dish-request-infor">Your request has sent. We will notify you when chef make it ready again</p>
                                                                 :
                                                                 <div>
-                                                                    <span className="btn-order-dish-detail" onClick = {() => this.handleOnRequestDish()}>request</span>
+                                                                    <span className="btn-order-dish-detail" onClick = {() => this.checkFoodiesInfor("requestDish")}>request</span>
                                                                     <p id="dish-request-content">This dish is temporary not available for sell. Show your interest by click on above button so that we can notify you when chef make it ready again</p>
                                                                 </div>
                                                         }
@@ -519,7 +557,10 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
 
-                            <InfoOrder order_obj={this.state.order_obj} />
+                            <InfoOrder order_obj={this.state.order_obj}
+                                handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
+                                dish_id ={ this.state.data._id}
+                            />
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">

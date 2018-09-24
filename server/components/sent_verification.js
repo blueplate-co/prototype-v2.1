@@ -13,6 +13,17 @@ Meteor.startup(() => {
 Meteor.methods({
   'sendVerificationEmail'(user){
     return Accounts.sendVerificationEmail(user);
+  },
+  'manualVerifyEmail'() {
+      Meteor.users.update({
+        _id: Meteor.userId(),
+        'emails.address': Meteor.user().emails[0].address
+      },
+      {
+        $set: {
+          'emails.$.verified': true
+        }
+    });
   }
 });
 

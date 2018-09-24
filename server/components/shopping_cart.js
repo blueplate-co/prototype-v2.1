@@ -3,6 +3,11 @@ import { FilesCollection } from 'meteor/ostrio:files';
 import { Match } from 'meteor/check';
 import { check } from 'meteor/check';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+var logger = require('logzio-nodejs').createLogger({
+  token: 'zesEwGtDiMRKZOkAxJocElJJStpdXWMD',
+  host: 'listener.logz.io',
+  type: 'nodejs'
+});
 
 Order_record = new Mongo.Collection('order_record');
 
@@ -29,7 +34,7 @@ Meteor.methods({
       var promotion_amount = 0;
       for (var i = 0; i < transactions.length; i++) {
         var order_id = transactions[i].order[0];
-        var product_id = Order_record.find({ _id: order_id }).product_id;
+        var product_id = Order_record.findOne({ _id: order_id }).product_id;
         if (checking_promotion_dish(product_id).length > 0) {
           promotion_amount += parseFloat(transactions[i].amount * get_amount_promotion(product_id));
         } else {
@@ -40,7 +45,7 @@ Meteor.methods({
       chargeAmount = parseFloat((promotion_amount + ( promotion_amount * 0.034 ) + 2.35).toFixed(2));
       console.log('Charge amount: ' + chargeAmount);
       charge({
-        amount: chargeAmount * 100,
+        amount: parseInt(chargeAmount * 100),
         currency: "hkd",
         description: description,
         receipt_email: buyerEmail,
@@ -99,9 +104,11 @@ Meteor.methods({
     } else {
       console.log('PAY BY CREDITS');
       var stripe = require("stripe")("sk_live_kfIO2iUGk72NYkV1apRh70C7");
-      Meteor.call('payment.getStripeBalanceOfSpecific', buyer_id, function (err, res) {
-        let balance = parseFloat(res.account_balance / 100).toFixed(2);
-        // if balance is enough to pay amount
+      // check if that buyer has promotion amount in database
+      var existed_promotion_history = Promotion_history.findOne({ user_id: buyer_id });
+      var temp_amount = 0; //- amount when user not have enough balance to pay
+      if (existed_promotion_history) {
+        var promotion_balance = existed_promotion_history.balance;
         // get all detail transaction
         var transactions = Transactions.find({
           'buyer_id': buyer_id,
@@ -110,14 +117,82 @@ Meteor.methods({
         }).fetch();
         // re-calculate amount of transaction, because maybe have promotion dishes
         var promotion_amount = 0;
+        console.log('All transaction: ');
+        console.log(transactions);
         for (var i = 0; i < transactions.length; i++) {
           var order_id = transactions[i].order[0];
-          var product_id = Order_record.find({ _id: order_id }).product_id;
+          console.log('Transaction: ');
+          console.log(transactions[i]);
+          console.log('Order id: ' + order_id);
+          var product_id = Order_record.findOne({ _id: order_id }).product_id;
+          console.log('Product id: ' + product_id);
           if (checking_promotion_dish(product_id).length > 0) {
+            console.log('is promotion product:');
             promotion_amount += parseFloat(transactions[i].amount * get_amount_promotion(product_id));
           } else {
+            console.log('is not promotion product:');
             promotion_amount += transactions[i].amount;
           }
+        }
+        console.log('Promotion amount: ' + promotion_amount);
+        if (promotion_balance > promotion_amount) {
+          console.log('when amount of promotion enough to pay transaction');
+          var new_promotion_balance = (parseFloat(promotion_balance.toString()) - parseFloat(amount.toString())).toFixed(2);
+          Meteor.call('promotion.update_history', buyer_id, new_promotion_balance, (err, res) => {
+            if (!err) {
+              console.log('Success update amount of promotion history');
+              return true;
+            } else {
+              console.log('Error when update amount of promotion history');
+              console.log(err);
+            }
+          })
+        } else {
+          console.log('when amount of promotion NOT enough to pay transaction');
+          Meteor.call('promotion.update_history', buyer_id, 0, (err, res) => {
+            if (!err) {
+              console.log('Update promotion history to zero');
+              temp_amount = (parseFloat(amount.toString()) - parseFloat(promotion_balance.toString())).toFixed(2);
+            } else {
+              console.log('Error when update promotion history to zero');
+              console.log(err);
+            }
+          });
+        }
+      }
+      Meteor.call('payment.getStripeBalanceOfSpecific', buyer_id, function (err, res) {
+        let balance = parseFloat(res.account_balance / 100).toFixed(2);
+        // if balance is enough to pay amount
+        // get all detail transaction
+        if (temp_amount > 0) {
+          //- when we have a temp amount from previous calculation
+          promotion_amount = temp_amount;
+        } else {
+          var transactions = Transactions.find({
+            'buyer_id': buyer_id,
+            'seller_id': seller_id,
+            'transaction_no': transaction_no
+          }).fetch();
+          // re-calculate amount of transaction, because maybe have promotion dishes
+          var promotion_amount = 0;
+          console.log('All transaction: ');
+          console.log(transactions);
+          for (var i = 0; i < transactions.length; i++) {
+            var order_id = transactions[i].order[0];
+            console.log('Transaction: ');
+            console.log(transactions[i]);
+            console.log('Order id: ' + order_id);
+            var product_id = Order_record.findOne({ _id: order_id }).product_id;
+            console.log('Product id: ' + product_id);
+            if (checking_promotion_dish(product_id).length > 0) {
+              console.log('is promotion product:');
+              promotion_amount += parseFloat(transactions[i].amount * get_amount_promotion(product_id));
+            } else {
+              console.log('is not promotion product:');
+              promotion_amount += transactions[i].amount;
+            }
+          }
+          console.log('Promotion amount: ' + promotion_amount);
         }
         if (parseFloat(promotion_amount) < parseFloat(balance)) {
           var buyerCustomerId = Meteor.users.findOne({ _id: buyer_id }).stripe_id; // get Stripe id of buyer_id
@@ -136,11 +211,12 @@ Meteor.methods({
                 let sellerBalance = parseFloat(res.account_balance / 100).toFixed(2);
                 console.log('Current seller balance: ' + sellerBalance);
                 var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
-                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(amount.toString()))).toFixed(2);
-                console.log('Amount: ' + amount);
+                var real_amount = amount / 1.15;
+                var newBalance = (parseFloat(sellerBalance.toString()) + (parseFloat(real_amount.toString()))).toFixed(2);
+                console.log('Real amount: ' + real_amount);
                 console.log('New balance when seller sold: ' + newBalance);
                 updatedCustomer(sellerCustomerId, {
-                  account_balance: parseInt(parseFloat(newBalance) * 100 / 1.15) // convert to int number and convert to cent number
+                  account_balance: parseInt(parseFloat(newBalance) * 100) // convert to int number and convert to cent number
                 }, function(err, customer) {
                   if (!err) {
                     console.log('Update seller successful');
@@ -153,17 +229,17 @@ Meteor.methods({
               console.log(err);
             }
           });
-        } else if (parseFloat(amount) >= parseFloat(balance)){
+        } else if (parseFloat(promotion_amount) >= parseFloat(balance)){
           console.log('Balance is NOT enough to pay');
           console.log('Balance of user: ' + parseFloat(balance));
-          console.log('Amount of order: ' + parseFloat(amount));
+          console.log('Amount of order: ' + parseFloat(promotion_amount));
           // if balance is NOT enough to pay amount
           var buyerCustomerId = Meteor.users.findOne({ _id: buyer_id }).stripe_id; // get Stripe id of buyer_id
           // update balance of buyer
           var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
-          console.log('Amount of order: ' + parseFloat(amount));
+          console.log('Amount of order: ' + parseFloat(promotion_amount));
           console.log('Balance of user: ' + parseFloat(balance));
-          var newAmount = (parseFloat(amount) - parseFloat(balance)).toFixed(2);
+          var newAmount = (parseFloat(promotion_amount) - parseFloat(balance)).toFixed(2);
           updatedCustomer(buyerCustomerId, {
             account_balance: 0
           }, function(err, customer) {
@@ -197,6 +273,15 @@ Meteor.methods({
                             $set: {
                                 'credits': parseFloat((credits - newAmount).toFixed(2))
                             }
+                        });
+                        //- sending log to logz
+                        logger.log({
+                          message: buyer_id + `'s credits balance was updated.`,
+                          level: 'INFO',
+                          type: 'PAYMENT',
+                          previous_balance: credits,
+                          balance: parseFloat((credits - newAmount).toFixed(2)),
+                          date: new Date()
                         });
                         console.log("Buyer's credits updated: " + parseFloat((credits - newAmount).toFixed(2)));
                       } else {
