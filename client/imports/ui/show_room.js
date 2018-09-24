@@ -72,7 +72,7 @@ class ShowRoom extends Component {
     var prefix = "promotion" + "=";
     var begin = dc.indexOf(prefix);
     //- when user already logged in, just apply promotion program for they
-    if (Meteor.userId()) {
+    if (Meteor.userId() && promotion) {
       Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
         if (err) {
           Materialize.toast(err, 4000, 'rounded bp-green');
