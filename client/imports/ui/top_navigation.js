@@ -140,6 +140,7 @@ class TopNavigation extends Component {
         util.hide_loading_progress();
         this.setState({ isLogin: false })
         FlowRouter.go("/");
+        location.href = '/';
       })
     } else {
       util.loginAccession("");
@@ -175,7 +176,17 @@ class TopNavigation extends Component {
             :
               ""
            }
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/status.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/curent+order.svg" />
+        </li>
+        <li className="visted-color"
+          onClick={() => {
+            this.setState({ sidebarOpen: false }, () => {
+              FlowRouter.go("/message");
+            });
+          }}
+        >
+          <span>Chat</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Chat.svg" />
         </li>
 
         <li className="visted-color"
@@ -257,6 +268,17 @@ class TopNavigation extends Component {
         >
           <span>Dashboard</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dash.svg" />
+        </li>
+
+        <li className="visted-color"
+          onClick={() => {
+            this.setState({ sidebarOpen: false }, () => {
+              FlowRouter.go("/message");
+            });
+          }}
+        >
+          <span>Chat</span>
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Chat.svg" />
         </li>
 
         <li className="visted-color"

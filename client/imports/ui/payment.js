@@ -111,7 +111,8 @@ class Payment extends Component {
             action: false,
             isModalOpen: false,
             isInnerModalOpen: false,
-            pendingCost: 0
+            pendingCost: 0,
+            promotion: false
         }
     }
 
@@ -523,6 +524,18 @@ class Payment extends Component {
             total += parseFloat(shoppingCart[i].total_price_per_dish);
         }
         var fee = parseFloat((total * 0.034) + 2.35).toFixed(2);
+        Meteor.call('promotion.check_history', (err, res) => {
+            if (!err) {
+                var discount = res.balance;
+                if (total > discount) {
+                    this.setState({ promotion: false });
+                } else {
+                    this.setState({ promotion: true });
+                }
+            } else {
+                this.setState({ promotion: false });
+            }
+        });
         return (
             <div className="container" style={{ marginTop: '50px' }}>
                 <Modal
@@ -552,13 +565,26 @@ class Payment extends Component {
                             <span className="sub-text">Processing fee: 0$</span>
                         </div>
                     </div>
-                    <div className="col s12 m6 l6 xl6">
-                        <div className="payment-wrapper" onClick={() => this.choosePayment('credit-card')}>
-                            <div className="col s12 payment-method" id="card"></div>
-                            <span className="text">Credit card</span>
-                            <span className="sub-text">Processing fee: {fee}$</span>
-                        </div>
-                    </div>
+                    {
+                        (this.state.promotion) ?
+                        (
+                            <div className="col s12 m6 l6 xl6">
+                                <div className="payment-wrapper" onClick={() => Materialize.toast('Promotion program not available for credit card.', 4000, 'rounded bp-green')}>
+                                    <div className="col s12 payment-method disable" id="card"></div>
+                                    <span className="text">Credit card</span>
+                                    <span className="sub-text">Processing fee: {fee}$</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="col s12 m6 l6 xl6">
+                                <div className="payment-wrapper" onClick={() => this.choosePayment('credit-card')}>
+                                    <div className="col s12 payment-method" id="card"></div>
+                                    <span className="text">Credit card</span>
+                                    <span className="sub-text">Processing fee: {fee}$</span>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         )

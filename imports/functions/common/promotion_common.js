@@ -66,7 +66,7 @@ export function getCookie(name) {
         begin += 2;
         var end = document.cookie.indexOf(";", begin);
         if (end == -1) {
-        end = dc.length;
+            end = dc.length;
         }
     }
     // because unescape has been deprecated, replaced with decodeURI

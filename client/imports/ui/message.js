@@ -97,7 +97,7 @@ class Message extends Component {
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
         receiver = Kitchen_details.findOne({"user_id": conversation.seller_id});
-        
+
         receiverId = receiver.user_id;
         phoneNumber = receiver.kitchen_contact;
         countryCode = getCountryCodeFromKitChen(receiver);
@@ -105,7 +105,7 @@ class Message extends Component {
       } else {
         // current user is seller in current conversation. Get info of opponent. Opponent is foodie profile
         receiver = Profile_details.findOne({"user_id": conversation.buyer_id});
-        
+
         receiverId = receiver.user_id;
         phoneNumber = receiver.mobile;
         countryCode = getCountryCodeFromProfile(receiver),
@@ -126,7 +126,7 @@ class Message extends Component {
           }
         }
       );
-      
+
       var contentMessage = 'Blueplate: ' + userMessage + ', ' + message;
       phoneNumber = validatePhoneNumber(phoneNumber, countryCode);
 
@@ -186,19 +186,6 @@ class Message extends Component {
     let tempFriends = this.getListJoiner();
     return (
       <ul className="chat-list-user">
-        {
-          <span title='Customer Service' style={{position: 'relative'}}>
-            <li
-              title='Customer Service'
-              className={(this.state.index == -1) ? 'chat-user active' : 'chat-user'}
-              // onClick={() => this.switchConversation(item, -1)}
-              style={{
-                backgroundColor: `#56AACD`,
-              }}
-            />
-            <a href="mailto:account.admin@blueplate.co"><img className="support-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/customer.svg" /></a>
-          </span>
-        }
         {
           tempFriends.map((item, index) => {
             // get unread message from friends
@@ -282,7 +269,7 @@ class Message extends Component {
     } else {
       return (
         <div id="list-message-body" className="list-message">
-          <ul style={{ height: "225px" }}>
+          <ul>
             {this.props.messages[this.state.index].map(
               (item, index) => {
                 switch (item.type) {

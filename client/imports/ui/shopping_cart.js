@@ -21,6 +21,9 @@ class ShoppingCart extends Component {
         this.renderListKitchen = this.renderListKitchen.bind(this);
         this.renderKitchen = this.renderKitchen.bind(this);
         this.handleChangeServiceOption = this.handleChangeServiceOption.bind(this);
+        this.state = {
+            discount: 0
+        }
     }
 
     // remove item in shopping cart
@@ -473,13 +476,28 @@ class ShoppingCart extends Component {
         }
         // check if have already cookies, create a promotion balance for this user
         if (getCookie('promotion') !== -1) {
-            Meteor.call('promotion.insert_history', 'HKD50', (err, res) => {
-                if (!err) {
-                    delete_cookies('promotion');
-                    console.log('OK');
+            Meteor.call('promotion.check_history', (err, res) => {
+                if (!res) { // this user not already have promotion before
+                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                        if (!err) {
+                            delete_cookies('promotion');
+                            console.log('OK');
+                        }
+                    });
                 }
             });
         }
+        Meteor.call('promotion.check_history', (err, res) => {
+            if (!err) {
+                this.setState({
+                    discount: res.balance
+                })
+            } else {
+                this.setState({
+                    discount: 0
+                })
+            }
+        });
     }
 
     componentWillUpdate() {
@@ -501,7 +519,14 @@ class ShoppingCart extends Component {
                 total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
             }
         }
-        total = total.toFixed(2);
+        if (this.state.discount > 0) {
+            total = total - this.state.discount;
+            if (total < 0) {
+                total = 0;
+            } else {
+                total = total.toFixed(2);
+            }
+        }
         Session.set('product', '');
         return (
             <div className="container">
@@ -511,6 +536,16 @@ class ShoppingCart extends Component {
                         <span>Loading...</span>
                     :    
                         this.renderListKitchen()
+                }
+                {
+                    (this.state.discount > 0) ? (
+                        <div className="row discount">
+                            <div className="col s4 text-left">Discount</div>
+                            <div className="col s8 text-right"> - HK${ this.state.discount }</div>
+                        </div>
+                    ) : (
+                        ""
+                    )
                 }
                 <div className="row total">
                     <div className="col s4 text-left">Total</div>
@@ -526,9 +561,11 @@ class ShoppingCart extends Component {
 
 export default withTracker(props => {
     const handle = Meteor.subscribe('getUserShoppingCart');
+    var discount = 0;
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
         shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
+        discount: discount
     };
 })(ShoppingCart);
