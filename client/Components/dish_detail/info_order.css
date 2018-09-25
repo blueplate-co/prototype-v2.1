@@ -112,6 +112,15 @@
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
+    #have-accn-text {
+        position: absolute;
+        top: -50px;
+    }
+
+    #ordering-popup .get-info {
+        height: 70px;
+    }
+
     #ordering-popup.modal-footer {
         border-radius: 0 0 20px 20px!important;
     }

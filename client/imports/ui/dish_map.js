@@ -6,7 +6,16 @@ export class DishMap extends Component {
     showingInfoWindow: false,
     activeMarker: {},
     selectedPlace: {},
+    kitchen_detail: {}
   };
+
+  componentDidMount() {
+    Meteor.call('kitchen.get_detail_chitken', this.props.user_id, (err, res) => {
+      if (!err) {
+        this.setState({ kitchen_detail: res});
+      }
+    })
+  }
 
   onMarkerClick = (props, marker, e) => {
     this.setState({
@@ -31,45 +40,43 @@ export class DishMap extends Component {
       height: '100%', // 75vh similarly will take up roughly 75% of the height of the screen. px also works.
       borderRadius: '8px'
     }
-    var kitchen = Kitchen_details.findOne({user_id: this.props.kitchenId}),
-        lat = '', 
-        lng = '';
-
-    if (kitchen != undefined) {
-      lat = kitchen.kitchen_address_conversion != undefined ? kitchen.kitchen_address_conversion.lat : '',
-      lng = kitchen.kitchen_address_conversion != undefined ? kitchen.kitchen_address_conversion.lng : '';
-    }
 
     return (
-        <Map
-          google = {this.props.google}
-          zoom = {17}
-          style = {style}
-          initialCenter= {{lat: lat, lng: lng}}
-          onClick = {this.onMapClicked}
-        >
-        {kitchen.kitchen_address_conversion === null ? 
-          ""
-          :
-          <Marker
-              name = {kitchen.kitchen_name}
-              kitchen_id = {kitchen._id}
-              url = {kitchen.bannerProfileImg != null ? kitchen.bannerProfileImg.large : kitchen.profileImg != null ? kitchen.profileImg.origin : ""}
-              position = {{lat: kitchen.kitchen_address_conversion.lat, lng: kitchen.kitchen_address_conversion.lng}}
-              onClick = {this.onMarkerClick}
-            />
-          
+      <span>
+        { Object.keys(this.state.kitchen_detail).length > 0 ? 
+            <Map
+              google = {this.props.google}
+              zoom = {17}
+              style = {style}
+              initialCenter= {{lat: this.state.kitchen_detail.kitchen_address_conversion.lat, lng: this.state.kitchen_detail.kitchen_address_conversion.lng}}
+              onClick = {this.onMapClicked}
+            >
+            {this.state.kitchen_detail.kitchen_address_conversion === null ? 
+              ""
+              :
+              <Marker
+                  name = {this.state.kitchen_detail.kitchen_name}
+                  kitchen_id = {this.state.kitchen_detail._id}
+                  url = {this.state.kitchen_detail.bannerProfileImg != null ? this.state.kitchen_detail.bannerProfileImg.large : this.state.kitchen_detail.profileImg != null ? this.state.kitchen_detail.profileImg.origin : ""}
+                  position = {{lat: this.state.kitchen_detail.kitchen_address_conversion.lat, lng: this.state.kitchen_detail.kitchen_address_conversion.lng}}
+                  onClick = {this.onMarkerClick}
+                />
+              
+            }
+            {<InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}>
+                <div>
+                  <img className ='map_thumbnail' src = {this.state.selectedPlace.url} />
+                  <h6>{this.state.selectedPlace.name}</h6>
+                  <a href={"/kitchen/" + this.state.selectedPlace.kitchen_id}>more info</a>
+                </div>
+            </InfoWindow> }
+          </Map>
+        :
+          ''
         }
-        {<InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}>
-            <div>
-              <img className ='map_thumbnail' src = {this.state.selectedPlace.url} />
-              <h6>{this.state.selectedPlace.name}</h6>
-              <a href={"/kitchen/" + this.state.selectedPlace.kitchen_id}>more info</a>
-            </div>
-        </InfoWindow> }
-      </Map>
+      </span>
     );
   }
 }
