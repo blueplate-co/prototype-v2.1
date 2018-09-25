@@ -543,7 +543,7 @@ export class Dish_Detail extends Component {
 
                                 <div className="row show-chef-map show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 chef-location">
-                                        <DishMap kitchenId={this.state.data.user_id}/>
+                                        <DishMap user_id={this.state.data.user_id}/>
                                     </div>
                                 </div>
 
