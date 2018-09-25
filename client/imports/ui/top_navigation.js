@@ -104,6 +104,7 @@ class TopNavigation extends Component {
 
   handleGoHome = () => {
     $('.modal').modal('close');
+    $(window).scrollTop(0);
     this.setState({ sidebarOpen: false });
     Session.set('list_kitchen_for_map', null);
     Session.set('search_result', null)
@@ -222,7 +223,7 @@ class TopNavigation extends Component {
         >
           {
             this.state.isLogin ? 
-              <span>Logout</span>
+              <span>Log out</span>
             :
               <span>Log in</span>
           }
@@ -296,7 +297,7 @@ class TopNavigation extends Component {
         >
           {
             this.state.isLogin ?
-              <span>Logout</span>
+              <span>Log out</span>
             :
               <span>Log in</span>
           }
@@ -406,6 +407,10 @@ class TopNavigation extends Component {
       var profile_img = Profile_details.findOne({ user_id: Meteor.userId() }).profileImg;
       this.setState({
         avatar: !profile_img ? util.getDefaultFoodiesImage() : profile_img.large
+      })
+    } else {
+      this.setState({
+        avatar: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"
       })
     }
   }
@@ -535,27 +540,44 @@ class TopNavigation extends Component {
                   </ul>
                   <ul className="right hide-on-small-only">
                     {
-                      (this.state.width <= 850) ?
-                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                      Meteor.userId() ?
+                        (this.state.width <= 850) ?
+                          <a style={{ display: 'inline-block'}} href="/deposit" target="_blank">
+                            <li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>
+                              $ {this.state.credits}
+                            </li>
+                          </a>
+                        :
+                          <a style={{ display: 'inline-block'}} href="/deposit" target="_blank">
+                            <li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>
+                              $ {this.state.credits} credits
+                            </li>
+                          </a>
                       :
-                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                        ""
                     }
-                    <li
-                      onClick={() => {
-                        //- send to Facebook Pixel
-                        if (location.hostname == 'www.blueplate.co') {
-                          fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
-                        }
-                        FlowRouter.go("/shopping_cart");
-                      }}
-                      className="icon"
-                      id="cart-icon"
-                    >
-                      <span id="cart-number">
-                        {this.props.shoppingCart.length}
-                      </span>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-                    </li>
+
+                    {
+                      (Meteor.userId()) ? 
+                        <li
+                          onClick={() => {
+                            //- send to Facebook Pixel
+                            if (location.hostname == 'www.blueplate.co') {
+                              fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                            }
+                            FlowRouter.go("/shopping_cart");
+                          }}
+                          className="icon"
+                          id="cart-icon"
+                        >
+                          <span id="cart-number">
+                            {this.props.shoppingCart.length}
+                          </span>
+                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
+                        </li>
+                      :
+                      ""
+                    }
                     <li className="icon" onClick={() => this.openProfile()}>
                       <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
                     </li>

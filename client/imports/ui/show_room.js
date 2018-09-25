@@ -25,19 +25,12 @@ class ShowRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDish: {},
       kitchenExisted: false,
       screen: this.props.screen,
       tab: 'all',
       width: 0,
       showmap: false
     }
-  }
-
-  handleDishPopup = (item) => {
-    this.setState({
-      selectedDish: item
-    });
   }
 
   handleMenuPopup = (item) => {
@@ -190,23 +183,23 @@ class ShowRoom extends Component {
         return (
           <div>
             <DishAllList title="All dishes" seemore=""/ >
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
       case 'all_menu':
         return (
           <div>
-            <MenuAllList title="All Menus" seemore="" popup={ this.handleDishPopup }/>
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <MenuAllList title="All Menus" seemore="" />
+            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
       case 'all_kitchen':
         return (
           <div>
-            <KitchenAllList title="All Kitchens" seemore="" popup={ this.handleDishPopup }/>
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <KitchenAllList title="All Kitchens" seemore=""/>
+            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
@@ -249,7 +242,7 @@ class ShowRoom extends Component {
                   <SearchMap />
                 </div>
               </div>
-              <Modal dish={this.state.selectedDish} menu={this. state.selectedMenu}/>
+              <Modal menu={this. state.selectedMenu}/>
             </div>
           </div>
         )
@@ -257,9 +250,9 @@ class ShowRoom extends Component {
       case 'wish_list':
         return (
           <div>
-            <WishDishList title="All dishes you liked" seemore="" popup={ this.handleDishPopup }/>
+            <WishDishList title="All dishes you liked" seemore="" />
             <WishMenuList title="All menus you liked" seemore="" popup={ this.handleMenuPopup }/>
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
@@ -280,7 +273,7 @@ class ShowRoom extends Component {
             <div className = "row">
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
-            <Modal dish={this.state.selectedDish} menu={this.state.selectedMenu}/>
+            <Modal menu={this.state.selectedMenu}/>
             <div id="promotion_modal" className="modal">
               <div className="modal-content">
                 <h4>🎉 Congratulation 🎉</h4>

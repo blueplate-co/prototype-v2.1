@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
-import { Session } from 'meteor/session';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // App component - represents the whole app
 class WishDishList extends Component {
@@ -20,10 +18,9 @@ class WishDishList extends Component {
   }
 
   handleClick = (item) => {
-    Session.set('selectedDish', item);
-    Session.set('selectedItem', 'dish');
-    Session.set('modal', true);
-    this.props.popup(item);
+    // Session.set('modal', true);
+    // this.props.popup(item);
+    FlowRouter.go('/dish/' + item._id)
   }
 
   renderList = () => {
