@@ -383,80 +383,80 @@ Template.edit_homecook_profile.events({
               lat: results[0].geometry.location.lat()
             };
             kitchen_address_conversion = latlng;
+
+            if (district == '') {
+              util.hide_loading_progress();
+              Materialize.toast('District field is required.', 4000, 'rounded bp-green');
+              return;
+            }
+      
+            if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
+              Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+              return;
+            }
+      
+            if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+              user_id = getCookie('fake_userid');
+            } else {
+              user_id = Meteor.userId();
+            }
+      
+            if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+              var user_id = getCookie('fake_userid');
+            } else {
+              var user_id = Meteor.userId();
+            }
+            
+            Meteor.call('kitchen_details.update',
+              user_id,
+              kitchen_name,
+              chef_name,
+              kitchen_address_country,
+              kitchen_address,
+              kitchen_address_conversion,
+              kitchen_contact_country,
+              kitchen_contact,
+              serving_option,
+              cooking_exp,
+              cooking_story,
+              kitchen_speciality,
+              kitchen_tags,
+              house_rule,
+              Session.get('profileImg'),
+              Session.get('bannerProfileImg'),
+              Session.get('deleted_tags'),
+      
+              function (err) {
+                util.hide_loading_progress();
+                if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+                else {
+                  Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
+                    if (err) {
+                      Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+                    } else {
+                      Meteor.call('user.updateDistrict', district, (err, res) => {
+                        if (err) {
+                          console.log('Error when update district');
+                        } else {
+                          Session.set('deleted_tags', []);
+                          Materialize.toast('Profile updated!', 4000);
+                          FlowRouter.go('/profile/show_homecook_profile');
+                        }
+                      })
+                    }
+                  });
+                }
+              }
+            );
           } else {
             Materialize.toast('Ops... Looks like the ' + string + ' provided is incorrect, please double check!', 4000, "rounded bp-green");
             return;
           }
-        });
+        }); //- end get geocode
       } else {
         Materialize.toast('Address is required.', 4000, "rounded bp-green");
         return;
       }
-
-      if (district == '') {
-        util.hide_loading_progress();
-        Materialize.toast('District field is required.', 4000, 'rounded bp-green');
-        return;
-      }
-
-      if (!$('#kitchen_contact').intlTelInput("isValidNumber")) {
-        Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
-        return;
-      }
-
-      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-        user_id = getCookie('fake_userid');
-      } else {
-        user_id = Meteor.userId();
-      }
-
-      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-        var user_id = getCookie('fake_userid');
-      } else {
-        var user_id = Meteor.userId();
-      }
-
-      Meteor.call('kitchen_details.update',
-        user_id,
-        kitchen_name,
-        chef_name,
-        kitchen_address_country,
-        kitchen_address,
-        kitchen_address_conversion,
-        kitchen_contact_country,
-        kitchen_contact,
-        serving_option,
-        cooking_exp,
-        cooking_story,
-        kitchen_speciality,
-        kitchen_tags,
-        house_rule,
-        Session.get('profileImg'),
-        Session.get('bannerProfileImg'),
-        Session.get('deleted_tags'),
-
-        function (err) {
-          util.hide_loading_progress();
-          if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-          else {
-            Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
-              if (err) {
-                Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-              } else {
-                Meteor.call('user.updateDistrict', district, (err, res) => {
-                  if (err) {
-                    console.log('Error when update district');
-                  } else {
-                    Session.set('deleted_tags', []);
-                    Materialize.toast('Profile updated!', 4000);
-                    FlowRouter.go('/profile/show_homecook_profile');
-                  }
-                })
-              }
-            });
-          }
-        }
-      );
     }
   }),
   Template.edit_foodie_profile.helpers({

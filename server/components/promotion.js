@@ -46,7 +46,7 @@ Meteor.methods({
                 user_id: Meteor.userId()
             });
         } else {
-            var existed_promotion_history = {};
+            var existed_promotion_history = null;
         }
         return existed_promotion_history;
     },
