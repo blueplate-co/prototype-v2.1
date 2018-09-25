@@ -497,6 +497,7 @@ class TopNavigation extends Component {
           if (!err) {
             if (res) {
               promotion_credits = res.balance;
+              if (res.balance == {}) promotion_credits = 0;
               this.setState({
                 credits: (parseFloat(promotion_credits.toString()) + parseFloat(credits.toString())).toFixed(2)
               });
@@ -557,10 +558,12 @@ class TopNavigation extends Component {
                   </ul>
                   <ul className="right hide-on-small-only">
                     {
-                      (this.state.width <= 850) ?
-                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
-                      :
-                        <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                      (Meteor.userId()) ?
+                        (this.state.width <= 850) ?
+                          <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits}</li></a>
+                        :
+                          <a style={{ display: 'inline-block'}} href="/deposit" target="_blank"><li className = "center-align" style={{ color: '#717171', cursor: 'pointer', height: '40px', lineHeight: '43px', fontSize: '1.1em' }}>$ {this.state.credits} credits</li></a>
+                      : ''
                     }
                     <li
                       onClick={() => {
