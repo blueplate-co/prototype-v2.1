@@ -23,6 +23,8 @@ export default class DishCarousel extends Component {
   }
 
   closeModal = () => {
+    Session.set('modal', false);
+    Session.set('selectedItem', '');
     $('#dish-modal').modal('close');
     $('.modal-overlay').remove();
   }
