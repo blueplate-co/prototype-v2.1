@@ -320,6 +320,7 @@ class ShowRoom extends Component {
                 )
               }
             </div>
+          </div>
         )
         break;
     }
