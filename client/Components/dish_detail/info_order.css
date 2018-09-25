@@ -1,6 +1,6 @@
 
 #ordering-popup.ordering-popup-infor {
-    min-height: 50% !important;
+    min-height: 55% !important;
     height: auto !important;
 }
 
@@ -19,9 +19,8 @@
     }
     
     #district-option {
-        float: right;
         display: inline-block;
-        padding-top: 15px;
+        margin-left: 2%;
     }
 }
 
@@ -41,8 +40,8 @@
     }
     
     #district-option {
+        margin-left: 1%;
         display: inline-block;
-        padding-top: 15px;
     }
 }
 
