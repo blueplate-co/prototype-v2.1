@@ -559,7 +559,8 @@ export class Dish_Detail extends Component {
 
                             <InfoOrder order_obj={this.state.order_obj}
                                 handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
-                                dish_id ={ this.state.data._id}
+                                product_id ={ this.state.data._id}
+                                path_process = "/dish/"
                             />
                         </div>
                     : 

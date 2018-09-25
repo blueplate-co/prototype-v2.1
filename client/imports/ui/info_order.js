@@ -235,7 +235,7 @@ export default class InfoOrder extends Component {
 
     handleLogin() {
         $('#ordering-popup').modal('close');
-        util.loginAccession("/dish/" + this.props.dish_id);
+        util.loginAccession(this.props.path_process + this.props.product_id);
     };
 
     generatePassword() {
@@ -255,7 +255,7 @@ export default class InfoOrder extends Component {
         return (
             <div id="ordering-popup" className="modal modal-fixed-footer ordering-popup-infor">
                 <div className="modal-content">
-                    <h5>Please let's we know who are you!</h5>
+                    <h5>Please let's us know who are you!</h5>
                     {
                         (this.state.foodies_name !== undefined && this.state.foodies_name !== '') ?
                             ''
@@ -271,29 +271,29 @@ export default class InfoOrder extends Component {
                         ''
                         :
                         <span>
-                                <div id="email-distric-display">
-                                    <div className="input-field col s6 email_ordering">
-                                        <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
-                                        <label className="active" htmlFor="email_ordering">email</label>
-                                    </div>
-                                    <div id="district-option">
-                                        <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
-                                            <option value="">Choose a district</option>
-                                            {
-                                                districts.map((item, index) => {
-                                                    return (
-                                                        <option key = {index} value = {item.districtName}>{item.districtName}</option>
-                                                        )
-                                                    })
-                                            }
-                                        </select>
-                                    </div>
+                            <div id="email-distric-display">
+                                <div className="input-field col s6 email_ordering">
+                                    <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
+                                    <label className="active" htmlFor="email_ordering">email</label>
                                 </div>
-                                <div className="input-field col s6">
-                                    <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
-                                    <label className="active" htmlFor="phone_ordering">phone number</label>
+                                <div id="district-option">
+                                    <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
+                                        <option value="">Choose a district</option>
+                                        {
+                                            districts.map((item, index) => {
+                                                return (
+                                                    <option key = {index} value = {item.districtName}>{item.districtName}</option>
+                                                    )
+                                                })
+                                        }
+                                    </select>
                                 </div>
-                            </span>
+                            </div>
+                            <div className="input-field col s6">
+                                <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
+                                <label className="active" htmlFor="phone_ordering">phone number</label>
+                            </div>
+                        </span>
                     }
 
                 </div>
