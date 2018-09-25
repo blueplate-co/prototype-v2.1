@@ -120,6 +120,9 @@ Meteor.methods({
   },
   'dish.get_detail' (dish_id) {
     return Dishes.findOne({ _id: dish_id });
+  },
+  'kitchen.get_detail_chitken'(user_id) {
+    return Kitchen_details.findOne({user_id: user_id});
   }
 });
 
