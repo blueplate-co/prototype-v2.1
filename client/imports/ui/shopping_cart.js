@@ -476,10 +476,14 @@ class ShoppingCart extends Component {
         }
         // check if have already cookies, create a promotion balance for this user
         if (getCookie('promotion') !== -1) {
-            Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
-                if (!err) {
-                    delete_cookies('promotion');
-                    console.log('OK');
+            Meteor.call('promotion.check_history', (err, res) => {
+                if (!res) { // this user not already have promotion before
+                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                        if (!err) {
+                            delete_cookies('promotion');
+                            console.log('OK');
+                        }
+                    });
                 }
             });
         }
@@ -533,10 +537,16 @@ class ShoppingCart extends Component {
                     :    
                         this.renderListKitchen()
                 }
-                <div className="row discount">
-                    <div className="col s4 text-left">Discount</div>
-                    <div className="col s8 text-right"> - HK${ this.state.discount }</div>
-                </div>
+                {
+                    (this.state.discount > 0) ? (
+                        <div className="row discount">
+                            <div className="col s4 text-left">Discount</div>
+                            <div className="col s8 text-right"> - HK${ this.state.discount }</div>
+                        </div>
+                    ) : (
+                        ""
+                    )
+                }
                 <div className="row total">
                     <div className="col s4 text-left">Total</div>
                     <div className="col s8 text-right">HK${ total }</div>
