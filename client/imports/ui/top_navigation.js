@@ -487,7 +487,7 @@ class TopNavigation extends Component {
     }
   }
 
-  componentDidMount() {
+  shouldComponentUpdate() {
     var credits = 0;
     Meteor.call('payment.getStripeBalance', (err, res) => {
       if (err) {
@@ -515,6 +515,7 @@ class TopNavigation extends Component {
         });
       });
     });
+    return true;
   }
 
   render() {
@@ -620,11 +621,9 @@ export default withTracker(props => {
   if (Meteor.user()) {
     Meteor.subscribe('userData');
     Meteor.subscribe("theProfileDetail");
-    var credits = Meteor.user().credits;
   }
   return {
     currentUser: Meteor.user(),
-    credits: credits,
     loading: !handle.ready(),
     shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
     currentOrder: Order_record.find({'seller_id': Meteor.userId(), 'status': 'Created'}).fetch(),
