@@ -353,6 +353,7 @@ export class Dish_Detail extends Component {
 
         $('.dirty_field').removeClass('dirty_field');
         $('#ordering-popup').modal('open');
+        $('#name_ordering').focus();
     }
     
     dishRequest() {
