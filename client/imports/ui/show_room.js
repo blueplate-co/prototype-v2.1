@@ -287,17 +287,21 @@ class ShowRoom extends Component {
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order. Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.  Don’t wait too long, our offer expires on 6 October 2018.</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
                   </div>
                   <div className="modal-footer">
-                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" onClick={ () => location.href = '/' }>Collect</a>
+                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" style={{ width: 'auto' }} onClick={ () => location.href = '/' }>Collect</a>
                   </div>
                 </div>
               ) : (
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order. Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.  Don’t wait too long, our offer expires on 6 October 2018.</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
                     <p></p>
                     <p>
                       <span>Haven't got account?</span>
