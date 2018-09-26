@@ -220,7 +220,7 @@ Template.edit_foodie_profile.events({
                 if (err) {
                   console.log('Error when update district');
                 } else {
-                  FlowRouter.go('/main');
+                  FlowRouter.go('/');
                 }
               })
             }
