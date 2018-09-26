@@ -336,7 +336,7 @@ Template.sc_payment.events({
   },
 
   'click #more_dish': function (event) {
-    FlowRouter.go('/main');
+    FlowRouter.go('/');
   }
 })
 

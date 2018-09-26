@@ -28,7 +28,7 @@ Template.path_choosing.events({
   },
 
   'click #divert_showroom': function(){
-    FlowRouter.go('/main');
+    FlowRouter.go('/');
   },
 
 })

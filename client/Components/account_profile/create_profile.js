@@ -723,7 +723,7 @@ Template.create_foodie_profile.events({
                   console.log('Error when update district');
                 } else {
                   Materialize.toast('Profile created!', 4000, 'rounded bp-green');
-                  FlowRouter.go('/main');
+                  FlowRouter.go('/');
                 }
               })
             }

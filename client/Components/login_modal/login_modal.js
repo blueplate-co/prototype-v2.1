@@ -19,7 +19,7 @@ Template.login_modal.events({
       } else {
         $('#loginLoader').hide(); // hide the loader
         localStorage.setItem("loggedIn", true);
-        FlowRouter.go("/main");
+        FlowRouter.go("/");
         $('#login_modal').modal('close');
       }
     });
@@ -34,7 +34,7 @@ Template.login_modal.events({
       } else {
         $('#loginLoader').hide(); // hide the loader
         localStorage.setItem("loggedIn", true);
-        FlowRouter.go("/main");
+        FlowRouter.go("/");
         $('#login_modal').modal('close');
       }
     });

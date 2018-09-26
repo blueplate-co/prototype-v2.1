@@ -6,7 +6,7 @@ var reset_countdown = new ReactiveCountdown(5);
 Template.reset_redirect.onCreated(function(){
   reset_countdown.start(function() {
     if (Meteor.userId()) {
-      FlowRouter.go('/main');
+      FlowRouter.go('/');
     } else {
       FlowRouter.go('/');
     }

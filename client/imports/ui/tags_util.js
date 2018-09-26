@@ -144,7 +144,7 @@ export default class TagsUtil extends Component {
           {this.resultMsg()}
           <div className = "row">
             <div className = "col l6 m6 s6">
-              <a className = "add-margin-top btn" href="/main">close</a>
+              <a className = "add-margin-top btn" href="/">close</a>
             </div>
             <div className = "col l6 m6 s6">
               <a className = "add-margin-top btn" onClick={this.handleRestart}>restart</a>
