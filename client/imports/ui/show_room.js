@@ -282,44 +282,34 @@ class ShowRoom extends Component {
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
             <Modal menu={this.state.selectedMenu}/>
-            <div id="promotion_modal" className="modal">
-              <div className="modal-content">
-                <h4>🎉 Congratulation 🎉</h4>
-                <p>You receive $50HKD from Blueplate successful. Signup or login to enjoy the gift</p>
-              </div>
-              <div className="modal-footer">
-                <a href="#!" className="modal-close waves-effect waves-green btn-flat">OK</a>
-              </div>
-            <Modal menu={this.state.selectedMenu}/>
-              {
-                (Meteor.userId()) ? (
-                  <div id="promotion_modal" className="modal">
-                    <div className="modal-content">
-                      <h4>🎉 Congratulation 🎉</h4>
-                      <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Click here to collect it</p>
-                    </div>
-                    <div className="modal-footer">
-                      <a href="#!" className="modal-close waves-effect waves-green btn-flat" onClick={ () => location.href = '/' }>Collect</a>
-                    </div>
+            {
+              (Meteor.userId()) ? (
+                <div id="promotion_modal" className="modal">
+                  <div className="modal-content">
+                    <h4>Congratulation</h4>
+                    <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Click here to collect it</p>
                   </div>
-                ) : (
-                  <div id="promotion_modal" className="modal">
-                    <div className="modal-content">
-                      <h4>🎉 Congratulation 🎉</h4>
-                      <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Login now to collect it</p>
-                      <p></p>
-                      <p>
-                        <span>Haven't got account?</span>
-                        <a className= "modal-trigger chef_signup" href="#signup_modal"> Sign up</a>
-                      </p> 
-                    </div>
-                    <div className="modal-footer">
-                      <a href="#!" className="modal-close waves-effect waves-green btn-flat" onClick={ () => util.loginAccession("") } >Login</a>
-                    </div>
+                  <div className="modal-footer">
+                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" onClick={ () => location.href = '/' }>Collect</a>
                   </div>
-                )
-              }
-            </div>
+                </div>
+              ) : (
+                <div id="promotion_modal" className="modal">
+                  <div className="modal-content">
+                    <h4>Congratulation</h4>
+                    <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Login now to collect it</p>
+                    <p></p>
+                    <p>
+                      <span>Haven't got account?</span>
+                      <a className= "modal-trigger chef_signup" href="#signup_modal"> Sign up</a>
+                    </p> 
+                  </div>
+                  <div className="modal-footer">
+                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" style={{ width: 'auto' }} onClick={ () => util.loginAccession("") } >Login</a>
+                  </div>
+                </div>
+              )
+            }
           </div>
         )
         break;

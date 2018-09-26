@@ -946,3 +946,11 @@
 .list-promotion-container .dish-wrapper {
   margin-bottom: 0px;
 }
+
+#promotion_modal h4 {
+  font-weight: bold;
+}
+
+#promotion_modal btn {
+  width: auto;
+}
