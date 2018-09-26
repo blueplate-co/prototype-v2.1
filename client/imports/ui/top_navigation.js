@@ -93,6 +93,7 @@ class TopNavigation extends Component {
   };
 
   toggle = () => {
+    Session.set('modal', false);
     $('.modal').modal('close');
     this.setState({ 
       sidebarOpen: this.state.sidebarOpen ? false : true, 
@@ -103,6 +104,7 @@ class TopNavigation extends Component {
   };
 
   handleGoHome = () => {
+    Session.set('modal', false);
     $('.modal').modal('close');
     $(window).scrollTop(0);
     this.setState({ sidebarOpen: false });
