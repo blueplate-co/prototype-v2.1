@@ -452,7 +452,7 @@ Template.request_card.events({
               Materialize.toast("Order has been accepted", 4000, 'rounded bp-green');
             }
           }) //insert to transaction
-          Meteor.call('order_record.accepted', order_id, function () {
+          Meteor.call('order_record.accepted', order_id, function (err, res) {
             if (err) {
               Materialize.toast("An error has occurred: " + err.message.message, 4000, 'rounded bp-green');
             } else {
@@ -487,6 +487,7 @@ Template.request_card.events({
         //- calculation sum of transactions
         var amount = transaction.reduce(function(total, item){ return total + item.amount }, 0);
         var description = 'Blueplate.co - Charge for ' + homecook.kitchen_name + " - Transaction: " + transaction._id;
+        console.log('Amount of transaction: ' + amount);
         Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, trans_no);
       }, 3 * 1000)
     }

@@ -41,8 +41,25 @@ Meteor.methods({
           promotion_amount += transactions[i].amount;
         }
       }
+      var existed_promotion_history = Promotion_history.findOne({ user_id: buyer_id });
+      if (existed_promotion_history) {
+        var promotion_balance = existed_promotion_history.balance;
+      } else {
+        var promotion_balance = 0;
+      }
       console.log('Promotion amount when charge: ' + promotion_amount);
+      console.log('Promotion balance when charge: ' + promotion_balance);
+      if (promotion_balance > 0) {
+        promotion_amount = promotion_amount - promotion_balance;
+        Meteor.call('promotion.update_history', buyer_id, 0, (err, res) => {
+          if (!err) {
+            console.log('Update promotion to zero');
+          }
+        });
+      }
       chargeAmount = parseFloat((promotion_amount + ( promotion_amount * 0.034 ) + 2.35).toFixed(2));
+      var existed_promotion_history = Promotion_history.findOne({ user_id: buyer_id });
+      var promotion_balance = existed_promotion_history.balance;
       console.log('Charge amount: ' + chargeAmount);
       charge({
         amount: parseInt(chargeAmount * 100),
@@ -71,6 +88,7 @@ Meteor.methods({
                       var balance = customer.account_balance / 100; //devide for 100 to convert it to dollar
                       console.log('Get amount of seller in dollar: ' + balance);
                       // update new balance with origin price
+                      console.log('Amount of transaction: ' + amount);
                       var newBalance = balance + Math.round(amount / 1.15); // dollar + dollar
                       console.log('New balance of seller: ' + newBalance);
                       var updatedCustomer = Meteor.wrapAsync(stripe.customers.update, stripe.customers);
