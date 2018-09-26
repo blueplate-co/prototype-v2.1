@@ -287,7 +287,7 @@ class ShowRoom extends Component {
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Click here to collect it</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order. Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.  Don’t wait too long, our offer expires on 6 October 2018.</p>
                   </div>
                   <div className="modal-footer">
                     <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" onClick={ () => location.href = '/' }>Collect</a>
@@ -297,7 +297,7 @@ class ShowRoom extends Component {
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>You got 50$ credit. This can be used to buy food on Blueplate by 30 September 2018. Login now to collect it</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order. Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.  Don’t wait too long, our offer expires on 6 October 2018.</p>
                     <p></p>
                     <p>
                       <span>Haven't got account?</span>
