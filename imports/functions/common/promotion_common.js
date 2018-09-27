@@ -56,25 +56,11 @@ export function get_amount_promotion(dish_id) {
 export function getCookie(name) {
     var dc = document.cookie;
     if (dc.length > 0) {
-        //- has cookies
-        var prefix = name + "=";
-        var begin = dc.indexOf("; " + prefix);
-        if (begin == -1) {
-            //- no promotion cookies
-            begin = dc.indexOf(prefix);
-            if (begin != 0) return -1;
-        } else {
-            //- has promotion cookies
-            begin += 2;
-            var end = document.cookie.indexOf(";", begin);
-            if (end == -1) {
-                end = dc.length;
-            }
-            return end; 
-        }
+        var cookie_name = document.cookie.match(new RegExp(name + '=([^;]+)'));
+        return !!cookie_name ? cookie_name[1] : null;
     } else {
         //- no cookies in browser
-        return -1;
+        return null;
     }
 }
 
