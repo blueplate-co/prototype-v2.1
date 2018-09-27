@@ -53,7 +53,7 @@ Template.profile_banner.onCreated(function () {
 Template.profile_banner.onRendered(function () {
   Meteor.setTimeout(function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-      if (getCookie('fake_userid')) {
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
         var check_profile_banner = Kitchen_details.findOne({
           "user_id": getCookie('fake_userid')
         })
