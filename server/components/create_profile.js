@@ -213,17 +213,17 @@ Meteor.methods({
       text: text
     })
   },
-  'user.updateDistrict' (district) {
+  'user.updateDistrict' (user_id, district) {
     Meteor.users.update({
-      _id: Meteor.userId()
+      _id: user_id
     }, {
         $set: {
           'profile.district': district
         }
     });
   },
-  'user.getDistrict' () {
-    var district = Meteor.users.findOne({ _id: Meteor.userId() }).profile.district;
+  'user.getDistrict' (user_id) {
+    var district = Meteor.users.findOne({ _id: user_id }).profile.district;
     if (district) {
       return district;
     } else {

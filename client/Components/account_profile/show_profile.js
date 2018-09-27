@@ -37,7 +37,7 @@ Template.show_homecook_profile.onRendered(function() {
   var instance = Template.instance();
   instance._id.set(FlowRouter.getParam("homecook_id"));
   
-  if (Kitchen_details.findOne({'user_id': Meteor.userId()}) == undefined) {
+  if (!Kitchen_details.findOne({'user_id': Meteor.userId()})) {
     FlowRouter.go('/followup');
   } else {
     if (!instance._id.get()) {
