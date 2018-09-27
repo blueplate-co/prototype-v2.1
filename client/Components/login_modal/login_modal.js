@@ -96,6 +96,19 @@ Template.login_modal.events({
             $('#login_modal').modal('close');
             if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
               FlowRouter.go("/followup");
+              // check if have already cookies, create a promotion balance for this user
+              if (getCookie('promotion') != null && getCookie('promotion').length > 0) {
+                Meteor.call('promotion.check_history', (err, res) => {
+                  if (Object.keys(res).length == 0) { // this user not already have promotion before
+                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                      if (!err) {
+                          delete_cookies('promotion');
+                          console.log('OK');
+                      }
+                    });
+                  }
+                });
+              }
             } else {
               Bert.alert('Login successfully!' , 'success', 'fixed-top');
 
@@ -106,7 +119,7 @@ Template.login_modal.events({
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion') != null && getCookie('promotion').length > 0) {
                 Meteor.call('promotion.check_history', (err, res) => {
-                  if (!res) { // this user not already have promotion before
+                  if (Object.keys(res).length == 0) { // this user not already have promotion before
                     Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
                       if (!err) {
                           delete_cookies('promotion');

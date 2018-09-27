@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Accounts } from 'meteor/accounts-base';
+import { getCookie, delete_cookies } from '/imports/functions/common/promotion_common';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -270,16 +271,30 @@ export default class SignUp extends Component {
               if (location.hostname == 'www.blueplate.co') {
                 fbq('trackCustom', 'CompleteRegistration', { fullname: full_name, email: email });
               }
-              Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
-                if (!err) {
-                  self.setState({stage: 4, signUpLoading: false,});
-                  //- create Stripe user id for that user register
-                  Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
-                } else {
-                  self.setState({signUpLoading: false});
-                  Bert.alert(err.reason,"danger", "growl-top-right");
-                }
-              });
+              // check if have already cookies, create a promotion balance for this user
+              if (getCookie('promotion') !== -1) {
+                Meteor.call('promotion.check_history', (err, res) => {
+                    if (Object.keys(res).length == 0) { // this user not already have promotion before
+                        Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                            if (!err) {
+                                delete_cookies('promotion');
+                                console.log('OK');
+                                Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
+                                  if (!err) {
+                                    self.setState({stage: 4, signUpLoading: false,});
+                                    //- create Stripe user id for that user register
+                                    Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+                                    Meteor.logout(function(err){});
+                                  } else {
+                                    self.setState({signUpLoading: false});
+                                    Bert.alert(err.reason,"danger", "growl-top-right");
+                                  }
+                                });
+                            }
+                        });
+                    }
+                });
+              }
             }
           });
         }

@@ -501,7 +501,7 @@ class TopNavigation extends Component {
         credits = parseFloat(parseFloat(res) + parseFloat(stripebalance)).toFixed(2);
         var promotion_credits = 0;
         Meteor.call('promotion.check_history', (err, res) => {
-          if (!err) {
+          if (Object.keys(res).length > 0) {
             if (res) {
               promotion_credits = res.balance;
               if (!res) promotion_credits = 0;

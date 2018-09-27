@@ -67,7 +67,7 @@ class ShowRoom extends Component {
     //- when user already logged in, just apply promotion program for they
     if (Meteor.userId() && promotion) {
       Meteor.call('promotion.check_history', (err, res) => {
-        if (!res) { // this user not already have promotion before
+        if (Object.keys(res).length == 0) { // this user not already have promotion before
           Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
             if (err) {
               Materialize.toast(err, 4000, 'rounded bp-green');
@@ -287,7 +287,7 @@ class ShowRoom extends Component {
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order.</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
                     <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
                     <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
                   </div>
@@ -299,7 +299,7 @@ class ShowRoom extends Component {
                 <div id="promotion_modal" className="modal">
                   <div className="modal-content">
                     <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $50HKD towards your next blueplate.co order.</p>
+                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
                     <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
                     <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
                     <p></p>

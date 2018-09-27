@@ -477,7 +477,7 @@ class ShoppingCart extends Component {
         // check if have already cookies, create a promotion balance for this user
         if (getCookie('promotion') !== -1) {
             Meteor.call('promotion.check_history', (err, res) => {
-                if (!res) { // this user not already have promotion before
+                if (Object.keys(res).length == 0) { // this user not already have promotion before
                     Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
                         if (!err) {
                             delete_cookies('promotion');
@@ -488,7 +488,7 @@ class ShoppingCart extends Component {
             });
         }
         Meteor.call('promotion.check_history', (err, res) => {
-            if (!err) {
+            if (Object.keys(res).length > 0) {
                 this.setState({
                     discount: res.balance
                 })
