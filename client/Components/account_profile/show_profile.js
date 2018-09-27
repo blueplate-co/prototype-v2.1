@@ -37,42 +37,47 @@ Template.show_homecook_profile.onRendered(function() {
   var instance = Template.instance();
   instance._id.set(FlowRouter.getParam("homecook_id"));
   
-  if (!instance._id.get()) {
-    var user = Meteor.userId()
-    //own kitchen
-    Meteor.call('kitchen_likes.get', user, (error, result) => {
-     instance.kitchen_likes.set(result)
-    })
-    Meteor.call('kitchen_tried.get', user, (error, result) => {
-      instance.kitchen_tried.set(result)
-    })
-    Meteor.call('kitchen_follows.get', user, (error, result) => {
-      instance.kitchen_follows.set(result)
-    })
+  if (Kitchen_details.findOne({'user_id': Meteor.userId()}) == undefined) {
+    FlowRouter.go('/followup');
   } else {
-    var user = instance._id.get()
-  // other kitchen profile
-    var kitchen_detail = Kitchen_details.findOne({'_id': user}),
-        user_id = '';
-    if (kitchen_detail != undefined) {
-      user_id = kitchen_detail.user_id
-    }
-    Meteor.call('kitchen_likes.get', user_id, (error, result) => {
-      if (!error) {
-        instance.kitchen_likes.set(result)
-      }
-    })
-    Meteor.call('kitchen_tried.get', user_id, (error, result) => {
-      if (!error) {
+    if (!instance._id.get()) {
+      var user = Meteor.userId()
+      //own kitchen
+      Meteor.call('kitchen_likes.get', user, (error, result) => {
+       instance.kitchen_likes.set(result)
+      })
+      Meteor.call('kitchen_tried.get', user, (error, result) => {
         instance.kitchen_tried.set(result)
-      }
-    })
-    Meteor.call('kitchen_follows.get', user_id, (error, result) => {
-      if (!error) {
+      })
+      Meteor.call('kitchen_follows.get', user, (error, result) => {
         instance.kitchen_follows.set(result)
+      })
+    } else {
+      var user = instance._id.get()
+    // other kitchen profile
+      var kitchen_detail = Kitchen_details.findOne({'_id': user}),
+          user_id = '';
+      if (kitchen_detail != undefined) {
+        user_id = kitchen_detail.user_id
       }
-    })
+      Meteor.call('kitchen_likes.get', user_id, (error, result) => {
+        if (!error) {
+          instance.kitchen_likes.set(result)
+        }
+      })
+      Meteor.call('kitchen_tried.get', user_id, (error, result) => {
+        if (!error) {
+          instance.kitchen_tried.set(result)
+        }
+      })
+      Meteor.call('kitchen_follows.get', user_id, (error, result) => {
+        if (!error) {
+          instance.kitchen_follows.set(result)
+        }
+      })
+    }
   }
+  
 })
 
 Template.show_homecook_profile.helpers({

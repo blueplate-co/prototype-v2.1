@@ -362,13 +362,14 @@ export class Dish_Detail extends Component {
             seller_id = this.state.data.kitchen_id;
 
         var kitchen = Kitchen_details.findOne({_id: seller_id}),
-            kitchen_contact = kitchen.kitchen_contact;
+            kitchen_contact = kitchen.kitchen_contact,
+            chef_first_name = kitchen.chef_name.substring(0, kitchen.chef_name.indexOf(" ")).trim();
 
         var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
         var seller_email = seller_detail.emails[0].address;
 
         this.setState({alreadyRequested: true});
-        var message = "Blueplate: Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
+        var message = "Your offline dish (" + this.state.data.dish_name + ") is looking so good that " +
                      "foodies are requesting it!. Let’s make more good food and more hungry foodies happy.\n" + 
                      "Switch your dish to online here: " + document.location.origin + "/cooking/dishes";
 
@@ -381,9 +382,10 @@ export class Dish_Detail extends Component {
                     fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
                 }
                 // Send sms
-                Meteor.call('message.sms', kitchen_contact, message.trim(), (err, res) => {
+                var sms_message = 'Hi ' + chef_first_name + ',' + message;
+                Meteor.call('message.sms', kitchen_contact, sms_message.trim(), (err, res) => {
                     if (!err) {
-                        console.log(res);
+                        // console.log(res);
                     }
                 });
 
@@ -393,7 +395,7 @@ export class Dish_Detail extends Component {
                     kitchen.chef_name + " <" + seller_email + ">",
                     '', /* @param mail from..... default*/
                     '', /* @param subject - default*/
-                    'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
+                    'Hi ' + chef_first_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
                 );
             } else {
                 Materialize.toast('Can not request Dish now, please try later!', 4000, 'rounded bp-green');
