@@ -219,6 +219,7 @@ class Payment extends Component {
                                     if (err) {
                                         Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                                     } else {
+                                        localStorage.setItem('globalCart', '');
                                         Meteor.call('shopping_cart.remove', item._id);
                                         Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                                         Session.clear;
@@ -232,7 +233,6 @@ class Payment extends Component {
                     });
                 });
             });
-            localStorage.setItem('globalCart', '');
         } else {
             // if choose credit card is payment method
             //- send to Facebook Pixel
@@ -378,6 +378,7 @@ class Payment extends Component {
                             })
                         } else {
                             util.hide_loading_progress();
+                            localStorage.setItem('globalCart', '');
                             Meteor.call('shopping_cart.remove', item._id)
                             Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                             Session.clear;
@@ -388,7 +389,6 @@ class Payment extends Component {
                 })
                 util.hide_loading_progress();
             }
-            localStorage.setItem('globalCart', '');
         })
     }
 

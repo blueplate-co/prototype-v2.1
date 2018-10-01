@@ -157,4 +157,7 @@ Meteor.methods({
 
     return true;
   },
+  "message.findOne_conversation"(buyer_id, seller_id) {
+    return Conversation.findOne({ buyer_id: buyer_id, seller_id: seller_id });
+  }
 });

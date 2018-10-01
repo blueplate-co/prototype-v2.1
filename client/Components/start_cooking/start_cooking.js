@@ -24,13 +24,13 @@ Template.start_cooking.helpers({
       'seller_id': Meteor.userId(),
       'status': "Cooking"
     }).count()
-    console.log('Cooking: ' + cooking)
+    // console.log('Cooking: ' + cooking)
     return cooking
   },
 
   'order_cooking': function () {
     var cooking = search_distinct_in_order_record('_id', 'Cooking')
-    console.log(cooking)
+    // console.log(cooking)
     return cooking
   },
 
@@ -39,7 +39,7 @@ Template.start_cooking.helpers({
       'seller_id': Meteor.userId(),
       'status': 'Created'
     }).count()
-    console.log('Order: ' + order)
+    // console.log('Order: ' + order)
     return order
   },
 
@@ -54,7 +54,7 @@ Template.start_cooking.helpers({
       'seller_id': Meteor.userId(),
       'status': "Ready"
     }).count()
-    console.log('Ready: ' + ready_to_serve)
+    // console.log('Ready: ' + ready_to_serve)
     return ready_to_serve
   },
 
@@ -78,7 +78,7 @@ Template.order_card.helpers({
       '_id': String(this)
     });
     var date_time = order.ready_time;
-    console.log(date_time);
+    // console.log(date_time);
 
     countdown = Meteor.setInterval(function () {
       var time_remaining = date_time_conversion(date_time, new Date().getTime());
@@ -178,7 +178,7 @@ Template.order_card.helpers({
     return dish_qty;
   },
   'get_foodie_name': function () {
-    console.log(this);
+    // console.log(this);
     var order = Order_record.findOne({
       '_id': String(this)
     })
@@ -235,7 +235,7 @@ Template.order_card.helpers({
       'seller_id': Meteor.userId(),
       'status': "Ready"
     }).count()
-    console.log('Ready: ' + ready_to_serve)
+    // console.log('Ready: ' + ready_to_serve)
     return ready_to_serve
   }
 })
@@ -400,11 +400,10 @@ Template.request_card.events({
       'status': 'Created'
     }).fetch()
 
-    product.forEach(add_order_to_transaction)
-    charge_card(buyer_id, seller_id, trans_no, paymentType) //used timeout to make sure transaction insert finished before charing card
+    product.forEach(add_order_to_transaction);
+    charge_card(buyer_id, seller_id, trans_no, paymentType); //used timeout to make sure transaction insert finished before charing card
 
-
-
+    var arr_product_info = [];
     function add_order_to_transaction(array_value, index) {
 
       setTimeout(function () {
@@ -415,16 +414,19 @@ Template.request_card.events({
         var seller_id = String(order.seller_id)
         var product_id = String(order.product_id)
         var quantity = String(order.quantity)
-        var ready_time = String(order.ready_time)
         var serving_option = String(order.serving_option)
 
         //get the price of each cart and calculating a total for this transaction
         var price_of_cart = parseFloat(String(order.total_price))
-        console.log(price_of_cart)
+        // console.log(price_of_cart)
 
-        var status = String(order.status)
-        var stripeToken = String(order.stripeToken)
+        var stripeToken = String(order.stripeToken);
 
+        var dish_name = Dishes.findOne({'_id': product_id}).dish_name;
+        var product_info = dish_name + " (id: " + product_id + ", quantity: "  + quantity + 
+                      ", amount: $" + price_of_cart + ")";
+
+        arr_product_info.push(product_info);
 
         //check if transactions inserted already, if yes, just insert the order into array
         var check = Transactions.findOne({
@@ -432,9 +434,9 @@ Template.request_card.events({
           'seller_id': seller_id,
           'transaction_no': trans_no
         })
-        console.log(check)
+        // console.log(check)
         if (check) {
-          console.log(1)
+          // console.log(1)
           var total_price_of_transaction = parseFloat(check.amount) //check the amount in the transaction collection
           total_price_of_transaction += parseFloat(price_of_cart) //add the cart_price into the transaction table
           Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
@@ -460,7 +462,7 @@ Template.request_card.events({
             }
           }) //update the order to cooking
         }
-        console.log('quantity:' + parseInt(quantity));
+        // console.log('quantity:' + parseInt(quantity));
         // update order counts for either dishes or menu collection
         if (Dishes.findOne({ _id: product_id })) {
           Meteor.call('dish.order_count_update', product_id, seller_id, parseInt(quantity))
@@ -490,33 +492,57 @@ Template.request_card.events({
         console.log('Amount of transaction: ' + amount);
         Meteor.call('chargeCard', stripeToken, amount, description, buyer_id, seller_id, paymentType, trans_no);
       }, 3 * 1000)
-    }
+    };
+
     Meteor.call('notification.confirm_order', seller_id, buyer_id);
 
-    console.log('Order confirm. Start send to foodie.');
+    // console.log('Order confirm. Start send to foodie.');
     var foodie= Profile_details.findOne({ user_id: buyer_id }),
-        foodie_phone_number = foodie.mobile;
+        foodie_phone_number = foodie.mobile,
+        buyer_info = foodie.foodie_name + " (id: " + buyer_id + ", email: " + foodie.email + ", phone no: " + foodie_phone_number + ")";
 
-    console.log('Full number' + foodie_phone_number);
+    // console.log('Full number' + foodie_phone_number);
     if (foodie_phone_number.length > 0) {
-      var seller_name = Kitchen_details.findOne({
-        user_id: seller_id
-      }).chef_name;
+      var kitchen_detail = Kitchen_details.findOne({ user_id: seller_id }),
+          seller_name = kitchen_detail.chef_name,
+          kitchen_phone_no = kitchen_detail.kitchen_contact;
+
+      var seller_detail = Meteor.users.findOne({_id: seller_id});
+      var seller_email = seller_detail.emails[0].address,
+          seller_info = seller_name + " (id: " + seller_id + ", email: " + seller_email + ", phone no: " + kitchen_phone_no + ")";
+
+      setTimeout(() => {
+        var sProduct_info = '';
+        arr_product_info.map( (item, index) => {
+          sProduct_info = sProduct_info + item + ", ";
+        });
+
+        var content_message = 'Confirm on ' + new Date().toDateString() + '\n\nBuyer infor : ' + 
+                              buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
+  
+        Meteor.call(
+          'marketing.create_task_asana',
+          '842582037565770', // task_id to create subtask
+          'Confirm order from: ' + seller_name,
+          content_message
+        );
+        
+      }, 2000);
+
       var product_string = '';
       for (var i = 0; i < product.length; i++) {
-        var dish = Dishes.findOne({
-          _id: product[i].product_id
-        });
+        var dish = Dishes.findOne({ _id: product[i].product_id });
+        
         if (!dish) {
           // if product is a menu
-          var menu = Menu.findOne({
-            _id: product[i].product_id
-          });
+          var menu = Menu.findOne({ _id: product[i].product_id });
+
           if (i == product.length - 1) {
             product_string += ' ' + menu.menu_name;
           } else {
             product_string += ' ' + menu.menu_name + ', ';
           }
+
         } else {
           // if product is a dish
           if (i == product.length - 1) {
@@ -526,10 +552,11 @@ Template.request_card.events({
           }
         }
       }
-      let content = seller_name + ' has just confirmed your order:'+ product_string +'. Please get ready!';
-      Meteor.call('message.sms', foodie_phone_number, content.trim(), (err, res) => {
+
+      let content = seller_name + ' has just confirmed your order:'+ product_string +'.  This delicious dish is being prepared for you now.';
+      Meteor.call('message.sms', foodie_phone_number, 'Hi ' + foodie.foodie_name + ", " + content.trim(), (err, res) => {
         if (!err) {
-          console.log('Message sent');
+          // console.log('Message sent');
           // add new profit to current cycle for chef
           var profit = 0;
           for(var i = 0; i < product.length; i++) {
@@ -557,9 +584,9 @@ Template.request_card.events({
           profit = parseFloat(parseFloat(profit) / 1.15).toFixed(2);
           Meteor.call('claim.updateprofit', seller_id, profit, function(err, res){
             if (!err) {
-              console.log(res);
+              // console.log(res);
             } else {
-              console.log(err);
+              // console.log(err);
             }
           })
         }
@@ -610,7 +637,7 @@ Template.request_card.events({
 
         //get the price of each cart and calculating a total for this transaction
         var price_of_cart = parseFloat(String(order.total_price))
-        console.log(price_of_cart)
+        // console.log(price_of_cart)
 
         var status = String(order.status)
         var stripeToken = String(order.stripeToken)
@@ -622,15 +649,15 @@ Template.request_card.events({
           'seller_id': seller_id,
           'transaction_no': trans_no
         })
-        console.log(check)
+        // console.log(check)
         if (check) {
-          console.log(1)
+          // console.log(1)
           var total_price_of_transaction = parseFloat(check.amount) //check the amount in the transaction collection
           total_price_of_transaction += parseFloat(price_of_cart) //add the cart_price into the transaction table
           Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
           Meteor.call('order_record.rejected', order_id) //update the order to cooking
         } else {
-          console.log(2)
+          // console.log(2)
           if (serving_option === 'Delivery') {
             price_of_cart += 50
           } //delivery cost, should have a variable table
@@ -658,7 +685,7 @@ Template.request_card.events({
 
           Meteor.call('message.sms', foodie_phone_number, message.trim(), (err, res) => {
             if (!err) {
-              console.log('Message sent');
+              // console.log('Message sent');
               // Send email
               Meteor.call(
                 'requestdish.sendEmail',
@@ -714,7 +741,7 @@ Template.order_card.events({
         if (check_digit === check) {
           Meteor.call('transactions.ready', trans_id)
           Meteor.call('notification.transaction_ready', seller_id, buyer_id)
-          console.log("Transactions Ready")
+          // console.log("Transactions Ready")
           // send SMS when dish/menu complete
           // send SMS when reject order
           var profile_foodies = Profile_details.findOne({ user_id: buyer_id }),
@@ -724,7 +751,7 @@ Template.order_card.events({
           var message = buyer_name + ', your food is ready. Please enjoy!';
           Meteor.call('message.sms', foodie_mobile_number, message.trim(), (err, res) => {
             if (!err) {
-              console.log('Message sent');
+              // console.log('Message sent');
 
               // Send email
               Meteor.call(
@@ -772,19 +799,19 @@ Template.chef_ready_card.events({
     });
     Meteor.call('message.disableConversation', conversation._id, (err, res) => {
       if (!err) {
-        console.log('Disabled conversation');
+        // console.log('Disabled conversation');
       }
     });
-    console.log('Order completed. Start send to foodie.');
+    // console.log('Order completed. Start send to foodie.');
     var foodie_detail = Profile_details.findOne({ user_id: buyer_id }),
         foodie_mobile_number = foodie_detail.mobile;
 
-    console.log('Full number' + foodie_mobile_number);
+    // console.log('Full number' + foodie_mobile_number);
     if (foodie_mobile_number.length > 0) {
       let content = 'Thanks for eating with Blueplate. Your order is ready now. Please rate for chef if your dish is good.';
       Meteor.call('message.sms', foodie_mobile_number, content, (err, res) => {
         if (!err) {
-          console.log('Message sent');
+          // console.log('Message sent');
 
           // Send email
           Meteor.call(
@@ -821,7 +848,7 @@ Template.chef_ready_card.helpers({
     return this.order;
   },
   'ordered_dish': function () {
-    console.log(String(this))
+    // console.log(String(this))
     return Order_record.find({ '_id': String(this), 'seller_id': Meteor.userId() });
   },
   'get_serving_date': function () {

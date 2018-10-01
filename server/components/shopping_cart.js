@@ -3,6 +3,8 @@ import { FilesCollection } from 'meteor/ostrio:files';
 import { Match } from 'meteor/check';
 import { check } from 'meteor/check';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import { HTTP } from 'meteor/http'
+
 var logger = require('logzio-nodejs').createLogger({
   token: 'zesEwGtDiMRKZOkAxJocElJJStpdXWMD',
   host: 'listener.logz.io',
@@ -465,4 +467,34 @@ Meteor.methods({
         }
     });
   },
+  'marketing.create_task_asana'(task_id, subject, content) {
+    var sUrl = "https://app.asana.com/api/1.0/tasks/" + task_id + "/subtasks";
+    var options = {
+        headers: { 
+          Authorization:'Bearer 0/5cd8b332871a5cd9ffb10afab6128186',
+          // 'Content-Type': 'application/json'
+        },
+        params: {
+          workspace: '220725248142233',
+          projects: '548973336354219',
+          assignee: '564872337238154',
+          notes: content,
+          name: subject
+        }
+    }; 
+    try {
+      HTTP.call('POST', sUrl, options,  (error, result) => {
+        if (error) {
+              console.log("error",error);
+        } else {
+              //  console.log("result",result);
+        }
+      });
+
+    } catch (e) {
+      // Got a network error, timeout, or HTTP error in the 400 or 500 range.
+      console.log("exception",e);
+    }
+    // console.log('Created task on asana: ')
+  }
 });

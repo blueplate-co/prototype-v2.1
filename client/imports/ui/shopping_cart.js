@@ -239,9 +239,9 @@ class ShoppingCart extends Component {
                     }
                 })
             })
-            this.sendSummaryCheckoutDish();
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
+                this.sendSummaryCheckoutDish();
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
             FlowRouter.go('/payment');
@@ -445,26 +445,45 @@ class ShoppingCart extends Component {
     sendSummaryCheckoutDish() {
         var checkSellerName ={};
         this.props.shoppingCart.map( (item, index) => {
-            if (checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"]) {
-                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] + ", " + item.quantity + " " + item.product_name;
+            var seller_detail = Meteor.users.findOne({_id: item.seller_id});
+            var seller_email = seller_detail.emails[0].address;
+            var kitchen_contact = Kitchen_details.findOne({user_id: item.seller_id}).kitchen_contact;
+            var product_info = " (quantity: " + item.quantity + ", id: " + item.product_id + ", amount: " + item.product_price + ")";
+
+            var order_info = checkSellerName[item.seller_name + " (id: " + item.seller_id + ", email: " + seller_email + ", phone: " + kitchen_contact + ") "];
+            if (order_info) {
+                let total_info = order_info + ", " + item.product_name + product_info;
+                checkSellerName[item.seller_name + " (id: " + item.seller_id + ", email: " + seller_email + ", phone: " + kitchen_contact + ") "] = total_info;
             } else {
-                checkSellerName[item.seller_name + " (user_id: " + item.seller_id +")"] = item.quantity + " " + item.product_name;
+                checkSellerName[item.seller_name + " (id: " + item.seller_id + ", email: " + seller_email + ", phone: " + kitchen_contact + ") "] = item.product_name + product_info;
             }
         });
 
-        var foodie_name = Profile_details.findOne({user_id: Meteor.userId()}).foodie_name,
-            info_buyer = foodie_name + " (email: " + Meteor.user().emails[0].address + ")";
+        var profile_detail = Profile_details.findOne({user_id: Meteor.userId()}),
+            foodie_name = profile_detail.foodie_name,
+            foodies_no = profile_detail.mobile,
+            info_buyer = foodie_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone: " + foodies_no + ")";
 
         for (var chefName in checkSellerName) {
             if (checkSellerName.hasOwnProperty(chefName)) {
                 var message = "blueplate notification: " + info_buyer + " has just placed " + checkSellerName[chefName] + " from " + chefName;
 
-                // console.log("send message: " + message);
                 Meteor.call('message.sms', "+84989549437", message.trim(), (err, res) => {
                   if (!err) {
                     console.log('Message sent');
                   }
                 });
+
+                var content_message = 'Create on ' + new Date().toDateString() + '\n\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + chefName + 
+                                        '\nProduct infor: ' + checkSellerName[chefName];
+
+                // Send email
+                Meteor.call(
+                    'marketing.create_task_asana',
+                    '842212177262810', // task_id to create subtask
+                    'New checkout from: ' + foodie_name,
+                    content_message
+                );
             }
         }
     };
@@ -560,6 +579,7 @@ class ShoppingCart extends Component {
 }
 
 export default withTracker(props => {
+    Meteor.subscribe('userEmail');
     const handle = Meteor.subscribe('getUserShoppingCart');
     var discount = 0;
     return {

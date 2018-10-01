@@ -83,10 +83,12 @@ Template.orders_tracking.helpers({
       }
     }); // END MAP
 
+    var site = document.location.origin + '/orders_tracking';
     for (var phoneNumber in smsList) {
       if (smsList.hasOwnProperty(phoneNumber)) {
           var message = smsList[phoneNumber];
-          message = 'New incoming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you.'
+          message = 'New incomming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you. ' + 
+                    'Please check it out here to confirm their order.' + site;
           Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
             if (!err) {
               // console.log('Message sent');
@@ -368,7 +370,11 @@ Template.pending_confirmation.events({
       'buyer_id': buyer_id,
       'seller_id': seller_id,
       'status': 'Created'
-    })
+    });
+
+    var dish_name = Dishes.findOne({'_id': order.product_id}).dish_name;
+    var product_info = dish_name + " (id: " + order.product_id + ", quantity: "  + order.quantity + ", amount: $" + order.total_price + ")";
+
     var trans_no = parseInt(order.transaction_no)
     var product = Order_record.find({
       'buyer_id': buyer_id,
@@ -427,39 +433,76 @@ Template.pending_confirmation.events({
         seller_id: seller_id
       });
 
-      Meteor.call('message.disableConversation', conversation._id, (err, res) => {
-        if (!err) {
-          // console.log('Disabled conversation');
+      Meteor.call('message.findOne_conversation', buyer_id, seller_id, (error, res) => {
+        if (!error) {
+          Meteor.call('message.disableConversation', res._id, (err, res) => {
+            if (!err) {
+              // console.log('Disabled conversation');
+            }
+            util.hide_loading_progress();
+            // send SMS for cancel
+            var kitchen = Kitchen_details.findOne({user_id: seller_id}),
+                kitchen_phone_number = kitchen.kitchen_contact,
+                countryCode = getCountryCodeFromKitChen(kitchen);
+    
+            kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
+    
+            var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
+            var seller_email = seller_detail.emails[0].address;
+    
+            var profile_detail = Profile_details.findOne({user_id: buyer_id}),
+                buyer_name = profile_detail.foodie_name,
+                chef_message = 'So sorry that ' + buyer_name + ' has just cancelled the order.',
+                buyer_info= buyer_name + " (id: " + buyer_id + ", email: " + Meteor.user().emails[0].address + ", phone no: " + profile_detail.mobile,
+                seller_info = kitchen.chef_name +" (id: " + kitchen._id + ", email: " + seller_email + ", phone no: " + kitchen_phone_number + ")";
+    
+                
+            // Create a task on asana
+            if (location.hostname !== 'localhost') {
+              // Send message to chef
+              Meteor.call('message.sms', kitchen_phone_number, 'Hi Chef! ' + chef_message.trim(), (err, res) => {
+                if (!err) {
+                  // Sent email
+                  Meteor.call(
+                      'requestdish.sendEmail',
+                      kitchen.chef_name + " <" + seller_email + ">",
+                      '', /* @param mail from..... default*/
+                      '', /* @param subject - default*/
+                      'Hi ' + kitchen.chef_name + "," + "\n\n" + chef_message + "\n\n Happy cooking! \n Blueplate"
+                  );
+                }
+              });
+  
+              var foodie_message = 'Your order from ' + kitchen.chef_name + ' has been cancelled. If you are encountering ' + 
+                                  'any difficulties with the ordering process, please contact us.';
+  
+              // Send message to foodies
+              Meteor.call('message.sms', profile_detail.mobile, foodie_message.trim(), (err, res) => {
+                if (!err) {
+                  // Sent email
+                  Meteor.call(
+                      'requestdish.sendEmail',
+                      profile_detail.foodie_name + " <" + profile_detail.email + ">",
+                      '', /* @param mail from..... default*/
+                      '', /* @param subject - default*/
+                      'Hi ' + profile_detail.foodie_name + "," + "\n\n" + foodie_message + "\n\n Best regards,\n Alan Anderson,"
+                  );
+                }
+              });
+      
+              var content_message = 'Cancel on ' + new Date().toDateString() + '\n\nBuyer infor : ' + buyer_info + '\nSeller infor: ' + seller_info + 
+                                    '\nProduct infor: ' + product_info;
+              Meteor.call(
+                  'marketing.create_task_asana',
+                  '842238457733913', // task_id to create subtask
+                  'Cancel order from: ' + buyer_name,
+                  content_message
+              );
+            }
+          })
         }
-        util.hide_loading_progress();
-        // send SMS for cancel
-        var kitchen = Kitchen_details.findOne({user_id: seller_id}),
-            kitchen_phone_number = kitchen.kitchen_contact,
-            countryCode = getCountryCodeFromKitChen(kitchen);
+      });
 
-        kitchen_phone_number = validatePhoneNumber(kitchen_phone_number, countryCode);
-
-        var seller_detail = Meteor.users.findOne({_id: kitchen.user_id});
-        var seller_email = seller_detail.emails[0].address;
-
-        var buyer_name = Profile_details.findOne({user_id: buyer_id}).foodie_name,
-            message = 'Unfortunately, ' + buyer_name + ' has just cancelled the order.';
-
-        Meteor.call('message.sms', kitchen_phone_number, message.trim(), (err, res) => {
-          if (!err) {
-            // console.log('Message sent');
-
-           // Sent email
-           Meteor.call(
-              'requestdish.sendEmail',
-              kitchen.chef_name + " <" + seller_email + ">",
-              '', /* @param mail from..... default*/
-              '', /* @param subject - default*/
-              'Hi ' + kitchen.chef_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
-          );
-          }
-        });
-      })
     }
   },
 })

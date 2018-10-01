@@ -31,13 +31,13 @@ Meteor.methods({
     },
 
     'requestdish.sendEmail'(to, from, subject, text) {
-        from === '' ? from = 'michael.lin@blueplate.co' : from;
+        from === '' ? from = 'account.admin@blueplate.co' : from;
         subject === '' ? subject = 'blueplate.co!' : subject;
         
         check([to, from, subject, text], [String]);
         this.unblock();
         Email.send({ to, from, subject, text });
-        console.log("sent email");
+        console.log("sent email content: " + text);
     },
 
     'requestdish.find_dish_request' (dishId, buyerId) {
