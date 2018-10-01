@@ -622,7 +622,9 @@ Template.request_card.events({
 
     product.forEach(reject_order)
 
+    var arr_product_info = [];
     function reject_order(array_value, index) {
+      util.show_loading_progress();
 
       setTimeout(function () {
         var order = array_value
@@ -639,8 +641,13 @@ Template.request_card.events({
         var price_of_cart = parseFloat(String(order.total_price))
         // console.log(price_of_cart)
 
-        var status = String(order.status)
-        var stripeToken = String(order.stripeToken)
+        var status = String(order.status);
+        var stripeToken = String(order.stripeToken);
+        var dish_name = Dishes.findOne({'_id': product_id}).dish_name;
+        var product_info = dish_name + " (id: " + product_id + ", quantity: "  + quantity + 
+                      ", amount: $" + price_of_cart + ")";
+
+        arr_product_info.push(product_info);
 
 
         //check if transactions inserted already, if yes, just insert the order into array
@@ -666,38 +673,74 @@ Template.request_card.events({
         }
       }, 100 * index)
       Meteor.call('notification.reject_order', seller_id, buyer_id);
+
       // get conversation_id between seller and buyer
-      let conversation = Conversation.findOne({
-        buyer_id: buyer_id,
-        seller_id: seller_id
-      });
-      Meteor.call('message.disableConversation', conversation._id, (err, res) => {
-        if (!err) {
-          // send SMS when reject order
-          var profile_foodies = Profile_details.findOne({ user_id: buyer_id}),
-              foodie_phone_number = profile_foodies.mobile;
-              country_code = getCountryCodeFromProfile(profile_foodies);
-
-          foodie_phone_number = validatePhoneNumber(foodie_phone_number, country_code);
-
-          var seller_name = Kitchen_details.findOne({user_id: seller_id}).chef_name,
-              message = 'Unfortunately, ' + seller_name + ' has just rejected your order.';
-
-          Meteor.call('message.sms', foodie_phone_number, message.trim(), (err, res) => {
+      Meteor.call('message.findOne_conversation', buyer_id, seller_id, (error, res) => {
+        if (!error) {
+          Meteor.call('message.disableConversation', res._id, (err, res) => {
             if (!err) {
-              // console.log('Message sent');
-              // Send email
-              Meteor.call(
-                'requestdish.sendEmail',
-                profile_foodies.first_name + " <" + profile_foodies.email + ">",
-                '', /* @param mail from..... default*/
-                '', /* @param subject - default*/
-                'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
-              );
+              // send SMS when reject order
+              var profile_foodies = Profile_details.findOne({ user_id: buyer_id}),
+                  foodie_phone_number = profile_foodies.mobile;
+                  country_code = getCountryCodeFromProfile(profile_foodies),
+                  buyer_info = profile_foodies.foodie_name + " (id: " + buyer_id + ", email: " + profile_foodies.email + ", phone no: " + foodie_phone_number + ")";
+    
+              foodie_phone_number = validatePhoneNumber(foodie_phone_number, country_code);
+    
+              var kitchen_detail = Kitchen_details.findOne({user_id: seller_id}),
+                  seller_name = kitchen_detail.chef_name,
+                  kitchen_phone_no = kitchen_detail.kitchen_contact
+                  message = 'So sorry that ' + seller_name + ' has just rejected your order.';
+                  
+              var seller_detail = Meteor.users.findOne({_id: seller_id});
+              var seller_email = seller_detail.emails[0].address,
+                  seller_info = seller_name + " (id: " + seller_id + ", email: " + seller_email + ", phone no: " + kitchen_phone_no + ")";
+                  
+
+              // Create a task on asana
+              if (location.hostname !== 'localhost') {
+                setTimeout(() => {
+                  var sProduct_info = '';
+                  arr_product_info.map( (item, index) => {
+                    sProduct_info = sProduct_info + item + ", ";
+                  });
+          
+                  var content_message = 'Reject on ' + new Date().toDateString() + '\n\nBuyer infor : ' + 
+                                        buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
+            
+                  Meteor.call(
+                    'marketing.create_task_asana',
+                    '843954243747685', // task_id to create subtask
+                    'Reject order from: ' + seller_name,
+                    content_message
+                  );
+                  
+                }, 2000);
+
+                // Send message
+                Meteor.call('message.sms', foodie_phone_number, "Hi " + profile_foodies.foodie_name + ", " + message.trim(), (err, res) => {
+                  if (!err) {
+                    // console.log('Message sent');
+                    // Send email
+                    Meteor.call(
+                      'requestdish.sendEmail',
+                      profile_foodies.first_name + " <" + profile_foodies.email + ">",
+                      '', /* @param mail from..... default*/
+                      '', /* @param subject - default*/
+                      'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Best Regard! \n Blueplate"
+                    );
+                  }
+                });
+              }
+              util.hide_loading_progress();
+            } else {
+              util.hide_loading_progress();
             }
-          });
+          })
+        } else {
+          util.hide_loading_progress();
         }
-      })
+      });
     }
   }
 })

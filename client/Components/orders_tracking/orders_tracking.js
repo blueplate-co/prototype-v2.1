@@ -427,12 +427,8 @@ Template.pending_confirmation.events({
       }, 100 * index)
 
       Meteor.call('notification.cancel_order', seller_id, buyer_id);
+      
       // get conversation_id between seller and buyer
-      let conversation = Conversation.findOne({
-        buyer_id: buyer_id,
-        seller_id: seller_id
-      });
-
       Meteor.call('message.findOne_conversation', buyer_id, seller_id, (error, res) => {
         if (!error) {
           Meteor.call('message.disableConversation', res._id, (err, res) => {
