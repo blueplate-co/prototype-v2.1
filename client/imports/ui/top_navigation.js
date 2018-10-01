@@ -445,6 +445,7 @@ class TopNavigation extends Component {
       // Call getCurrentPosition with success and failure callbacks
       navigator.geolocation.getCurrentPosition((position) => {
         // when success
+        Session.set('search_nearby', true);
         Meteor.call('mapping.nearby', position.coords.latitude, position.coords.longitude, 10, (err, res) => {
           if (!err) {
             console.log(res);
@@ -471,7 +472,6 @@ class TopNavigation extends Component {
             Session.set('search_result_origin', result);
             Session.set('list_kitchen_for_map', res);
             FlowRouter.go('/search#all');
-            Session.set('search_nearby', true);
             util.hide_loading_progress();
           } else {
             util.hide_loading_progress();

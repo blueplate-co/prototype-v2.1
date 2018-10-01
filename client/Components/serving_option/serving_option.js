@@ -1,6 +1,8 @@
 import {
   get_checkboxes_value
 } from '/imports/functions/get_checkboxes_value.js';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 Template.serving_option.helpers({
   serving_option_list: [{
@@ -26,7 +28,11 @@ Template.serving_option.events({
 
 Template.serving_option_display.helpers({
   'serving_option_list': function() {
-    return Kitchen_details.findOne({user_id: Meteor.userId()}).serving_option
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      return Kitchen_details.findOne({user_id: getCookie('fake_userid')}).serving_option
+    } else {
+      return Kitchen_details.findOne({user_id: Meteor.userId()}).serving_option
+    }
   }
 });
 

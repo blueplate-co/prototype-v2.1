@@ -15,8 +15,6 @@ import { getCookie } from '/imports/functions/common/promotion_common';
 import { check_admin } from '/imports/functions/common/admin_common';
 
 
-
-
 Template.edit_foodie_profile.helpers({
   'get_foodie_profile': function () {
     return Profile_details.findOne({
@@ -216,7 +214,7 @@ Template.edit_foodie_profile.events({
             if (err) {
               console.log('Error when sync detail from profile');
             } else {
-              Meteor.call('user.updateDistrict', dictrict, (err, res) => {
+              Meteor.call('user.updateDistrict', Meteor.user_id(), dictrict, (err, res) => {
                 if (err) {
                   console.log('Error when update district');
                 } else {
@@ -239,9 +237,14 @@ Template.edit_foodie_profile.events({
 Template.edit_homecook_profile.helpers({
   'get_homecook_profile': function () {
     if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-      return Kitchen_details.findOne({
+      let result = Kitchen_details.findOne({
         'user_id': getCookie('fake_userid')
       });
+      if (result) {
+        return result;
+      } else {
+        Materialize.toast('ADMIN MODE! User in cookie : ' + getCookie('fake_userid') + ' not found kitchen profile.', 4000, 'rounded bp-green');
+      }
     } else {
       return Kitchen_details.findOne({
         'user_id': Meteor.userId()
@@ -263,14 +266,26 @@ Template.edit_homecook_profile.onRendered(function () {
     new google.maps.places.Autocomplete(input);
     // get district for user
     if (Meteor.userId()) {
-      Meteor.call('user.getDistrict', (err, res) => {
-        if (!err) {
-          var district = res;
-          $('#district').val(district);
-        } else {
-          Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
-        }
-      });
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) { //- when have super mode
+        Meteor.call('user.getDistrict', getCookie('fake_userid'), (err, res) => {
+          if (!err) {
+            var district = res;
+            $('#district').val(district);
+          } else {
+            Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+          }
+        });
+      } else {
+        //- no super mode
+        Meteor.call('user.getDistrict', Meteor.userId(), (err, res) => {
+          if (!err) {
+            var district = res;
+            $('#district').val(district);
+          } else {
+            Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+          }
+        });
+      }
     }
     $('#kitchen_contact').intlTelInput({
       initialCountry: "HK",
@@ -288,9 +303,20 @@ Template.edit_homecook_profile.onRendered(function () {
   window.scrollTo(0, 0);
 
   Meteor.setTimeout(function () {
-    var get_homecook_profile = Kitchen_details.findOne({
-      'user_id': Meteor.userId()
-    });
+    if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+      var result = Kitchen_details.findOne({
+        'user_id': getCookie('fake_userid')
+      });
+      if (result) {
+        get_homecook_profile = result;
+      } else {
+        Materialize.toast('ADMIN MODE! User has not kitchen_speciality and kitchen_tags kitchen profile.', 4000, 'rounded bp-green');
+      }
+    } else {
+      var get_homecook_profile = Kitchen_details.findOne({
+        'user_id': Meteor.userId()
+      });
+    }
 
     //activate dropdown
     this.$('select').material_select();
@@ -400,13 +426,7 @@ Template.edit_homecook_profile.events({
             } else {
               user_id = Meteor.userId();
             }
-      
-            if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-              var user_id = getCookie('fake_userid');
-            } else {
-              var user_id = Meteor.userId();
-            }
-            
+
             Meteor.call('kitchen_details.update',
               user_id,
               kitchen_name,
@@ -434,7 +454,7 @@ Template.edit_homecook_profile.events({
                     if (err) {
                       Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
                     } else {
-                      Meteor.call('user.updateDistrict', district, (err, res) => {
+                      Meteor.call('user.updateDistrict', user_id, district, (err, res) => {
                         if (err) {
                           console.log('Error when update district');
                         } else {

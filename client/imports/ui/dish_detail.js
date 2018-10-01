@@ -297,7 +297,7 @@ export class Dish_Detail extends Component {
         if (this.state.action === "orderDish") {
             this.dishOrder();
             // check if have already cookies, create a promotion balance for this user
-            if (getCookie('promotion') !== -1) {
+            if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
                     if (Object.keys(res).length == 0) { // this user not already have promotion before
                         Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {

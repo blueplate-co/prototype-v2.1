@@ -31,9 +31,9 @@ padding: 0px;
 }
 
 #signup_modal {
-  min-height: 585px !important;
+  /* min-height: 585px !important; */
   height: auto !important;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 /* Large desktops and laptops */

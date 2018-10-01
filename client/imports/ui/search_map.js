@@ -37,24 +37,26 @@ export class SearchMap extends Component {
 
   componentWillReceiveProps = () => {
     if (this.props.loaded) {
-      var lat = 0;
-      var lng = 0;
+      var lat = 22.3249546;
+      var lng = 114.1379439;
       if (Session.get('search_nearby')) {
         if( navigator.geolocation ) {
           // Call getCurrentPosition with success and failure callbacks
           navigator.geolocation.getCurrentPosition((position) => {
             lat = position.coords.latitude;
             lng = position.coords.longitude;
+            this.setState({
+              lat: lat,
+              lng: lng
+            });
           });
         }
       } else {
-        lat = 22.3249546;
-        lng = 114.1379439;
+        this.setState({
+          lat: lat,
+          lng: lng
+        });
       }
-      this.setState({
-        lat: lat,
-        lng: lng
-      })
       util.hide_loading_progress();
     }
   }

@@ -5,6 +5,8 @@ import './create_profile.html';
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
+import { getCookie } from '/imports/functions/common/promotion_common';
+import { check_admin } from '/imports/functions/common/admin_common';
 
 profile_images = new FilesCollection({
   collectionName: 'profile_images',
@@ -51,9 +53,15 @@ Template.profile_banner.onCreated(function () {
 Template.profile_banner.onRendered(function () {
   Meteor.setTimeout(function () {
     if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-      var check_profile_banner = Kitchen_details.findOne({
-        "user_id": Meteor.userId()
-      })
+      if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+        var check_profile_banner = Kitchen_details.findOne({
+          "user_id": getCookie('fake_userid')
+        })
+      } else {
+        var check_profile_banner = Kitchen_details.findOne({
+          "user_id": Meteor.userId()
+        })
+      }
     } else {
       var check_profile_banner = Profile_details.findOne({
         "user_id": Meteor.userId()
@@ -238,9 +246,18 @@ Template.upload_profile.helpers({
       return false;
     } else {
       if (FlowRouter.getRouteName() === "Edit Homecook Profile" || FlowRouter.getRouteName() === "Create Homecook Profile") {
-        var profile_id_location = Kitchen_details.findOne({
-          'user_id': Meteor.userId()
-        });
+        if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+          var profile_id_location = Kitchen_details.findOne({
+            'user_id': getCookie('fake_userid')
+          });
+          //- fake_userid set again Session
+          Session.set('profileImg', profile_id_location.profileImg);
+          Session.set('bannerProfileImg', profile_id_location.bannerProfileImg);
+        } else {
+          var profile_id_location = Kitchen_details.findOne({
+            'user_id': Meteor.userId()
+          });
+        }
       } else {
         var profile_id_location = Profile_details.findOne({
           'user_id': Meteor.userId()
