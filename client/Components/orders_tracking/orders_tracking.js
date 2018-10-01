@@ -88,7 +88,7 @@ Template.orders_tracking.helpers({
       if (smsList.hasOwnProperty(phoneNumber)) {
           var message = smsList[phoneNumber];
           message = 'New incomming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you. ' + 
-                    'Please check it out here to confirm their order.' + site;
+                    'Please check it out here to confirm their order. ' + site;
           Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
             if (!err) {
               // console.log('Message sent');
@@ -427,7 +427,7 @@ Template.pending_confirmation.events({
       }, 100 * index)
 
       Meteor.call('notification.cancel_order', seller_id, buyer_id);
-      
+
       // get conversation_id between seller and buyer
       Meteor.call('message.findOne_conversation', buyer_id, seller_id, (error, res) => {
         if (!error) {
