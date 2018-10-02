@@ -294,6 +294,19 @@ export default class SignUp extends Component {
                         });
                     }
                 });
+              } else {
+                //- when have any promotion cookies
+                Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
+                  if (!err) {
+                    self.setState({stage: 4, signUpLoading: false,});
+                    //- create Stripe user id for that user register
+                    Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+                    Meteor.logout(function(err){});
+                  } else {
+                    self.setState({signUpLoading: false});
+                    Bert.alert(err.reason,"danger", "growl-top-right");
+                  }
+                });
               }
             }
           });
