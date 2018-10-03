@@ -206,6 +206,6 @@ body p {
 
 select:focus {
   outline: none;
-  border-radius: 22px !important;
+  /* border-radius: 22px !important; */
   border-color: #26a69a !important;
 }

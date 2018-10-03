@@ -139,9 +139,9 @@ export default class SignUp extends Component {
   }
 
   handleDistrictChange = (event) => {
-    this.setState({
-      district: event.target.value,
-    })
+    this.setState({ district: event.target.value}, () => {
+      $("#district_selection").css("color", "rgba(0, 0, 0)");
+    });
   }
 
   handleDistrictConfirm = () => {
@@ -230,21 +230,21 @@ export default class SignUp extends Component {
     }
 
     //- validating email
-    var validateEmail = function(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    }
+    // var validateEmail = function(email) {
+    //   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   return re.test(email);
+    // }
 
     var email = trimInput(this.state.email);
     var password = trimInput(this.state.password);
     var cpassword = trimInput(this.state.confirmPassword);
-    if (this.state.role == "Chef") {
-      var chef_signup = true;
-      var foodie_signup = false;
-    } else {
-      var chef_signup = false;
-      var foodie_signup = true;
-    }
+    // if (this.state.role == "Chef") {
+    //   var chef_signup = true;
+    //   var foodie_signup = false;
+    // } else {
+    //   var chef_signup = false;
+    //   var foodie_signup = true;
+    // }
     var full_name = trimInput(this.state.fullName);
     var district = trimInput(this.state.district);
     if( isNotEmpty(email)      &&
@@ -253,17 +253,19 @@ export default class SignUp extends Component {
   //      isNotEmpty(first_name) &&
         isEmail(email)         &&
         areValidPassword(password, cpassword)) {
+          util.show_loading_progress();
           Accounts.createUser({
             email: email,
             password: password,
             profile: {
               name: full_name,
-              chef_signup: chef_signup,
-              foodie_signup: foodie_signup,
+              chef_signup: false,
+              foodie_signup: true,
               district: district,
             }
           }, function(err){
             if(err){
+              util.hide_loading_progress();
               self.setState({signUpLoading: false});
               Bert.alert(err.reason,"danger", "growl-top-right");
             } else {
@@ -281,11 +283,13 @@ export default class SignUp extends Component {
                                 console.log('OK');
                                 Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                                   if (!err) {
+                                    util.hide_loading_progress();
                                     self.setState({stage: 4, signUpLoading: false,});
                                     //- create Stripe user id for that user register
                                     Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                                     Meteor.logout(function(err){});
                                   } else {
+                                    util.hide_loading_progress();
                                     self.setState({signUpLoading: false});
                                     Bert.alert(err.reason,"danger", "growl-top-right");
                                   }
@@ -298,11 +302,13 @@ export default class SignUp extends Component {
                 //- when have any promotion cookies
                 Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                   if (!err) {
+                    util.hide_loading_progress();
                     self.setState({stage: 4, signUpLoading: false,});
                     //- create Stripe user id for that user register
                     Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                     Meteor.logout(function(err){});
                   } else {
+                    util.hide_loading_progress();
                     self.setState({signUpLoading: false});
                     Bert.alert(err.reason,"danger", "growl-top-right");
                   }
@@ -328,69 +334,81 @@ export default class SignUp extends Component {
 
   signUpFlow() {
     switch (this.state.stage) {
+      // case 12:
+      //   return (
+      //     <div className = "section">
+      //       <div className = "row">
+      //         <h5 className = "bp-red-text center-align join-food-signup">Thanks for showing your interest to join the food revolution! There are 3 questions we would like to check with you.</h5>
+      //       </div>
+      //       <div className = "row">
+      //         <h3 className = "bp-red-text center-align make-food-signup">Do you love making food, or you rather prefer eating?</h3>
+      //       </div>
+      //       <div className = "row">
+      //         <h5 className = "bp-red-text center-align">I am a</h5>
+      //       </div>
+      //       <div className = "row">
+      //         <div className = "col l6 m6 s6">
+      //           <button className = "btn bp-red marketing_popup_btn right" onClick = {this.handleChooseChef}>chef</button>
+      //         </div>
+      //         <div className = "col l6 m6 s6">
+      //           <button className = "btn bp-red marketing_popup_btn left" onClick = {this.handleChooseFoodie}>foodie</button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )
+      //   break;
+      // case 22:
+      //   return (
+      //     <div className = "container">
+      //       <div className = "row">
+      //         <h5 className = "bp-red-text center-align">2 more questions!</h5>
+      //       </div>
+      //       <div className = "row">
+      //         <h2 className = "bp-red-text center-align district-question-text">Which district do you live in?</h2>
+      //       </div>
+      //       <div className = "row">
+      //         <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={(this.state.district)?this.state.district:""}>
+      //           <option value="">Choose a district</option>
+      //           {
+      //             this.districts.map((item, index) => {
+      //               return (
+      //                 <option key = {index} value = {item.districtName}>{item.districtName}</option>
+      //               )
+      //             })
+      //           }
+      //         </select>
+      //       </div>
+      //       <div className = "row">
+      //         <div className = "col s12 m6 l6 center ">
+      //           <button className = "btn bp-red marketing_popup_btn center-align add-margin-top" onClick = {this.handleDistrictBack}>back</button>
+      //         </div>
+      //         <div className = "col s12 m6 l6 center">
+      //           <button className = "btn bp-red marketing_popup_btn center-align add-margin-top" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )
+      //   break;
       case 1:
         return (
-          <div className = "section">
-            <div className = "row">
-              <h5 className = "bp-red-text center-align join-food-signup">Thanks for showing your interest to join the food revolution! There are 3 questions we would like to check with you.</h5>
-            </div>
-            <div className = "row">
-              <h3 className = "bp-red-text center-align make-food-signup">Do you love making food, or you rather prefer eating?</h3>
-            </div>
-            <div className = "row">
-              <h5 className = "bp-red-text center-align">I am a</h5>
-            </div>
-            <div className = "row">
-              <div className = "col l6 m6 s6">
-                <button className = "btn bp-red marketing_popup_btn right" onClick = {this.handleChooseChef}>chef</button>
-              </div>
-              <div className = "col l6 m6 s6">
-                <button className = "btn bp-red marketing_popup_btn left" onClick = {this.handleChooseFoodie}>foodie</button>
-              </div>
-            </div>
-          </div>
-        )
-        break;
-      case 2:
-        return (
-          <div className = "container">
-            <div className = "row">
-              <h5 className = "bp-red-text center-align">2 more questions!</h5>
-            </div>
-            <div className = "row">
-              <h2 className = "bp-red-text center-align district-question-text">Which district do you live in?</h2>
-            </div>
-            <div className = "row">
-              <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={(this.state.district)?this.state.district:""}>
-                <option value="">Choose a district</option>
-                {
-                  this.districts.map((item, index) => {
-                    return (
-                      <option key = {index} value = {item.districtName}>{item.districtName}</option>
-                    )
-                  })
-                }
-              </select>
-            </div>
-            <div className = "row">
-              <div className = "col s12 m6 l6 center ">
-                <button className = "btn bp-red marketing_popup_btn center-align add-margin-top" onClick = {this.handleDistrictBack}>back</button>
-              </div>
-              <div className = "col s12 m6 l6 center">
-                <button className = "btn bp-red marketing_popup_btn center-align add-margin-top" onClick = {this.handleDistrictConfirm} disabled={(!this.state.district)?true:false}>next</button>
-              </div>
-            </div>
-          </div>
-        )
-        break;
-      case 3:
-        return (
           <div>
-            <h4 className = "bp-red-text">And, the last one!</h4>
+            <h4>Sign up</h4>
             <div className="row">
               <div className="input-field">
                 <input id="signup_full_name" name="fullName" type="text" className="validate" value = {this.state.fullname} onChange = {this.handleFullName} />
                 <label htmlFor="signup_full_name">Full Name</label>
+              </div>
+              <div className = "row">
+                <select ref="dropdown" className="browser-default" id="district_selection" onChange={this.handleDistrictChange} value={(this.state.district)?this.state.district:""}>
+                  <option value="" id="choose-district-text" disabled>Choose a district</option>
+                  {
+                    this.districts.map((item, index) => {
+                      return (
+                        <option key = {index} value = {item.districtName}>{item.districtName}</option>
+                      )
+                    })
+                  }
+                </select>
               </div>
 
               <div className="input-field">
@@ -405,14 +423,15 @@ export default class SignUp extends Component {
                 <input id="signup_cpassword" name="cpassword" type="password" className="validate" value = {this.state.confirmPassword} onChange = {this.confirmPassword}/>
                 <label htmlFor="signup_cpassword">Confirm your Password</label>
               </div>
+              
               <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a>, <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</small></p>
-              <div className = "col l12 m12 s12 center">
+              <div className = "no-padding btn-signup-text col l12 m12 s12 center">
                 <button
                   className="btn bp-red marketing_popup_btn add-margin-top"
                   type="submit"
                   onClick = {this.handleSignUp}
                   disabled = {
-                    (this.state.fullName && this.state.email && this.state.password && this.state.confirmPassword)?
+                    (this.state.fullName && this.state.email && this.state.password && this.state.confirmPassword && this.state.district) ?
                       (this.state.signUpLoading) ?
                         true
                       :
@@ -426,7 +445,7 @@ export default class SignUp extends Component {
           </div>
         )
         break;
-      case 4:
+      case 2:
         return (
           <div className = "container">
             <h5 className = "bp-red-text center-align">Thanks for signing up!</h5>
