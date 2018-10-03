@@ -227,7 +227,24 @@ export default class InfoOrder extends Component {
                 this.scrollToFieldRequired('phone_ordering', 'invalid');
                 Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
                 return false;
-            } 
+            }
+            //- verify the verification code
+            let verification_code = $('#verify_code').val().trim();
+            let full_phonenumber = $('#phone_ordering').val();
+            let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
+            let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
+            Meteor.call('message.verify_verification_number', phone_number, country_code, verification_code, (err, res) => {
+                if (err) {
+                    Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                    return false;
+                } else {
+                    var result = JSON.parse(res.content);
+                    if (!result.success) {
+                        Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                        return false;
+                    }
+                }
+            });
         } 
     //     else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
     //        this.scrollToFieldRequired('address_ordering', 'invalid');
@@ -242,8 +259,31 @@ export default class InfoOrder extends Component {
         util.loginAccession(this.props.path_process + this.props.product_id);
     };
 
+    getCountryCode(input) {
+        // Set default country code to US if no real country code is specified
+        const defaultCountryCode = input.substr(0, 1) !== '+' ? 'US' : null;
+        let formatted = new libphonenumber.asYouType(defaultCountryCode).input(input);
+        let countryCode = '';
+        let withoutCountryCode = formatted;
+
+        if (defaultCountryCode === 'US') {
+            countryCode = '+1';
+            formatted = '+1 ' + formatted;
+        } else {
+            const parts = formatted.split(' ');
+            countryCode = parts.length > 1 ? parts.shift() : '';
+            withoutCountryCode = parts.join(' ');
+        }
+
+        return {
+            formatted,
+            withoutCountryCode,
+            countryCode,
+        }
+    }
+
     generatePassword() {
-        var currDate =  new Date().getTime().toString();
+        var currDate = new Date().getTime().toString();
         var password = currDate.substr(currDate.length - 5);
         for (var i = 0; i < 5; i++) {
             var pw = Math.floor(Math.random() * 35);
@@ -253,7 +293,27 @@ export default class InfoOrder extends Component {
             password += pw;
         }
         return password;
-      }
+    }
+
+    handleSendVerifyCode() {
+        var full_phonenumber = $('#phone_ordering').val();
+        if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
+            Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+        } else {
+            let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
+            let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
+            Meteor.call('message.send_verify_phonenumber_code', phone_number, country_code, (err, res) => {
+                if (err) {
+                    Materialize.toast(err, 4000, 'rounded bp-green');
+                } else {
+                    var result = JSON.parse(res.content);
+                    if (result.success) {
+                        Materialize.toast('The verify code has been sent to your phone. Please check.', 4000, 'rounded bp-green');
+                    }
+                }
+            })
+        }
+    }
 
     render() {
         return (
@@ -275,27 +335,39 @@ export default class InfoOrder extends Component {
                         ''
                         :
                         <span>
-                            <div id="email-distric-display">
-                                <div className="input-field col s6 email_ordering">
+                            <div className="row" id="email-distric-display">
+                                <div className="no-padding input-field col l12 m12 s12 email_ordering">
                                     <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
                                     <label className="active" htmlFor="email_ordering">email</label>
                                 </div>
-                                <div id="district-option">
+                            </div>
+                            <div className="row">
+                                <div className="no-padding input-field col l7 m7 s12">
+                                    <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
+                                    <label className="active" htmlFor="phone_ordering">phone number</label>
+                                </div>
+                                <div className="no-padding input-field col l5 m5 s12">
+                                    <a className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>Send verify code</a>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="no-padding input-field col l5 m5 s12">
+                                    <input id="verify_code" type="text" className="form_field" />
+                                    <label className="active" htmlFor="email_ordering">Verify number</label>
+                                </div>
+                                <div className="col l7 m7 s12" id="district-option">
+                                    <i className="dropdown-arrow material-icons">expand_more</i>
                                     <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
                                         <option value="">Choose a district</option>
                                         {
                                             districts.map((item, index) => {
                                                 return (
-                                                    <option key = {index} value = {item.districtName}>{item.districtName}</option>
+                                                        <option key = {index} value = {item.districtName}>{item.districtName}</option>
                                                     )
                                                 })
                                         }
                                     </select>
                                 </div>
-                            </div>
-                            <div className="input-field col s6">
-                                <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
-                                <label className="active" htmlFor="phone_ordering">phone number</label>
                             </div>
                         </span>
                     }
