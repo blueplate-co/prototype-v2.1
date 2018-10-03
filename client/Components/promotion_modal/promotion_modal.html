@@ -1,0 +1,32 @@
+<template name = "promotion_modal">
+    {{#if currentUser}}
+        <div id="promotion_modal" class="modal">
+            <div class="modal-content">
+                <h4>Congratulation</h4>
+                <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
+                <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="btn modal-close waves-effect waves-green btn-flat" style="width: auto " onClick="location.href = '/'">Collect</a>
+            </div>
+        </div>
+    {{else}}
+        <div id="promotion_modal" class="modal">
+            <div class="modal-content">
+              <h4>Congratulation</h4>
+              <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
+              <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+              <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
+              <p></p>
+              <p>
+                <span>Haven't got account?</span>
+                <a class= "modal-trigger chef_signup" href="#signup_modal"> Sign up</a>
+              </p> 
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="btn modal-close waves-effect waves-green btn-flat" style="width: 'auto'" onClick="util.loginAccession('')" >Login</a>
+            </div>
+        </div>
+    {{/if}}
+</template>
