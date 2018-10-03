@@ -220,6 +220,39 @@ export class Dish_Detail extends Component {
         this.setState({ sumOrder: this.state.sumOrder+1 });
     }
 
+    addDishToLocal() {
+        var localDishs = JSON.parse(localStorage.getItem("localCart"));
+        if (typeof localDishs == "object" && localDishs == null ) {
+            localDishs = [];
+        }
+
+        var oDishCart = {
+            seller_id: this.state.data.user_id,
+            dish_id: this.state.data._id,
+            quantity: this.state.sumOrder
+        };
+
+        if (localDishs != null && localDishs.length > 0) {
+            for (var dish in localDishs) {
+                if (localDishs.hasOwnProperty(dish) && localDishs[dish] == oDishCart) {
+
+                }
+            }
+
+            localDishs.map ( (item, index) => {
+                if (this.state.data._id == item.dish_id) {
+                    item.quantity = item.quantity + this.state.sumOrder;
+                } else {
+                    
+                    localDishs.push(oDishCart);
+                }
+            })
+        } else {
+            localDishs.push(oDishCart);
+        }
+        localStorage.setItem('localCart', JSON.stringify(localDishs));
+    };
+
     dishOrder() {
         util.show_loading_progress();
 
@@ -241,6 +274,14 @@ export class Dish_Detail extends Component {
         //check if the dish has been put in shopping check_shopping_cart
         var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
         var total_price_per_dish = 0;
+
+        // var localCart = [{
+        //     seller_id: this.state.data.user_id,
+        //     dish_id: this.state.data._id,
+        //     quantity: this.state.sumOrder
+        // }];
+        // localStorage.setItem('localCart', JSON.stringify(localCart));
+        this.addDishToLocal();
         
         if (order) {
             var order_id = order._id;
@@ -290,7 +331,7 @@ export class Dish_Detail extends Component {
         }
         setTimeout ( () => {
             util.hide_loading_progress();
-        }, 500);
+        }, 300);
     }
 
     handleOnDishAction() {
