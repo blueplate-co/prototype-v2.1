@@ -232,6 +232,10 @@ export default class InfoOrder extends Component {
             }
             //- verify the verification code
             let verification_code = $('#verify_code').val().trim();
+            if (verification_code.length == 0) {
+                Materialize.toast('Must have verification number.', 4000, 'rounded bp-green');
+                return false;
+            }
             let full_phonenumber = $('#phone_ordering').val();
             let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
             let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
