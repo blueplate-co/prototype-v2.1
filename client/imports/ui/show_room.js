@@ -18,7 +18,6 @@ import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
-import { delete_cookies } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
@@ -60,6 +59,8 @@ class ShowRoom extends Component {
     var url_string = window.location.href; //window.location.href
     var url = new URL(url_string);
     var promotion = url.searchParams.get("promotion");
+    var dish = url.searchParams.get("dish");
+    var kitchen = url.searchParams.get("kitchen");
     // check if already have cookies
     var dc = document.cookie;
     var prefix = "promotion" + "=";
@@ -75,7 +76,7 @@ class ShowRoom extends Component {
                 setTimeout(() => {
                   $('#promotion_modal').modal();
                   $('#promotion_modal').modal('open');
-                }, 1000);
+                }, 2000);
               //- end promotion modal
             }
           });
@@ -282,38 +283,6 @@ class ShowRoom extends Component {
               <KitchenList title="Kitchens" seemore="see all"/>
             </div>
             <Modal menu={this.state.selectedMenu}/>
-            {
-              (Meteor.userId()) ? (
-                <div id="promotion_modal" className="modal">
-                  <div className="modal-content">
-                    <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
-                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
-                    <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
-                  </div>
-                  <div className="modal-footer">
-                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" style={{ width: 'auto' }} onClick={ () => location.href = '/' }>Collect</a>
-                  </div>
-                </div>
-              ) : (
-                <div id="promotion_modal" className="modal">
-                  <div className="modal-content">
-                    <h4>Congratulation</h4>
-                    <p>At blueplate, our chefs make great food we know you’ll love.  We’re so sure of it that we’ll give you $HKD 50 credit to try food from our home chef.</p>
-                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
-                    <p>Don’t wait too long, our offer expires on <b>6 October 2018.</b></p>
-                    <p></p>
-                    <p>
-                      <span>Haven't got account?</span>
-                      <a className= "modal-trigger chef_signup" href="#signup_modal"> Sign up</a>
-                    </p> 
-                  </div>
-                  <div className="modal-footer">
-                    <a href="#!" className="btn modal-close waves-effect waves-green btn-flat" style={{ width: 'auto' }} onClick={ () => util.loginAccession("") } >Login</a>
-                  </div>
-                </div>
-              )
-            }
           </div>
         )
         break;
