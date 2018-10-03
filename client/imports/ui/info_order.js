@@ -10,7 +10,9 @@ export default class InfoOrder extends Component {
         this.state = {
             order_obj: this.props.order_obj,
             foodies_name: Meteor.user() ? Meteor.user().profile.name : "",
-            bHasFoodiesProfile: false
+            bHasFoodiesProfile: false,
+            verification_timing: false,
+            verification_countdown_time: 90
         }
     };
 
@@ -313,6 +315,22 @@ export default class InfoOrder extends Component {
                 }
             })
         }
+        this.setState({
+            verification_timing: true
+        }, () => {
+            //- callback for timing
+            var countdown = setInterval(() => {
+                let currentSeconds = this.state.verification_countdown_time;
+                if (currentSeconds == 0) {
+                    this.setState({ verification_timing: false, verification_countdown_time: 90 });
+                    clearInterval(countdown);
+                } else {
+                    this.setState({
+                        verification_countdown_time: currentSeconds - 1
+                    })
+                }
+            }, 1000);
+        });
     }
 
     render() {
@@ -347,7 +365,18 @@ export default class InfoOrder extends Component {
                                     <label className="active" htmlFor="phone_ordering">phone number</label>
                                 </div>
                                 <div className="no-padding input-field col l5 m5 s12">
-                                    <a className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>Send verify code</a>
+                                    <button disabled={this.state.verification_timing} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
+                                        {
+                                            (!this.state.verification_timing) ?
+                                                'Send verify code'
+                                            :   'Resend in '
+                                        }
+                                        {
+                                            (this.state.verification_timing) ?
+                                                <span className="countdown-time">{this.state.verification_countdown_time}s</span>
+                                            :   ''
+                                        }
+                                    </button>
                                 </div>
                             </div>
                             <div className="row">
