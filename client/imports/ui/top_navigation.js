@@ -432,10 +432,6 @@ class TopNavigation extends Component {
       this.setState({
         avatar: !profile_img ? util.getDefaultFoodiesImage() : profile_img.large
       })
-    } else {
-      this.setState({
-        avatar: "https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/profile-icon.svg"
-      })
     }
   }
 
@@ -604,9 +600,14 @@ class TopNavigation extends Component {
                       :
                       ""
                     }
-                    <li className="icon" onClick={() => this.openProfile()}>
-                      <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
-                    </li>
+                    {
+                      (Meteor.userId()) ?
+                        <li className="icon" onClick={() => this.openProfile()}>
+                          <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
+                        </li>
+                      :
+                        <button id="login-text" className="blue-text" onClick={() => this.openProfile()}>login</button>
+                    }
                   </ul>
                 </div>
               </nav>
