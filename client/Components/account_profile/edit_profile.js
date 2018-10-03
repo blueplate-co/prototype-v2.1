@@ -63,7 +63,7 @@ Template.edit_foodie_profile.onRendered(function () {
     });
     // get district for user
     if (Meteor.userId()) {
-      Meteor.call('user.getDistrict', (err, res) => {
+      Meteor.call('user.getDistrict', Meteor.userId(), (err, res) => {
         if (!err) {
           var district = res;
           $('#district').val(district);
@@ -102,15 +102,17 @@ Template.edit_foodie_profile.onRendered(function () {
     this.$('input#input_text, textarea#about_myself').characterCounter();
 
     //activate checkboxes_recall
-    checkboxes_recall(get_profile.allergy_tags)
-    checkboxes_recall(get_profile.dietary_tags)
+    if (get_profile) {
+      checkboxes_recall(get_profile.allergy_tags)
+      checkboxes_recall(get_profile.dietary_tags)
+      Session.set("allergy_tags", get_profile.allergy_tags)
+      Session.set("dietary_tags", get_profile.dietary_tags)
+      Session.set('home_address_conversion', get_profile.home_address_conversion)
+      Session.set('office_address_conversion', get_profile.office_address_conversion)
+      Session.set('profileImg', get_profile.profileImg)
+      Session.set('bannerProfileImg', get_profile.bannerProfileImg)
+    }
 
-    Session.set("allergy_tags", get_profile.allergy_tags)
-    Session.set("dietary_tags", get_profile.dietary_tags)
-    Session.set('home_address_conversion', get_profile.home_address_conversion)
-    Session.set('office_address_conversion', get_profile.office_address_conversion)
-    Session.set('profileImg', get_profile.profileImg)
-    Session.set('bannerProfileImg', get_profile.bannerProfileImg)
     /*checkboxes_recall(get_profile.serving_option_tags)*/
 
   }, 1500);
@@ -208,13 +210,13 @@ Template.edit_foodie_profile.events({
         if (err) {
           Materialize.toast('Oops! ' + err.message + ' .Please try again.', 4000, 'rounded red lighten-2');
         } else {
-          Materialize.toast('Profile updated!', 4000, "rounded red lighten-2");
+          Materialize.toast('Profile updated!', 4000, "rounded bp-green lighten-2");
           // sync to kitchen profile
           Meteor.call('kitchen_details.syncFromProfile', first_name + ' ' +  last_name, mobile, profileImg, (err, response) => {
             if (err) {
               console.log('Error when sync detail from profile');
             } else {
-              Meteor.call('user.updateDistrict', Meteor.user_id(), dictrict, (err, res) => {
+              Meteor.call('user.updateDistrict', Meteor.userId(), dictrict, (err, res) => {
                 if (err) {
                   console.log('Error when update district');
                 } else {
