@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { HTTP } from 'meteor/http';
 
 Meteor.publish("theConversations", function() {
   return Conversation.find({
@@ -159,5 +160,24 @@ Meteor.methods({
   },
   "message.findOne_conversation"(buyer_id, seller_id) {
     return Conversation.findOne({ buyer_id: buyer_id, seller_id: seller_id });
+  },
+  "message.send_verify_phonenumber_code"(phone_number, country_code) {
+      let url = 'https://api.authy.com/protected/json/phones/verification/start';
+      let options = {
+        headers: { 'X-Authy-API-Key' : 'BpUkLBPlCzBQvWtcTdlDN5JAyhBnvb98' },
+        params: {
+          'via': 'sms',
+          'phone_number': phone_number,
+          'country_code': country_code,
+        }
+      };
+      return HTTP.call('POST', url, options);
+  },
+  "message.verify_verification_number"(phone_number, country_code, verification_code) {
+    let url = `https://api.authy.com/protected/json/phones/verification/check?phone_number=${phone_number}&country_code=${country_code}&verification_code=${verification_code}`;
+    let options = {
+      headers: { 'X-Authy-API-Key' : 'BpUkLBPlCzBQvWtcTdlDN5JAyhBnvb98' }
+    };
+    return HTTP.call('GET', url, options);
   }
 });
