@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class ShoppingCard extends Component {
+export default class ShoppingCart extends Component {
     constructor(props) {
         super(props);
 
