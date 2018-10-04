@@ -12,6 +12,10 @@ Meteor.startup(function () {
   //   libraries: 'places'
   // });
 
+  window.Intercom("boot", {
+    app_id: "x75rust2"
+  });
+
   window.fbAsyncInit = function () {
     FB.init({
       appId: '{your-app-id}',
