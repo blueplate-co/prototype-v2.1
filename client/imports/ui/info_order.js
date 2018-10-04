@@ -12,7 +12,8 @@ export default class InfoOrder extends Component {
             foodies_name: Meteor.user() ? Meteor.user().profile.name : "",
             bHasFoodiesProfile: false,
             verification_timing: false,
-            verification_countdown_time: 90
+            verification_countdown_time: 90,
+            isValidPhone: false
         }
     };
 
@@ -57,6 +58,13 @@ export default class InfoOrder extends Component {
 
         var phone_formated = $('#phone_ordering').intlTelInput("getNumber");
         order_info['phone_ordering'] = phone_formated;
+
+        if (field === 'phone_ordering' && $('#phone_ordering').intlTelInput("isValidNumber")) {
+            this.setState({ isValidPhone: true});
+        } else if (field === 'phone_ordering') {
+            this.setState({ isValidPhone: false});
+        }
+
         this.setState({ order_obj:order_info});
     };
 
@@ -365,12 +373,12 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l7 m12 s12">
+                                <div className="no-padding input-field col l7 m7 s7">
                                     <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
                                     <label className="active" htmlFor="phone_ordering">phone number</label>
                                 </div>
-                                <div className="no-padding input-field col l5 m12 s12">
-                                    <button disabled={this.state.verification_timing} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
+                                <div className="no-padding input-field col l5 m5 s5">
+                                    <button disabled={this.state.verification_timing || !this.state.isValidPhone} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
                                         {
                                             (!this.state.verification_timing) ?
                                                 'Send verify code'
@@ -385,11 +393,11 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l5 m5 s12">
+                                <div className="no-padding input-field col l5 m5 s4">
                                     <input id="verify_code" type="text" className="form_field" />
-                                    <label className="active" htmlFor="email_ordering">Verify number</label>
+                                    <label className="active" htmlFor="email_ordering">Verify code</label>
                                 </div>
-                                <div className="col l7 m7 s12" id="district-option">
+                                <div className="col l7 m7 s8" id="district-option">
                                     <i className="dropdown-arrow material-icons">expand_more</i>
                                     <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
                                         <option value="">Choose a district</option>

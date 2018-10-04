@@ -8,10 +8,10 @@
 }
 
 .verify-btn {
-    width: 100%;
+    width: 92%;
     text-align: center;
-    font-size: 0.9rem;
-    position: relative;
+    font-size: 0.8rem;
+    padding: 1px 6px;
 }
 
 .verify-btn:hover {
@@ -129,12 +129,12 @@
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
     #have-accn-text {
-        /* position: absolute;
-        top: -50px; */
+        position: absolute;
+        top: -50px;
     }
 
     #ordering-popup .get-info {
-        /* height: 70px; */
+        height: 70px;
     }
 
     #ordering-popup.modal-footer {
