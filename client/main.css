@@ -81,9 +81,20 @@ body p {
   border-radius: 0px 0px 10px 10px !important;
 }
 
-.bert-alert {
-  z-index: 2147483005!important;
+/** Display left for chat intercom*/
+#intercom-container .intercom-launcher-frame {
+  left: 20px !important;
 }
+
+#intercom-container .intercom-messenger-frame {
+  left: 20px !important;
+}
+
+#intercom-container .intercom-launcher-discovery-frame {
+  left: 20px !important;
+}
+/** End display left for chat intercom*/
+
 /* modal responsive settings */
 
 /* desktop and above */
