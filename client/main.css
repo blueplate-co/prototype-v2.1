@@ -81,13 +81,8 @@ body p {
   border-radius: 0px 0px 10px 10px !important;
 }
 
-/* Custom for chat.io */
-#chatio-container {
-  left: 0px !important;
-}
-
-#chatio-eye-grabber-container {
-  left: 0px;
+.bert-alert {
+  z-index: 2147483005!important;
 }
 /* modal responsive settings */
 
