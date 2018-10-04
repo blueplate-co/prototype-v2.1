@@ -75,7 +75,7 @@
 .render_component {
   /* overflow-y: scroll; */
   /* overflow-x: hidden; */
-  min-height: 100vh;
+  min-height: 46vh;
   width: 100vw;
 }
 /*

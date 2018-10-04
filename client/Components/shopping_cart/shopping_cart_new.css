@@ -1,0 +1,45 @@
+.shopping-progress-nav {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.cart-progress-step-number {
+    color: #FFFFFF;
+    border-radius: 50%;
+    background-color: #56AACD;
+    margin-top: 0px;
+    width: 10px;
+    text-align: center;
+    padding: 1px 6px;
+    font-size: 18px !important;
+    margin-right: 5px;
+}
+
+.cart-kitchen-detail {
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.29028);
+    border-radius: 4px;
+    height: 57px;
+}
+
+#cart-kitchen-image {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    margin: 10px;
+}
+
+#cart-total-kitchen {
+    margin-right: 20px;
+    padding-top: 20px;
+}
+
+#cart-kitchen-total {
+    margin-right: 25px;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+}
+
+#cart-kitchen-price {
+    font-weight: 600;
+}

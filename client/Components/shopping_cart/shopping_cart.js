@@ -11,7 +11,7 @@ import { search_distinct_in_shopping_cart_seller_specific } from '/imports/funct
 import React from 'react';
 import { render } from 'react-dom';
 
-import ShoppingCart from '../../imports/ui/shopping_cart';
+import ShoppingCart from '../../imports/ui/shopping_cart_new';
 
 
 Template.shopping_cart_card.onRendered(function(){
