@@ -1,0 +1,15 @@
+@media only screen and (max-width: 1024px) {
+    #promotion_modal {
+        padding-top: 45px;
+    }
+    #cancel_promotion {
+        display: block!important;
+        position: absolute;
+        top: 15px;
+        right: 0px;
+    }
+}
+
+#cancel_promotion {
+    display: none;
+}

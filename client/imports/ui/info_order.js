@@ -305,6 +305,7 @@ export default class InfoOrder extends Component {
         var full_phonenumber = $('#phone_ordering').val();
         if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
             Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+            return false;
         } else {
             let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
             let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
@@ -364,11 +365,11 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l7 m7 s12">
+                                <div className="no-padding input-field col l7 m12 s12">
                                     <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
                                     <label className="active" htmlFor="phone_ordering">phone number</label>
                                 </div>
-                                <div className="no-padding input-field col l5 m5 s12">
+                                <div className="no-padding input-field col l5 m12 s12">
                                     <button disabled={this.state.verification_timing} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
                                         {
                                             (!this.state.verification_timing) ?
