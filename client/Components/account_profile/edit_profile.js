@@ -452,21 +452,35 @@ Template.edit_homecook_profile.events({
                 util.hide_loading_progress();
                 if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
                 else {
-                  Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
-                    if (err) {
-                      Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-                    } else {
-                      Meteor.call('user.updateDistrict', user_id, district, (err, res) => {
-                        if (err) {
-                          console.log('Error when update district');
-                        } else {
-                          Session.set('deleted_tags', []);
-                          Materialize.toast('Profile updated!', 4000);
-                          FlowRouter.go('/profile/show_homecook_profile');
-                        }
-                      })
-                    }
-                  });
+                  if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
+                    //- DON'T UPDATE PROFILE WHEN IN SUPER MODE
+                    Meteor.call('user.updateDistrict', user_id, district, (err, res) => {
+                      if (err) {
+                        console.log('Error when update district');
+                      } else {
+                        Session.set('deleted_tags', []);
+                        Materialize.toast('Profile updated!', 4000);
+                        FlowRouter.go('/profile/show_homecook_profile');
+                      }
+                    })
+                  } else {
+                    //- update and sync to profile when not in super mode
+                    Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
+                      if (err) {
+                        Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+                      } else {
+                        Meteor.call('user.updateDistrict', user_id, district, (err, res) => {
+                          if (err) {
+                            console.log('Error when update district');
+                          } else {
+                            Session.set('deleted_tags', []);
+                            Materialize.toast('Profile updated!', 4000);
+                            FlowRouter.go('/profile/show_homecook_profile');
+                          }
+                        })
+                      }
+                    });
+                  }
                 }
               }
             );
