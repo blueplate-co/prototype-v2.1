@@ -1,4 +1,6 @@
-
+.modal {
+    z-index: 2147483001!important;
+}
 #ordering-popup.ordering-popup-infor {
     min-height: 55% !important;
     height: auto !important;
@@ -130,12 +132,12 @@
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
     #have-accn-text {
-        position: absolute;
-        top: -50px;
+        /* position: absolute;
+        top: -50px; */
     }
 
     #ordering-popup .get-info {
-        height: 70px;
+        /* height: 70px; */
     }
 
     #ordering-popup.modal-footer {
