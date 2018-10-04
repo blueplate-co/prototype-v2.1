@@ -232,6 +232,10 @@ export default class InfoOrder extends Component {
             }
             //- verify the verification code
             let verification_code = $('#verify_code').val().trim();
+            if (verification_code.length == 0) {
+                Materialize.toast('Must have verification number.', 4000, 'rounded bp-green');
+                return false;
+            }
             let full_phonenumber = $('#phone_ordering').val();
             let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
             let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
@@ -301,6 +305,7 @@ export default class InfoOrder extends Component {
         var full_phonenumber = $('#phone_ordering').val();
         if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
             Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
+            return false;
         } else {
             let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
             let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
@@ -360,11 +365,11 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l7 m7 s12">
+                                <div className="no-padding input-field col l7 m12 s12">
                                     <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
                                     <label className="active" htmlFor="phone_ordering">phone number</label>
                                 </div>
-                                <div className="no-padding input-field col l5 m5 s12">
+                                <div className="no-padding input-field col l5 m12 s12">
                                     <button disabled={this.state.verification_timing} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
                                         {
                                             (!this.state.verification_timing) ?
@@ -403,9 +408,15 @@ export default class InfoOrder extends Component {
 
                 </div>
                 <div className="modal-footer get-info">
-                    <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
-                    <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleOnCloseOrderInfo()}>close</a>
-                    <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>save</a>
+                    <div className="row">
+                        <div className="col l6 m12 s12">
+                            <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
+                        </div>
+                        <div className="col l6 m12 s12">
+                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleOnCloseOrderInfo()}>close</a>
+                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>save</a>
+                        </div>
+                    </div>
                 </div>
             </div> 
         );
