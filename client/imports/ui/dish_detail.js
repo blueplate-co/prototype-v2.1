@@ -329,54 +329,54 @@ export class Dish_Detail extends Component {
         var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
         var total_price_per_dish = 0;
 
-        this.addDishToLocalCart();
+        // this.addDishToLocalCart();
         
-        // if (order) {
-        //     var order_id = order._id;
-        //     quantity = parseInt(order.quantity) + this.state.sumOrder;
-        //     total_price_per_dish = parseInt(dish_price) * quantity;
-        //     Meteor.call('shopping_cart.update',
-        //         order_id,
-        //         quantity,
-        //         total_price_per_dish,
-        //         function(err) {
-        //             if (err) {
-        //                 Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
-        //             } else {
-        //                 //- send to Facebook Pixel
-        //                 if (location.hostname == 'www.blueplate.co') {
-        //                     fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
-        //                 }                            
-        //                 Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
-        //             }
-        //         }
-        //     )
-        // } else {
-        //     Meteor.call('shopping_cart.insert',
-        //         foodie_id,
-        //         homecook_id,
-        //         foodie_name,
-        //         homecook_name,
-        //         address,
-        //         serving_option,
-        //         ready_time,
-        //         dish_id,
-        //         dish_name,
-        //         quantity,
-        //         dish_price,
-        //         function(err) {
-        //             if (err) {
-        //                 Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
-        //             } else {
-        //                 //- send to Facebook Pixel
-        //                 if (location.hostname == 'www.blueplate.co') {
-        //                     fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
-        //                 }
-        //                 Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
-        //             }
-        //         }
-        //     );
-        // }
+        if (order) {
+            var order_id = order._id;
+            quantity = parseInt(order.quantity) + this.state.sumOrder;
+            total_price_per_dish = parseInt(dish_price) * quantity;
+            Meteor.call('shopping_cart.update',
+                order_id,
+                quantity,
+                total_price_per_dish,
+                function(err) {
+                    if (err) {
+                        Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
+                    } else {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
+                        }                            
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
+                    }
+                }
+            )
+        } else {
+            Meteor.call('shopping_cart.insert',
+                foodie_id,
+                homecook_id,
+                foodie_name,
+                homecook_name,
+                address,
+                serving_option,
+                ready_time,
+                dish_id,
+                dish_name,
+                quantity,
+                dish_price,
+                function(err) {
+                    if (err) {
+                        Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                    } else {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co') {
+                            fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
+                        }
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
+                    }
+                }
+            );
+        }
         setTimeout ( () => {
             util.hide_loading_progress();
         }, 300);
