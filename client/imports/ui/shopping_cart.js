@@ -239,9 +239,12 @@ class ShoppingCart extends Component {
                     }
                 })
             })
+            if (location.hostname !== 'localhost') {
+                this.sendSummaryCheckoutDish();
+            }
+            
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
-                this.sendSummaryCheckoutDish();
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
             FlowRouter.go('/payment');
@@ -480,7 +483,7 @@ class ShoppingCart extends Component {
                 // Send email
                 Meteor.call(
                     'marketing.create_task_asana',
-                    '842212177262810', // task_id to create subtask
+                    '852646733880260', // task_id to create subtask
                     'New checkout from: ' + foodie_name,
                     content_message
                 );

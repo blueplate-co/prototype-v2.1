@@ -476,8 +476,8 @@ Meteor.methods({
         },
         params: {
           workspace: '220725248142233',
-          projects: '548973336354219',
-          assignee: '564872337238154',
+          projects: '846353684118147',
+          assignee: '425646707917578',
           notes: content,
           name: subject
         }

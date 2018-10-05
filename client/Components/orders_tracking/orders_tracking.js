@@ -470,7 +470,8 @@ Template.pending_confirmation.events({
               });
   
               var foodie_message = 'Your order from ' + kitchen.chef_name + ' has been cancelled. If you are encountering ' + 
-                                  'any difficulties with the ordering process, please contact us.';
+                                  'any difficulties with the ordering process, please contact us at account.admin@blueplate.co ' + 
+                                  'or call at +852 9686 8697.';
   
               // Send message to foodies
               Meteor.call('message.sms', profile_detail.mobile, foodie_message.trim(), (err, res) => {
@@ -490,7 +491,7 @@ Template.pending_confirmation.events({
                                     '\nProduct infor: ' + product_info;
               Meteor.call(
                   'marketing.create_task_asana',
-                  '842238457733913', // task_id to create subtask
+                  '852646733880266', // task_id to create subtask
                   'Cancel order from: ' + buyer_name,
                   content_message
               );
