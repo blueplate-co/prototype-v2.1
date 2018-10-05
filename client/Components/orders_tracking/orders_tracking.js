@@ -141,8 +141,11 @@ Template.pending_confirmation.helpers({
     return kitchen.kitchen_name;
   },
   'get_dish_serving': function() {
-    var order = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'})
-    return order.serving_option;
+    var order = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'});
+    if (order) {
+      return order.serving_option;
+    }
+    return null;
   },
   'get_serving_date': function() {
     var time = Order_record.findOne({'seller_id': String(this), 'buyer_id': Meteor.userId(), 'status': 'Created'}).ready_time;
