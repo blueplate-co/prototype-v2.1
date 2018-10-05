@@ -77,11 +77,31 @@ export default class Deposit extends Component {
         })
     }
 
+    getBuyerInfor() {
+        var profile_detail = Profile_details.findOne({user_id: Meteor.userId()}),
+            foodie_name = profile_detail.foodie_name,
+            foodies_no = profile_detail.mobile,
+            info_buyer = foodie_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone: " + foodies_no + ")";
+
+        return info_buyer;
+    };
+
+    getSellerInfor(seller_id) {
+        var kitchen = Kitchen_details.findOne({user_id: seller_id}),
+            kitchen_phone_number = kitchen.kitchen_contact,
+            seller_detail = Meteor.users.findOne({_id: kitchen.user_id}),
+            seller_email = seller_detail.emails[0].address,
+            seller_info = kitchen.chef_name +" (id: " + kitchen._id + ", email: " + seller_email + ", phone no: " + kitchen_phone_number + ")";
+
+        return seller_info;
+    };
+
     validationCardAndCharge() {
         ccNum = $('#card_no').val();
         cvc = $('#cvc_no').val();
         expMo = $('#exp_month').val();
         expYr = $('#exp_year').val();
+        var that = this;
 
         this.setState({
             action: true
@@ -102,6 +122,8 @@ export default class Deposit extends Component {
             } else {
                 var StripeToken = response.id;
                 var transaction_no = 1;
+                var info_buyer = that.getBuyerInfor();
+
                 //- add each every product into order collection
                 var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
                 shoppingCart.map(function(item, index) {
@@ -112,6 +134,7 @@ export default class Deposit extends Component {
                             kitchenOrderInfo = Session.get('product')[i];
                         }
                     }
+                    var seller_info = that.getSellerInfor(kitchenOrderInfo.id);
 
                     var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
                     if (transaction) {
@@ -129,6 +152,21 @@ export default class Deposit extends Component {
                             Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                             Session.clear;
                             Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
+
+                            if (location.hostname !== 'localhost') {
+                                var product_info = item.product_name + " (id: " + item.product_id + ", quantity: "  + item.quantity + ", amount: $" + item.total_price_per_dish + ")";
+                                var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
+                                            '\nProduct infor: ' + product_info;
+    
+                                // Send email
+                                Meteor.call(
+                                    'marketing.create_task_asana',
+                                    '852791235008291', // projects_id to create task
+                                    'Buyer : ' + item.buyer_name,
+                                    content_message
+                                );
+                            }
+                            
                             FlowRouter.go('/orders_tracking');
                         }
                     })
