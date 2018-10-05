@@ -477,14 +477,14 @@ class ShoppingCart extends Component {
                   }
                 });
 
-                var content_message = 'Create on ' + new Date().toDateString() + '\n\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + chefName + 
+                var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + chefName + 
                                         '\nProduct infor: ' + checkSellerName[chefName];
 
                 // Send email
                 Meteor.call(
                     'marketing.create_task_asana',
-                    '852646733880260', // task_id to create subtask
-                    'New checkout from: ' + foodie_name,
+                    '852791235008277', // projects_id to create task
+                    'Buyer : ' + foodie_name,
                     content_message
                 );
             }

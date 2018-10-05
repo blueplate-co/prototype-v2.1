@@ -487,12 +487,12 @@ Template.pending_confirmation.events({
                 }
               });
       
-              var content_message = 'Cancel on ' + new Date().toDateString() + '\n\nBuyer infor : ' + buyer_info + '\nSeller infor: ' + seller_info + 
+              var content_message = '\nBuyer infor : ' + buyer_info + '\nSeller infor: ' + seller_info + 
                                     '\nProduct infor: ' + product_info;
               Meteor.call(
                   'marketing.create_task_asana',
-                  '852646733880266', // task_id to create subtask
-                  'Cancel order from: ' + buyer_name,
+                  '852791235008285', // projects_id to create task
+                  'Cancel: ' + buyer_name,
                   content_message
               );
             }

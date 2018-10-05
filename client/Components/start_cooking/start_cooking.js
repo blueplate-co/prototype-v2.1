@@ -518,13 +518,13 @@ Template.request_card.events({
             sProduct_info = sProduct_info + item + ", ";
           });
   
-          var content_message = 'Confirm on ' + new Date().toDateString() + '\n\nBuyer infor : ' + 
+          var content_message = '\nBuyer infor : ' + 
                                 buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
     
           Meteor.call(
             'marketing.create_task_asana',
-            '852646733880264', // task_id to create subtask
-            'Confirm order from: ' + seller_name,
+            '852791235008282', // projects_id to create task
+            'Confirm Chef: ' + seller_name,
             content_message
           );
           
@@ -707,13 +707,13 @@ Template.request_card.events({
                     sProduct_info = sProduct_info + item + ", ";
                   });
           
-                  var content_message = 'Reject on ' + new Date().toDateString() + '\n\nBuyer infor : ' + 
+                  var content_message = '\nBuyer infor : ' + 
                                         buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
             
                   Meteor.call(
                     'marketing.create_task_asana',
-                    '852646733880268', // task_id to create subtask
-                    'Reject order from: ' + seller_name,
+                    '852791235008288', // projects_id to create task
+                    'Reject Chef: ' + seller_name,
                     content_message
                   );
                   

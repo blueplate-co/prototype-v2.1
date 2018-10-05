@@ -467,19 +467,19 @@ Meteor.methods({
         }
     });
   },
-  'marketing.create_task_asana'(task_id, subject, content) {
-    var sUrl = "https://app.asana.com/api/1.0/tasks/" + task_id + "/subtasks";
+  'marketing.create_task_asana'(projects_id, subject, content) {
+    var sUrl = "https://app.asana.com/api/1.0/tasks";
     var options = {
         headers: { 
-          Authorization:'Bearer 0/5cd8b332871a5cd9ffb10afab6128186',
+          Authorization:'Bearer 0/8470c0ad0fedc326b75feb7a639575f7',
           // 'Content-Type': 'application/json'
         },
         params: {
           workspace: '220725248142233',
-          projects: '846353684118147',
+          projects: projects_id,
           assignee: '425646707917578',
           notes: content,
-          name: subject
+          name: subject + ' ' + moment().format("DD MMM YYYY, h:mm:ss a")
         }
     }; 
     try {
