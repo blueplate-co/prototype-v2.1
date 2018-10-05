@@ -98,7 +98,7 @@ export default class InfoOrder extends Component {
         this.state.foodies_name !== undefined && this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
         
         if (!this.validateInforOrdering(ordering_info)) {
-            return;
+            return false;
         }
         util.show_loading_progress();
         this.createFoodiesName(this.state.order_obj.name_ordering);
@@ -250,12 +250,16 @@ export default class InfoOrder extends Component {
             Meteor.call('message.verify_verification_number', phone_number, country_code, verification_code, (err, res) => {
                 if (err) {
                     Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                    util.hide_loading_progress();
                     return false;
                 } else {
                     var result = JSON.parse(res.content);
                     if (!result.success) {
                         Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                        util.hide_loading_progress();
                         return false;
+                    } else {
+                        return true;
                     }
                 }
             });
@@ -265,7 +269,6 @@ export default class InfoOrder extends Component {
     //        Materialize.toast('Please select correct address!', 4000, 'rounded bp-green');
     //        return false;
     //    }
-        return true;
     };
 
     handleLogin() {
@@ -320,10 +323,13 @@ export default class InfoOrder extends Component {
             Meteor.call('message.send_verify_phonenumber_code', phone_number, country_code, (err, res) => {
                 if (err) {
                     Materialize.toast(err, 4000, 'rounded bp-green');
+                    return false;
                 } else {
                     var result = JSON.parse(res.content);
                     if (result.success) {
                         Materialize.toast('The verify code has been sent to your phone. Please check.', 4000, 'rounded bp-green');
+                    } else {
+                        return false;
                     }
                 }
             })
