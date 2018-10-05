@@ -93,6 +93,9 @@ body p {
 #intercom-container .intercom-launcher-discovery-frame {
   left: 20px !important;
 }
+#intercom-container .intercom-borderless-frame {
+  left: 20px !important;
+}
 /** End display left for chat intercom*/
 
 /* modal responsive settings */
