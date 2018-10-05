@@ -53,7 +53,7 @@ const ShowroomBanner = props => {
           <div className = "card-content">
             <h6>Hey Chef, you've already started!</h6>
             <p><bold>Why not finish setting up your kitchen and enjoy our promotion of</bold></p>
-            <h4 className = "bp-blue-text" style = {bannerStyle.promo_title}>HK$200 cash reward</h4>
+            <h4 className = "bp-blue-text" style = {bannerStyle.promo_title}>HK$200 credit reward</h4>
             <p>for every 4 dishes listed</p>
             <button className = "btn left" style = {bannerStyle.banner_button} onClick={handleClick}>continue</button>
           </div>
@@ -61,7 +61,7 @@ const ShowroomBanner = props => {
           <div className = "card-content">
             <h6>Hey Chef,</h6>
             <h6>Setting up your kitchen and enjoy our promotion of</h6>
-            <h4 className = "bp-blue-text" style = {bannerStyle.promo_title}>HK$200 cash reward</h4>
+            <h4 className = "bp-blue-text" style = {bannerStyle.promo_title}>HK$200 credit reward</h4>
             <p>for every 4 dishes listed</p>
             <button className = "btn left" style = {bannerStyle.banner_button} onClick={handleClick}>start now</button>
           </div>
