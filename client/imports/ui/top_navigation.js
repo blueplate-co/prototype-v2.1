@@ -606,7 +606,7 @@ class TopNavigation extends Component {
                           <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
                         </li>
                       :
-                        <button id="login-text" className="bp-blue-text" onClick={() => this.openProfile()}>login</button>
+                        <a id="login-text" href="#signup_modal" className="bp-blue-text">sign up</a>
                     }
                   </ul>
                 </div>

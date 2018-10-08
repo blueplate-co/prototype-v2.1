@@ -675,13 +675,13 @@ nav ul.left {
   }
 } */
 
-button#login-text {
+a#login-text {
   background-color: #FFF;
   border: none;
   font-weight: 500;
 }
 
-button#login-text:before {
+a#login-text:before {
   content:'';
 	position: absolute;
 	top: 23px;
@@ -693,7 +693,11 @@ button#login-text:before {
 	transition: all 0.3s ease;
 }
 
-button#login-text:hover:before {
-  width: 52px;
+a#login-text:hover:before {
+  width: 70px;
   margin-left: -6px;
+}
+
+.login-accn:hover {
+  cursor: pointer;
 }

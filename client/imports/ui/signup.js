@@ -332,6 +332,11 @@ export default class SignUp extends Component {
     });
   }
 
+  handleBackandleOnLogin = () => {
+    $('#signup_modal').modal('close');
+    $('#login_modal').modal('open');
+  };
+
   signUpFlow() {
     switch (this.state.stage) {
       // case 12:
@@ -424,6 +429,7 @@ export default class SignUp extends Component {
                 <label htmlFor="signup_cpassword">Confirm your Password</label>
               </div>
               
+              <p>Already have account? <span className="bp-blue-text login-accn" onClick={ () => this.handleBackandleOnLogin()}>Login</span></p> <br />
               <p><small>By submitting your email and password, you have agreed our website <a href="#">terms of use</a>, <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</small></p>
               <div className = "no-padding btn-signup-text col l12 m12 s12 center">
                 <button
