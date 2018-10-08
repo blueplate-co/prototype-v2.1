@@ -239,14 +239,9 @@ Template.edit_foodie_profile.events({
 Template.edit_homecook_profile.helpers({
   'get_homecook_profile': function () {
     if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-      let result = Kitchen_details.findOne({
+      return result = Kitchen_details.findOne({
         'user_id': getCookie('fake_userid')
       });
-      if (result) {
-        return result;
-      } else {
-        Materialize.toast('ADMIN MODE! User in cookie : ' + getCookie('fake_userid') + ' not found kitchen profile.', 4000, 'rounded bp-green');
-      }
     } else {
       return Kitchen_details.findOne({
         'user_id': Meteor.userId()
@@ -428,7 +423,6 @@ Template.edit_homecook_profile.events({
             } else {
               user_id = Meteor.userId();
             }
-
             Meteor.call('kitchen_details.update',
               user_id,
               kitchen_name,
@@ -453,7 +447,7 @@ Template.edit_homecook_profile.events({
                 if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
                 else {
                   if (getCookie('fake_userid') && check_admin(Meteor.userId())) {
-                    //- DON'T UPDATE PROFILE WHEN IN SUPER MODE
+                    //- DON'T UPDATE SYNC PROFILE WHEN IN SUPER MODE
                     Meteor.call('user.updateDistrict', user_id, district, (err, res) => {
                       if (err) {
                         console.log('Error when update district');
