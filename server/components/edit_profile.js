@@ -160,7 +160,7 @@ Meteor.methods({
       })
     }else{
       Kitchen_details.update({
-        user_id: Meteor.userId()
+        user_id: user_id
       }, {
         $set: {
           kitchen_name:kitchen_name,
