@@ -49,12 +49,12 @@ export default class InfoOrder extends Component {
 
         if (field === 'email_ordering') {
             if (!util.validationEmail(ev.target.value.trim())) {
-                $('#' + field).addClass('invalid');
+                $('#email').addClass('invalid');
             } else {
-                $('#' + field).removeClass('invalid');
+                $('#email').removeClass('invalid');
             }
         }
-        order_info[field] = ev.target.value;
+        order_info[field] = ev.target.value.trim();
 
         var phone_formated = $('#phone_ordering').intlTelInput("getNumber");
         order_info['phone_ordering'] = phone_formated;
