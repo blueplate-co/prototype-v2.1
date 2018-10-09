@@ -92,25 +92,52 @@ export default class InfoOrder extends Component {
     };
 
     handleOnSaveOrderingInfo() {
+        util.show_loading_progress();
         var ordering_info = this.state.order_obj;
         var password = this.generatePassword();
 
         this.state.foodies_name !== undefined && this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
-        
-        if (!this.validateInforOrdering(ordering_info)) {
+        //- validation about phone number before
+        let full_phonenumber = $('#phone_ordering').val();
+        let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
+        let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
+        //- verify the verification code
+        let verification_code = $('#verify_code').val().replace(/ /g, '');
+        if (verification_code.length !== 4 || isNaN(parseInt(verification_code))) { // length must = 4 and 4 number
+            Materialize.toast('Must have right format verification number.', 4000, 'rounded bp-green');
+            util.hide_loading_progress();
             return false;
         }
-        util.show_loading_progress();
-        this.createFoodiesName(this.state.order_obj.name_ordering);
-
-        /**
-         * If don't have account, will create new account
-         */
-        if (!Meteor.userId()) {
-            this.createUserInfo(ordering_info, password);
-        }
-        
-        this.handleFoodiesProfile(ordering_info);
+        Meteor.call('message.verify_verification_number', phone_number, country_code, verification_code, (err, res) => {
+            if (err) {
+                Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                util.hide_loading_progress();
+                return false;
+            } else {
+                var result = JSON.parse(res.content);
+                if (!result.success) {
+                    Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                    util.hide_loading_progress();
+                    return false;
+                } else {
+                    //- CONTINOUS RUN STEP BY STEP
+                    if (!this.validateInforOrdering(ordering_info)) {
+                        return false;
+                    }
+                    util.show_loading_progress();
+                    this.createFoodiesName(this.state.order_obj.name_ordering);
+            
+                    /**
+                     * If don't have account, will create new account
+                     */
+                    if (!Meteor.userId()) {
+                        this.createUserInfo(ordering_info, password);
+                    }
+                    
+                    this.handleFoodiesProfile(ordering_info);
+                }
+            }
+        });
     };
 
     /**
@@ -238,31 +265,7 @@ export default class InfoOrder extends Component {
                 Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
                 return false;
             }
-            //- verify the verification code
-            let verification_code = $('#verify_code').val().trim();
-            if (verification_code.length == 0) {
-                Materialize.toast('Must have verification number.', 4000, 'rounded bp-green');
-                return false;
-            }
-            let full_phonenumber = $('#phone_ordering').val();
-            let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
-            let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
-            Meteor.call('message.verify_verification_number', phone_number, country_code, verification_code, (err, res) => {
-                if (err) {
-                    Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
-                    util.hide_loading_progress();
-                    return false;
-                } else {
-                    var result = JSON.parse(res.content);
-                    if (!result.success) {
-                        Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
-                        util.hide_loading_progress();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            });
+            return true;
         } 
     //     else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
     //        this.scrollToFieldRequired('address_ordering', 'invalid');
