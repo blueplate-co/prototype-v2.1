@@ -491,10 +491,10 @@ class TopNavigation extends Component {
       if (err) {
         var stripebalance = 0;
       } else {
-        var stripebalance = parseFloat(res.account_balance / 100).toFixed(2);
+        var stripebalance = parseFloat(res.account_balance / 100);
       }
       Meteor.call('payment.getCredits', (err, res) => {
-        credits = parseFloat(parseFloat(res) + parseFloat(stripebalance)).toFixed(2);
+        credits = res + stripebalance;
         var promotion_credits = 0;
         Meteor.call('promotion.check_history', (err, res) => {
           if (Object.keys(res).length > 0) {
@@ -509,6 +509,10 @@ class TopNavigation extends Component {
                 credits: (parseFloat(credits.toString())).toFixed(2)
               });
             }
+          } else {
+            this.setState({
+              credits: credits
+            });
           }
         });
       });
