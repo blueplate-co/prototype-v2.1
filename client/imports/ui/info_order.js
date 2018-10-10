@@ -317,6 +317,9 @@ export default class InfoOrder extends Component {
 
     handleSendVerifyCode() {
         var full_phonenumber = $('#phone_ordering').val();
+        if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish') {
+            fbq('trackCustom', 'clickVerifyPhoneNumberButton', { content_ids: Meteor.userId(), phone_number: full_phonenumber });
+        }
         if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
             Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
             return false;

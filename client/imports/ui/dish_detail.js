@@ -414,6 +414,9 @@ export class Dish_Detail extends Component {
         if (Meteor.userId()) {
             // logged in with user_id, email
             this.setState({ action: actionFoodies}, () => {
+                if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish') {
+                    fbq('trackCustom', 'clickOrderButton', { content_ids: Meteor.userId() });
+                }
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
                 if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
                     util.hide_loading_progress();
