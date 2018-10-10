@@ -11,10 +11,12 @@ Meteor.startup(function () {
   //   language: 'en',
   //   libraries: 'places'
   // });
-  
-  window.Intercom("boot", {
-    app_id: "x75rust2"
-  });
+  //- when no user activate intercom chat, boot it again
+  if (!Intercom.booted) {
+    window.Intercom("boot", {
+      app_id: "x75rust2"
+    });
+  }
 
   window.fbAsyncInit = function () {
     FB.init({
