@@ -12,7 +12,7 @@ export default class InfoOrder extends Component {
             foodies_name: Meteor.user() ? Meteor.user().profile.name : "",
             bHasFoodiesProfile: false,
             verification_timing: false,
-            verification_countdown_time: 90,
+            verification_countdown_time: 30,
             isValidPhone: false
         }
     };
