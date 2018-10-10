@@ -20,25 +20,32 @@ i.remove_button {
   padding-top: 8px;
 }
 
+.subtotal-text, .total-text {
+  color: #727272;
+  font-weight: bold;
+  padding-top: 2px;
+}
 
 .kitchen-name {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  padding: 15px 15px;
+  padding: 17px;
   display: block;
   position: relative;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.29028);
+  border-radius: 5px;
+  background-color: #fafafa;
 }
 
 .kitchen-name .chef-avatar-container {
   top: 6px;
-  right: 10px;
+  left: 10px;
 }
 
 .detail-product {
-  border-bottom: 2px solid #ccc;
-  padding: 20px 20px;
+  padding: 10px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.155995);
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
 .detail-product .detail-title {
@@ -51,10 +58,9 @@ i.remove_button {
 
 .detail-product .detail-price {
   display: block;
-  padding-left: 20px;
+  padding-left: 10px;
   color: #56aacd;
-  font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .detail-product .detail-old-price {
@@ -92,12 +98,12 @@ i.remove_button {
 }
 
 .detail-product .quantity-control span {
-  margin: 0px 10px;
+  margin: 0px 5px;
   font-size: 18px;
 }
 
 .detail-product .quantity-control span:last-child {
-  margin: 0px 0px 0px 10px;
+  margin: 0px 0px 0px 5px;
   cursor: pointer;
 }
 
@@ -106,8 +112,8 @@ i.remove_button {
 }
 
 .subtotal {
+  float: right;
   font-size: 16px;
-  margin: 10px 0px 30px 0px;
 }
 
 .discount {
@@ -175,4 +181,120 @@ i.remove_button {
 
 .detail-title {
   width: fit-content;
+  color: rgba(0, 0, 0, 0.87);
+  opacity: 0.87;
+}
+
+.dropdown-arrow-cart {
+  position: absolute;
+  right: 10px;
+  bottom: -35px;
+}
+
+.drop-arrow-cart {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  font-size: 22px;
+}
+
+.location-address {
+  top: 10px;
+}
+
+.time-cart, .service-option-cart {
+  position: relative;
+}
+
+.time-cart-icon {
+  position: absolute;
+  top: 12px;
+  left: -13px;
+}
+
+.rc-time-picker {
+  width: 87% !important;
+  margin-left: 16px;
+}
+
+.drop-down-servicing {
+  margin-left: 25px; 
+  width: 82%;
+}
+
+.service-option-icon {
+  position: absolute;
+  top: 10px;
+  left: -13px;
+}
+
+.icon-position-common {
+  margin-left: -27px !important;
+}
+
+.icon-cart-format {
+  color: #727272;
+  opacity: 0.87;
+}
+
+.chef-name-text {
+  margin-left: 60px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.quantity-icon-format {
+  color: #727272;
+}
+
+.display-on-phone {
+  display: none;
+}
+
+.display-on-web {
+  display: block;
+}
+
+.display-on-device-step {
+  display: block;
+  padding-top: 0px;
+  opacity: 0.4 !important;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+  .rc-time-picker {
+    width: 91% !important;
+  }
+
+  .drop-down-servicing {
+    width: 87%;
+  }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 640px) {
+  .rc-time-picker {
+    width: 91% !important;
+  }
+
+  .display-on-phone {
+    display: block;
+    margin: -5px 0px 45px 0px;
+    float: none;
+    font-weight: bold;
+    font-size: 17px;
+  }
+
+  .display-on-web {
+    display: none;
+  }
+
+  .display-on-device-step {
+    display: none;
+  }
+
+  .step-progress {
+    margin-top: 30px;
+    margin-bottom: 0px;
+  }
 }
