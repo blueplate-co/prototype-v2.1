@@ -56,4 +56,9 @@
   <script async src="/client/tipso.min.js" type="text/javascript"></script>
   <script async src="/client/Components/intlTelInput/intlTelInput.min.js" type="text/javascript"></script>
   {{> Template.dynamic template = main}} {{> notifications}}
+  <script async>
+    window.Intercom("boot", {
+      app_id: "x75rust2"
+    });
+  </script>
 </body>

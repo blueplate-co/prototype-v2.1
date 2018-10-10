@@ -1,6 +1,6 @@
 import {
   Accounts
-} from 'meteor/accounts-base'
+} from 'meteor/accounts-base';
 
 Meteor.startup(function () {
   Notification.requestPermission()
@@ -11,7 +11,7 @@ Meteor.startup(function () {
   //   language: 'en',
   //   libraries: 'places'
   // });
-
+  
   window.Intercom("boot", {
     app_id: "x75rust2"
   });
