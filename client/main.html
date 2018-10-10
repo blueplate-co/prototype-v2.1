@@ -1,5 +1,5 @@
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&amp;subset=vietnamese" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&amp;subset=vietnamese" rel="stylesheet"> -->
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -10,10 +10,10 @@
   -->
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac&libraries=places"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac&libraries=places"></script>
   <!-- Facebook Pixel Code -->
-  <script>
+  <!-- <script async>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -30,7 +30,7 @@
   /></noscript>
   <!-- End Facebook Pixel Code -->
   <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
+  <script async>(function (w, d, s, l, i) {
       w[l] = w[l] || []; w[l].push({
         'gtm.start':
           new Date().getTime(), event: 'gtm.js'
@@ -40,9 +40,9 @@
     })(window, document, 'script', 'dataLayer', 'GTM-59ZQ9NL');</script>
   <!-- End Google Tag Manager -->
   <!-- CDN library for detect country code -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/0.4.27/libphonenumber-js.min.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/0.4.27/libphonenumber-js.min.js"></script>
   <!-- Intercom messaging -->
-  <script>
+  <script async>
     (function(){var w=window;var ic=w.Intercom;if(typeof
     ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var
     i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var
@@ -53,7 +53,12 @@
 </head>
 
 <body>
-  <script src="/client/tipso.min.js" type="text/javascript"></script>
-  <script src="/client/Components/intlTelInput/intlTelInput.min.js" type="text/javascript"></script>
+  <script async src="/client/tipso.min.js" type="text/javascript"></script>
+  <script async src="/client/Components/intlTelInput/intlTelInput.min.js" type="text/javascript"></script>
   {{> Template.dynamic template = main}} {{> notifications}}
+  <script async>
+    window.Intercom("boot", {
+      app_id: "x75rust2"
+    });
+  </script>
 </body>

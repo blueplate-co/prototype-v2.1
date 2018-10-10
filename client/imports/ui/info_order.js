@@ -12,7 +12,7 @@ export default class InfoOrder extends Component {
             foodies_name: Meteor.user() ? Meteor.user().profile.name : "",
             bHasFoodiesProfile: false,
             verification_timing: false,
-            verification_countdown_time: 90,
+            verification_countdown_time: 30,
             isValidPhone: false
         }
     };
@@ -122,6 +122,7 @@ export default class InfoOrder extends Component {
                 } else {
                     //- CONTINOUS RUN STEP BY STEP
                     if (!this.validateInforOrdering(ordering_info)) {
+                        util.hide_loading_progress();
                         return false;
                     }
                     util.show_loading_progress();
@@ -135,6 +136,7 @@ export default class InfoOrder extends Component {
                     }
                     
                     this.handleFoodiesProfile(ordering_info);
+                    util.hide_loading_progress();
                 }
             }
         });
@@ -317,6 +319,9 @@ export default class InfoOrder extends Component {
 
     handleSendVerifyCode() {
         var full_phonenumber = $('#phone_ordering').val();
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('trackCustom', 'clickVerifyPhoneNumberButton', { content_ids: Meteor.userId(), phone_number: full_phonenumber });
+        }
         if (!$('#phone_ordering').intlTelInput("isValidNumber")) {
             Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
             return false;
@@ -344,7 +349,7 @@ export default class InfoOrder extends Component {
             var countdown = setInterval(() => {
                 let currentSeconds = this.state.verification_countdown_time;
                 if (currentSeconds == 0) {
-                    this.setState({ verification_timing: false, verification_countdown_time: 90 });
+                    this.setState({ verification_timing: false, verification_countdown_time: 30 });
                     clearInterval(countdown);
                 } else {
                     this.setState({

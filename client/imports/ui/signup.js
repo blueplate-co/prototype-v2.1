@@ -280,13 +280,14 @@ export default class SignUp extends Component {
                         Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
                             if (!err) {
                                 delete_cookies('promotion');
-                                console.log('OK');
                                 Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                                   if (!err) {
                                     util.hide_loading_progress();
-                                    self.setState({stage: 4, signUpLoading: false,});
+                                    self.setState({signUpLoading: false});
                                     //- create Stripe user id for that user register
                                     Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+                                    $('#signup_modal').modal('close');
+                                    Materialize.toast('Signup successful.', 4000, 'rounded bp-green');
                                     Meteor.logout(function(err){});
                                   } else {
                                     util.hide_loading_progress();
@@ -303,10 +304,12 @@ export default class SignUp extends Component {
                 Meteor.call('sendVerificationEmail', Meteor.userId(),function(err, response) {
                   if (!err) {
                     util.hide_loading_progress();
-                    self.setState({stage: 4, signUpLoading: false,});
+                    self.setState({signUpLoading: false});
                     //- create Stripe user id for that user register
                     Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
                     Meteor.logout(function(err){});
+                    $('#signup_modal').modal('close');
+                    Materialize.toast('Signup successful.', 4000, 'rounded bp-green');
                   } else {
                     util.hide_loading_progress();
                     self.setState({signUpLoading: false});
