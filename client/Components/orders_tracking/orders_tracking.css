@@ -1,0 +1,11 @@
+.tabs .tab {
+    text-transform: lowercase;
+}
+
+.tabs .tab a {
+    font-size: 17px !important;
+}
+
+.tabs .indicator {
+    background-color:#0000008f !important;
+}

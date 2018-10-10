@@ -20,12 +20,6 @@ i.remove_button {
   padding-top: 8px;
 }
 
-.subtotal-text, .total-text {
-  color: #727272;
-  font-weight: bold;
-  padding-top: 2px;
-}
-
 .kitchen-name {
   padding: 17px;
   display: block;
@@ -48,19 +42,21 @@ i.remove_button {
   margin-bottom: 10px;
 }
 
+.detail-image-product {
+  margin-left: -6px !important;
+}
+
 .detail-product .detail-title {
   font-size: 16px;
   display: block;
   padding-top: 7px;
-  padding-left: 20px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .detail-product .detail-price {
   display: block;
-  padding-left: 10px;
   color: #56aacd;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .detail-product .detail-old-price {
@@ -111,19 +107,15 @@ i.remove_button {
   cursor: pointer;
 }
 
-.subtotal {
-  float: right;
-  font-size: 16px;
-}
-
-.discount {
-  font-size: 16px;
+.discount, .subtotal {
+  font-size: 14px;
   margin: 0px;
+  font-weight: 500;
 }
 
 .total {
-  font-size: 25px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .no-background .rc-time-picker input {
@@ -138,24 +130,20 @@ i.remove_button {
 }
 
 .btn.checkout {
-  min-width: 30%;
-  max-width: 50%;
-  background: #fff;
-  box-shadow: none;
-  border: 1px solid #56AACD!important;
-  color: #56AACD!important;
-  margin: 20px 0px;
+  background-color: #56AACD;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 30px;
+  width: 150px;
 }
 
-.btn.checkout:disabled {
-  min-width: 30%;
-  max-width: 50%;
-  background-color: #fff!important;
-  box-shadow: none;
-  border: 1px solid #d0e7f1!important;
-  color: #d0e7f1!important;
-  margin: 20px 0px;
+.no-charge-money {
+  color: #727272;
+  margin-top: 10px;
 }
+
 
 @media only screen and (max-width: 600px) {
   .detail-product .detail-title {
@@ -220,12 +208,17 @@ i.remove_button {
 .drop-down-servicing {
   margin-left: 25px; 
   width: 82%;
+  color: #c6c6c6;
 }
 
 .service-option-icon {
+  width: 29px;
   position: absolute;
   top: 10px;
   left: -13px;
+  height: 20px;
+  /* background-repeat: no-repeat; */
+  background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/serving_option_shoppingcart.svg);
 }
 
 .icon-position-common {
@@ -244,14 +237,6 @@ i.remove_button {
 
 .quantity-icon-format {
   color: #727272;
-}
-
-.display-on-phone {
-  display: none;
-}
-
-.display-on-web {
-  display: block;
 }
 
 .display-on-device-step {
@@ -277,18 +262,6 @@ i.remove_button {
     width: 91% !important;
   }
 
-  .display-on-phone {
-    display: block;
-    margin: -5px 0px 45px 0px;
-    float: none;
-    font-weight: bold;
-    font-size: 17px;
-  }
-
-  .display-on-web {
-    display: none;
-  }
-
   .display-on-device-step {
     display: none;
   }
@@ -297,4 +270,25 @@ i.remove_button {
     margin-top: 30px;
     margin-bottom: 0px;
   }
+}
+
+#date {
+  color: #c6c6c6;
+}
+
+select#select-serving-option>option {
+  color: rgba(0, 0, 0.87);
+}
+
+/* Style for progress_bar.js file */
+.cart-progress-step-number {
+  color: #FFFFFF;
+  border-radius: 50%;
+  background-color: #56AACD;
+  margin-top: 0px;
+  width: 10px;
+  text-align: center;
+  padding: 1px 7px;
+  font-size: 18px !important;
+  margin-right: 5px;
 }

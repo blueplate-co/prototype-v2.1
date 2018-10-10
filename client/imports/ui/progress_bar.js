@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 const progressNavBar = {
     marginTop: '-22px',
     paddingTop: '0px'
+}, stepProgressOne = {
+    padding: '0px 8px'
 }
 
 export default class ProgressBar extends Component {
     constructor(props) {
         super(props);
 
-        this.disableProgressText = {
-            
-        }
     }
 
     render() {
@@ -21,7 +20,7 @@ export default class ProgressBar extends Component {
                 <ul className={this.props.step_progress == '1' ? "col s12 m4 l4 bp-blue-text step-progress"  : 'col s12 m4 l4 bp-blue-text display-on-device-step'}>
 
                     <li className="cart-progress-component">
-                        <span className="cart-progress-step-number">1</span> 
+                        <span className="cart-progress-step-number" style={stepProgressOne}>1</span> 
                         <span className="cart-progress-step-text">Order Summary</span>
                     </li>
                 </ul>

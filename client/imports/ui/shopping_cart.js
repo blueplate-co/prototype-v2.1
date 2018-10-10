@@ -113,6 +113,7 @@ class ShoppingCart extends Component {
                 }
             }
         }
+        $("#select-serving-option").css("color", "rgba(0, 0, 0.87)");
     }
 
     // when change address for kitchen
@@ -192,26 +193,41 @@ class ShoppingCart extends Component {
                 $('#date').removeClass('invalid');
             }
         }
+        $("#date").css("color", "rgba(0, 0, 0.87)");
     }
 
-    // when user click checkout button
-    handleCheckout() {
+    scrollToFieldRequired(el) {
+        var $el = $('#' + el);
+        $el.addClass('invalid');
+        $('#shoppingcart-container').animate({
+          scrollTo: $el.offset().top
+        }, 100);
+        $el.focus();
+    };
+
+    validateShoppingCartCheckOut() {
         var valid = true;
         globalCart.forEach((item, index) => {
-            item.address = $('#address_' + item.id).val();
-        });
-        globalCart.forEach((item, index) => {
             for( var key in item ) {
+                if (item[key] == '' && key == 'service') {
+                    valid = false;
+                    this.scrollToFieldRequired('select-serving-option');
+                    Materialize.toast('Oops! Please select your service.', '3000', 'rounded bp-green');
+                    return false;
+                }
+
                 if (item[key] == '' && key == 'address') {
                     $('#address_' + item.id).addClass('invalid');
                     Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
-                    $('#address_' + item.id).prepend($('#address_' + item.id));
-                    $('#address_' + item.id).focus();
+                    this.scrollToFieldRequired('address_' + item.id);
                     valid = false;
                     return false;
                 } else {
                     $('#address_' + item.id).removeClass('invalid');
                 }
+
+
+
             }
             if (valid) {
                 localStorage.setItem('globalCart', JSON.stringify(globalCart));
@@ -219,6 +235,18 @@ class ShoppingCart extends Component {
                 // globalCart = [];
             }
         });
+
+        return valid;
+    }
+
+    // when user click checkout button
+    handleCheckout() {
+        globalCart.forEach((item, index) => {
+            item.address = $('#address_' + item.id).val();
+        });
+        
+        var valid = this.validateShoppingCartCheckOut();
+
         if (valid) {
             globalCart.forEach((item, index) => {
                 Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
@@ -268,7 +296,7 @@ class ShoppingCart extends Component {
                 (type == "dish") ?
                 (
                     <div key={index} className="row detail-product">
-                        <div className="col s3 m3 l3">
+                        <div className="col s3 m3 l3 detail-image-product">
                             <div className="detail-thumbnail view-detail-dish" style={{ backgroundImage: "url(" + detail.meta.large + ")" }} onClick={() => this.handleOnViewDetailDish(item.product_id)}></div>
                         </div>
                         <div className="col s9 m9 l9 product-info">
@@ -328,20 +356,10 @@ class ShoppingCart extends Component {
     renderKitchen(seller_id, index) {
         var product = Shopping_cart.find({ seller_id: seller_id }).fetch();
         var sellerName = product[0].seller_name;
-        var subtotal = 0;
         var curr = new Date();
         var seller_images = '';
         var kitchen_id = '';
         curr.setDate(curr.getDate());
-        var date = curr.toISOString().substr(0,10);
-        for (var i = 0; i < product.length; i++) {
-            if (checking_promotion_dish(product[i].product_id).length > 0) {
-                subtotal += parseFloat(product[i].total_price_per_dish * get_amount_promotion(product[i].product_id))
-            } else {
-                subtotal += parseFloat(product[i].total_price_per_dish);
-            }
-        }
-        subtotal = subtotal.toFixed(2);
         var address = globalCart[index].address,
             defaultTimePicker = globalCart[index].time,
             defaultDate = this.formatDateOrder(globalCart[index].date);
@@ -362,35 +380,28 @@ class ShoppingCart extends Component {
                 <div className="row kitchen-name">
                     <ChefAvatar kitchenId={kitchen_id} profileimages={seller_images} />
                     <span className="chef-name-text">{ sellerName }'s kitchen</span>
-                    <div className="subtotal display-on-web">
-                        <div className="col s5 text-left subtotal-text">Subtotal:</div>
-                        <div className="col s7 text-right bp-blue-text subtotal-number">HK$ { subtotal }</div>
-                    </div>
                 </div>
                 <div className="row">
                     <div className="col s12 m6 l6">
                         <div className="service-option-cart">
-                            <i className="material-icons prefix service-option-icon icon-cart-format">child_friendly</i>
-                            <select className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
-                                <option value="" disabled>Service Options</option>
+                            <span className="service-option-icon"></span>
+                            <select id="select-serving-option" className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                                <option value="" disabled>How would you like to get your food?</option>
                                 { this.renderServingOption(seller_id) }
                             </select>
                         </div>
 
-                        {/* <div className="input-field col s12 m12 l12">
-                            <i className="fa fa-angle-down drop-arrow-cart"></i>
-                        </div> */}
-                        
                         <div className="input-field col s12 m12 l12 icon-position-common">
                             <i className="material-icons prefix location-address icon-cart-format">location_on</i>
-                            <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
-                            <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}>Address</label>
+                            <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder="Let’s input your delivery address" type="text" 
+                                onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                            {/* <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label> */}
                         </div>
 
                         
                         <div className="input-field col s12 m12 l12 icon-position-common">
                             <i className="material-icons prefix location-address icon-cart-format">date_range</i>
-                            <input defaultValue={ defaultDate } id="date" type="date" placeholder="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
+                            <input id="date" type="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
                             <label htmlFor="date"></label>
                         </div>
                         <div className="col s12 m12 l12 no-background time-cart">
@@ -398,9 +409,10 @@ class ShoppingCart extends Component {
                             <TimePicker
                                 showSecond={false}
                                 className=""
-                                defaultValue={moment(defaultTimePicker, "HH:mm")}
+                                // defaultValue={!defaultTimePicker ? '' : moment(defaultTimePicker, "HH:mm")}
                                 onChange={(value) => this.handleChangeTime(value, seller_id)}
                                 focusOnOpen={true}
+                                placeholder="What time will be best?"
                             />
                         </div>
                     </div>
@@ -408,11 +420,6 @@ class ShoppingCart extends Component {
                     <div className="col s12 m6 l6">
                         { this.renderSingleProduct(product) }
                     </div>
-                </div>
-
-                <div className="row subtotal display-on-phone">
-                    <div className="col s5 text-left subtotal-text">Subtotal:</div>
-                    <div className="col s7 text-right bp-blue-text subtotal-number">HK$ { subtotal }</div>
                 </div>
             </div>
         )
@@ -555,8 +562,10 @@ class ShoppingCart extends Component {
     }
 
     render() {
-        var total = 0;
+        var total = 0,
+            subtotal = 0;
         for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
+            subtotal += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
             if (checking_promotion_dish(this.props.shoppingCart[i].product_id).length > 0) {
                 total += parseFloat(this.props.shoppingCart[i].total_price_per_dish * get_amount_promotion(this.props.shoppingCart[i].product_id))
             } else {
@@ -572,6 +581,7 @@ class ShoppingCart extends Component {
             }
         }
         Session.set('product', '');
+
         return (
             <div className="container">
                 <ProgressBar step_progress="1" />
@@ -581,22 +591,24 @@ class ShoppingCart extends Component {
                     :    
                         this.renderListKitchen()
                 }
-                {
-                    (this.state.discount > 0) ? (
-                        <div className="row discount">
-                            <div className="col s4 text-left">Discount</div>
-                            <div className="col s8 text-right"> - HK$ { this.state.discount }</div>
-                        </div>
-                    ) : (
-                        ""
-                    )
-                }
+
+                <div className="row subtotal">
+                    <div className="col s6 m9 text-right">Subtotal:</div>
+                    <div className="col s6 m3 text-right">HK$ { subtotal }</div>
+                </div>
+
+                <div className="row discount">
+                    <div className="col s6 m9 text-right">Discount:</div>
+                    <div className="col s6 m3 text-right">HK$ { this.state.discount }</div>
+                </div>
+
                 <div className="row total">
-                    <div className="col s9 text-right total-text">Total:</div>
-                    <div className="col s3 text-right bp-blue-text">HK$ { total }</div>
+                    <div className="col s6 m9 text-right total-text">Total:</div>
+                    <div className="col s6 m3 text-right bp-blue-text">HK$ { total }</div>
                 </div>
                 <div className="row text-center">
                     <button className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
+                    <p className="no-charge-money">You won’t be charged yet !</p>
                 </div>
             </div>
         )
