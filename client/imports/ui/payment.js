@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import ProgressBar from './progress_bar.js';
 
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
@@ -131,6 +132,7 @@ class Payment extends Component {
 	}
 
     componentDidMount() {
+        $(window).scrollTop(0);
         //- send to Facebook Pixel
         if (location.hostname == 'www.blueplate.co') {
             fbq('track', 'ViewContent', { content_name: 'Select Payment', content_ids: Meteor.userId() });
@@ -454,13 +456,14 @@ class Payment extends Component {
         switch (payment) {
             case 'credits':
                 return (
-                    <div className="container" style={{ paddingTop: '40px' }} onKeyDown={
+                    <div className="container" onKeyDown={
                         (event) => {
                             if (event.keyCode == 13) {
                                 this.validationCardAndCharge()
                             }
                         }
                     }>
+                        <ProgressBar step_progress="2" />
                         <div className="row">
                             <span id="back-payment" className="fa fa-arrow-left" onClick={() => this.backPayment()}></span>
                         </div>
@@ -525,13 +528,14 @@ class Payment extends Component {
                 break;
             case 'credit-card':
                 return (
-                    <div className="container" style={{ paddingTop: '40px' }} onKeyDown={
+                    <div className="container" onKeyDown={
                         (event) => {
                             if (event.keyCode == 13) {
                                 this.validationCardAndCharge()
                             }
                         }
                     }>
+                        <ProgressBar step_progress="2" />
                         <div className="row">
                             <span id="back-payment" className="fa fa-arrow-left" onClick={() => this.backPayment()}></span>
                         </div>
@@ -600,6 +604,7 @@ class Payment extends Component {
         });
         return (
             <div className="container" style={{ marginTop: '50px' }}>
+                <ProgressBar step_progress="2" />
                 <Modal
                     isModalOpen={this.state.isModalOpen}
                     closeModal={this.closeModal}

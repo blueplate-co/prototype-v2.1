@@ -3,6 +3,11 @@ import { date_time_conversion } from '/imports/functions/date_time_conversion.js
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import { validatePhoneNumber, getCountryCodeFromKitChen } from '/imports/functions/common';
+import ProgressBar from '../../imports/ui/progress_bar';
+
+// integrate reactjs
+import React from 'react';
+import { render } from 'react-dom';
 
 Template.orders_tracking.onRendered(function(){
   if(!Meteor.userId()){ 
@@ -16,6 +21,9 @@ Template.orders_tracking.onRendered(function(){
     background: '#343434'
   })
   this.$('ul.tabs').tabs();
+
+  // render container from REACT
+  render(<ProgressBar step_progress="3"/>, document.getElementById('progress-bar-step-container'));
 });
 
 Template.orders_tracking.helpers({

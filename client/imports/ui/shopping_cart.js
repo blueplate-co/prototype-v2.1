@@ -8,7 +8,7 @@ import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
-
+import ProgressBar from './progress_bar.js';
 
 //- empty cart store global in this page
 window.globalCart = localStorage.getItem("globalCart");
@@ -268,30 +268,30 @@ class ShoppingCart extends Component {
                 (type == "dish") ?
                 (
                     <div key={index} className="row detail-product">
-                        <div className="col s3 m3 l1 xl1">
+                        <div className="col s3 m3 l3">
                             <div className="detail-thumbnail view-detail-dish" style={{ backgroundImage: "url(" + detail.meta.large + ")" }} onClick={() => this.handleOnViewDetailDish(item.product_id)}></div>
                         </div>
-                        <div className="col s9 m9 l11 xl11 product-info">
+                        <div className="col s9 m9 l9 product-info">
                             <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id) }></span>
                             <span className="detail-title view-detail-dish" onClick={() => this.handleOnViewDetailDish(item.product_id)}>{ detail.dish_name }</span>
                             {
                                 (checking_promotion_dish(detail._id).length > 0) ?
                                 (
                                     <span>
-                                        <span className="col l1 m3 s12 detail-price">HK${ detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
-                                        <span className="col l3 m3 s12 detail-old-price">HK${ detail.dish_selling_price }</span>
+                                        <span className="col l1 m3 s12 detail-price">HK$ { detail.dish_selling_price * get_amount_promotion(detail._id) }</span>
+                                        <span className="col l3 m3 s12 detail-old-price">HK$ { detail.dish_selling_price }</span>
                                     </span>
                                 )
                                 : (
                                     <span className="detail-price">
-                                        <span className="detail-price">HK${ detail.dish_selling_price }</span>
+                                        <span className="detail-price">HK$ { detail.dish_selling_price }</span>
                                     </span>
                                 )
                             }
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle"></i></span>
+                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle quantity-icon-format"></i></span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle"></i></span>
+                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle quantity-icon-format"></i></span>
                             </div>
                         </div>
                     </div>
@@ -360,38 +360,59 @@ class ShoppingCart extends Component {
         return (
             <div key={index}>
                 <div className="row kitchen-name">
-                    { sellerName }'s kitchen
                     <ChefAvatar kitchenId={kitchen_id} profileimages={seller_images} />
-                </div>
-                <div className="row">
-                    <div className="col s4">
-                        <select className="browser-default no-border" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
-                            <option value="" disabled>Service Options</option>
-                            { this.renderServingOption(seller_id) }
-                        </select>
-                    </div>
-                    <div className="col s4">
-                        <input defaultValue={ defaultDate } id="date" type="date" placeholder="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
-                    </div>
-                    <div className="col s4 no-background">
-                        <TimePicker
-                            showSecond={false}
-                            className=""
-                            defaultValue={moment(defaultTimePicker, "HH:mm")}
-                            onChange={(value) => this.handleChangeTime(value, seller_id)}
-                        />
+                    <span className="chef-name-text">{ sellerName }'s kitchen</span>
+                    <div className="subtotal display-on-web">
+                        <div className="col s5 text-left subtotal-text">Subtotal:</div>
+                        <div className="col s7 text-right bp-blue-text subtotal-number">HK$ { subtotal }</div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label>
-                        <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                    <div className="col s12 m6 l6">
+                        <div className="service-option-cart">
+                            <i className="material-icons prefix service-option-icon icon-cart-format">child_friendly</i>
+                            <select className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                                <option value="" disabled>Service Options</option>
+                                { this.renderServingOption(seller_id) }
+                            </select>
+                        </div>
+
+                        {/* <div className="input-field col s12 m12 l12">
+                            <i className="fa fa-angle-down drop-arrow-cart"></i>
+                        </div> */}
+                        
+                        <div className="input-field col s12 m12 l12 icon-position-common">
+                            <i className="material-icons prefix location-address icon-cart-format">location_on</i>
+                            <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder=" " type="text" onChange={(event) => this.handleChangeAddress(event, seller_id)} />
+                            <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}>Address</label>
+                        </div>
+
+                        
+                        <div className="input-field col s12 m12 l12 icon-position-common">
+                            <i className="material-icons prefix location-address icon-cart-format">date_range</i>
+                            <input defaultValue={ defaultDate } id="date" type="date" placeholder="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
+                            <label htmlFor="date"></label>
+                        </div>
+                        <div className="col s12 m12 l12 no-background time-cart">
+                            <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
+                            <TimePicker
+                                showSecond={false}
+                                className=""
+                                defaultValue={moment(defaultTimePicker, "HH:mm")}
+                                onChange={(value) => this.handleChangeTime(value, seller_id)}
+                                focusOnOpen={true}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="col s12 m6 l6">
+                        { this.renderSingleProduct(product) }
                     </div>
                 </div>
-                { this.renderSingleProduct(product) }
-                <div className="row subtotal">
-                    <div className="col s4 text-left">subtotal</div>
-                    <div className="col s8 text-right">HK${ subtotal }</div>
+
+                <div className="row subtotal display-on-phone">
+                    <div className="col s5 text-left subtotal-text">Subtotal:</div>
+                    <div className="col s7 text-right bp-blue-text subtotal-number">HK$ { subtotal }</div>
                 </div>
             </div>
         )
@@ -492,6 +513,7 @@ class ShoppingCart extends Component {
     };
 
     componentDidMount() {
+        $(window).scrollTop(0);
         //- send to Facebook Pixel
         if (location.hostname == 'www.blueplate.co') {
             fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
@@ -552,7 +574,7 @@ class ShoppingCart extends Component {
         Session.set('product', '');
         return (
             <div className="container">
-                <h3>Order summary</h3>
+                <ProgressBar step_progress="1" />
                 {
                     (this.props.listLoading) ?
                         <span>Loading...</span>
@@ -563,15 +585,15 @@ class ShoppingCart extends Component {
                     (this.state.discount > 0) ? (
                         <div className="row discount">
                             <div className="col s4 text-left">Discount</div>
-                            <div className="col s8 text-right"> - HK${ this.state.discount }</div>
+                            <div className="col s8 text-right"> - HK$ { this.state.discount }</div>
                         </div>
                     ) : (
                         ""
                     )
                 }
                 <div className="row total">
-                    <div className="col s4 text-left">Total</div>
-                    <div className="col s8 text-right">HK${ total }</div>
+                    <div className="col s9 text-right total-text">Total:</div>
+                    <div className="col s3 text-right bp-blue-text">HK$ { total }</div>
                 </div>
                 <div className="row text-center">
                     <button className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>

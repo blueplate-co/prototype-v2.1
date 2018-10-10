@@ -265,47 +265,61 @@ export class Dish_Detail extends Component {
      * else if length of localDishs more than 0
      * > check exist seller_id in localDishs
      * >> if true: continou check exist dish_id in localDishs, increa quantity for this dish_id
-     * >> else push dish id for this seller_id
+     * >> else push dish_id into array arr_dishs for this seller_id
+     * 
+     * If not exist seller_id in localDishs, push new object oDishCart into localDishs.
      */
-    addDishToLocalCart() {
-        var oDishCart = {
-            seller_id: this.state.data.user_id,
-            dish_id: [this.state.data._id],
-            quantity: this.state.sumOrder
-        }
-        var localDishs = JSON.parse(localStorage.getItem("localCart"));
+    // addDishToLocalCart() {
+    //     var oDishCart = {
+    //         seller_id: this.state.data.user_id,
+    //         arr_dishs: [{
+    //             dish_id: this.state.data._id,
+    //             quantity: this.state.sumOrder
+    //         }]
+    //     }
+    //     var localDishs = JSON.parse(localStorage.getItem("localCart"));
 
-        if (typeof localDishs == "object" && localDishs == null ) {
-            localDishs = [];
-        }
+    //     if (typeof localDishs == "object" && localDishs == null ) {
+    //         localDishs = [];
+    //     }
 
-        if (localDishs != null && localDishs.length > 0) {
-            var bAlreadyExist = false;
-            localDishs.map ( (item, index) => {
-                if (item.seller_id == oDishCart.seller_id) {
-                    oDishCart.dish_id.map((dishItem, dishIdx) => {
+    //     if (localDishs != null && localDishs.length > 0) {
+    //         var bAlreadyExistSeller = false,
+    //             bAlreadyExistDish = false;
 
-                    });
-                }
+    //         localDishs.map ( (item, index) => {
+    //             if (item.seller_id == oDishCart.seller_id) {
+    //                 bAlreadyExistSeller = true;
+    //                 item.arr_dishs.map((dishItem, dishIdx) => {
 
-                if (item.dish_id === oDishCart.dish_id) {
-                    bAlreadyExist = true;
-                    item.quantity = item.quantity + oDishCart.quantity;
-                }
-            });
+    //                     if (dishItem.dish_id === oDishCart.arr_dishs[0].dish_id) {
+    //                         bAlreadyExistDish = true;
+    //                         dishItem.quantity = dishItem.quantity + oDishCart.arr_dishs[0].quantity;
+    //                     }
+    //                 });
 
-            /** If not exist oDishCart in localDishs
-             * add oDishCart into localDishs
-            */
-            if (!bAlreadyExist) {
-                localDishs.push(oDishCart);
-            }
-        } else {
-            localDishs.push(oDishCart);
-        }
+    //                 if (!bAlreadyExistDish) {
+    //                     let newObjDish = {
+    //                         dish_id: oDishCart.arr_dishs[0].dish_id,
+    //                         quantity: this.state.sumOrder
+    //                     }
+    //                     item.arr_dishs.push(newObjDish);
+    //                 }
+    //             } 
+    //         });
 
-        localStorage.setItem('localCart', JSON.stringify(localDishs));
-    };
+    //         /** If not exist oDishCart in localDishs
+    //          * add oDishCart into localDishs
+    //         */
+    //         if (!bAlreadyExistSeller) {
+    //             localDishs.push(oDishCart);
+    //         }
+    //     } else {
+    //         localDishs.push(oDishCart);
+    //     }
+
+    //     localStorage.setItem('localCart', JSON.stringify(localDishs));
+    // };
 
     dishOrder() {
         util.show_loading_progress();
