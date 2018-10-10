@@ -122,6 +122,7 @@ export default class InfoOrder extends Component {
                 } else {
                     //- CONTINOUS RUN STEP BY STEP
                     if (!this.validateInforOrdering(ordering_info)) {
+                        util.hide_loading_progress();
                         return false;
                     }
                     util.show_loading_progress();
@@ -135,6 +136,7 @@ export default class InfoOrder extends Component {
                     }
                     
                     this.handleFoodiesProfile(ordering_info);
+                    util.hide_loading_progress();
                 }
             }
         });
@@ -347,7 +349,7 @@ export default class InfoOrder extends Component {
             var countdown = setInterval(() => {
                 let currentSeconds = this.state.verification_countdown_time;
                 if (currentSeconds == 0) {
-                    this.setState({ verification_timing: false, verification_countdown_time: 90 });
+                    this.setState({ verification_timing: false, verification_countdown_time: 30 });
                     clearInterval(countdown);
                 } else {
                     this.setState({

@@ -177,3 +177,9 @@ body p {
     column-gap: 6px;
   }
 }
+
+#toast-container {
+  display: block;
+  position: fixed;
+  z-index: 2147483648!important;
+}
