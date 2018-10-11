@@ -245,6 +245,9 @@ i.remove_button {
   opacity: 0.4 !important;
 }
 
+.date-summary {
+  margin-top: -10px;
+}
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
   .rc-time-picker {

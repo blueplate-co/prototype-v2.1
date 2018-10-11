@@ -212,13 +212,13 @@ class ShoppingCart extends Component {
                 if (item[key] == '' && key == 'service') {
                     valid = false;
                     this.scrollToFieldRequired('select-serving-option');
-                    Materialize.toast('Oops! Please select your service.', '3000', 'rounded bp-green');
+                    Materialize.toast('Oops! Please select your service to get your food.', '3000', 'rounded bp-green');
                     return false;
                 }
 
                 if (item[key] == '' && key == 'address') {
                     $('#address_' + item.id).addClass('invalid');
-                    Materialize.toast('Oops! Please complete your address.', '3000', 'rounded bp-green');
+                    Materialize.toast('Oops! Please complete your delivery address.', '3000', 'rounded bp-green');
                     this.scrollToFieldRequired('address_' + item.id);
                     valid = false;
                     return false;
@@ -226,6 +226,19 @@ class ShoppingCart extends Component {
                     $('#address_' + item.id).removeClass('invalid');
                 }
 
+                if ((item[key] == 'Invalid date' || item[key] == '') && key == 'date') {
+                    valid = false;
+                    this.scrollToFieldRequired('date');
+                    Materialize.toast('Oops! Please select your date would you like to be served.', '3000', 'rounded bp-green');
+                    return false;
+                }
+
+                if (item[key] == '' && key == 'time') {
+                    valid = false;
+                    this.scrollToFieldRequired('date');
+                    Materialize.toast('Oops! Please select your time.', '3000', 'rounded bp-green');
+                    return false;
+                }
 
 
             }
@@ -397,7 +410,7 @@ class ShoppingCart extends Component {
                         </div>
 
                         
-                        <div className="input-field col s12 m12 l12 icon-position-common">
+                        <div className="input-field col s12 m12 l12 icon-position-common date-summary">
                             <i className="material-icons prefix location-address icon-cart-format">date_range</i>
                             <input id="date" type="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
                             <label htmlFor="date"></label>
@@ -446,7 +459,7 @@ class ShoppingCart extends Component {
             return (
                 unique.map((item, index) => {
                     //- create new object to store all information about this kitchen
-                    var kitchen = { id: item, service: "", date: moment(event.target.value).format('DD/MM/YYYY'), time: moment().add(1, 'hours').format('HH:mm'), timeStamp: moment().add(moment.duration(1, 'hours')).valueOf(), address: "" };
+                    var kitchen = { id: item, service: "", date: moment(null).format('DD/MM/YYYY'), time: "", timeStamp: '', address: "" };
                     if (!hasLocalStorage) {
                         hasLocalStorage = true;
                         globalCart = [];

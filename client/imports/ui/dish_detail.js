@@ -355,12 +355,14 @@ export class Dish_Detail extends Component {
                 total_price_per_dish,
                 function(err) {
                     if (err) {
+                        util.hide_loading_progress();
                         Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
                         if (location.hostname == 'www.blueplate.co') {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
-                        }                            
+                        }                       
+                        util.hide_loading_progress();     
                         Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
                     }
                 }
@@ -380,20 +382,19 @@ export class Dish_Detail extends Component {
                 dish_price,
                 function(err) {
                     if (err) {
+                        util.hide_loading_progress();
                         Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
                         if (location.hostname == 'www.blueplate.co') {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }
+                        util.hide_loading_progress();
                         Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
                     }
                 }
             );
         }
-        setTimeout ( () => {
-            util.hide_loading_progress();
-        }, 300);
     }
 
     handleOnDishAction() {
