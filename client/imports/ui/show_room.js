@@ -104,7 +104,7 @@ class ShowRoom extends Component {
     //- set timeout for delay responsive UI
     setTimeout(() => {
       $('.tabs').tabs({});
-      $('.page-footer').hide();
+      // $('.page-footer').hide();
     }, 500);
     window.addEventListener('resize', this.handleWindowSizeChange);
   }

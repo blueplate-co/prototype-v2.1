@@ -283,6 +283,31 @@ select#select-serving-option>option {
   color: rgba(0, 0, 0.87);
 }
 
+#empty-shopping-cart {
+  background-image: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/shopping_cart_illutransion.svg);
+  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-left: -50px;
+}
+
+.empty-text-cart {
+  margin-top: 30px;
+  color: #979797;
+}
+
+#btn-continue-shopping {
+  background-color: #56AACD;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 550;
+  border-radius: 20px;
+  padding: 5px 20px;
+  border: none;
+  margin-bottom: 40px;
+}
+
 /* Style for progress_bar.js file */
 .cart-progress-step-number {
   color: #FFFFFF;
