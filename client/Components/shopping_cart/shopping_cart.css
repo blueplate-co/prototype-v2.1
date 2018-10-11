@@ -277,7 +277,7 @@ i.remove_button {
 }
 
 select#select-serving-option>option {
-  color: rgba(0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.87);
 }
 
 /* Style for progress_bar.js file */

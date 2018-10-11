@@ -280,7 +280,7 @@ class TopNavigation extends Component {
           }}
         >
           <span>Chat</span>
-          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/Chat.svg" />
+          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chat-icon-blur.svg" />
         </li>
 
         <li className="visted-color"
