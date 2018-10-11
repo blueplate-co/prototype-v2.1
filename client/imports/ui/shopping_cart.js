@@ -479,8 +479,18 @@ class ShoppingCart extends Component {
                 })
             )
         } else {
-            return <h5>Shopping cart is empty</h5>
+            return (
+                <div className="row text-center">
+                    <div id="empty-shopping-cart"></div>
+                    <p className="row empty-text-cart">There is no item in your shopping cart</p>
+                    <button id="btn-continue-shopping" onClick={ () => this.handleOnContinueShoppping()}>continue shopping</button>
+                </div>
+            )
         }
+    }
+
+    handleOnContinueShoppping() {
+        FlowRouter.go('/');
     }
 
     // Internal sms: send order info message to admin when has new order
@@ -603,24 +613,32 @@ class ShoppingCart extends Component {
                         this.renderListKitchen()
                 }
 
-                <div className="row subtotal">
-                    <div className="col s6 m9 text-right">Subtotal:</div>
-                    <div className="col s6 m3 text-right">HK$ { subtotal }</div>
-                </div>
+                {
+                    (!this.props.listLoading && globalCart.length > 0) ? 
+                        <span>
+                            <div className="row subtotal">
+                                <div className="col s6 m9 text-right">Subtotal:</div>
+                                <div className="col s6 m3 text-right">HK$ { subtotal }</div>
+                            </div>
 
-                <div className="row discount">
-                    <div className="col s6 m9 text-right">Discount:</div>
-                    <div className="col s6 m3 text-right">HK$ { this.state.discount }</div>
-                </div>
+                            <div className="row discount">
+                                <div className="col s6 m9 text-right">Discount:</div>
+                                <div className="col s6 m3 text-right">HK$ { this.state.discount }</div>
+                            </div>
 
-                <div className="row total">
-                    <div className="col s6 m9 text-right total-text">Total:</div>
-                    <div className="col s6 m3 text-right bp-blue-text">HK$ { total }</div>
-                </div>
-                <div className="row text-center">
-                    <button className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
-                    <p className="no-charge-money">You won’t be charged yet !</p>
-                </div>
+                            <div className="row total">
+                                <div className="col s6 m9 text-right total-text">Total:</div>
+                                <div className="col s6 m3 text-right bp-blue-text">HK$ { total }</div>
+                            </div>
+                            <div className="row text-center">
+                                <button className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
+                                <p className="no-charge-money">You won’t be charged yet !</p>
+                            </div>
+                        </span>
+                    :
+                        ''
+                }
+
             </div>
         )
     }
