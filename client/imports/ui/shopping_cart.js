@@ -113,7 +113,7 @@ class ShoppingCart extends Component {
                 }
             }
         }
-        $("#select-serving-option").css("color", "rgba(0, 0, 0.87)");
+        $("#select-serving-option").css("color", "rgba(0, 0, 0, 0.87)");
     }
 
     // when change address for kitchen
@@ -193,7 +193,7 @@ class ShoppingCart extends Component {
                 $('#date').removeClass('invalid');
             }
         }
-        $("#date").css("color", "rgba(0, 0, 0.87)");
+        $("#date").css("color", "rgba(0, 0, 0, 0.87)");
     }
 
     scrollToFieldRequired(el) {

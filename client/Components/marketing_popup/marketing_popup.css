@@ -311,5 +311,5 @@ select#district_selection {
 }
 
 select#district_selection>option {
-  color: rgba(0, 0, 0);
+  color: rgba(0, 0, 0, 0);
 }

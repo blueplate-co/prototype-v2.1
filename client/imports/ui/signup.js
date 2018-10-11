@@ -140,7 +140,7 @@ export default class SignUp extends Component {
 
   handleDistrictChange = (event) => {
     this.setState({ district: event.target.value}, () => {
-      $("#district_selection").css("color", "rgba(0, 0, 0)");
+      $("#district_selection").css("color", "rgba(0, 0, 0, 0)");
     });
   }
 
