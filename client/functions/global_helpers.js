@@ -32,16 +32,16 @@ Images = new FilesCollection({
   }
 });
 
-// Meteor.startup(function() {
-//     Stripe.setPublishableKey('pk_live_mqXbgtwXmodOMRSKycYVgsl6');
-// });
+Meteor.startup(function() {
+    Stripe.setPublishableKey('pk_live_mqXbgtwXmodOMRSKycYVgsl6');
+});
 
-// Meteor.startup(function() {
-//     var handler = StripeCheckout.configure({
-//       key: 'pk_live_mqXbgtwXmodOMRSKycYVgsl6',
-//       token: function(token) {}
-//     });
-// });
+Meteor.startup(function() {
+    var handler = StripeCheckout.configure({
+      key: 'pk_live_mqXbgtwXmodOMRSKycYVgsl6',
+      token: function(token) {}
+    });
+});
 
 Collections = {
   'Dishes': Dishes,
