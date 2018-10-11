@@ -465,7 +465,7 @@ Template.pending_confirmation.events({
     
                 
             // Create a task on asana
-            if (location.hostname !== 'localhost') {
+            if (location.hostname == 'www.blueplate.co') {
               // Send message to chef
               Meteor.call('message.sms', kitchen_phone_number, 'Hi Chef! ' + chef_message.trim(), (err, res) => {
                 if (!err) {
@@ -503,7 +503,7 @@ Template.pending_confirmation.events({
               Meteor.call(
                   'marketing.create_task_asana',
                   '852791235008285', // projects_id to create task
-                  'Cancel: ' + buyer_name,
+                  'Buyer: ' + buyer_name,
                   content_message
               );
             }

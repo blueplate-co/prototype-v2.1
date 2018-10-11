@@ -477,7 +477,7 @@ Meteor.methods({
         params: {
           workspace: '220725248142233',
           projects: projects_id,
-          assignee: '425646707917578',
+          // assignee: '425646707917578',
           notes: content,
           name: subject + ' ' + moment().format("DD MMM YYYY, h:mm:ss a")
         }

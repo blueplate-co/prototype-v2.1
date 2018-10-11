@@ -267,12 +267,10 @@ class ShoppingCart extends Component {
                     }
                 })
             })
-            if (location.hostname !== 'localhost') {
-                this.sendSummaryCheckoutDish();
-            }
             
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
+                this.sendSummaryCheckoutDish();
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
             FlowRouter.go('/payment');
@@ -379,7 +377,7 @@ class ShoppingCart extends Component {
             <div key={index}>
                 <div className="row kitchen-name">
                     <ChefAvatar kitchenId={kitchen_id} profileimages={seller_images} />
-                    <span className="chef-name-text">{ sellerName }'s kitchen</span>
+                    <p className="chef-name-text">{ sellerName }'s kitchen</p>
                 </div>
                 <div className="row">
                     <div className="col s12 m6 l6">

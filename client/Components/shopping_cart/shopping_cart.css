@@ -259,7 +259,7 @@ i.remove_button {
 /* Portrait phones and smaller 480*/
 @media (max-width: 640px) {
   .rc-time-picker {
-    width: 91% !important;
+    width: 87% !important;
   }
 
   .display-on-device-step {

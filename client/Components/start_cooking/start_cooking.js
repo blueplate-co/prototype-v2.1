@@ -511,7 +511,7 @@ Template.request_card.events({
       var seller_email = seller_detail.emails[0].address,
           seller_info = seller_name + " (id: " + seller_id + ", email: " + seller_email + ", phone no: " + kitchen_phone_no + ")";
 
-      if (location.hostname !== 'localhost') {
+      if (location.hostname == 'www.blueplate.co') {
         setTimeout(() => {
           var sProduct_info = '';
           arr_product_info.map( (item, index) => {
@@ -524,7 +524,7 @@ Template.request_card.events({
           Meteor.call(
             'marketing.create_task_asana',
             '852791235008282', // projects_id to create task
-            'Confirm Chef: ' + seller_name,
+            'Chef: ' + seller_name,
             content_message
           );
           
@@ -700,7 +700,7 @@ Template.request_card.events({
                   
 
               // Create a task on asana
-              if (location.hostname !== 'localhost') {
+              if (location.hostname == 'www.blueplate.co') {
                 setTimeout(() => {
                   var sProduct_info = '';
                   arr_product_info.map( (item, index) => {
@@ -713,7 +713,7 @@ Template.request_card.events({
                   Meteor.call(
                     'marketing.create_task_asana',
                     '852791235008288', // projects_id to create task
-                    'Reject Chef: ' + seller_name,
+                    'Chef: ' + seller_name,
                     content_message
                   );
                   

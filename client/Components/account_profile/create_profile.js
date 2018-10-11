@@ -37,7 +37,7 @@ Template.create_foodie_profile.onRendered(function () {
       var district = res;
       $('#district').val(district);
     } else {
-      Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+      // Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
     }
   });
   $('#mobile').intlTelInput({
@@ -389,7 +389,7 @@ Template.create_homecook_profile.onRendered(function () {
         var district = res;
         $('#district').val(district);
       } else {
-        Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
+        // Materialize.toast('Error when get user district. Please try again.', 4000, 'rounded bp-green');
       }
     });
     $('#kitchen_contact').intlTelInput({
@@ -850,16 +850,16 @@ Template.create_homecook_profile.events({
       Session.get('bannerProfileImg'),
 
       function (err) {
-        util.hide_loading_progress();
-        if (err) Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
-        else {
+        if (err) {
           util.hide_loading_progress();
+          Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
+        }
+        else {
           Meteor.call('profile_details.syncFromKitchen', chef_name, kitchen_contact, Session.get('profileImg'), (err, response) => {
             if (err) {
               util.hide_loading_progress();
               Materialize.toast('Oops! ' + err.message + ' Please try again.', 4000, 'rounded red lighten-2');
             } else {
-              util.hide_loading_progress();
               Meteor.call('user.updateDistrict', district, (err, res) => {
                 if (err) {
                   util.hide_loading_progress();
@@ -868,6 +868,7 @@ Template.create_homecook_profile.events({
                   util.hide_loading_progress();
                   var subject = kitchen_name;
                   Meteor.call('kitchen.email', subject, kitchen_contact);
+                  sendEmailWelcomeToNewChef(chef_name, Meteor.user().emails[0].address);
                   Session.set('deleted_tags', []);
                   Materialize.toast('Profile created!', 4000);
                   FlowRouter.go('/path_choosing');
@@ -3522,8 +3523,8 @@ let changeImgName = function (imgPath) {
 }
 
 
-let sendEmailWelcomeToNewChef = function(name) {
-  var content = "Dear " + name +",\n\n Thank you for registering with Blueplate. We look forward to seeing" +
+let sendEmailWelcomeToNewChef = function(name, seller_email) {
+  var content = "Dear " + name +",\n\nThank you for registering with Blueplate, \nWe look forward to seeing" +
                 " the delicious dishes you have to offer! Currently we have a newcomer’s promotion. " +
                 "Complete your Kitchen profile by adding your district address, your profile image, your " + 
                 "banner image and your phone number. Also make sure you have 4 items ready for selling, " +
@@ -3531,6 +3532,9 @@ let sendEmailWelcomeToNewChef = function(name) {
                 "featured in an interview. Please note that your phone number will not be released to the public, " +
                 "it will only be used to send you SMS messages regarding the status of your orders. " +
                 "To better understand how we can help your business, we would welcome the opportunity to " +
-                "meet with you in a face to face. \n\nContact us anytime and we will set this up. " +
-                "Keith Chan Community Specialist \nkeith.chan@blueplate.co (91746003) \nBlueplate Technologies Limited."
+                "meet with you in a face to face. \n\nContact us anytime and we will set this up. \n" +
+                "Keith Chan \nCommunity Specialist \nkeith.chan@blueplate.co (91746003)\nBlueplate Technologies Limited.";
+
+
+  Meteor.call('requestdish.sendEmail', name + " <" + seller_email + ">", '', 'Welcome to Blueplate!', content);
 }

@@ -432,6 +432,10 @@ class TopNavigation extends Component {
       this.setState({
         avatar: !profile_img ? util.getDefaultFoodiesImage() : profile_img.large
       })
+    } else {
+      this.setState({
+        avatar: util.getDefaultFoodiesImage()
+      })
     }
   }
 
