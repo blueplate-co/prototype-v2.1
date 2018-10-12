@@ -631,7 +631,7 @@ class ShoppingCart extends Component {
                                 <div className="col s6 m3 text-right bp-blue-text">HK$ { total }</div>
                             </div>
                             <div className="row text-center">
-                                <button className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
+                                <button id="checkout-shoppingcart" className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
                                 <p className="no-charge-money">You won’t be charged yet !</p>
                             </div>
                         </span>

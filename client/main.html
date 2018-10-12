@@ -1,5 +1,14 @@
 <head>
-  <!-- <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&amp;subset=vietnamese" rel="stylesheet"> -->
+  <!-- Google Tag Manager -->
+  <script async>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-59ZQ9NL');</script>
+  <!-- End Google Tag Manager -->
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -29,16 +38,6 @@
     src="https://www.facebook.com/tr?id=543833536072599&ev=PageView&noscript=1"
   /></noscript> -->
   <!-- End Facebook Pixel Code -->
-  <!-- Google Tag Manager -->
-  <script async>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-59ZQ9NL');</script>
-  <!-- End Google Tag Manager -->
   <!-- CDN library for detect country code -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/0.4.27/libphonenumber-js.min.js"></script>
   <!-- Intercom messaging -->
@@ -53,6 +52,10 @@
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59ZQ9NL"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <script async src="/client/tipso.min.js" type="text/javascript"></script>
   <script async src="/client/Components/intlTelInput/intlTelInput.min.js" type="text/javascript"></script>
   {{> Template.dynamic template = main}} {{> notifications}}

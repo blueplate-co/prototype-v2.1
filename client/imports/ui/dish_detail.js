@@ -634,7 +634,7 @@ export class Dish_Detail extends Component {
                                                 <div className="row">
                                                     <div className="handle-order-dish">
                                                         { (dish_detail.online_status) ? 
-                                                            <span className="btn-order-dish-detail" onClick={() => this.checkFoodiesInfor("orderDish")}>order</span>
+                                                            <span id="order-dish" className="btn-order-dish-detail" onClick={() => this.checkFoodiesInfor("orderDish")}>order</span>
                                                             :
                                                             (this.state.alreadyRequested) ?
                                                                 <p id="dish-request-infor">Your request has sent. We will notify you when chef make it ready again</p>
