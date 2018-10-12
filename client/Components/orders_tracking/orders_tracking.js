@@ -91,26 +91,28 @@ Template.orders_tracking.helpers({
       }
     }); // END MAP
 
-    var site = document.location.origin + '/orders_tracking';
-    for (var phoneNumber in smsList) {
-      if (smsList.hasOwnProperty(phoneNumber)) {
-          var message = smsList[phoneNumber];
-          message = 'New incomming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you. ' + 
-                    'Please check it out here to confirm their order. ' + site;
-          Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
-            if (!err) {
-              // console.log('Message sent');
-
-              // Send email
-              Meteor.call(
-                'requestdish.sendEmail',
-                kitchen.chef_name + " <" + seller_email + ">",
-                '', /* @param mail from..... default*/
-                '', /* @param subject - default*/
-                'Hey ' + kitchen.chef_name + ",\n\n" + message + "\n\n Happy cooking! \n Blueplate"
-              );
-            }
-          });
+    if (util.checkCurrentSite()) {
+      var site = document.location.origin + '/orders_tracking';
+      for (var phoneNumber in smsList) {
+        if (smsList.hasOwnProperty(phoneNumber)) {
+            var message = smsList[phoneNumber];
+            message = 'New incomming order! ' + buyer.foodie_name + ' has just placed ' + message + ' from you. ' + 
+                      'Please check it out here to confirm their order. ' + site;
+            Meteor.call('message.sms', phoneNumber, message.trim(), (err, res) => {
+              if (!err) {
+                // console.log('Message sent');
+  
+                // Send email
+                Meteor.call(
+                  'requestdish.sendEmail',
+                  kitchen.chef_name + " <" + seller_email + ">",
+                  '', /* @param mail from..... default*/
+                  'Blueplate new order', /* @param subject - default*/
+                  'Hey ' + kitchen.chef_name + ",\n\n" + message + "\n\n Happy cooking! \n Blueplate"
+                );
+              }
+            });
+        }
       }
     }
 
@@ -465,7 +467,7 @@ Template.pending_confirmation.events({
     
                 
             // Create a task on asana
-            if (location.hostname == 'www.blueplate.co') {
+            if (util.checkCurrentSite()) {
               // Send message to chef
               Meteor.call('message.sms', kitchen_phone_number, 'Hi Chef! ' + chef_message.trim(), (err, res) => {
                 if (!err) {
@@ -474,15 +476,14 @@ Template.pending_confirmation.events({
                       'requestdish.sendEmail',
                       kitchen.chef_name + " <" + seller_email + ">",
                       '', /* @param mail from..... default*/
-                      '', /* @param subject - default*/
-                      'Hi ' + kitchen.chef_name + "," + "\n\n" + chef_message + "\n\n Happy cooking! \n Blueplate"
+                      'Blueplate order cancellation', /* @param subject - default*/
+                      'Hi ' + kitchen.chef_name + "," + "\n\n" + chef_message + "\n\n Best regard! \n Blueplate"
                   );
                 }
               });
   
               var foodie_message = 'Your order from ' + kitchen.chef_name + ' has been cancelled. If you are encountering ' + 
-                                  'any difficulties with the ordering process, please contact us at account.admin@blueplate.co ' + 
-                                  'or call at +852 9686 8697.';
+                                  'any difficulties with the ordering process, please contact us at account.admin@blueplate.co'.
   
               // Send message to foodies
               Meteor.call('message.sms', profile_detail.mobile, foodie_message.trim(), (err, res) => {
@@ -492,7 +493,7 @@ Template.pending_confirmation.events({
                       'requestdish.sendEmail',
                       profile_detail.foodie_name + " <" + profile_detail.email + ">",
                       '', /* @param mail from..... default*/
-                      '', /* @param subject - default*/
+                      'Blueplate order cancellation', /* @param subject - default*/
                       'Hi ' + profile_detail.foodie_name + "," + "\n\n" + foodie_message + "\n\n Best regards,\n Alan Anderson,"
                   );
                 }

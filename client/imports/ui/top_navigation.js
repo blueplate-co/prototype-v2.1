@@ -214,13 +214,13 @@ class TopNavigation extends Component {
           onClick={() => {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
-            if (!Meteor.user() && !Meteor.loggingIn()) {
+            if (!Meteor.user()) {
               util.loginAccession("/profile/show_homecook_profile");
             } else {
               setTimeout(() => {
                 this.setState({ sidebarOpen: true });
               }, 500);
-              BlazeLayout.reset();
+              // BlazeLayout.reset();
               FlowRouter.go("/profile/show_homecook_profile");
             }
           }}

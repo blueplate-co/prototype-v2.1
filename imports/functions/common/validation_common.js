@@ -44,6 +44,12 @@ window.util = window.util || {};
     $('#showLoadFull').css('display', 'none');
   };
 
+  util.checkCurrentSite = function() {
+    if (location.hostname == 'www.blueplate.co') {
+      return true;
+    }
+    return false;
+  };
 }());
 /**
  * Validate phone number
