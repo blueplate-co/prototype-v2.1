@@ -46,7 +46,7 @@ sentNotificationToRequester = function(dishesRequest) {
       
   var site = document.location.origin + "/dish/" + dishesRequest.dish_id;
 
-  if (!dishesRequest.sent_notification) {
+  if (!dishesRequest.sent_notification && util.checkCurrentSite()) {
     var message = "The delicious dish you requested (" + dish_name + ") is now ready for ordering. Check it out at " + site;
     Meteor.call('message.sms', buyer.mobile, "Hey! " + message.trim(), (err, res) => {
       if (!err) {
@@ -63,7 +63,7 @@ sentNotificationToRequester = function(dishesRequest) {
           'requestdish.sendEmail',
           buyer_name + " <" + buyer.email + ">",
           '',
-          '',
+          'Your interested dishes are now available',
           'Hey ' + buyer.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
         );
         // console.log('Message sent');

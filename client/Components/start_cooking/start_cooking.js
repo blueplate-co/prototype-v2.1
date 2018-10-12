@@ -442,7 +442,7 @@ Template.request_card.events({
           Meteor.call('transactions.update', trans_no, buyer_id, seller_id, order_id, total_price_of_transaction, stripeToken) //update the transaction
           Meteor.call('order_record.accepted', order_id) //update the order to cooking
         } else {
-          console.log(2)
+          // console.log(2)
           // bookmark for recheck again
           if (serving_option === 'Delivery') {
             price_of_cart += 0
@@ -511,7 +511,7 @@ Template.request_card.events({
       var seller_email = seller_detail.emails[0].address,
           seller_info = seller_name + " (id: " + seller_id + ", email: " + seller_email + ", phone no: " + kitchen_phone_no + ")";
 
-      if (location.hostname == 'www.blueplate.co') {
+      if (util.checkCurrentSite()) {
         setTimeout(() => {
           var sProduct_info = '';
           arr_product_info.map( (item, index) => {
@@ -531,77 +531,79 @@ Template.request_card.events({
         }, 2000);
       }
 
-      var product_string = '';
-      for (var i = 0; i < product.length; i++) {
-        var dish = Dishes.findOne({ _id: product[i].product_id });
-        
-        if (!dish) {
-          // if product is a menu
-          var menu = Menu.findOne({ _id: product[i].product_id });
-
-          if (i == product.length - 1) {
-            product_string += ' ' + menu.menu_name;
+      if (util.checkCurrentSite()) {
+        var product_string = '';
+        for (var i = 0; i < product.length; i++) {
+          var dish = Dishes.findOne({ _id: product[i].product_id });
+          
+          if (!dish) {
+            // if product is a menu
+            var menu = Menu.findOne({ _id: product[i].product_id });
+  
+            if (i == product.length - 1) {
+              product_string += ' ' + menu.menu_name;
+            } else {
+              product_string += ' ' + menu.menu_name + ', ';
+            }
+  
           } else {
-            product_string += ' ' + menu.menu_name + ', ';
-          }
-
-        } else {
-          // if product is a dish
-          if (i == product.length - 1) {
-            product_string += ' ' + dish.dish_name;
-          } else {
-            product_string += ' ' + dish.dish_name + ', ';
+            // if product is a dish
+            if (i == product.length - 1) {
+              product_string += ' ' + dish.dish_name;
+            } else {
+              product_string += ' ' + dish.dish_name + ', ';
+            }
           }
         }
-      }
 
-      let content = seller_name + ' has just confirmed your order:'+ product_string +'.  This delicious dish is being prepared for you now.';
-      Meteor.call('message.sms', foodie_phone_number, 'Hi ' + foodie.foodie_name + ", " + content.trim(), (err, res) => {
-        if (!err) {
-          // console.log('Message sent');
-          // add new profit to current cycle for chef
-          var profit = 0;
-          for(var i = 0; i < product.length; i++) {
-            let product_id = product[i].product_id;
-            var dish = Dishes.findOne({
-              _id: product_id
-            })
-            if (!dish) {
-              // product is menu
-              let menu = Menu.findOne({
+        let content = seller_name + ' has just confirmed your order:'+ product_string +'.  This delicious dish is being prepared for you now.';
+        Meteor.call('message.sms', foodie_phone_number, 'Hi ' + foodie.foodie_name + ", " + content.trim(), (err, res) => {
+          if (!err) {
+            // console.log('Message sent');
+            // add new profit to current cycle for chef
+            var profit = 0;
+            for(var i = 0; i < product.length; i++) {
+              let product_id = product[i].product_id;
+              var dish = Dishes.findOne({
                 _id: product_id
-              });
-              profit = (parseFloat(profit) + parseFloat(menu.menu_selling_price)).toFixed(2);
-            } else {
-              // product is dish
-              profit = (parseFloat(profit) + parseFloat(dish.dish_selling_price)).toFixed(2);
+              })
+              if (!dish) {
+                // product is menu
+                let menu = Menu.findOne({
+                  _id: product_id
+                });
+                profit = (parseFloat(profit) + parseFloat(menu.menu_selling_price)).toFixed(2);
+              } else {
+                // product is dish
+                profit = (parseFloat(profit) + parseFloat(dish.dish_selling_price)).toFixed(2);
+              }
             }
+            // get current profit for this chef in this month
+            var current_profit = Kitchen_details.findOne({
+              user_id: seller_id
+            }).current_profit;
+            // update with new profit
+            profit = (parseFloat(profit) + parseFloat(current_profit)).toFixed(2);
+            profit = parseFloat(parseFloat(profit) / 1.15).toFixed(2);
+            Meteor.call('claim.updateprofit', seller_id, profit, function(err, res){
+              if (!err) {
+                // console.log(res);
+              } else {
+                // console.log(err);
+              }
+            })
           }
-          // get current profit for this chef in this month
-          var current_profit = Kitchen_details.findOne({
-            user_id: seller_id
-          }).current_profit;
-          // update with new profit
-          profit = (parseFloat(profit) + parseFloat(current_profit)).toFixed(2);
-          profit = parseFloat(parseFloat(profit) / 1.15).toFixed(2);
-          Meteor.call('claim.updateprofit', seller_id, profit, function(err, res){
-            if (!err) {
-              // console.log(res);
-            } else {
-              // console.log(err);
-            }
-          })
-        }
-      });
-
-      // Send email
-      Meteor.call(
-        'requestdish.sendEmail',
-        foodie.first_name + " <" + foodie.email + ">",
-        '', /* @param mail from..... default*/
-        '', /* @param subject - default*/
-        'Hey ' + foodie.first_name + ",\n\n" + content + "\n\n Bon appetite! \n Blueplate"
-      );
+        });
+  
+        // Send email
+        Meteor.call(
+          'requestdish.sendEmail',
+          foodie.first_name + " <" + foodie.email + ">",
+          '', /* @param mail from..... default*/
+          'Your blueplate order has been confirmed.', /* @param subject - default*/
+          'Hey ' + foodie.first_name.trim() + ",\n\n" + content + "\n\n Bon appetite! \n Blueplate"
+        );
+      }
     }
   },
 
@@ -700,7 +702,7 @@ Template.request_card.events({
                   
 
               // Create a task on asana
-              if (location.hostname == 'www.blueplate.co') {
+              if (util.checkCurrentSite()) {
                 setTimeout(() => {
                   var sProduct_info = '';
                   arr_product_info.map( (item, index) => {
@@ -728,7 +730,7 @@ Template.request_card.events({
                       'requestdish.sendEmail',
                       profile_foodies.first_name + " <" + profile_foodies.email + ">",
                       '', /* @param mail from..... default*/
-                      '', /* @param subject - default*/
+                      'Your blueplate order has been rejected.', /* @param subject - default*/
                       'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Best Regard! \n Blueplate"
                     );
                   }
@@ -793,21 +795,23 @@ Template.order_card.events({
           foodie_mobile_number = profile_foodies.mobile,
           buyer_name = profile_foodies.foodie_name;
 
-          var message = buyer_name + ', your food is ready. Please enjoy!';
-          Meteor.call('message.sms', foodie_mobile_number, message.trim(), (err, res) => {
-            if (!err) {
-              // console.log('Message sent');
-
-              // Send email
-              Meteor.call(
-                'requestdish.sendEmail',
-                profile_foodies.first_name + " <" + profile_foodies.email + ">",
-                '', /* @param mail from..... default*/
-                '', /* @param subject - default*/
-                'Hey ' + profile_foodies.first_name + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
-              );
-            }
-          });
+          if (util.checkCurrentSite()) {
+            var message = buyer_name + ', your food is ready. Please enjoy!';
+            Meteor.call('message.sms', foodie_mobile_number, message.trim(), (err, res) => {
+              if (!err) {
+                // console.log('Message sent');
+  
+                // Send email
+                Meteor.call(
+                  'requestdish.sendEmail',
+                  profile_foodies.first_name + " <" + profile_foodies.email + ">",
+                  '', /* @param mail from..... default*/
+                  'Your blueplate order is ready.', /* @param subject - default*/
+                  'Hey ' + profile_foodies.first_name.trim() + ",\n\n" + message + "\n\n Bon appetite! \n Blueplate"
+                );
+              }
+            });
+          }
         }
       }, 1000)
     }
@@ -853,21 +857,22 @@ Template.chef_ready_card.events({
         foodie_mobile_number = foodie_detail.mobile;
 
     // console.log('Full number' + foodie_mobile_number);
-    if (location.hostname !== 'localhost') {
+    if (util.checkCurrentSite()) {
 
       if (foodie_mobile_number.length > 0) {
-        let content = 'Thanks for eating with Blueplate. Your order is ready now. Please rate for chef if your dish is good.';
-        Meteor.call('message.sms', foodie_mobile_number, content, (err, res) => {
+        let content = 'thanks for eating with Blueplate. Please take a minute to rate this dish.'
+        Meteor.call('message.sms', foodie_mobile_number, foodie_detail.first_name.trim() + ', ' + content, (err, res) => {
           if (!err) {
-            // console.log('Message sent');
-  
+            // Uppercase first character
+            const upperContent = content.replace(/^\w/, firstCharacter => firstCharacter.toUpperCase());
+
             // Send email
             Meteor.call(
               'requestdish.sendEmail',
               foodie_detail.first_name + " <" + foodie_detail.email + ">",
               '', /* @param mail from..... default*/
-              '', /* @param subject - default*/
-              'Hey ' + foodie_detail.first_name + ",\n\n" + content + "\n\n Bon appetite! \n Blueplate"
+              'Please rate your blueplate experience', /* @param subject - default*/
+              'Hey ' + foodie_detail.first_name + ",\n\n" + upperContent + "\n\n Bon appetite! \n Blueplate"
             );
           }
         });

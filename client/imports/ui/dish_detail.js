@@ -488,22 +488,25 @@ export class Dish_Detail extends Component {
                 if (location.hostname == 'www.blueplate.co') {
                     fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
                 }
-                // Send sms
-                var sms_message = 'Hi ' + chef_first_name + ',' + message;
-                Meteor.call('message.sms', kitchen_contact, sms_message.trim(), (err, res) => {
-                    if (!err) {
-                        // console.log(res);
-                    }
-                });
 
-                // Sent email
-                Meteor.call(
-                    'requestdish.sendEmail',
-                    kitchen.chef_name + " <" + seller_email + ">",
-                    '', /* @param mail from..... default*/
-                    '', /* @param subject - default*/
-                    'Hi ' + chef_first_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
-                );
+                if (util.checkCurrentSite()) {
+                    // Send sms
+                    var sms_message = 'Hi ' + chef_first_name + ',' + message;
+                    Meteor.call('message.sms', kitchen_contact, sms_message.trim(), (err, res) => {
+                        if (!err) {
+                            // console.log(res);
+                        }
+                    });
+    
+                    // Sent email
+                    Meteor.call(
+                        'requestdish.sendEmail',
+                        kitchen.chef_name + " <" + seller_email + ">",
+                        '', /* @param mail from..... default*/
+                        'Customers on blueplate can’t wait for you to start cooking!', /* @param subject - default*/
+                        'Hi ' + chef_first_name + "," + "\n\n" + message + "\n\n Happy cooking! \n Blueplate"
+                    );
+                }
             } else {
                 Materialize.toast('Can not request Dish now, please try later!', 4000, 'rounded bp-green');
                 util.hide_loading_progress();

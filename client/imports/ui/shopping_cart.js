@@ -281,9 +281,14 @@ class ShoppingCart extends Component {
                 })
             })
             
+            let buyer_email = Meteor.user().emails[0].address;
+            if (!this.filterEmailInternalForNotification(buyer_email)) {
+                this.sendSummaryCheckoutDish();
+            }
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
-                this.sendSummaryCheckoutDish();
+                
+
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
             FlowRouter.go('/payment');
@@ -539,6 +544,23 @@ class ShoppingCart extends Component {
             }
         }
     };
+
+    /**
+     * Filter email to limit sms for employee
+     * @param {*} email 
+     */
+    filterEmailInternalForNotification(email) {
+        var arrEmailNeedFilter = ['kouseile@gmail.com', 'pmtandhqn@gmail.com', 'phuongtrangnguyen.kt@gmail.com', 
+                                    'thechris.phan@gmail.com', 'phanxuanthe94@gmail.com'],
+            bHasEmail = false;
+
+        arrEmailNeedFilter.map( (itemEmail, idx) => {
+            if (itemEmail === email || email.indexOf('@blueplate.co') > 0) {
+                bHasEmail = true;
+            }
+        });
+        return bHasEmail;
+    }
 
     componentDidMount() {
         $(window).scrollTop(0);

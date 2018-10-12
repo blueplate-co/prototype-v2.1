@@ -231,7 +231,7 @@ class Payment extends Component {
                                         Session.clear;
                                         Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
 
-                                        if (location.hostname == 'www.blueplate.co') {
+                                        if (util.checkCurrentSite()) {
                                             var product_info = item.product_name + " (id: " + item.product_id + ", quantity: "  + item.quantity + ", amount: $" + item.total_price_per_dish + ")";
                                             var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
                                                         '\nProduct infor: ' + product_info;
@@ -429,7 +429,7 @@ class Payment extends Component {
                             Session.clear;
                             Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
 
-                            if (location.hostname == 'www.blueplate.co') {
+                            if (util.checkCurrentSite()) {
                                 var product_info = item.product_name + " (id: " + item.product_id + ", quantity: "  + item.quantity + ", amount: $" + item.total_price_per_dish + ")";
                                 var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
                                             '\nProduct infor: ' + product_info;
