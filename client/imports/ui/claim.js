@@ -151,13 +151,10 @@ export default class Claim extends Component {
     }
 
     getprofit() {
-        Meteor.call('claim.validProfit', (err, res) => {
-            if (!err) {
-                this.setState({
-                    validProfit: res.available_profit,
-                    currentProfit: res.current_profit
-                });
-            }
+        Meteor.call("payment.getStripeBalance", (err, response) => {
+            this.setState({
+                validProfit: parseInt(response.account_balance) / 100,
+            });
         });
     }
 
@@ -170,12 +167,14 @@ export default class Claim extends Component {
             Materialize.toast('Invalid card name', 3000, "rounded bp-red");
         } else if (bank_info == '0'){
             Materialize.toast('Please choose your bank name', 3000, "rounded bp-red");
-        } else if (bank_account_number.trim().length < 9 || bank_account_number.trim().length > 12) {
+        } else if (bank_account_number.replace(/\s/g, "").length < 9 || bank_account_number.replace(/\s/g, "").length > 12 || isNaN(bank_account_number)) {
             Materialize.toast('Invalid card number format', 3000, "rounded bp-red");
-        } else if (amount == 0 || amount > this.state.validProfit){    
-            Materialize.toast('Invalid amount to claim', 3000, "rounded bp-red");
+        } else if (amount == 100 || amount > this.state.validProfit){    
+            Materialize.toast('Invalid amount to claim. Must greater than 100$', 3000, "rounded bp-red");
         } else if (this.state.validProfit == 0) {
             Materialize.toast('No have available amount to claim', 3000, "rounded bp-red");
+        } else if (amount > this.state.validProfit) {
+            Materialize.toast('Not enough balance to claim', 3000, "rounded bp-red");
         } else {
             this.setState({
                 screen: 'claim',
@@ -188,6 +187,20 @@ export default class Claim extends Component {
     }
 
     claim() {
+        var chef_name = Kitchen_details.findOne({ user_id: Meteor.userId() }).chef_name;
+        var profile_detail = Profile_details.findOne({user_id: Meteor.userId()});
+        var buyer_info = chef_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone no: " + profile_detail.mobile + ")";
+        var content_message = '\nBuyer infor : ' + buyer_info + 
+        '\nAmount: ' + this.state.amount +
+        '\nPlaceholder name: ' + this.state.placeholder_name +
+        '\nBank info: ' + this.state.bank_info +
+        '\nBank number: ' + this.state.bank_account_number;
+        Meteor.call(
+            'marketing.create_task_asana',
+            '861003196091238', // projects_id to create task
+            'Claim request: ' + chef_name,
+            content_message
+        );
         Meteor.call('claim.request', Meteor.userId(), this.state.placeholder_name, this.state.bank_info, this.state.bank_account_number, this.state.amount, (err, res) => {
             // success a response for request a claim request
             if (err) {
@@ -237,12 +250,12 @@ export default class Claim extends Component {
                         <div className="container-claim">
                             <div className="row">
                                 <div className="col s6 m3 l3"><img className="transfer-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits-background.svg" /></div>
-                                <div className="col s6 m9 l9"><h6>Available profit last month:</h6><span className="available-price">${this.state.validProfit}</span></div>
+                                <div className="col s6 m9 l9"><h6>Available profit:</h6><span className="available-price">${this.state.validProfit}</span></div>
                             </div>
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col s6 m3 l3"><img className="transfer-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits-background.svg" /></div>
                                 <div className="col s6 m9 l9"><h6>Available profit this month:</h6><span className="available-price">${this.state.currentProfit}</span></div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="row">
                             <div className="col s12 m12 l12 xl12">
