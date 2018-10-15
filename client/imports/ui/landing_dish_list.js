@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // App component - represents the whole app
 class LandingDishList extends Component {
@@ -26,7 +26,7 @@ class LandingDishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <a key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" href="#signup_modal">
+        <div key={index} className="col xl3 l4 m6 s12 modal-trigger dish-wrapper" onClick={ () => FlowRouter.go('/dish/' + item._id)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             {
               (hasThumbnail) ?
@@ -52,7 +52,7 @@ class LandingDishList extends Component {
           </div>
           <div className="col l12 m12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
 
-        </a>
+        </div>
       )
     })
   }

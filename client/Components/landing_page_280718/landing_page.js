@@ -157,6 +157,9 @@ Template.landing_page.events({
     } else {
       $(event.target).children('i').removeClass('rotate')
     }
+  },
+  'click .landing_see_more': function(event) {
+    FlowRouter.go('/main');
   }
 })
 
