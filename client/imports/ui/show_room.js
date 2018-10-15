@@ -50,6 +50,7 @@ class ShowRoom extends Component {
   }
 
   componentDidMount = () => {
+    $(window).scrollTop(0);
     // Session.set('list_kitchen_for_map', null);
     // Session.set('search_result', null)
     // Session.set('search_result_origin', null);
