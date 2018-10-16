@@ -96,7 +96,7 @@
 }
 
 #dish-request-content, #dish-request-infor {
-    color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0.87);
     font-style: italic;
     padding-top: 16px;
     padding-right: 10px;
