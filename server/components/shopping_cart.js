@@ -61,7 +61,12 @@ Meteor.methods({
       }
       chargeAmount = parseFloat((promotion_amount + ( promotion_amount * 0.034 ) + 2.35).toFixed(2));
       var existed_promotion_history = Promotion_history.findOne({ user_id: buyer_id });
-      var promotion_balance = existed_promotion_history.balance;
+      var temp_amount = 0; //- amount when user not have enough balance to pay
+      if (existed_promotion_history) {
+        var promotion_balance = existed_promotion_history.balance;
+      } else {
+        var promotion_balance = 0;
+      }
       console.log('Charge amount: ' + chargeAmount);
       charge({
         amount: parseInt(chargeAmount * 100),

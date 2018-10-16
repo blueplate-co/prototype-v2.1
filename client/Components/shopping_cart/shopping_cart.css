@@ -320,3 +320,81 @@ select#select-serving-option>option {
   font-size: 18px !important;
   margin-right: 5px;
 }
+
+
+/* Style for file payment_stripe_form.js */
+.StripeElement, #name_holder_form {
+  height: 40px !important;
+  padding: 10px 12px !important;
+
+  color: #32325d !important;
+  background-color: white !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1 !important;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease !important;
+}
+
+input:focus,
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a !important;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.container-stripe-form {
+  background-color: #f7f8f9;
+  color: #6b7c93;
+}
+
+input#name_holder_form {
+  padding: 0px 12px !important;
+  width: 95%;
+}
+
+#payment-stripe-form {
+  margin-top: 25px;
+  border: none;
+  border-radius: 15px;
+  padding: 7px 30px;
+  background-color: #56AACD;
+  color: #FFFFFF;
+  letter-spacing: 0.025em;
+  font-weight: 600;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  transition: all 150ms ease;
+}
+
+#payment-stripe-form:hover {
+  background-color: #407E97;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+button#payment-stripe-form[disabled] {
+  cursor: default;
+  background-color: #727272;
+}
+
+button#payment-stripe-form[disabled]:hover {
+  transform: none;
+
+}
+
+#payment-form {
+  height: 100%;
+  width: 73%;
+  margin: auto;
+  padding: 30px 0px;
+}
+/* end style for file payment_stripe_form.js */

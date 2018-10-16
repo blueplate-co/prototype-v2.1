@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import ProgressBar from './progress_bar.js';
+import PaymentStripeForm from './payment_stripe_form.js';
+import {Elements, StripeProvider} from 'react-stripe-elements';
+
 
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
@@ -105,7 +108,8 @@ class Payment extends Component {
         this.validationCardAndCharge = this.validationCardAndCharge.bind(this);
         this.validationAndCredits = this.validationAndCredits.bind(this);
 		this.closeModal = this.closeModal.bind(this);
-		this.openModal = this.openModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.handleSelectMethodPayment = this.handleSelectMethodPayment.bind(this);
         this.state = {
             payment: "",
             creditPackage: "",
@@ -272,72 +276,55 @@ class Payment extends Component {
         this.setState({
             action: true
         })
-        ccNum = $('#card_no').val();
-        cvc = $('#cvc_no').val();
-        expMo = $('#exp_month').val();
-        expYr = $('#exp_year').val();
-
-        // validation card info
-        Stripe.card.createToken({
-            number: ccNum,
-            cvc: cvc,
-            exp_month: expMo,
-            exp_year: expYr,
-        }, function (status, response) {
-            if (response.error) {
-                Materialize.toast(response.error.message, 'rounded bp-green');
+        // use Stripetoken to add this card into Customer account
+        Meteor.call('payment.addCard', response.id, (err, res) => {
+            if (err) {
+                Materialize.toast(err.message, 4000, 'rounded bp-green');
+                return false;
+            }
+        });
+        console.log('Package to choose' + creditPackage);
+        Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function (err, response) {
+            if (err) {
+                console.log(err);
+                Materialize.toast(err.message, 'rounded bp-green');
+                this.setState({
+                    action: false
+                })
             } else {
-                // use Stripetoken to add this card into Customer account
-                Meteor.call('payment.addCard', response.id, (err, res) => {
-                    if (err) {
-                        Materialize.toast(err.message, 4000, 'rounded bp-green');
-                        return false;
+                // complete add to credits and charge credit card
+                // enough money to pay
+                var StripeToken = '';
+                var transaction_no = 1;
+                //- add each every product into order collection
+                var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+                shoppingCart.map(function (item, index) {
+                    var kitchenOrderInfo;
+                    //- get information order which user set in previous step
+                    for (var i = 0; i < Session.get('product').length; i++) {
+                        if (item.seller_id == Session.get('product')[i].id) {
+                            kitchenOrderInfo = Session.get('product')[i];
+                        }
                     }
-                });
-                console.log('Package to choose' + creditPackage);
-                Meteor.call('payment.depositCredits', creditPackage, Meteor.userId(), function (err, response) {
-                    if (err) {
-                        console.log(err);
-                        Materialize.toast(err.message, 'rounded bp-green');
-                        this.setState({
-                            action: false
-                        })
-                    } else {
-                        // complete add to credits and charge credit card
-                        // enough money to pay
-                        var StripeToken = '';
-                        var transaction_no = 1;
-                        //- add each every product into order collection
-                        var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
-                        shoppingCart.map(function (item, index) {
-                            var kitchenOrderInfo;
-                            //- get information order which user set in previous step
-                            for (var i = 0; i < Session.get('product').length; i++) {
-                                if (item.seller_id == Session.get('product')[i].id) {
-                                    kitchenOrderInfo = Session.get('product')[i];
-                                }
-                            }
-                            var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
-                            if (transaction) {
-                                transaction_no = parseInt(transaction.transaction_no) + 1
-                            }
-                            // no need add card because, if user has credit, thet must have already credit card
-                            Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
-                                if (err) {
-                                    Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-                                    this.setState({
-                                        action: false
-                                    })
-                                } else {
-                                    Meteor.call('shopping_cart.remove', item._id)
-                                    Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
-                                    Session.clear;
-                                    Materialize.toast("Credit added sucessfully, we are now processing your order. please wait for chef's confirmation", 8000, 'rounded bp-green');
-                                    FlowRouter.go('/orders_tracking');
-                                }
+                    var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
+                    if (transaction) {
+                        transaction_no = parseInt(transaction.transaction_no) + 1
+                    }
+                    // no need add card because, if user has credit, thet must have already credit card
+                    Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'credits', function (err, response) {
+                        if (err) {
+                            Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                            this.setState({
+                                action: false
                             })
-                        })
-                    }
+                        } else {
+                            Meteor.call('shopping_cart.remove', item._id)
+                            Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
+                            Session.clear;
+                            Materialize.toast("Credit added sucessfully, we are now processing your order. please wait for chef's confirmation", 8000, 'rounded bp-green');
+                            FlowRouter.go('/orders_tracking');
+                        }
+                    })
                 })
             }
         })
@@ -362,94 +349,82 @@ class Payment extends Component {
         return seller_info;
     };
 
-    validationCardAndCharge() {
+    validationCardAndCharge(response) {
         util.show_loading_progress();
-        ccNum = $('#card_no').val();
-        cvc = $('#cvc_no').val();
-        expMo = $('#exp_month').val();
-        expYr = $('#exp_year').val();
         var that = this;
 
         this.setState({
             action: true
         })
 
-        // validation card info
-        Stripe.card.createToken({
-            number: ccNum,
-            cvc: cvc,
-            exp_month: expMo,
-            exp_year: expYr,
-        }, function (status, response) {
-            if (response.error) {
-                Materialize.toast(response.error.message, 'rounded bp-green');
-                util.hide_loading_progress();
-                that.setState({
-                    action: false
-                })
-            } else {
-                //- send to Facebook Pixel
-                if (location.hostname == 'www.blueplate.co') {
-                    fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
+        //- send to Facebook Pixel
+        if (location.hostname == 'www.blueplate.co') {
+            fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
+        }
+
+        var StripeToken = response.id;
+        var transaction_no = 1;
+        var info_buyer = that.getBuyerInfor();
+
+        //- add each every product into order collection
+        var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+        shoppingCart.map(function (item, index) {
+            var kitchenOrderInfo;
+            //- get information order which user set in previous step
+            for (var i = 0; i < Session.get('product').length; i++) {
+                if (item.seller_id == Session.get('product')[i].id) {
+                    kitchenOrderInfo = Session.get('product')[i];
                 }
-                var StripeToken = response.id;
-                var transaction_no = 1;
-                var info_buyer = that.getBuyerInfor();
-
-                //- add each every product into order collection
-                var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
-                shoppingCart.map(function (item, index) {
-                    var kitchenOrderInfo;
-                    //- get information order which user set in previous step
-                    for (var i = 0; i < Session.get('product').length; i++) {
-                        if (item.seller_id == Session.get('product')[i].id) {
-                            kitchenOrderInfo = Session.get('product')[i];
-                        }
-                    }
-                    
-                    var seller_info = that.getSellerInfor(kitchenOrderInfo.id);
-
-                    var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
-                    if (transaction) {
-                        transaction_no = parseInt(transaction.transaction_no) + 1
-                    }
-                    Meteor.call('payment.addCard', StripeToken);
-                    Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
-                        if (err) {
-                            util.hide_loading_progress();
-                            Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
-                            that.setState({
-                                action: false
-                            })
-                        } else {
-                            util.hide_loading_progress();
-                            localStorage.setItem('globalCart', '');
-                            Meteor.call('shopping_cart.remove', item._id)
-                            Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
-                            Session.clear;
-                            Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
-
-                            if (util.checkCurrentSite()) {
-                                var product_info = item.product_name + " (id: " + item.product_id + ", quantity: "  + item.quantity + ", amount: $" + item.total_price_per_dish + ")";
-                                var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
-                                            '\nProduct infor: ' + product_info;
-    
-                                // Send email
-                                Meteor.call(
-                                    'marketing.create_task_asana',
-                                    '852791235008291', // projects_id to create task
-                                    'Buyer : ' + item.buyer_name,
-                                    content_message
-                                );
-                            }
-
-                            FlowRouter.go('/orders_tracking');
-                        }
-                    })
-                })
-                util.hide_loading_progress();
             }
+            
+            var seller_info = that.getSellerInfor(kitchenOrderInfo.id);
+
+            var transaction = Transactions.findOne({ 'buyer_id': Meteor.userId(), 'seller_id': kitchenOrderInfo.id }, { sort: { transaction_no: -1 } });
+            if (transaction) {
+                transaction_no = parseInt(transaction.transaction_no) + 1
+            }
+            Meteor.call('payment.addCard', StripeToken);
+            Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
+                if (err) {
+                    util.hide_loading_progress();
+                    Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
+                    that.setState({
+                        action: false
+                    })
+                } else {
+                    localStorage.setItem('globalCart', '');
+                    Meteor.call('shopping_cart.remove', item._id)
+                    Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
+                    Session.clear;
+                    Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
+
+                    if (util.checkCurrentSite()) {
+                        var product_info = item.product_name + " (id: " + item.product_id + ", quantity: "  + item.quantity + ", amount: $" + item.total_price_per_dish + ")";
+                        var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
+                                    '\nProduct infor: ' + product_info;
+
+                        // Send email
+                        Meteor.call(
+                            'marketing.create_task_asana',
+                            '852791235008291', // projects_id to create task
+                            'Buyer : ' + item.buyer_name,
+                            content_message
+                        );
+                    }
+
+                    util.hide_loading_progress();
+                    FlowRouter.go('/orders_tracking');
+                }
+            })
         })
+    }
+
+    handleSelectMethodPayment(response) {
+        if (this.state.payment === 'credits') {
+            this.validationAndCredits(response);
+        } else if (this.state.payment === 'credit-card') {
+            this.validationCardAndCharge(response);
+        }
     }
 
     renderPayment(payment) {
@@ -494,35 +469,14 @@ class Payment extends Component {
                                 <span className="bonus">get $100 free</span>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col s12 m12 l12 xl12">
-                                <input type="text" placeholder="card holder name" />
+                        <StripeProvider apiKey="pk_live_mqXbgtwXmodOMRSKycYVgsl6">
+                            <div className="">
+                                <Elements>
+                                    {/* validationAndCredits */}
+                                    <PaymentStripeForm handlePayment={this.handleSelectMethodPayment}/>
+                                </Elements>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col payment-number s12 m12 l12 xl12">
-                                <input id="card_no" type="number" placeholder="your credit card number" />
-                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
-                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
-                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="exp_month" type="number" maxLength="2" size="2" placeholder="MM" />
-                            </div>
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="exp_year" type="number" maxLength="2" size="2" placeholder="YY" />
-                            </div>
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="cvc_no" type="number" maxLength="3" size="3" placeholder="CVC" />
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col s12 m6 offset-m3 l6 offset-l3 xl6 offset-xl3">
-                                <button className="btn" disabled={this.state.action} onClick={() => this.validationAndCredits()} style={{ marginTop: '30px' }}>Next</button>
-                            </div>
-                        </div>
+                        </StripeProvider>
                     </div>
                 )
                 break;
@@ -539,38 +493,14 @@ class Payment extends Component {
                         <div className="row">
                             <span id="back-payment" className="fa fa-arrow-left" onClick={() => this.backPayment()}></span>
                         </div>
-                        <div className="row">
-                            <h2>Your card details</h2>
-                        </div>
-                        <div className="row">
-                            <div className="col s12 m12 l12 xl12">
-                                <input type="text" placeholder="card holder name" />
+                        <StripeProvider apiKey="pk_live_mqXbgtwXmodOMRSKycYVgsl6">
+                            <div className="">
+                                <Elements>
+                                    {/* validationCardAndCharge */}
+                                    <PaymentStripeForm handlePayment={this.handleSelectMethodPayment} />
+                                </Elements>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col payment-number s12 m12 l12 xl12">
-                                <input id="card_no" type="number" placeholder="your credit card number" />
-                                <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
-                                <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
-                                <img id="stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="exp_month" type="number" maxLength="2" size="2" placeholder="MM" />
-                            </div>
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="exp_year" type="number" maxLength="2" size="2" placeholder="YY" />
-                            </div>
-                            <div className="col s4 m4 l4 xl4">
-                                <input id="cvc_no" type="number" maxLength="3" size="3" placeholder="CVC" />
-                            </div>
-                        </div>
-                        <div className="row text-center">
-                            <div className="col s12 m6 offset-m3 l6 offset-l3 xl6 offset-xl3">
-                                <button className="btn" disabled={this.state.action} onClick={() => this.validationCardAndCharge()} style={{ marginTop: '30px' }}>Next</button>
-                            </div>
-                        </div>
+                        </StripeProvider>
                     </div>
                 )
                 break;
