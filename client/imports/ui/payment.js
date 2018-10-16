@@ -568,7 +568,7 @@ class Payment extends Component {
                         </div>
                         <div className="row text-center">
                             <div className="col s12 m6 offset-m3 l6 offset-l3 xl6 offset-xl3">
-                                <button className="btn" disabled={this.state.action} onClick={() => this.validationCardAndCharge()} style={{ marginTop: '30px' }}>Next</button>
+                                <button className="btn" id="enter-credits-card" disabled={this.state.action} onClick={() => this.validationCardAndCharge()} style={{ marginTop: '30px' }}>Next</button>
                             </div>
                         </div>
                     </div>
