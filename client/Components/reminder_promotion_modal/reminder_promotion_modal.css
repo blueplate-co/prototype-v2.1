@@ -1,0 +1,47 @@
+#reminder_promotion_modal {
+    min-height: 300px!important;
+    overflow: initial!important;
+}
+
+#reminder_promotion_images {
+    left: 50%;
+    width: 300px;
+    transform: translate(-50%, -45%);
+    position: absolute;
+}
+
+#reminder_promotion_container {
+    padding-top: 150px;
+    text-align: center;
+}
+
+#reminder_promotion_container .content {
+    font-size: 1.3em;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+}
+
+#reminder_promotion_button {
+    width: 200px;
+    margin: 20px 0px 10px 0px;
+}
+
+@media screen and (max-width: 1023px) {
+    #reminder_promotion_images {
+        left: 50%;
+        width: 300px;
+        transform: translate(-50%, 25%);
+        position: absolute;
+    }
+    #reminder_promotion_container {
+        padding-top: 300px;
+        text-align: center;
+    }
+    #reminder_promotion_container .content {
+        font-size: 1em;
+        color: #000;
+        margin: 0px;
+        padding: 0px;
+    }
+}
