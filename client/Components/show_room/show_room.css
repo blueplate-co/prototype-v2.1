@@ -39,7 +39,7 @@
 /** Pinterest way to display card **/
 @media(min-width: 870px) {
   .show_room_wrapper {
-    width: 100vw;
+    /* width: 100vw; */
     height: auto;
     padding: 0 64px 0 64px;
   }
@@ -57,7 +57,7 @@
 
 @media(min-width:1220px) {
   .show_room_wrapper {
-    width: 100vw;
+    /* width: 100vw; */
     height: auto;
     padding: 0 64px 0 64px;
   }
@@ -76,7 +76,7 @@
 
 @media(min-width:1522px) {
   .show_room_wrapper {
-    width: 100vw;
+    /* width: 100vw; */
     height: auto;
     padding: 0 64px 0 64px;
   }
@@ -93,7 +93,7 @@
 
 @media(min-width:1824px) {
   .show_room_wrapper {
-    width: 100vw;
+    /* width: 100vw; */
     height: auto;
     padding: 0 64px 0 64px;
   }

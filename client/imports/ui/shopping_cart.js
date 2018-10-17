@@ -254,6 +254,7 @@ class ShoppingCart extends Component {
 
     // when user click checkout button
     handleCheckout() {
+        util.show_loading_progress();
         globalCart.forEach((item, index) => {
             item.address = $('#address_' + item.id).val();
         });
@@ -287,12 +288,61 @@ class ShoppingCart extends Component {
             }
             //- send to Facebook Pixel
             if (location.hostname == 'www.blueplate.co') {
-                
-
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
-            FlowRouter.go('/payment');
+            this.checkEnoughtCurrentAmount();
+        } else {
+            util.hide_loading_progress();
         }
+    }
+
+    checkEnoughtCurrentAmount() {
+        Meteor.call('payment.getCredits', (err, credits) => {
+            var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+            var total = 0;
+            for (var i = 0; i < shoppingCart.length; i++) {
+                if (checking_promotion_dish(shoppingCart[i].product_id).length > 0) {
+                    total += parseFloat(shoppingCart[i].total_price_per_dish * get_amount_promotion(shoppingCart[i].product_id));
+                } else {
+                    total += parseFloat(shoppingCart[i].total_price_per_dish);
+                }
+            }
+            // get Stripe balance
+            Meteor.call('payment.getStripeBalance', (err, res) => {
+                let balance = parseFloat(res.account_balance / 100).toFixed(2);
+                var that = this;
+                Meteor.call('promotion.check_history', (err, res) => {
+                    if (Object.keys(res).length == 0) {
+                        var promotion_credits = 0;
+                    } else {
+                        var promotion_credits = res.balance;
+                    }
+                    // check pending order of buyer
+                    var pendingOrder = Order_record.find({
+                        buyer_id: Meteor.userId(),
+                        status: 'Created'
+                    }).fetch();
+                    var pendingCost = 0;
+                    for (var i = 0; i < pendingOrder.length; i++) {
+                        if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
+                            pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
+                        } else {
+                            pendingCost += pendingOrder[i].total_price;
+                        }
+                    }
+                    var trueBalance = (parseFloat(credits) + parseFloat(balance) + parseFloat(promotion_credits)) - parseFloat(pendingCost);
+                    // sum of two wallet is not enough to pay
+                    if (trueBalance < total) {
+                        // not enough money to pay
+                        localStorage.setItem('bEnoughtAmount', false);
+                    } else {
+                        localStorage.setItem('bEnoughtAmount', true);
+                    }
+                    util.hide_loading_progress();
+                    FlowRouter.go('/payment');
+                });
+            });
+        });
     }
     
     handleOnViewDetailDish(dish_id) {
@@ -401,7 +451,7 @@ class ShoppingCart extends Component {
                     <div className="col s12 m6 l6">
                         <div className="service-option-cart">
                             <span className="service-option-icon"></span>
-                            <select id="select-serving-option" className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                            <select id="select-serving-option" style={{...this, color: address ? 'rgba(0, 0, 0, 0.87)' : ''}} className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
                                 <option value="" disabled>How would you like to get your food?</option>
                                 { this.renderServingOption(seller_id) }
                             </select>
@@ -417,7 +467,9 @@ class ShoppingCart extends Component {
                         
                         <div className="input-field col s12 m12 l12 icon-position-common date-summary">
                             <i className="material-icons prefix location-address icon-cart-format">date_range</i>
-                            <input id="date" type="date" onChange={(event) => this.handleChangeDate(event, seller_id)} />
+                            <input id="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
+                                style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
+                                onChange={(event) => this.handleChangeDate(event, seller_id)} />
                             <label htmlFor="date"></label>
                         </div>
                         <div className="col s12 m12 l12 no-background time-cart">
@@ -425,7 +477,7 @@ class ShoppingCart extends Component {
                             <TimePicker
                                 showSecond={false}
                                 className=""
-                                // defaultValue={!defaultTimePicker ? '' : moment(defaultTimePicker, "HH:mm")}
+                                defaultValue={!defaultTimePicker ? '' : moment(defaultTimePicker, "h:mm")}
                                 onChange={(value) => this.handleChangeTime(value, seller_id)}
                                 focusOnOpen={true}
                                 placeholder="What time will be best?"
