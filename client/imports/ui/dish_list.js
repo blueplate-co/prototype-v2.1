@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
@@ -14,7 +12,6 @@ export default class DishList extends Component {
     super(props);
     this.state = {
       loading: true,
-      loaded: false,
       dishes: []
     }
   }
@@ -25,17 +22,28 @@ export default class DishList extends Component {
   }
 
   componentDidMount = () => {
-    Meteor.call('dish.getDishListShowroom', (err, res) => {
-      this.setState({
-        dishes: res,
-        loading: false
-      })
-    });
+    var kitchen_id = '';
+    if (FlowRouter.getParam('homecook_id')) {
+      kitchen_id = FlowRouter.getParam('homecook_id');
+      Meteor.call('dish.getDishListShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          dishes: res,
+          loading: false
+        })
+      });
+    } else {
+      Meteor.call('dish.getDishListShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          dishes: res,
+          loading: false
+        })
+      });
+    }
   }
 
   renderList = () => {
     if (this.state.dishes.length == 0) {
-      return <p>..loading</p>
+      return <p>No dish to display</p>
     }
     let hasThumbnail;
     return this.state.dishes.map((item, index) => {
@@ -111,7 +119,7 @@ export default class DishList extends Component {
         {/* list items */}
         <div className="row">
           {
-            (this.props.listLoading)
+            (this.state.loading)
             ?
               <span>...loading</span>
             :

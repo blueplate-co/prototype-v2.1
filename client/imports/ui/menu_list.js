@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Session } from 'meteor/session';
 import Rating from './rating';
 import Like from './like_button';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // App component - represents the whole app
 export default class MenuList extends Component {
@@ -14,14 +15,24 @@ export default class MenuList extends Component {
       menus: []
     }
   }
-
   componentDidMount = ()  => {
-    Meteor.call('menu.getListMenuShowroom', (err, res) => {
-      this.setState({
-        menus: res,
-        loading: false
+    var kitchen_id = '';
+    if (FlowRouter.getParam('homecook_id')) {
+      kitchen_id = FlowRouter.getParam('homecook_id');
+      Meteor.call('menu.getListMenuShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          menus: res,
+          loading: false
+        })
       })
-    })
+    } else {
+      Meteor.call('menu.getListMenuShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          menus: res,
+          loading: false
+        })
+      })
+    }
   }
 
   handleClick = (item) => {
@@ -41,8 +52,8 @@ export default class MenuList extends Component {
     });
   }
 
-  renderListCarousel = (index) => {
-    let listDish = this.state.menus[index];
+  renderListCarousel = (index, self) => {
+    let listDish = self.state.menus[index];
     let id = listDish.dishes_id;
     let listImages = [];
 
@@ -79,7 +90,7 @@ export default class MenuList extends Component {
 
   renderList = () => {
     if (this.state.menus.length == 0) {
-      return <p>...loading</p>
+      return <p>No menu to display</p>
     }
     return this.state.menus.map((item, index) => {
       return (
@@ -87,7 +98,7 @@ export default class MenuList extends Component {
           <div className="images-thumbnail">
             <Like type="menu" id={item._id} />
             <div className="slider">
-              { this.renderListCarousel(index) }
+              { this.renderListCarousel(index, this) }
             </div>
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
@@ -128,7 +139,7 @@ export default class MenuList extends Component {
         {/* list items */}
           <div className="row">
             {
-              (this.props.listLoading)
+              (this.state.loading)
               ?
                 <span>...loading</span>
               :

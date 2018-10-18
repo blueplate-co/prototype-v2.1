@@ -167,8 +167,12 @@ Meteor.methods({
 });
 
 Meteor.methods({
-  'menu.getListMenuShowroom': function(dish_id) {
-    return Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
+  'menu.getListMenuShowroom': function(kitchen_id) {
+    if (kitchen_id.length > 0) {
+      return Menu.find({ kitchen_id: kitchen_id, deleted: false }, { sort: { online_status: -1, createdAt: -1 }}).fetch();
+    } else {
+      return Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
+    }
   }
 });
 
