@@ -259,7 +259,7 @@ Meteor.methods({
     })
   },
   'kitchen.showKitchenListShowroom' () {
-    return Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 6} ).fetch();
+    return Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 15} ).fetch();
   }
 });
 

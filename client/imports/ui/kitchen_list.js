@@ -58,7 +58,7 @@ export default class KitchenList extends Component {
         {/* list items */}
           <div className="row">
             {
-              (this.props.listLoading)
+              (this.state.loading)
               ?
                 <span>...loading</span>
               :
