@@ -1,23 +1,37 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
-import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
-
-import { navbar_find_by } from './../../../imports/functions/find_by';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // App component - represents the whole app
-class MenuList extends Component {
+export default class MenuList extends Component {
 
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      loading: false
+      loading: true,
+      menus: []
+    }
+  }
+  componentDidMount = ()  => {
+    var kitchen_id = '';
+    if (FlowRouter.getParam('homecook_id')) {
+      kitchen_id = FlowRouter.getParam('homecook_id');
+      Meteor.call('menu.getListMenuShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          menus: res,
+          loading: false
+        })
+      })
+    } else {
+      Meteor.call('menu.getListMenuShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          menus: res,
+          loading: false
+        })
+      })
     }
   }
 
@@ -38,8 +52,8 @@ class MenuList extends Component {
     });
   }
 
-  renderListCarousel = (index) => {
-    let listDish = this.props.menus[index];
+  renderListCarousel = (index, self) => {
+    let listDish = self.state.menus[index];
     let id = listDish.dishes_id;
     let listImages = [];
 
@@ -75,16 +89,16 @@ class MenuList extends Component {
   }
 
   renderList = () => {
-    if (this.props.menus.length == 0) {
-      return <p>Has no menus to be displayed</p>
+    if (this.state.menus.length == 0) {
+      return <p>No menu to display</p>
     }
-    return this.props.menus.map((item, index) => {
+    return this.state.menus.map((item, index) => {
       return (
         <div key={index} className="col xl3 l4 m6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail">
             <Like type="menu" id={item._id} />
             <div className="slider">
-              { this.renderListCarousel(index) }
+              { this.renderListCarousel(index, this) }
             </div>
           </div>
           <div className="row no-margin text-left" style={{ position: 'relative' }}>
@@ -125,7 +139,7 @@ class MenuList extends Component {
         {/* list items */}
           <div className="row">
             {
-              (this.props.listLoading)
+              (this.state.loading)
               ?
                 <span>...loading</span>
               :
@@ -136,24 +150,3 @@ class MenuList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  const handle = Meteor.subscribe('theMenu');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (FlowRouter.getParam('homecook_id')) {
-    kitchen_id[0] = FlowRouter.getParam('homecook_id')
-  } else {
-    if (kitchen_info) {
-      for (i = 0; i < kitchen_info.length; i++) {
-        kitchen_id[i] = kitchen_info[i]._id;
-      }
-    }
-  }
-  return {
-      currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false}, {sort: {online_status: -1, createdAt: -1}, limit: 8 }).fetch(),
-  };
-})(MenuList);

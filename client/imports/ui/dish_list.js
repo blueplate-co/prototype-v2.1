@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
-import DishStatus from './dish_status';
-
-import { navbar_find_by } from './../../../imports/functions/find_by';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
-class DishList extends Component {
+export default class DishList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: true,
+      dishes: []
     }
   }
 
@@ -25,12 +21,32 @@ class DishList extends Component {
     FlowRouter.go("/dish/" + dishId);
   }
 
+  componentDidMount = () => {
+    var kitchen_id = '';
+    if (FlowRouter.getParam('homecook_id')) {
+      kitchen_id = FlowRouter.getParam('homecook_id');
+      Meteor.call('dish.getDishListShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          dishes: res,
+          loading: false
+        })
+      });
+    } else {
+      Meteor.call('dish.getDishListShowroom', kitchen_id, (err, res) => {
+        this.setState({
+          dishes: res,
+          loading: false
+        })
+      });
+    }
+  }
+
   renderList = () => {
-    if (this.props.dishes.length == 0) {
-      return <p>Has no dishes to be displayed</p>
+    if (this.state.dishes.length == 0) {
+      return <p>No dish to display</p>
     }
     let hasThumbnail;
-    return this.props.dishes.map((item, index) => {
+    return this.state.dishes.map((item, index) => {
       if (item.meta) {
         hasThumbnail = true;
       } else {
@@ -103,7 +119,7 @@ class DishList extends Component {
         {/* list items */}
         <div className="row">
           {
-            (this.props.listLoading)
+            (this.state.loading)
             ?
               <span>...loading</span>
             :
@@ -114,32 +130,3 @@ class DishList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (FlowRouter.getParam('homecook_id')) {
-    kitchen_id[0] = FlowRouter.getParam('homecook_id')
-  } else {
-    if (kitchen_info) {
-      for (i = 0; i < kitchen_info.length; i++) {
-        kitchen_id[i] = kitchen_info[i]._id;
-      }
-    }
-  }
-  if (FlowRouter.getParam('homecook_id')) {
-    return {
-        currentUser: Meteor.user(),
-        listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}}).fetch(),
-    };
-  } else {
-    return {
-        currentUser: Meteor.user(),
-        listLoading: !handle.ready(),
-        dishes: Dishes.find({ kitchen_id: {$in: kitchen_id}, deleted: false},{sort: {online_status: -1, createdAt: -1}, limit: 8 }).fetch(),
-    };
-  }
-})(DishList);

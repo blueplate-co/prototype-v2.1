@@ -123,6 +123,12 @@ Meteor.methods({
   },
   'kitchen.get_detail_chitken'(user_id) {
     return Kitchen_details.findOne({user_id: user_id});
+  },
+  'dish.getDishListShowroom' (kitchen_id) {
+    if (kitchen_id.length > 0) {
+      return Dishes.find({ kitchen_id: kitchen_id, deleted: false },{ sort: { online_status: -1, createdAt: -1 }}).fetch();
+    }
+    return Dishes.find({ deleted: false },{ sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
   }
 });
 

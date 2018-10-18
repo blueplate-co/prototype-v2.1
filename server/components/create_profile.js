@@ -257,7 +257,9 @@ Meteor.methods({
         last_name: ordering_obj.last_name_order
       }
     })
-
+  },
+  'kitchen.showKitchenListShowroom' () {
+    return Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 6} ).fetch();
   }
 });
 
