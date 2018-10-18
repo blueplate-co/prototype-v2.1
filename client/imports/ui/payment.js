@@ -406,9 +406,9 @@ class Payment extends Component {
         })
 
         //- send to Facebook Pixel
-        if (location.hostname == 'www.blueplate.co') {
-            fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
-        }
+        // if (location.hostname == 'www.blueplate.co') {
+        //     fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
+        // }
 
         var StripeToken = response.token.id;
         var transaction_no = 1;
