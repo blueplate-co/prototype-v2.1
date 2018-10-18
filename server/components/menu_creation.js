@@ -166,6 +166,12 @@ Meteor.methods({
   }
 });
 
+Meteor.methods({
+  'menu.getListMenuShowroom': function(dish_id) {
+    return Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
+  }
+});
+
 Meteor.publish('getListMenus', function() {
   return Menu.find({"user_id": Meteor.userId(), deleted: false});
 });

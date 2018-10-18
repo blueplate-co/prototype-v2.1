@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
 import Like from './like_button';
 
-import { navbar_find_by } from './../../../imports/functions/find_by';
-
 // App component - represents the whole app
-class MenuList extends Component {
+export default class MenuList extends Component {
 
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      loading: false
+      loading: true,
+      menus: []
     }
+  }
+
+  componentDidMount = ()  => {
+    Meteor.call('menu.getListMenuShowroom', (err, res) => {
+      this.setState({
+        menus: res,
+        loading: false
+      })
+    })
   }
 
   handleClick = (item) => {
@@ -36,7 +42,7 @@ class MenuList extends Component {
   }
 
   renderListCarousel = (index) => {
-    let listDish = this.props.menus[index];
+    let listDish = this.state.menus[index];
     let id = listDish.dishes_id;
     let listImages = [];
 
@@ -72,10 +78,10 @@ class MenuList extends Component {
   }
 
   renderList = () => {
-    if (this.props.menus.length == 0) {
-      return <p>Has no menus to be displayed</p>
+    if (this.state.menus.length == 0) {
+      return <p>...loading</p>
     }
-    return this.props.menus.map((item, index) => {
+    return this.state.menus.map((item, index) => {
       return (
         <div key={index} className="col xl3 l4 m6 s12 modal-trigger menu-wrapper" onClick={ () => this.handleClick(item) }>
           <div className="images-thumbnail">
@@ -133,10 +139,3 @@ class MenuList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  return {
-      currentUser: Meteor.user(),
-      menus: Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch(),
-  };
-})(MenuList);

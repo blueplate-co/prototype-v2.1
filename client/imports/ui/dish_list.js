@@ -8,12 +8,14 @@ import Like from './like_button';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
-class DishList extends Component {
+export default class DishList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: true,
+      loaded: false,
+      dishes: []
     }
   }
 
@@ -22,12 +24,21 @@ class DishList extends Component {
     FlowRouter.go("/dish/" + dishId);
   }
 
+  componentDidMount = () => {
+    Meteor.call('dish.getDishListShowroom', (err, res) => {
+      this.setState({
+        dishes: res,
+        loading: false
+      })
+    });
+  }
+
   renderList = () => {
-    if (this.props.dishes.length == 0) {
-      return <p>Has no dishes to be displayed</p>
+    if (this.state.dishes.length == 0) {
+      return <p>..loading</p>
     }
     let hasThumbnail;
-    return this.props.dishes.map((item, index) => {
+    return this.state.dishes.map((item, index) => {
       if (item.meta) {
         hasThumbnail = true;
       } else {
@@ -111,10 +122,3 @@ class DishList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  return {
-      currentUser: Meteor.user(),
-      dishes: Dishes.find({ deleted: false },{ sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch(),
-  };
-})(DishList);

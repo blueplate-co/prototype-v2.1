@@ -3,17 +3,27 @@ import { withTracker } from 'meteor/react-meteor-data';
 import KitchenCard from './kitchen_card';
 
 // App component - represents the whole app
-class KitchenList extends Component {
+export default class KitchenList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: true,
+      kitchen: []
     }
   }
 
+  componentDidMount = () => {
+    Meteor.call('kitchen.showKitchenListShowroom', (err, res) => {
+      this.setState({
+        kitchen: res,
+        loading: false
+      })
+    });
+  }
+
   renderList = () => {
-    return this.props.kitchen.map((item, index) => {
+    return this.state.kitchen.map((item, index) => {
       if (Dishes.find({ user_id: item.user_id, deleted: false }).fetch().length > 0) {
         return (
           <div key = {index}>
@@ -59,13 +69,3 @@ class KitchenList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  // const handle = Meteor.subscribe('theDishes');
-  // navbar_find_by("Kitchen_details");
-  // var kitchen_info = Session.get('searched_result');
-  return {
-      currentUser: Meteor.user(),
-      kitchen: Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 6} ).fetch()
-  };
-})(KitchenList);
