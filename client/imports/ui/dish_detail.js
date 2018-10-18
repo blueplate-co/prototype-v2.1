@@ -8,7 +8,6 @@ import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
-import $ from 'jquery';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -33,16 +32,8 @@ export class Dish_Detail extends Component {
             action: '',
         }
     }
-    componentWillUnmount() {
-        this.serverRequest.abort();
-    }
     
     componentDidMount() {
-        this.serverRequest = $.get("http://localhost:8181/user", function(result) {
-
-            console.log(result);
-        }.bind(this));
-
         $(window).scrollTop(0);
         //- procedure for promotion $50HKD
         var url_string = window.location.href; //window.location.href
