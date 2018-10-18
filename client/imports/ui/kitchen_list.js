@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
-import { Session } from 'meteor/session';
-
 import KitchenCard from './kitchen_card';
-
-import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
 class KitchenList extends Component {
@@ -66,12 +61,11 @@ class KitchenList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
+  // const handle = Meteor.subscribe('theDishes');
+  // navbar_find_by("Kitchen_details");
+  // var kitchen_info = Session.get('searched_result');
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
-      kitchen: kitchen_info
+      kitchen: Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 6} ).fetch()
   };
 })(KitchenList);

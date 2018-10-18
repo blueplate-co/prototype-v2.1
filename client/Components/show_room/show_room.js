@@ -1,9 +1,5 @@
-import { Accounts } from 'meteor/accounts-base';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Template } from 'meteor/templating';
-import { Blaze } from 'meteor/blaze';
 import { Meteor } from 'meteor/meteor';
-import { navbar_find_by } from '/imports/functions/find_by.js';
 
 // integrate reactjs
 import React from 'react';
@@ -21,10 +17,5 @@ Template.show_room.onRendered(function(){
 
 Meteor.subscribe('theDishes');
 Meteor.subscribe('theMenu');
-Meteor.subscribe('theIngredients');
-Meteor.subscribe('theProfileDetail');
 Meteor.subscribe('theKitchenDetail');
-Meteor.subscribe('getDishesLikes');
-Meteor.subscribe('getMenusLikes');
-Meteor.subscribe('getKitchensLikes');
 Meteor.subscribe('listAllNotifications');

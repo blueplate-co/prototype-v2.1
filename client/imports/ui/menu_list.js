@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Rating from './rating';
-import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
@@ -138,22 +135,8 @@ class MenuList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theMenu');
-  navbar_find_by("Kitchen_details");
-  var kitchen_info = Session.get('searched_result');
-  var kitchen_id = [];
-  if (FlowRouter.getParam('homecook_id')) {
-    kitchen_id[0] = FlowRouter.getParam('homecook_id')
-  } else {
-    if (kitchen_info) {
-      for (i = 0; i < kitchen_info.length; i++) {
-        kitchen_id[i] = kitchen_info[i]._id;
-      }
-    }
-  }
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
-      menus: Menu.find({ kitchen_id: {$in: kitchen_id}, deleted: false}, {sort: {online_status: -1, createdAt: -1}, limit: 8 }).fetch(),
+      menus: Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch(),
   };
 })(MenuList);
