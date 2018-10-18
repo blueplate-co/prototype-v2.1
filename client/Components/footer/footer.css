@@ -1,5 +1,7 @@
 .page-footer {
   background-color: #56AACD;
+  position: relative;
+  bottom: -19px;
 }
 
 .footer_logo {
@@ -17,4 +19,8 @@
 
 #instagram_icon {
   margin-top: 7px;
+}
+
+.page-footer .footer-copyright {
+  padding: 5px 0px 0px !important;
 }

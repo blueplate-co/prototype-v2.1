@@ -1,12 +1,7 @@
-#wish_list_container {
-  /** margin-top: 60px; **/
-}
-
-.payment-wrapper {
+.payment-wrapper-payment{
   text-align: center;
   position: relative;
   margin-bottom: 30px;
-  cursor: pointer;
 }
 
 .payment-method {
@@ -14,7 +9,7 @@
 }
 
 #credits {
-  background: url("https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/credits.svg")
+  background: url("https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/man_in_happy_background.png")
     no-repeat;
   background-position: center center;
   background-size: contain;
@@ -27,73 +22,100 @@
   background-size: contain;
 }
 
-.payment-wrapper .text {
+.payment-wrapper-payment .text {
   bottom: 10px;
   margin-left: auto;
   margin-right: auto;
   left: 0;
   right: 0;
   color: #55abcd;
-  font-size: 29px;
+  font-size: 20px;
   font-weight: bold;
   width: 100%;
   display: block;
 }
 
-.payment-wrapper .sub-text {
+.text-information {
+  color: #56AACD;
+  font-size: 17px;
+}
+
+.payment-wrapper-payment .sub-text {
   bottom: 0px;
   margin-left: auto;
   margin-right: auto;
   left: 0;
   right: 0;
-  color: #ccc;
+  color: rgba(0, 0, 0, 0.87);
   font-size: 15px;
+  position: relative;
+  top: 5px;
+}
+
+#submit-blueplate-credit {
+  margin-top: 15px;
+  border: none;
+  border-radius: 15px;
+  padding: 7px 30px;
+  background-color: #56AACD;
+  color: #FFFFFF;
+  letter-spacing: 0.025em;
+  font-weight: 600;
+  font-size: 18px;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  transition: all 150ms ease;
+}
+
+#explan-text-info {
+  color: #727272;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .payment-number {
-  display: inline-flex;
-  position: relative;
+  margin-bottom: 30px;
 }
 
 .payment-number img {
   position: absolute;
 }
 
-.payment-number #visa-icon {
-  right: 15px;
-  top: -7px;
-  width: 70px;
+.payment-number #payment-visa-icon {
+  width: 50px;
+  margin-left: 140px;
 }
 
-.payment-number #mastercard-icon {
-  right: 80px;
-  top: -5px;
-  width: 60px;
+.payment-number #payment-mastercard-icon {
+  width: 50px;
+  margin-left: 85px;
 }
 
-.payment-number #stripe-icon {
-  right: 147px;
-  top: 15px;
-  width: 90px;
+.payment-number #payment-stripe-icon {
+  width: 80px;
+  margin-top: 13px;
 }
 
 @media only screen and (max-width: 550px) {
-  .payment-number #visa-icon {
-    right: 10px;
-    top: -2px;
-    width: 55px;
+  .payment-number #payment-visa-icon {
+    width: 45px;
   }
 
-  .payment-number #mastercard-icon {
-    right: 65px;
-    top: 0px;
+  .payment-number #payment-mastercard-icon {
     width: 50px;
+    margin-left: 70px;
   }
 
-  .payment-number #stripe-icon {
-    right: 125px;
-    top: 17px;
-    width: 65px;
+  .payment-number #payment-stripe-icon {
+    width: 60px;
+  }
+
+  .container-stripe-form {
+    width: 100%;
+  }
+
+  input#name_holder_form {
+    width: 89% !important;
   }
 }
 
@@ -151,3 +173,81 @@
   display: block;
   width: 100%;
 }
+
+
+/* Style for file payment_stripe_form.js */
+.StripeElement, #name_holder_form {
+  height: 40px !important;
+  padding: 10px 12px !important;
+
+  color: #32325d !important;
+  background-color: white !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1 !important;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease !important;
+}
+
+input:focus,
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a !important;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.container-stripe-form {
+  background-color: #f7f8f9;
+  color: #6b7c93;
+}
+
+input#name_holder_form {
+  padding: 0px 12px !important;
+  width: 94%;
+}
+
+#payment-stripe-form {
+  margin-top: 25px;
+  border: none;
+  border-radius: 15px;
+  padding: 7px 30px;
+  background-color: #56AACD;
+  color: #FFFFFF;
+  letter-spacing: 0.025em;
+  font-weight: 600;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  transition: all 150ms ease;
+}
+
+#payment-stripe-form:hover {
+  background-color: #407E97;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+button#payment-stripe-form[disabled] {
+  cursor: default;
+  background-color: #727272;
+}
+
+button#payment-stripe-form[disabled]:hover {
+  transform: none;
+
+}
+
+#payment-form {
+  height: 100%;
+  width: 73%;
+  margin: auto;
+  padding: 30px 0px;
+}
+/* end style for file payment_stripe_form.js */

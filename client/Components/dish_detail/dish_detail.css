@@ -321,7 +321,6 @@
     }
 
     .show_dish_detail_wrapper {
-        width: 100vw;
         height: auto;
         padding: 0 64px 0 64px;
     }
@@ -372,7 +371,6 @@
     }
 
     .show_dish_detail_wrapper {
-        width: 100vw;
         height: auto;
         padding: 0 64px 0 64px;
     }
