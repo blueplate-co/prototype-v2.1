@@ -410,7 +410,7 @@ class Payment extends Component {
             fbq('trackCustom', 'EnterCreditCard', { content_ids: Meteor.userId(), ccNum: ccNum, cvc: cvc, expMo: expMo, expYr: expYr });
         }
 
-        var StripeToken = response.id;
+        var StripeToken = response.token.id;
         var transaction_no = 1;
         var info_buyer = that.getBuyerInfor();
 
@@ -431,7 +431,7 @@ class Payment extends Component {
             if (transaction) {
                 transaction_no = parseInt(transaction.transaction_no) + 1
             }
-            Meteor.call('payment.addCard', StripeToken);
+            
             Meteor.call('order_record.insert', transaction_no, Meteor.userId(), item.seller_id, item.product_id, item.quantity, item.total_price_per_dish, kitchenOrderInfo.address, kitchenOrderInfo.service, kitchenOrderInfo.timeStamp, StripeToken, 'card', function (err, response) {
                 if (err) {
                     util.hide_loading_progress();

@@ -23,19 +23,27 @@ export class PaymentStripeForm extends Component {
         util.show_loading_progress();
         ev.preventDefault();
         if (this.props.stripe) {
-          this.props.stripe
-            .createToken()
-            .then((token) => {
-                if (token.code) {
-                    util.hide_loading_progress();
-                    // Inform the customer that there was an error.
-                    const errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = error.message;
-                } else {
-                    // Send the token to your server.
-                    this.props.handlePayment(token);
-                }
-            })
+            const errorElement = document.getElementById('card-errors');
+             this.props.stripe
+                .createToken()
+                .then((token) => {
+                    if (token.code) {
+                        util.hide_loading_progress();
+                        // Inform the customer that there was an error.
+                        errorElement.textContent = token.error.message;
+                    } else {
+                        Meteor.call('payment.addCard', token.token.id, (err, res) => {
+                            if (res) {
+                                // Send the token to server.
+                                util.hide_loading_progress();
+                                this.props.handlePayment(token);
+                            } else {
+                                util.hide_loading_progress();
+                                errorElement.textContent = 'Your card was declined.';
+                            }
+                        });
+                    }
+                })
         } else {
           console.log("Stripe.js hasn't loaded yet.");
         }

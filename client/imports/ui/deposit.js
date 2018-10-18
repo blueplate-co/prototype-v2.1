@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // Shopping cart component
@@ -215,7 +214,7 @@ export default class Deposit extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col payment-number s12 m12 l12 xl12">
+                        <div className="col deposit-number s12 m12 l12 xl12">
                             <input id="card_no" type="number" placeholder="your credit card number" />
                             <img id="visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
                             <img id="mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />

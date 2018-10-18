@@ -34,14 +34,8 @@ Meteor.methods({
     var updateCustomer = Meteor.wrapAsync(
       stripe.customers.update.bind(stripe.customers)
     );
-    var userStripeId = Meteor.users.find({ _id: Meteor.userId() }).fetch()[0]
-      .stripe_id;
-    var result = updateCustomer(userStripeId, {
-      source: Stripetoken,
-    });
-    if (result) {
-      return result.id;
-    }
+    var userStripeId = Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].stripe_id;
+    return updateCustomer(userStripeId, { source: Stripetoken });
   },
   "payment.createSource"(Stripetoken) {
     //- create source from Stripe token
