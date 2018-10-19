@@ -3,7 +3,7 @@ Template.promotion_modal.helpers({
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var promotion = url.searchParams.get("promotion");
-        if (promotion) promotion = 0;
+        if (!promotion) promotion = '0';
         var amount = parseInt(promotion.replace( /^\D+/g, ''));
         return amount;
     }
