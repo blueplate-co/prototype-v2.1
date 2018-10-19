@@ -121,6 +121,10 @@
   input#name_holder_form {
     width: 89% !important;
   }
+
+  #payment-form {
+    width: 95%;
+  }
 }
 
 #back-payment {
@@ -262,5 +266,28 @@ button#payment-stripe-form[disabled]:hover {
 #card-errors {
   color: #EB5F55;
   margin-top: 5px;
+}
+
+.total-fee-payment {
+  margin-top: 45px;
+  margin-right: 0px !important;
+}
+
+.total-text-payment {
+  color: #727272;
+  font-size: 16px;
+}
+
+.total-amount-payment, .total-text-payment {
+  font-weight: 600;
+}
+
+.fee-text-payment {
+  color: #727272;
+  font-size: 14px;
+}
+
+.total-fee-payment, .fee-text-payment  {
+  font-weight: 500;
 }
 /* end style for file payment_stripe_form.js */
