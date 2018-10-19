@@ -626,7 +626,8 @@ class ShoppingCart extends Component {
         if (getCookie('promotion')) {
             Meteor.call('promotion.check_history', (err, res) => {
                 if (Object.keys(res).length == 0) { // this user not already have promotion before
-                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                    let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
+                    Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
                         if (!err) {
                             delete_cookies('promotion');
                             console.log('OK');

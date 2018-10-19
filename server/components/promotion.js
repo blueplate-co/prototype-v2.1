@@ -6,7 +6,7 @@ import {
 } from 'meteor/meteor';
 
 Meteor.methods({
-    'promotion.insert_history'(user_id, name_of_promotion) {
+    'promotion.insert_history'(user_id, name_of_promotion, amount) {
         var stripe_balance = 0;
         var credits = 0;
         Meteor.call("payment.getStripeBalance", (err, response) => {
@@ -22,7 +22,7 @@ Meteor.methods({
                         if (!existed_promotion_history) {
                             Promotion_history.insert({
                                 user_id: Meteor.userId(),
-                                balance: 50,
+                                balance: amount,
                                 name_of_promotion: name_of_promotion,
                                 createAt: new Date(),
                                 user_balance: stripe_balance + credits

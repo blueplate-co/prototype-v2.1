@@ -66,11 +66,12 @@ class ShowRoom extends Component {
     var dc = document.cookie;
     var prefix = "promotion" + "=";
     var begin = dc.indexOf(prefix);
-    //- when user already logged in, just apply promotion program for they
+    //- when user already logged in, just apply promotion program for them
     if (Meteor.userId() && promotion) {
       Meteor.call('promotion.check_history', (err, res) => {
         if (Object.keys(res).length == 0) { // this user not already have promotion before
-          Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+          let amount = parseInt(promotion.replace( /^\D+/g, ''));
+          Meteor.call('promotion.insert_history', Meteor.userId(), promotion, amount, (err, res) => {
             if (err) {
               Materialize.toast(err, 4000, 'rounded bp-green');
             } else {
@@ -86,7 +87,7 @@ class ShowRoom extends Component {
     } else {
       //- when user not logged in, create a cookies to store this program
       if (begin == -1 && promotion) {
-        document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        document.cookie = "promotion="+promotion+"; expires=Fri, 31 Dec 9999 23:59:59 GMT";
         setTimeout(() => {
           $('#promotion_modal').modal();
           $('#promotion_modal').modal('open');

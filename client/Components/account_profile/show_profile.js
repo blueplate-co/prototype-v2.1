@@ -1,20 +1,11 @@
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
-import {
-  checkboxes_recall
-} from '/imports/functions/checkboxes_recall.js'
-import {
-  address_geocode
-} from '/imports/functions/address_geocode.js'
-import {
-  get_checkboxes_value
-} from '/imports/functions/get_checkboxes_value.js'
 import ShowDishProfile from '../../imports/ui/show_dish_profile.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { ReactiveVar } from 'meteor/reactive-var';
-
+import { delete_cookies } from '/imports/functions/common/promotion_common';
 
 Template.show_foodie_profile.helpers({
   'get_foodie_profile': function() {
@@ -159,8 +150,6 @@ Template.homecook_profile_dish_list.onRendered(function() {
   var url_string = window.location.href; //window.location.href
   var url = new URL(url_string);
   var promotion = url.searchParams.get("promotion");
-  var dish = url.searchParams.get("dish");
-  var kitchen = url.searchParams.get("kitchen");
   // check if already have cookies
   var dc = document.cookie;
   var prefix = "promotion" + "=";
@@ -169,10 +158,12 @@ Template.homecook_profile_dish_list.onRendered(function() {
   if (Meteor.userId() && promotion) {
     Meteor.call('promotion.check_history', (err, res) => {
       if (Object.keys(res).length == 0) { // this user not already have promotion before
-        Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+        let amount = parseInt(promotion.replace( /^\D+/g, ''));
+        Meteor.call('promotion.insert_history', Meteor.userId(), promotion, amount,  (err, res) => {
           if (err) {
             Materialize.toast(err, 4000, 'rounded bp-green');
           } else {
+              delete_cookies('promotion');
               setTimeout(() => {
                 $('#promotion_modal').modal();
                 $('#promotion_modal').modal('open');
@@ -185,7 +176,7 @@ Template.homecook_profile_dish_list.onRendered(function() {
   } else {
     //- when user not logged in, create a cookies to store this program
     if (begin == -1 && promotion) {
-      document.cookie = "promotion=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      document.cookie = "promotion="+promotion+"; expires=Fri, 31 Dec 9999 23:59:59 GMT";
       setTimeout(() => {
         $('#promotion_modal').modal();
         $('#promotion_modal').modal('open');

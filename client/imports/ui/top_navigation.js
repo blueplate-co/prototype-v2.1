@@ -504,6 +504,7 @@ class TopNavigation extends Component {
           if (Object.keys(res).length > 0) {
             if (res) {
               promotion_credits = res.balance;
+              if (!promotion_credits) promotion_credits = 0;
               if (!res) promotion_credits = 0;
               this.setState({
                 credits: (parseFloat(promotion_credits.toString()) + parseFloat(credits.toString())).toFixed(2)
