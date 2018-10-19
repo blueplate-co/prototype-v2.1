@@ -118,12 +118,12 @@
     padding: 0px;
   }
 
-  input#name_holder_form {
+  /* input#name_holder_form {
     width: 89% !important;
-  }
+  } */
 
   #payment-form {
-    width: 95%;
+    width: 95% !important;
   }
 }
 
