@@ -96,12 +96,16 @@ class ShowRoom extends Component {
 
     //- FOR USER ALREADY JOINED THE PROMOTION PROGRAM
     if (Meteor.userId()) {
-      Meteor.call('promotion.check_history', (err, res) => {
-        if (Object.keys(res).length > 0 && res.balance == 50) { //- the user is already joined promotion program BUT balance still 50$
-          $('#reminder_promotion_modal').modal();
-          $('#reminder_promotion_modal').modal('open');
-        }
-      });
+      let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPage'+Meteor.userId()) == 'false';
+      if (!bReminderFirst) {
+        sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
+        Meteor.call('promotion.check_history', (err, res) => {
+          if (Object.keys(res).length > 0 && res.balance == 50) { //- the user is already joined promotion program BUT balance still 50$
+            $('#reminder_promotion_modal').modal();
+            $('#reminder_promotion_modal').modal('open');
+          }
+        });
+      }
     }
 
 
