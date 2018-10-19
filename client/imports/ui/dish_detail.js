@@ -345,6 +345,7 @@ export class Dish_Detail extends Component {
 
         // this.addDishToLocalCart();
         
+        this.addOrderClickToAsana(foodie_details, homecook_details);
         if (order) {
             var order_id = order._id;
             quantity = parseInt(order.quantity) + this.state.sumOrder;
@@ -395,6 +396,26 @@ export class Dish_Detail extends Component {
                 }
             );
         }
+    }
+
+    addOrderClickToAsana(foodie_details, kitchen) {
+        var  info_buyer = foodie_details.foodie_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone: " + foodie_details.mobile + ")";
+        var seller_detail = Meteor.users.findOne({_id: kitchen.user_id}),
+            seller_email = seller_detail.emails[0].address,
+            seller_info = kitchen.chef_name +" (id: " + kitchen._id + ", email: " + seller_email + ", phone no: " + kitchen.kitchen_contact + ")";
+        
+        var product = this.state.data,
+            product_info = product.dish_name + " (id: " + product._id + ", quantity: "  + 
+                            this.state.sumOrder + ", amount: $" + product.dish_selling_price + ")";
+        
+        var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
+                                '\nProduct infor: ' + product_info;
+        Meteor.call(
+            'marketing.create_task_asana',
+            '871582997693692', // projects_id to create task
+            'Buyer : ' + foodie_details.foodie_name,
+            content_message
+        );
     }
 
     handleOnDishAction() {
