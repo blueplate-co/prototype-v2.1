@@ -293,7 +293,7 @@ class Payment extends Component {
                     util.hide_loading_progress();
                     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                 } else {
-                    localStorage.setItem('globalCart', '');
+                    localStorage.setItem('globalCart' + Meteor.userId(), '');
                     Meteor.call('shopping_cart.remove', item._id);
                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                     Session.clear;
@@ -440,7 +440,7 @@ class Payment extends Component {
                         action: false
                     })
                 } else {
-                    localStorage.setItem('globalCart', '');
+                    localStorage.setItem('globalCart' + Meteor.userId(), '');
                     Meteor.call('shopping_cart.remove', item._id)
                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                     Session.clear;
@@ -633,13 +633,14 @@ class Payment extends Component {
     // }
 
     render() {
-        var bEnoughtAmount = localStorage.getItem('bEnoughtAmount') == 'true';
+        var bEnoughtAmount = localStorage.getItem('bEnoughtAmount' + Meteor.userId()) == 'true';
 
         Meteor.call('payment.getCredits', function (err, credits) {
             Session.set('credits', credits);
         });
         return (
             <div className="container">
+                <ProgressBar step_progress="2" />
                 {bEnoughtAmount ?
                     <div className="col s12 m6 l6 xl6">
                         <div className="payment-wrapper-payment">

@@ -11,7 +11,7 @@ import { delete_cookies, getCookie } from '/imports/functions/common/promotion_c
 import ProgressBar from './progress_bar.js';
 
 //- empty cart store global in this page
-window.globalCart = localStorage.getItem("globalCart");
+window.globalCart = localStorage.getItem("globalCart" + Meteor.userId());
 // var kitchen = { id: item, service: "", date: "", time: "", timeStamp: "", address: "" };
 
 // Shopping cart component
@@ -35,13 +35,13 @@ class ShoppingCart extends Component {
             for (var j = 0; j < unique.length; j++) {
                 if (globalCart[i].id !== unique[j]) {
                     globalCart.splice(i, 1);
-                    localStorage.setItem('globalCart', globalCart);
+                    localStorage.setItem('globalCart' + Meteor.userId(), globalCart);
                 }
             }
         }
 
         if (globalCart.length == 0) {
-            localStorage.setItem('globalCart', '');
+            localStorage.setItem('globalCart' + Meteor.userId(), '');
         }
         
         Meteor.call('shopping_cart.remove', id);
@@ -243,7 +243,7 @@ class ShoppingCart extends Component {
 
             }
             if (valid) {
-                localStorage.setItem('globalCart', JSON.stringify(globalCart));
+                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
                 Session.set('product', globalCart);
                 // globalCart = [];
             }
@@ -334,9 +334,9 @@ class ShoppingCart extends Component {
                     // sum of two wallet is not enough to pay
                     if (trueBalance < total) {
                         // not enough money to pay
-                        localStorage.setItem('bEnoughtAmount', false);
+                        localStorage.setItem('bEnoughtAmount' + Meteor.userId(), false);
                     } else {
-                        localStorage.setItem('bEnoughtAmount', true);
+                        localStorage.setItem('bEnoughtAmount' + Meteor.userId(), true);
                     }
                     util.hide_loading_progress();
                     FlowRouter.go('/payment');
@@ -504,7 +504,7 @@ class ShoppingCart extends Component {
 
     renderListKitchen() {
         //- get unique seller_id
-        globalCart = localStorage.getItem("globalCart");
+        globalCart = localStorage.getItem("globalCart" + Meteor.userId());
         var hasLocalStorage = false;
         if (typeof globalCart != 'object' && globalCart != "" ) {
             hasLocalStorage = true;

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
 
-var stripe = Stripe('pk_live_mqXbgtwXmodOMRSKycYVgsl6');
-var elements = stripe.elements();
-
 export class PaymentStripeForm extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +24,7 @@ export class PaymentStripeForm extends Component {
              this.props.stripe
                 .createToken()
                 .then((token) => {
-                    if (token.code) {
+                    if (token.error) {
                         util.hide_loading_progress();
                         // Inform the customer that there was an error.
                         errorElement.textContent = token.error.message;
@@ -85,7 +82,8 @@ export class PaymentStripeForm extends Component {
                             </div>
 
                             <div style={{"textAlign":"center"}}>
-                                <button id="payment-stripe-form">pay now</button>
+                                <button id="payment-stripe-form" disabled={this.state.bdisableSubmit ? true : false }>pay now</button>
+                                <p id="payment-infor-text">You will only be charged when chef confirm your order</p>
                             </div>
                         </div>
                     </div>

@@ -114,6 +114,10 @@
     width: 100%;
   }
 
+  #payment_container {
+    padding: 0px;
+  }
+
   input#name_holder_form {
     width: 89% !important;
   }
@@ -174,6 +178,10 @@
   width: 100%;
 }
 
+#payment-infor-text {
+  color: #727272;
+  margin-top: 10px;
+}
 
 /* Style for file payment_stripe_form.js */
 .StripeElement, #name_holder_form {
@@ -249,5 +257,10 @@ button#payment-stripe-form[disabled]:hover {
   width: 73%;
   margin: auto;
   padding: 30px 0px;
+}
+
+#card-errors {
+  color: #EB5F55;
+  margin-top: 5px;
 }
 /* end style for file payment_stripe_form.js */
