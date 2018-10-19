@@ -633,7 +633,8 @@ class Payment extends Component {
     // }
 
     render() {
-        var bEnoughtAmount = localStorage.getItem('bEnoughtAmount' + Meteor.userId()) == 'true';
+        var bEnoughtAmount = localStorage.getItem('bEnoughtAmount' + Meteor.userId()) == 'true',
+            sTotalAmount = parseFloat(localStorage.getItem('sTotalAmount' + Meteor.userId()));
 
         Meteor.call('payment.getCredits', function (err, credits) {
             Session.set('credits', credits);
@@ -658,7 +659,7 @@ class Payment extends Component {
                         <div className="">
                             <Elements>
                                 {/* validationAndCredits */}
-                                <PaymentStripeForm handlePayment={this.validationCardAndCharge}/>
+                                <PaymentStripeForm handlePayment={this.validationCardAndCharge} sTotalAmount={sTotalAmount} />
                             </Elements>
                         </div>
                     </StripeProvider>

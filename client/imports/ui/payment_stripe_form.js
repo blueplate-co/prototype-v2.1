@@ -33,6 +33,7 @@ export class PaymentStripeForm extends Component {
                             if (res) {
                                 // Send the token to server.
                                 util.hide_loading_progress();
+                                localStorage.setItem('sTotalAmount' + Meteor.userId(), 0);
                                 this.props.handlePayment(token);
                             } else {
                                 util.hide_loading_progress();
@@ -58,6 +59,9 @@ export class PaymentStripeForm extends Component {
     };
 
     render = () => {
+        var sTotalAmount = this.props.sTotalAmount;
+        var fee = parseFloat((sTotalAmount * 0.034) + 2.35).toFixed(2);
+
         return (
             <div className="container container-stripe-form">
                 <form onSubmit={this.handleSubmit}>
@@ -79,6 +83,11 @@ export class PaymentStripeForm extends Component {
                                 <img id="payment-stripe-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/stripe.svg" />
                                 <img id="payment-mastercard-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/MasterCard+2.svg" />
                                 <img id="payment-visa-icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/VISA.svg" />
+                            </div>
+
+                            <div className="row total-fee-payment">
+                                <p className="text-right total-text-payment">Amount: <span className="bp-blue-text total-amount-payment">HK$ {sTotalAmount}</span></p>
+                                <p  className="text-right fee-text-payment">Processing fee: <span className="bp-blue-text total-fee-payment">HK$ {fee}</span></p>
                             </div>
 
                             <div style={{"textAlign":"center"}}>

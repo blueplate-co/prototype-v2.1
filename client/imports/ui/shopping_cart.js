@@ -307,6 +307,8 @@ class ShoppingCart extends Component {
                     total += parseFloat(shoppingCart[i].total_price_per_dish);
                 }
             }
+            localStorage.setItem('sTotalAmount' + Meteor.userId(), total);
+
             // get Stripe balance
             Meteor.call('payment.getStripeBalance', (err, res) => {
                 let balance = parseFloat(res.account_balance / 100).toFixed(2);
