@@ -344,8 +344,12 @@ export class Dish_Detail extends Component {
         var total_price_per_dish = 0;
 
         // this.addDishToLocalCart();
-        
-        this.addOrderClickToAsana(foodie_details, homecook_details);
+
+        // Only work in production
+        if (util.checkCurrentSite()) {
+            this.addOrderClickToAsana(foodie_details, homecook_details);
+        }
+
         if (order) {
             var order_id = order._id;
             quantity = parseInt(order.quantity) + this.state.sumOrder;
