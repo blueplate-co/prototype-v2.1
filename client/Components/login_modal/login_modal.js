@@ -99,8 +99,9 @@ Template.login_modal.events({
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
+                  let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
                   if (Object.keys(res).length == 0) { // this user not already have promotion before
-                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                    Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount ,(err, res) => {
                       if (!err) {
                           delete_cookies('promotion');
                           console.log('OK');
@@ -119,8 +120,10 @@ Template.login_modal.events({
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
+                  debugger
                   if (Object.keys(res).length == 0) { // this user not already have promotion before
-                    Meteor.call('promotion.insert_history', Meteor.userId(), 'HKD50', (err, res) => {
+                    let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
+                    Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
                       if (!err) {
                           delete_cookies('promotion');
                           console.log('OK');
