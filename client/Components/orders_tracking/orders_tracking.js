@@ -92,7 +92,7 @@ Template.orders_tracking.helpers({
     }); // END MAP
 
     if (util.checkCurrentSite()) {
-      var site = document.location.origin + '/orders_tracking';
+      var site = document.location.origin + '/cooking/orders';
       for (var phoneNumber in smsList) {
         if (smsList.hasOwnProperty(phoneNumber)) {
             var message = smsList[phoneNumber];
