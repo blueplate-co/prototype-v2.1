@@ -307,7 +307,6 @@ class ShoppingCart extends Component {
                     total += parseFloat(shoppingCart[i].total_price_per_dish);
                 }
             }
-            localStorage.setItem('sTotalAmount' + Meteor.userId(), total);
 
             // get Stripe balance
             Meteor.call('payment.getStripeBalance', (err, res) => {
@@ -319,6 +318,8 @@ class ShoppingCart extends Component {
                     } else {
                         var promotion_credits = res.balance;
                     }
+                    localStorage.setItem('sTotalAmount' + Meteor.userId(), total - promotion_credits);
+
                     // check pending order of buyer
                     var pendingOrder = Order_record.find({
                         buyer_id: Meteor.userId(),
