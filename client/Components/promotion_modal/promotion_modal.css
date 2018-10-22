@@ -5,10 +5,25 @@
         top: 15px;
         right: 0px;
     }
+    #promotion_modal #reminder_promotion_images {
+        top: 0px!important;
+    }
+
+    #promotion_modal .modal-content {
+        padding-top: 240px!important;
+    }
 }
 
 #cancel_promotion {
     display: none;
+}
+
+#promotion_modal {
+    overflow: inherit;
+}
+
+#promotion_modal .modal-content {
+    padding-top: 135px;
 }
 
 #promotion_modal.promotion_infor {
