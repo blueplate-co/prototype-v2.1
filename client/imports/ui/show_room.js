@@ -101,8 +101,8 @@ class ShowRoom extends Component {
       if (!bReminderFirst) {
         sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
         Meteor.call('promotion.check_history', (err, res) => {
-          let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, ''));
-          if (Object.keys(res).length > 0 && res.balance == amountProgram) { //- the user is already joined promotion program BUT balance still 50$
+          let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, '')); //- convert hkd50 -> 50, hkd100 -> 100
+          if (Object.keys(res).length > 0 && res.balance == amountProgram) { //- when
             $('#reminder_promotion_modal').modal();
             $('#reminder_promotion_modal').modal('open');
           }
