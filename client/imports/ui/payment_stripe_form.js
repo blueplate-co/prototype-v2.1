@@ -30,14 +30,14 @@ export class PaymentStripeForm extends Component {
                         errorElement.textContent = token.error.message;
                     } else {
                         Meteor.call('payment.addCard', token.token.id, (err, res) => {
-                            if (res) {
+                            if (res.id) {
                                 // Send the token to server.
                                 util.hide_loading_progress();
                                 localStorage.setItem('sTotalAmount' + Meteor.userId(), 0);
                                 this.props.handlePayment(token);
-                            } else {
+                            } else if (res.code) { // If error
                                 util.hide_loading_progress();
-                                errorElement.textContent = 'Your card was declined.';
+                                errorElement.textContent = res.message;
                             }
                         });
                     }
