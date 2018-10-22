@@ -625,3 +625,7 @@
     top: 40%;
     right: 50%;
 }
+
+.disqus-dish-detail-container {
+    padding: 0px!important;
+}

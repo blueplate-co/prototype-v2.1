@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Rating from './rating.js';
 import { Meteor } from 'meteor/meteor';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
+import DisqusComment from './disqus';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -365,7 +366,7 @@ export class Dish_Detail extends Component {
                         Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
-                        if (location.hostname == 'www.blueplate.co') {
+                        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }                       
                         util.hide_loading_progress();     
@@ -392,7 +393,7 @@ export class Dish_Detail extends Component {
                         Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
-                        if (location.hostname == 'www.blueplate.co') {
+                        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }
                         util.hide_loading_progress();
@@ -456,7 +457,7 @@ export class Dish_Detail extends Component {
         if (Meteor.userId()) {
             // logged in with user_id, email
             this.setState({ action: actionFoodies}, () => {
-                if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish') {
+                if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish' && !util.filterEmailInternalForNotification()) {
                     fbq('trackCustom', 'clickOrderButton', { content_ids: Meteor.userId() });
                 }
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
@@ -512,7 +513,7 @@ export class Dish_Detail extends Component {
                 util.hide_loading_progress();
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
-                if (location.hostname == 'www.blueplate.co') {
+                if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                     fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
                 }
 
@@ -686,13 +687,19 @@ export class Dish_Detail extends Component {
                                         <DishMap user_id={this.state.data.user_id}/>
                                     </div>
                                 </div>
-
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 chef-story-content">
                                         <span id="chef-story-title">Chef Story</span>
                                         {this.renderChefInfo()}
                                     </div>
                                 </div>
+                                {/* Disqus comment */}
+                                <div className="row chef-story-row show_dish_detail_wrapper">
+                                    <div className="col s12 m7 l7 disqus-dish-detail-container">
+                                        <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")}/>
+                                    </div>
+                                </div>
+                                {/* End Disqus comment */}
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
                                         <p className="chef-relate-title">Chef related dishes</p>

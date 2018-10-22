@@ -270,7 +270,7 @@ export default class SignUp extends Component {
               Bert.alert(err.reason,"danger", "growl-top-right");
             } else {
               //- send to Facebook Pixel
-              if (location.hostname == 'www.blueplate.co') {
+              if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                 fbq('trackCustom', 'CompleteRegistration', { fullname: full_name, email: email });
               }
               // check if have already cookies, create a promotion balance for this user

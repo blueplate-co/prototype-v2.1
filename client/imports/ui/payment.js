@@ -125,7 +125,7 @@ class Payment extends Component {
             FlowRouter.go('/main');
         } else {
             //- send to Facebook Pixel
-            if (location.hostname == 'www.blueplate.co') {
+            if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                 fbq('track', 'ViewContent', { content_name: 'Select Payment', content_ids: Meteor.userId() });
             }
             if (!Session.get('product')) {
@@ -262,7 +262,7 @@ class Payment extends Component {
     handleOrderByBlueplateCredit() {
         util.show_loading_progress();
         //- send to Facebook Pixel
-        if (location.hostname == 'www.blueplate.co') {
+        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
             fbq('trackCustom', 'SelectPayment', { content_name: 'Credits', content_ids: Meteor.userId() });
         }
         var that = this;

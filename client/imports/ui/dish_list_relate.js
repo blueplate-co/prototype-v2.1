@@ -23,7 +23,7 @@ export class DishListRelate extends Component {
 
   tracking = (item) => {
     //- send to Facebook Pixel
-    if (location.hostname == 'www.blueplate.co') {
+    if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
       fbq('trackCustom', 'ClickOnRelateDish', { user_id: Meteor.userId(), dish_id: item._id, dish_name: item.dish_name });
     }
 
