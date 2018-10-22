@@ -16,7 +16,6 @@ export default class DisqusComment extends Component {
                 s.setAttribute('data-timestamp', +new Date());
                 (d.head || d.body).appendChild(s);
             })();
-            Session.set('disqus_loaded', true);
             // DISQUS.reset({
             //     reload: true,
             //     config: function () {  

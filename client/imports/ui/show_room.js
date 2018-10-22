@@ -102,10 +102,12 @@ class ShowRoom extends Component {
       if (!bReminderFirst) {
         sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
         Meteor.call('promotion.check_history', (err, res) => {
-          let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, '')); //- convert hkd50 -> 50, hkd100 -> 100
-          if (Object.keys(res).length > 0 && res.balance == amountProgram) { //- when
-            $('#reminder_promotion_modal').modal();
-            $('#reminder_promotion_modal').modal('open');
+          if (Object.keys(res).length > 0) { //- have promotion in history
+            let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, '')); //- convert hkd50 -> 50, hkd100 -> 100
+            if (res.balance == amountProgram) { //- when still have amount of money
+              $('#reminder_promotion_modal').modal();
+              $('#reminder_promotion_modal').modal('open');
+            }
           }
         });
       }
