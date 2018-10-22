@@ -18,6 +18,7 @@ import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
+import { createCookie } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
@@ -87,7 +88,7 @@ class ShowRoom extends Component {
     } else {
       //- when user not logged in, create a cookies to store this program
       if (begin == -1 && promotion) {
-        document.cookie = "promotion="+promotion+"; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        createCookie(promotion, promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
         setTimeout(() => {
           $('#promotion_modal').modal();
           $('#promotion_modal').modal('open');
