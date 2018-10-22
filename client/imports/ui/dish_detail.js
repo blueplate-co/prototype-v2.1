@@ -9,6 +9,7 @@ import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie, createCookie } from '/imports/functions/common/promotion_common';
 import DisqusComment from './disqus';
+import { Session } from 'meteor/session';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -67,10 +68,10 @@ export class Dish_Detail extends Component {
         } else {
             //- when user not logged in, create a cookies to store this program
             if (begin == -1 && promotion) {
-                createCookie(promotion, promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
+                createCookie('promotion', promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
                 setTimeout(() => {
-                $('#promotion_modal').modal();
-                $('#promotion_modal').modal('open');
+                    $('#promotion_modal').modal();
+                    $('#promotion_modal').modal('open');
                 }, 1000);
             }
         }
@@ -696,7 +697,7 @@ export class Dish_Detail extends Component {
                                 {/* Disqus comment */}
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 disqus-dish-detail-container">
-                                        <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")}/>
+                                        <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")} />
                                     </div>
                                 </div>
                                 {/* End Disqus comment */}
