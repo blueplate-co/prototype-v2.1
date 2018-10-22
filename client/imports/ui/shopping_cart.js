@@ -310,7 +310,6 @@ class ShoppingCart extends Component {
             // get Stripe balance
             Meteor.call('payment.getStripeBalance', (err, res) => {
                 let balance = parseFloat(res.account_balance / 100).toFixed(2);
-                var that = this;
                 Meteor.call('promotion.check_history', (err, res) => {
                     if (Object.keys(res).length == 0) {
                         var promotion_credits = 0;

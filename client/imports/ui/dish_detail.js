@@ -10,6 +10,7 @@ import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie, createCookie } from '/imports/functions/common/promotion_common';
 import DisqusComment from './disqus';
 import { Session } from 'meteor/session';
+import Like from './like_button';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -41,8 +42,6 @@ export class Dish_Detail extends Component {
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var promotion = url.searchParams.get("promotion");
-        var dish = url.searchParams.get("dish");
-        var kitchen = url.searchParams.get("kitchen");
         // check if already have cookies
         var dc = document.cookie;
         var prefix = "promotion" + "=";
@@ -594,6 +593,7 @@ export class Dish_Detail extends Component {
                     Object.keys(this.state.data).length > 0 ? 
                         <div>
                             <div id="dish-image" className="col s12 m12 l12">
+                                <Like type="dish" id={dish_detail._id} />
                                 <ProgressiveImages
                                     large={ dish_detail.meta.origin }
                                     small={ dish_detail.meta.small }
@@ -634,6 +634,7 @@ export class Dish_Detail extends Component {
                                     <div className="col s12 m5 l5 grp-dish-info">
                                         <div id="detail-dish-info">
                                             <div id="dish-image-detail" className="col s12 m12 l12">
+                                                <Like type="dish" id={dish_detail._id} />
                                                 <ProgressiveImages
                                                     large={ dish_detail.meta.origin }
                                                     small={ dish_detail.meta.small }

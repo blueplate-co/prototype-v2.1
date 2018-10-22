@@ -314,6 +314,17 @@
     text-transform: lowercase;
 }
 
+#dish-image-detail>.like-container {
+    top: auto;
+    left: auto;
+    padding: 10px 0px 0px 10px;
+}
+
+#dish-image>.like-container {
+    top: 100px;
+    display: none;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     .style-service, .style-unService {
@@ -390,6 +401,10 @@
     #dish-image-detail {
         display: none;
     }
+
+    #dish-image>.like-container {
+        display: block;
+    }
     
     #detail-dish-info {
         width: 91%;
@@ -454,6 +469,10 @@
 
     #dish-image-detail {
         display: none;
+    }
+
+    #dish-image>.like-container {
+        display: block;
     }
 
     #detail-dish-info {
