@@ -50,6 +50,23 @@ window.util = window.util || {};
     }
     return false;
   };
+
+  /**
+   * Filter email to limit sms for add new into asana
+   */
+  util.filterEmailInternalForNotification = function() {
+    var email = Meteor.user().emails[0].address;
+    var arrEmailNeedFilter = ['kouseile@gmail.com', 'pmtandhqn@gmail.com', 'phuongtrangnguyen.kt@gmail.com', 
+                                'thechris.phan@gmail.com', 'phanxuanthe94@gmail.com'],
+        bHasEmail = false;
+  
+    arrEmailNeedFilter.map( (itemEmail, idx) => {
+        if (itemEmail === email || email.indexOf('@blueplate.co') > 0) {
+            bHasEmail = true;
+        }
+    });
+    return bHasEmail;
+  }
 }());
 /**
  * Validate phone number
