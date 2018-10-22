@@ -64,6 +64,12 @@ export function getCookie(name) {
     }
 }
 
+export function createCookie(fields, value, expires) {
+    if (fields, value, expires) {
+        document.cookie = fields+"="+value+"; expires="+ expires;
+    }
+}
+
 export function delete_cookies(name) {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

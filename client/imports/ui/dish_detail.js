@@ -7,7 +7,7 @@ import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
-import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
+import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie, createCookie } from '/imports/functions/common/promotion_common';
 import DisqusComment from './disqus';
 
 // Dish detail component
@@ -67,7 +67,7 @@ export class Dish_Detail extends Component {
         } else {
             //- when user not logged in, create a cookies to store this program
             if (begin == -1 && promotion) {
-                document.cookie = "promotion="+promotion+"; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+                createCookie(promotion, promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
                 setTimeout(() => {
                 $('#promotion_modal').modal();
                 $('#promotion_modal').modal('open');

@@ -5,7 +5,7 @@ import ShowDishProfile from '../../imports/ui/show_dish_profile.js';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { ReactiveVar } from 'meteor/reactive-var';
-import { delete_cookies } from '/imports/functions/common/promotion_common';
+import { createCookie, delete_cookies } from '/imports/functions/common/promotion_common';
 
 Template.show_foodie_profile.helpers({
   'get_foodie_profile': function() {
@@ -176,7 +176,7 @@ Template.homecook_profile_dish_list.onRendered(function() {
   } else {
     //- when user not logged in, create a cookies to store this program
     if (begin == -1 && promotion) {
-      document.cookie = "promotion="+promotion+"; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      createCookie(promotion, promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
       setTimeout(() => {
         $('#promotion_modal').modal();
         $('#promotion_modal').modal('open');
