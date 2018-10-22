@@ -6,6 +6,7 @@ export default class DisqusComment extends Component {
     }
 
     componentDidMount() {
+        setTimeout(() => {
             if (typeof window.DISQUS === 'undefined') {
                 var disqus_config = function () {
                     this.page.url = this.props.url;
@@ -27,6 +28,7 @@ export default class DisqusComment extends Component {
                     }
                 });
             }
+        }, 1000);
     }
 
     render() {
