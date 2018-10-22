@@ -31,11 +31,15 @@ Meteor.methods({
     }
   },
   "payment.addCard"(Stripetoken) {
-    var updateCustomer = Meteor.wrapAsync(
-      stripe.customers.update.bind(stripe.customers)
-    );
-    var userStripeId = Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].stripe_id;
-    return updateCustomer(userStripeId, { source: Stripetoken });
+    try {
+      var updateCustomer = Meteor.wrapAsync(
+        stripe.customers.update.bind(stripe.customers)
+      );
+      var userStripeId = Meteor.users.find({ _id: Meteor.userId() }).fetch()[0].stripe_id;
+      return updateCustomer(userStripeId, { source: Stripetoken });
+    } catch (error) {
+      return error;
+    }
   },
   "payment.createSource"(Stripetoken) {
     //- create source from Stripe token
