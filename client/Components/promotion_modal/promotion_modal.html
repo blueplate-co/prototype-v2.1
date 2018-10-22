@@ -1,6 +1,6 @@
 <template name="promotion_modal">
     {{#if currentUser}}
-    <div id="promotion_modal" class="modal">
+    <div id="promotion_modal" class="modal promotion_infor">
         <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
         <div class="modal-content">
             <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
@@ -16,7 +16,7 @@
         </div>
     </div>
     {{else}}
-    <div id="promotion_modal" class="modal">
+    <div id="promotion_modal" class="modal promotion_infor">
         <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
         <div class="modal-content">
             <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i

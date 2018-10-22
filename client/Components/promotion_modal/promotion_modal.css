@@ -5,9 +5,9 @@
         top: 15px;
         right: 0px;
     }
-    #promotion_modal #reminder_promotion_images {
+    /* #promotion_modal #reminder_promotion_images {
         top: 0px!important;
-    }
+    } */
 
     #promotion_modal .modal-content {
         padding-top: 240px!important;
@@ -33,13 +33,20 @@
     border-radius: 15px !important;
 }
 
+#promotion_modal .modal-footer {
+    border-radius: 15px!important;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     #promotion_modal.promotion_infor {
         top: 23% !important;
         width: 40% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -30px!important;
     }
 }
 
@@ -49,7 +56,13 @@
         top: 23% !important;
         width: 50% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -140px!important;
+    }
+    #promotion_modal .modal-content {
+        padding-top: 160px!important;
     }
 }
 
@@ -59,7 +72,13 @@
         top: 23% !important;
         width: 54% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -120px!important;
+    }
+    #promotion_modal .modal-content {
+        padding-top: 160px!important;
     }
 }
 
@@ -69,7 +88,13 @@
         top: 23% !important;
         width: 62% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -160px!important;
+    }
+    #promotion_modal .modal-content {
+        padding-top: 140px!important;
     }
 }
 
@@ -78,7 +103,13 @@
         top: 23% !important;
         width: 72% !important;
         border-radius: 15px !important;
-        overflow: hidden !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -160px!important;
+    }
+    #promotion_modal .modal-content {
+        padding-top: 140px!important;
     }
 }
 
@@ -90,5 +121,11 @@
         width: 100% !important;
         border-radius: 0px !important;
         padding-top: 35px;
+    }
+    #promotion_modal #reminder_promotion_images {
+        top: -10px!important;
+    }
+    #promotion_modal .modal-content {
+        padding-top: 240px!important;
     }
 }
