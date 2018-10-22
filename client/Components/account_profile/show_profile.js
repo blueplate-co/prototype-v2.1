@@ -176,7 +176,7 @@ Template.homecook_profile_dish_list.onRendered(function() {
   } else {
     //- when user not logged in, create a cookies to store this program
     if (begin == -1 && promotion) {
-      createCookie(promotion, promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
+      createCookie('promotion', promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
       setTimeout(() => {
         $('#promotion_modal').modal();
         $('#promotion_modal').modal('open');
