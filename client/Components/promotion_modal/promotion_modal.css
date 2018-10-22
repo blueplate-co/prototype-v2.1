@@ -73,7 +73,7 @@
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
     #promotion_modal.promotion_infor {
-        top: 0% !important;
+        top: 0% !important; 
         height: 100% !important;
         width: 100% !important;
         border-radius: 0px !important;
