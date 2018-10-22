@@ -1,6 +1,6 @@
 <template name = "promotion_modal">
     {{#if currentUser}}
-        <div id="promotion_modal" class="modal">
+        <div id="promotion_modal" class="modal promotion_infor">
             <div class="modal-content">
                 <h4>Congratulation</h4>
                 <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_promotion"><i class="black-text medium material-icons">close</i></button>
@@ -13,7 +13,7 @@
             </div>
         </div>
     {{else}}
-        <div id="promotion_modal" class="modal">
+        <div id="promotion_modal" class="modal promotion_infor">
             <div class="modal-content">
               <h4>Congratulation</h4>
               <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_promotion"><i class="black-text medium material-icons">close</i></button>
