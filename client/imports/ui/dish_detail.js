@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Rating from './rating.js';
 import { Meteor } from 'meteor/meteor';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
 import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
+import DisqusComment from './disqus';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -686,13 +687,19 @@ export class Dish_Detail extends Component {
                                         <DishMap user_id={this.state.data.user_id}/>
                                     </div>
                                 </div>
-
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 chef-story-content">
                                         <span id="chef-story-title">Chef Story</span>
                                         {this.renderChefInfo()}
                                     </div>
                                 </div>
+                                {/* Disqus comment */}
+                                <div className="row chef-story-row show_dish_detail_wrapper">
+                                    <div className="col s12 m7 l7 disqus-dish-detail-container">
+                                        <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")}/>
+                                    </div>
+                                </div>
+                                {/* End Disqus comment */}
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
                                         <p className="chef-relate-title">Chef related dishes</p>
