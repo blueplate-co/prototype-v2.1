@@ -14,7 +14,7 @@ export class PaymentStripeForm extends Component {
 
     handleSubmit = (ev) => {
         //- send to Facebook Pixel
-        if (location.hostname == 'www.blueplate.co') {
+        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
             fbq('trackCustom', 'SelectPayment', { content_name: 'Credits Card', content_ids: Meteor.userId() });
         }
         util.show_loading_progress();

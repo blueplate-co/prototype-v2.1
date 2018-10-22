@@ -286,7 +286,7 @@ class ShoppingCart extends Component {
                 this.sendSummaryCheckoutDish();
             }
             //- send to Facebook Pixel
-            if (location.hostname == 'www.blueplate.co') {
+            if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                 fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
             }
             this.checkEnoughtCurrentAmount();
@@ -602,7 +602,7 @@ class ShoppingCart extends Component {
     componentDidMount() {
         $(window).scrollTop(0);
         //- send to Facebook Pixel
-        if (location.hostname == 'www.blueplate.co') {
+        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
             fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
         }
         // check if have already cookies, create a promotion balance for this user

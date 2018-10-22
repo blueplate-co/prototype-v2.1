@@ -140,7 +140,7 @@ Template.landing_page.onRendered(function () {
 Template.landing_page.events({
   'click .chef_signup': function() {
     //- send to Facebook Pixel
-    if (location.hostname == 'www.blueplate.co') {
+    if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
       fbq('trackCustom', 'ClickSignUp');
     }
   },

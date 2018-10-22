@@ -366,7 +366,7 @@ export class Dish_Detail extends Component {
                         Materialize.toast('Oops! Error when change your shopping cart. Please try again. ' + err.message, 6000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
-                        if (location.hostname == 'www.blueplate.co') {
+                        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }                       
                         util.hide_loading_progress();     
@@ -393,7 +393,7 @@ export class Dish_Detail extends Component {
                         Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
                     } else {
                         //- send to Facebook Pixel
-                        if (location.hostname == 'www.blueplate.co') {
+                        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                             fbq('track', 'AddToCart', { content_ids: dish_id, content_name: dish_name, currency: 'HKD', value: dish_price, contents: [{ 'id': dish_id, 'quantity': quantity, 'item_price': dish_price }] });
                         }
                         util.hide_loading_progress();
@@ -457,7 +457,7 @@ export class Dish_Detail extends Component {
         if (Meteor.userId()) {
             // logged in with user_id, email
             this.setState({ action: actionFoodies}, () => {
-                if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish') {
+                if (location.hostname == 'www.blueplate.co' && actionFoodies == 'orderDish' && !util.filterEmailInternalForNotification()) {
                     fbq('trackCustom', 'clickOrderButton', { content_ids: Meteor.userId() });
                 }
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
@@ -513,7 +513,7 @@ export class Dish_Detail extends Component {
                 util.hide_loading_progress();
                 Materialize.toast('Thanks for your request! We will notification to you when dish available', 4000, 'rounded bp-green');
                 //- send to Facebook Pixel
-                if (location.hostname == 'www.blueplate.co') {
+                if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                     fbq('trackCustom', 'SendDishRequest', { dish_id: dish_id, dish_name: this.state.data.dish_name, buyer: Meteor.userId(), seller: seller_id });
                 }
 

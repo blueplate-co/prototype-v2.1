@@ -199,7 +199,7 @@ export default class InfoOrder extends Component {
                 Bert.alert( err.reason, 'danger','growl-top-right');
             } else {
                 //- send to Facebook Pixel
-                if (location.hostname == 'www.blueplate.co') {
+                if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                     fbq('trackCustom', 'CompleteRegistration', { fullname: user.name_ordering, email: user.email_ordering });
                 }
         
@@ -320,7 +320,7 @@ export default class InfoOrder extends Component {
 
     handleSendVerifyCode() {
         var full_phonenumber = $('#phone_ordering').val();
-        if (location.hostname == 'www.blueplate.co') {
+        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
             fbq('trackCustom', 'clickVerifyPhoneNumberButton', { content_ids: Meteor.userId(), phone_number: full_phonenumber });
         }
         if (!$('#phone_ordering').intlTelInput("isValidNumber")) {

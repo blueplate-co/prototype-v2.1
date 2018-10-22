@@ -23,7 +23,7 @@ Template.screen.events({
   'click .chef_signup': function() {
     $('#login_modal').modal('close');
     //- send to Facebook Pixel
-    if (location.hostname == 'www.blueplate.co') {
+    if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
       fbq('trackCustom', 'ClickSignUp');
     }
   }

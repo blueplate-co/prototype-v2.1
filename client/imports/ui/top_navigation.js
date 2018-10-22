@@ -196,7 +196,7 @@ class TopNavigation extends Component {
             this.setState({ sidebarOpen: false }, () => {
               FlowRouter.go("/shopping_cart");
               //- send to Facebook Pixel
-              if (location.hostname == 'www.blueplate.co') {
+              if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                 fbq('trackCustom', 'ClickOnShoppingCartSidebar', { content_id: Meteor.userId() });
               }
               this.setState({ sidebarOpen: false }, () => {
@@ -340,7 +340,7 @@ class TopNavigation extends Component {
     if (e.keyCode == 13) {
       var queryString = $('#searchQuery').val();
       //- send to Facebook Pixel
-      if (location.hostname == 'www.blueplate.co') {
+      if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
         fbq('track', 'Search', { search_string: queryString });
       }
       // excute searching when keyword longer than 2 characters
@@ -593,7 +593,7 @@ class TopNavigation extends Component {
                         <li
                           onClick={() => {
                             //- send to Facebook Pixel
-                            if (location.hostname == 'www.blueplate.co') {
+                            if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
                               fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
                             }
                             FlowRouter.go("/shopping_cart");
