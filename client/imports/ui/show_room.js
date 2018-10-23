@@ -99,9 +99,9 @@ class ShowRoom extends Component {
 
     //- FOR USER ALREADY JOINED THE PROMOTION PROGRAM
     if (Meteor.userId()) {
-      let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPage'+Meteor.userId()) == 'false';
-      if (!bReminderFirst) {
-        sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
+      // let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPage'+Meteor.userId()) == 'false';
+      // if (!bReminderFirst) {
+      //   sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
         Meteor.call('promotion.check_history', (err, res) => {
           if (Object.keys(res).length > 0) { //- have promotion in history
             let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, '')); //- convert hkd50 -> 50, hkd100 -> 100
@@ -111,7 +111,7 @@ class ShowRoom extends Component {
             }
           }
         });
-      }
+      // }
     }
 
 
