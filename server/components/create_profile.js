@@ -259,7 +259,15 @@ Meteor.methods({
     })
   },
   'kitchen.showKitchenListShowroom' () {
-    return Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 15} ).fetch();
+    var kitchen = Kitchen_details.find({}, {sort: {createdAt: -1}, limit: 15} ).fetch();
+    var result = [];
+    kitchen.map((item, index) => {
+      if (Dishes.find({ user_id: item.user_id, deleted: false }).fetch().length > 0) { //- kitchen MUST has dishes in kitchen
+        result.push(item);
+        if (result.length == 6) return result; //- just get 6 kitchen items
+      }
+    });
+    return result;
   }
 });
 

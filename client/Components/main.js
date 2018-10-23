@@ -1,7 +1,3 @@
-import {
-  Accounts
-} from 'meteor/accounts-base'
-
 Meteor.startup(function () {
   Notification.requestPermission()
 
@@ -10,15 +6,15 @@ Meteor.startup(function () {
   //   key: 'AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac'
   // });
 
-  window.fbAsyncInit = function () {
-    FB.init({
-      appId: '{your-app-id}',
-      cookie: true,
-      xfbml: true,
-      version: '{latest-api-version}'
-    });
-    FB.AppEvents.logPageView();
-  };
+  // window.fbAsyncInit = function () {
+  //   FB.init({
+  //     appId: '{your-app-id}',
+  //     cookie: true,
+  //     xfbml: true,
+  //     version: '{latest-api-version}'
+  //   });
+  //   FB.AppEvents.logPageView();
+  // };
 
 
   // check mobile device
@@ -37,14 +33,14 @@ Meteor.startup(function () {
     }
   }
 
-  (function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {
-      return;
-    }
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+  // (function (d, s, id) {
+  //   var js, fjs = d.getElementsByTagName(s)[0];
+  //   if (d.getElementById(id)) {
+  //     return;
+  //   }
+  //   js = d.createElement(s);
+  //   js.id = id;
+  //   js.src = "//connect.facebook.net/en_US/sdk.js";
+  //   fjs.parentNode.insertBefore(js, fjs);
+  // }(document, 'script', 'facebook-jssdk'));
 })

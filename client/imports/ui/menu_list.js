@@ -3,9 +3,10 @@ import { Session } from 'meteor/session';
 import Rating from './rating';
 import Like from './like_button';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { withTracker } from 'meteor/react-meteor-data';
 
-// App component - represents the whole app
-export default class MenuList extends Component {
+
+class MenuList extends Component {
 
   constructor(props) {
     super(props);
@@ -135,18 +136,31 @@ export default class MenuList extends Component {
             <a href="/see_all/menu" >{ this.props.seemore }</a>
           </div>
         </div>
-
-        {/* list items */}
-          <div className="row">
-            {
-              (this.state.loading)
-              ?
-                <span>...loading</span>
-              :
-                this.renderList()
-            }
-          </div>
+        {
+          (!this.props.listLoading) ?
+            (
+              <div className="row">
+                {
+                  (this.state.loading)
+                  ?
+                    <span>...loading</span>
+                  :
+                    this.renderList()
+                }
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )
+        }
       </div>
     );
   }
 }
+
+export default withTracker(props => {
+  const handle = Meteor.subscribe('theDishes');
+  return {
+      listLoading: !handle.ready()
+  };
+})(MenuList);
+
