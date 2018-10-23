@@ -19,6 +19,7 @@ import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
 import { createCookie } from '/imports/functions/common/promotion_common';
+import LazyLoad from 'react-lazyload';
 
 // App component - represents the whole app
 class ShowRoom extends Component {
@@ -213,7 +214,6 @@ class ShowRoom extends Component {
         return (
           <div>
             <DishAllList title="All dishes" seemore=""/ >
-            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
@@ -229,7 +229,6 @@ class ShowRoom extends Component {
         return (
           <div>
             <KitchenAllList title="All Kitchens" seemore=""/>
-            <Modal menu={this.state.selectedMenu}/>
           </div>
         )
         break;
@@ -292,16 +291,22 @@ class ShowRoom extends Component {
             <TagsDisplay />
             <PromotionList title="Special Discount" />
             <div className="row">
-              <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
+              <LazyLoad once height={400}>
+                <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
+              </LazyLoad>
             </div>
             <div className="row">
               <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
             <div className = "row">
-              <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
+              <LazyLoad once height={400}>
+                <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
+              </LazyLoad>
             </div>
             <div className = "row">
-              <KitchenList title="Kitchens" seemore="see all"/>
+              <LazyLoad once height={400}>
+                <KitchenList title="Kitchens" seemore="see all"/>
+              </LazyLoad>
             </div>
             <Modal menu={this.state.selectedMenu}/>
           </div>

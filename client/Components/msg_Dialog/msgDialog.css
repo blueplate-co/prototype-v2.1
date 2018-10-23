@@ -18,9 +18,8 @@
 
 .content{
 /*  position: absolute; - this setting is causing contents to jump when template render has checkboxes*/
-  padding-top: : 68px;
+  padding-top: 68px;
   width:100%;
-
 }
 
 .conversation-screen {

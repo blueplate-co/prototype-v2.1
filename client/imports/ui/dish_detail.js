@@ -11,6 +11,7 @@ import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCooki
 import DisqusComment from './disqus';
 import { Session } from 'meteor/session';
 import Like from './like_button';
+import LazyLoad from 'react-lazyload';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -37,6 +38,42 @@ export class Dish_Detail extends Component {
     }
     
     componentDidMount() {
+        Meteor.call('dish.get_detail', this.props.id, (error, res) => {
+            if (!error) {
+                this.setState({
+                    data: res
+                })
+                Session.set('dish_id_relate', this.state.data._id);
+                Session.set('user_dish_id', this.state.data.user_id);
+                // Get summary order of Chef
+                Meteor.call('kitchen_tried.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({summary_order: res});
+                    }
+                });
+
+                // Get summary like Chef from dishes and menu
+                Meteor.call('kitchen_likes.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({kitchen_likes : res});
+                    }
+                });
+
+                Meteor.call('kitchen_follows.get', this.state.data.user_id, (error, res) => {
+                    if (!error) {
+                        this.setState({kitchen_follows : res});
+                    }
+                });
+
+                Meteor.call('requestdish.find_dish_request', this.state.data._id, Meteor.userId(), (err, res) => {
+                    if (res) {
+                        this.setState({alreadyRequested: true});
+                    }
+                });
+            } else {
+                Materialize.toast('Error occur when fetch data. Please try again.', 4000, 'rounded bp-green');
+            }
+        });
         $(window).scrollTop(0);
         //- procedure for promotion $50HKD
         var url_string = window.location.href; //window.location.href
@@ -74,43 +111,6 @@ export class Dish_Detail extends Component {
                 }, 1000);
             }
         }
-
-        Meteor.call('dish.get_detail', this.props.id, (error, res) => {
-            if (!error) {
-                this.setState({
-                    data: res
-                })
-                Session.set('dish_id_relate', this.state.data._id);
-                Session.set('user_dish_id', this.state.data.user_id);
-                // Get summary order of Chef
-                Meteor.call('kitchen_tried.get', this.state.data.user_id, (error, res) => {
-                    if (!error) {
-                        this.setState({summary_order: res});
-                    }
-                });
-
-                // Get summary like Chef from dishes and menu
-                Meteor.call('kitchen_likes.get', this.state.data.user_id, (error, res) => {
-                    if (!error) {
-                        this.setState({kitchen_likes : res});
-                    }
-                });
-
-                Meteor.call('kitchen_follows.get', this.state.data.user_id, (error, res) => {
-                    if (!error) {
-                        this.setState({kitchen_follows : res});
-                    }
-                });
-
-                Meteor.call('requestdish.find_dish_request', this.state.data._id, Meteor.userId(), (err, res) => {
-                    if (res) {
-                        this.setState({alreadyRequested: true});
-                    }
-                });
-            } else {
-                Materialize.toast('Error occur when fetch data. Please try again.', 4000, 'rounded bp-green');
-            }
-        });
     }
 
     renderServingOption() {
@@ -190,55 +190,57 @@ export class Dish_Detail extends Component {
             }
             
             return (
-                <div>
-                    <a className="col s12 m12 l1 chef-story-image"
-                        href={"/kitchen/" + this.state.data.kitchen_id}
-                    >
-                        <img src={source_img} id="img-chef" width="78" height="78"/>
-                    </a>
-                    <div className="row col s12 m12 l7 chef-name-summary">
-                        <a className="col s12 m12 l10 chef-name"
+                <LazyLoad height={500} once>
+                    <div>
+                        <a className="col s12 m12 l1 chef-story-image"
                             href={"/kitchen/" + this.state.data.kitchen_id}
                         >
-                            {chef_detail.chef_name}
+                            <img src={source_img} id="img-chef" width="78" height="78"/>
                         </a>
-                        <div className="col s12 m12 l10 chef-summary">
-                            <ul className="chef-summary-infor no-margin">
-                                <li className="text-center">{ this.state.summary_order }</li>
-                                <li>Tried</li>
-                            </ul>
-                            <li className="dot-text-style">&bull;</li>
-                            <ul className="chef-summary-infor no-margin">
-                                <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
-                            </ul>
-                            <li className="dot-text-style">&bull;</li>
-                            <ul className="chef-summary-infor no-margin">
-                                <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
-                            </ul>
+                        <div className="row col s12 m12 l7 chef-name-summary">
+                            <a className="col s12 m12 l10 chef-name"
+                                href={"/kitchen/" + this.state.data.kitchen_id}
+                            >
+                                {chef_detail.chef_name}
+                            </a>
+                            <div className="col s12 m12 l10 chef-summary">
+                                <ul className="chef-summary-infor no-margin">
+                                    <li className="text-center">{ this.state.summary_order }</li>
+                                    <li>Tried</li>
+                                </ul>
+                                <li className="dot-text-style">&bull;</li>
+                                <ul className="chef-summary-infor no-margin">
+                                    <li className="text-center">{ this.state.kitchen_follows }</li><li>Following</li>
+                                </ul>
+                                <li className="dot-text-style">&bull;</li>
+                                <ul className="chef-summary-infor no-margin">
+                                    <li className="text-center">{ this.state.kitchen_likes }</li><li>Likes</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="row col s12 m12 l12 dish-story-content">
+                            { (this.state.cooking_story_content.length > 0) ?
+                            <p id="chef-story-descr">{this.state.cooking_story_content}
+                                    <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
+                                        see less
+                                    </span>
+                            </p>
+                                :
+                                (chef_detail.cooking_story.length > 100) ?
+                                    <p id="chef-story-descr">{cooking_story_content}
+                                        <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
+                                            see more
+                                        </span>
+                                    </p>
+                                    :
+                                    (chef_detail.cooking_story.length === 0) ?
+                                        <p id="chef-story-descr">No cooking story has been shared yet.</p>
+                                    :
+                                        <p id="chef-story-descr">{chef_detail.cooking_story}</p>
+                            }
                         </div>
                     </div>
-                    <div className="row col s12 m12 l12 dish-story-content">
-                        { (this.state.cooking_story_content.length > 0) ?
-                           <p id="chef-story-descr">{this.state.cooking_story_content}
-                                <span className="handle-see-chef-story" onClick={ () => this.handleSeeLessChefStory() }> 
-                                    see less
-                                </span>
-                           </p>
-                            :
-                            (chef_detail.cooking_story.length > 100) ?
-                                <p id="chef-story-descr">{cooking_story_content}
-                                    <span className="handle-see-chef-story" onClick={ () => this.handleSeeMoreChefStory(chef_detail.cooking_story) }> 
-                                        see more
-                                    </span>
-                                </p>
-                                :
-                                (chef_detail.cooking_story.length === 0) ?
-                                    <p id="chef-story-descr">No cooking story has been shared yet.</p>
-                                :
-                                    <p id="chef-story-descr">{chef_detail.cooking_story}</p>
-                        }
-                    </div>
-                </div>
+                </LazyLoad>
             );
         } else {
             return (
@@ -558,22 +560,24 @@ export class Dish_Detail extends Component {
         }
 
         return (
-            <div className="dish-descr-detail-text">
-                { (this.state.more_dish_description.length > 0) ?
-                    <p>{this.state.more_dish_description}  
-                        <span className="show-more-descr-dish" onClick= { () => this.handleSeeLessDishDescr(dishDescr)}> see less</span>
-                    </p>
-                    :
-                    (dishDescr.length) > 300 ? 
-                        <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handleSeeMoreDishDescr(dishDescr)}>  see more</span></p>
+            <LazyLoad height={500} once>
+                <div className="dish-descr-detail-text">
+                    { (this.state.more_dish_description.length > 0) ?
+                        <p>{this.state.more_dish_description}  
+                            <span className="show-more-descr-dish" onClick= { () => this.handleSeeLessDishDescr(dishDescr)}> see less</span>
+                        </p>
                         :
-                        (dishDescr.length == 0 ) ?
-                            <p>No dish description available.</p>
+                        (dishDescr.length) > 300 ? 
+                            <p>{dish_description} <span className="show-more-descr-dish" onClick= { () => this.handleSeeMoreDishDescr(dishDescr)}>  see more</span></p>
                             :
-                            <p>{dishDescr}</p>     
-                    
-                }
-            </div>
+                            (dishDescr.length == 0 ) ?
+                                <p>No dish description available.</p>
+                                :
+                                <p>{dishDescr}</p>     
+                        
+                    }
+                </div>
+            </LazyLoad>
         );
     }
 
@@ -617,11 +621,12 @@ export class Dish_Detail extends Component {
                                                 {dish_detail.mins > 0 ? " " + dish_detail.mins : " " + 0} minutes
                                             </p>
                                         </div>
-
-                                        <div className="row dish-serving">
-                                            <p id="serving-option-content">Serving options</p>
-                                            {this.renderServingOption()}
-                                        </div>
+                                        <LazyLoad height={100} once>
+                                            <div className="row dish-serving">
+                                                <p id="serving-option-content">Serving options</p>
+                                                {this.renderServingOption()}
+                                            </div>
+                                        </LazyLoad>
                                         
                                         <div className="row dish-tag">
                                             <p id="tag-title">Tags</p>
@@ -698,23 +703,29 @@ export class Dish_Detail extends Component {
                                 {/* Disqus comment */}
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 disqus-dish-detail-container">
-                                        <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")} />
+                                        <LazyLoad height={200} once>
+                                            <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")} />
+                                        </LazyLoad>
                                     </div>
                                 </div>
                                 {/* End Disqus comment */}
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
                                         <p className="chef-relate-title">Chef related dishes</p>
-                                        <DishListRelate kitchen_id={this.state.data.kitchen_id} />
+                                        <LazyLoad height={200} once>
+                                            <DishListRelate kitchen_id={this.state.data.kitchen_id} />
+                                        </LazyLoad>
                                     </div>
                                 </div>
                             </div>
-
-                            <InfoOrder order_obj={this.state.order_obj}
-                                handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
-                                product_id ={ this.state.data._id}
-                                path_process = "/dish/"
-                            />
+                            
+                            <LazyLoad height={300} once>
+                                <InfoOrder order_obj={this.state.order_obj}
+                                    handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
+                                    product_id ={ this.state.data._id}
+                                    path_process = "/dish/"
+                                />
+                            </LazyLoad>
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">
