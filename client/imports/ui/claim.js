@@ -195,21 +195,23 @@ export default class Claim extends Component {
         '\nPlaceholder name: ' + this.state.placeholder_name +
         '\nBank info: ' + this.state.bank_info +
         '\nBank number: ' + this.state.bank_account_number;
-        Meteor.call(
-            'marketing.create_task_asana',
-            '861003196091238', // projects_id to create task
-            'Claim request: ' + chef_name,
-            content_message
-        );
-        Meteor.call('claim.request', Meteor.userId(), this.state.placeholder_name, this.state.bank_info, this.state.bank_account_number, this.state.amount, (err, res) => {
-            // success a response for request a claim request
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Claim successful');
-                FlowRouter.go('/cooking/dashboard');
-            }
-        });
+        if (!util.filterEmailInternalForNotification()) {
+            Meteor.call(
+                'marketing.create_claim_task_asana',
+                '861003196091238', // projects_id to create task
+                'Claim request: ' + chef_name,
+                content_message
+            );
+            Meteor.call('claim.request', Meteor.userId(), this.state.placeholder_name, this.state.bank_info, this.state.bank_account_number, this.state.amount, (err, res) => {
+                // success a response for request a claim request
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Claim successful');
+                    FlowRouter.go('/cooking/dashboard');
+                }
+            });
+        }
     }
 
     showHistory() {
