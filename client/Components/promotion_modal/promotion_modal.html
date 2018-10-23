@@ -1,29 +1,71 @@
 <template name="promotion_modal">
     {{#if currentUser}}
-    <div id="promotion_modal" class="modal promotion_infor">
-        <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
-        <div class="modal-content">
-            <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
-                    class="black-text medium material-icons">close</i></button>
-            <h4>Congratulation</h4>
-            <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
-                $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
-            <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
-            <p>Don’t wait too long, our offer expires on <b>27 October 2018.</b></p>
-        </div>
-    </div>
+        {{#if custom_theme}}
+            <div id="promotion_modal" class="modal promotion_infor custom_theme_modal">
+                <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
+                <div class="modal-content">
+                    <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
+                            class="black-text medium material-icons">close</i></button>
+                    <img id="web_2" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/Web 2.png"/>
+                    <img id="bat_2" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/bat+2.png"/>
+                    <img id="bat" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/bat.png"/>
+                    <img id="pumpkin" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/pumkin.png" />
+                    <!-- <img id="web" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/Web.png"/> -->
+                    <h4>Congratulation</h4>
+                    <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
+                        $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>03 November 2018.</b></p>
+                    <div id="bottom-ribbon"></div>
+                </div>
+            </div>
+        {{else}}
+            <div id="promotion_modal" class="modal promotion_infor">
+                <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
+                <div class="modal-content">
+                    <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
+                            class="black-text medium material-icons">close</i></button>
+                    <h4>Congratulation</h4>
+                    <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
+                        $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>27 October 2018.</b></p>
+                </div>
+            </div>
+        {{/if}}
     {{else}}
-    <div id="promotion_modal" class="modal promotion_infor">
-        <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
-        <div class="modal-content">
-            <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
-                    class="black-text medium material-icons">close</i></button>
-            <h4>Congratulation</h4>
-            <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
-                $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
-            <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
-            <p>Don’t wait too long, our offer expires on <b>27 October 2018.</b></p>
-        </div>
-    </div>
+        {{#if custom_theme}}
+            <div id="promotion_modal" class="modal promotion_infor custom_theme_modal">
+                <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/Ghost.png" />
+                <div class="modal-content">
+                    <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
+                            class="black-text medium material-icons">close</i></button>
+                    <img id="web_2" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/Web 2.png"/>
+                    <img id="bat_2" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/bat+2.png"/>
+                    <img id="bat" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/bat.png"/>
+                    <img id="pumpkin" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/pumkin.png" />
+                    <!-- <img id="web" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/Web.png"/> -->
+                    <h4>Congratulation</h4>
+                    <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
+                        $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>03 November 2018.</b></p>
+                    <div id="bottom-ribbon"></div>
+                </div>
+            </div>
+        {{else}}
+            <div id="promotion_modal" class="modal promotion_infor">
+                <img id="reminder_promotion_images" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/gift_promotion.png" />
+                <div class="modal-content">
+                    <button class="modal-close btn-floating transparent z-depth-0 waves-effect waves-red login_cancel_btn" id="cancel_signup"><i
+                            class="black-text medium material-icons">close</i></button>
+                    <h4>Congratulation</h4>
+                    <p>At blueplate, our chefs make great food we know you’ll love. We’re so sure of it that we’ll give you
+                        $HKD {{ promotion_amount }} credits to try food from our home chef.</p>
+                    <p>Please login to claim your credit now and you could be eating a delicious home cooked dish tonight.</p>
+                    <p>Don’t wait too long, our offer expires on <b>27 October 2018.</b></p>
+                </div>
+            </div>
+        {{/if}}
     {{/if}}
 </template>
