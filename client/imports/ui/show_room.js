@@ -291,22 +291,20 @@ class ShowRoom extends Component {
             <TagsDisplay />
             <PromotionList title="Special Discount" />
             <div className="row">
-              <LazyLoad once height={400}>
                 <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
-              </LazyLoad>
             </div>
             <div className="row">
               <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
             <div className = "row">
-              <LazyLoad once height={400}>
+              {/* <LazyLoad once height={400}> */}
                 <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
-              </LazyLoad>
+              {/* </LazyLoad> */}
             </div>
             <div className = "row">
-              <LazyLoad once height={400}>
+              {/* <LazyLoad once height={400}> */}
                 <KitchenList title="Kitchens" seemore="see all"/>
-              </LazyLoad>
+              {/* </LazyLoad> */}
             </div>
             <Modal menu={this.state.selectedMenu}/>
           </div>
