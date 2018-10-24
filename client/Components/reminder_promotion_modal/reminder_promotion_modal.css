@@ -27,10 +27,15 @@
     margin: 20px 0px 10px 0px;
 }
 
+#reminder_promotion_container {
+    text-align: center;
+    font-size: 13px;
+}
+
 @media screen and (max-width: 1023px) {
     #reminder_promotion_images {
         left: 50%;
-        width: 300px;
+        width: 260px;
         transform: translate(-50%, 25%);
         position: absolute;
     }
@@ -42,6 +47,6 @@
         font-size: 1em;
         color: #000;
         margin: 0px;
-        padding: 0px;
+        padding: 0px 5px;
     }
 }
