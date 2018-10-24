@@ -116,6 +116,7 @@ class ShowRoom extends Component {
       if (getCookie('promotion')) {
         let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPageNotLoggedIn') == 'false';
         if (!bReminderFirst) {
+          sessionStorage.setItem('reminderFirstLoadPageNotLoggedIn', 'false');
           $('#reminder_promotion_modal').modal();
           $('#reminder_promotion_modal').modal('open');
         }
