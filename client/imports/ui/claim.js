@@ -197,7 +197,7 @@ export default class Claim extends Component {
         '\nBank number: ' + this.state.bank_account_number;
         if (!util.filterEmailInternalForNotification()) {
             Meteor.call(
-                'marketing.create_claim_task_asana',
+                'marketing.create_task_asana',
                 '861003196091238', // projects_id to create task
                 'Claim request: ' + chef_name,
                 content_message

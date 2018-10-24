@@ -113,7 +113,7 @@ class ShoppingCart extends Component {
                 }
             }
         }
-        $("#select-serving-option").css("color", "rgba(0, 0, 0, 0.87)");
+        $(".select-serving-option").css("color", "rgba(0, 0, 0, 0.87)");
     }
 
     // when change address for kitchen
@@ -129,8 +129,8 @@ class ShoppingCart extends Component {
     handleChangeTime(el, seller_id, hours, mins) {
         if (!this.validateTimeSelected(el.target.value, hours, mins)) {
             setTimeout(() => {
-                $('#time').addClass('invalid');
-                $('#time').focus();
+                $('#time'+seller_id).addClass('invalid');
+                $('#time'+seller_id).focus();
             }, 10);
             Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '4000', 'rounded bp-green');
         } else {
@@ -139,14 +139,14 @@ class ShoppingCart extends Component {
     
                     if (globalCart[i].date == 'Invalid date' || globalCart[i].date == '') {
                         el.target.value = '';
-                        $('#date').addClass('invalid');
-                        $('#date').focus();
+                        $('#date'+seller_id).addClass('invalid');
+                        $('#date'+seller_id).focus();
                         Materialize.toast('On which date would you like to be served?', '4000', 'rounded bp-green');
                         return;
                     }
 
-                    $('#date').removeClass('invalid');
-                    $('#time').removeClass('invalid');
+                    $('#date'+seller_id).removeClass('invalid');
+                    $('#time'+seller_id).removeClass('invalid');
                     globalCart[i].time = el.target.value;
                     // use old code from Michael to store preferred_time_ms
                     var yyyy = globalCart[i].date[6] + globalCart[i].date[7] + globalCart[i].date[8] + globalCart[i].date[9]
@@ -164,6 +164,7 @@ class ShoppingCart extends Component {
 
     // when change date for kitchen
     handleChangeDate(event, seller_id, days) {
+        var id_evt = event.target["id"];
         var date_select = event.target.value;
         var attemp_cart = globalCart;
         this.validateDateSelected(moment(date_select), days, function(bValidDate) {
@@ -181,17 +182,17 @@ class ShoppingCart extends Component {
                         serve_date = new Date(yyyy, mm, dd, hh, min);
                         serve_date = Date.parse(serve_date);
                         globalCart[i].timeStamp = serve_date;
+                        $('#' + id_evt).removeClass('invalid');
                     }
                 }
-                $('#date').removeClass('invalid');
             } else  {
                 Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
                 setTimeout(() => {
-                    $('#date').addClass('invalid');
-                    $('#date').focus();
+                    $('#'+ id_evt).addClass('invalid');
+                    $('#'+id_evt).focus();
                 }, 50);
             }
-            $("#date").css("color", "rgba(0, 0, 0, 0.87)");
+            $("#"+id_evt).css("color", "rgba(0, 0, 0, 0.87)");
         });
     }
 
@@ -206,48 +207,48 @@ class ShoppingCart extends Component {
 
     validateShoppingCartCheckOut() {
         var valid = true;
-        globalCart.forEach((item, index) => {
-            for( var key in item ) {
-                if (item[key] == '' && key == 'service') {
-                    valid = false;
-                    this.scrollToFieldRequired('select-serving-option');
-                    Materialize.toast('Oops! Please select your service to get your food.', '3000', 'rounded bp-green');
-                    break;
+        Loop1:
+            for (var i = 0; i < globalCart.length; i++) {
+                for( var key in globalCart[i] ) {
+                    if (globalCart[i][key] == '' && key == 'service') {
+                        valid = false;
+                        this.scrollToFieldRequired('select-serving-option' + globalCart[i]['id']);
+                        Materialize.toast('Oops! Please select your service to get your food.', '3000', 'rounded bp-green');
+                        break Loop1;
+                    }
+
+                    if (globalCart[i][key] == '' && key == 'address') {
+                        $('#address_' + globalCart[i].id).addClass('invalid');
+                        Materialize.toast('Oops! Please complete your delivery address.', '3000', 'rounded bp-green');
+                        this.scrollToFieldRequired('address_' + globalCart[i].id);
+                        valid = false;
+                        break Loop1;
+                    } else {
+                        $('#address_' + globalCart[i].id).removeClass('invalid');
+                    }
+
+                    if ((globalCart[i][key] == 'Invalid date' || globalCart[i][key] == '') && key == 'date') {
+                        valid = false;
+                        this.scrollToFieldRequired('date' + globalCart[i]['id']);
+                        Materialize.toast('Oops! Please select your date would you like to be served.', '3000', 'rounded bp-green');
+                        break Loop1;
+                    }
+
+                    if (globalCart[i][key] == '' && key == 'time') {
+                        valid = false;
+                        this.scrollToFieldRequired('time' + globalCart[i]['id']);
+                        Materialize.toast('Oops! Please select your time.', '3000', 'rounded bp-green');
+                        break Loop1;
+                    }
+
+
                 }
-
-                if (item[key] == '' && key == 'address') {
-                    $('#address_' + item.id).addClass('invalid');
-                    Materialize.toast('Oops! Please complete your delivery address.', '3000', 'rounded bp-green');
-                    this.scrollToFieldRequired('address_' + item.id);
-                    valid = false;
-                    break;
-                } else {
-                    $('#address_' + item.id).removeClass('invalid');
+                if (valid) {
+                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+                    Session.set('product', globalCart);
+                    // globalCart = [];
                 }
-
-                if ((item[key] == 'Invalid date' || item[key] == '') && key == 'date') {
-                    valid = false;
-                    this.scrollToFieldRequired('date');
-                    Materialize.toast('Oops! Please select your date would you like to be served.', '3000', 'rounded bp-green');
-                    break;
-                }
-
-                if (item[key] == '' && key == 'time') {
-                    valid = false;
-                    this.scrollToFieldRequired('time');
-                    Materialize.toast('Oops! Please select your time.', '3000', 'rounded bp-green');
-                    break;
-                }
-
-
-            }
-            if (valid) {
-                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
-                Session.set('product', globalCart);
-                // globalCart = [];
-            }
-        });
-
+            };
         return valid;
     }
 
@@ -455,7 +456,8 @@ class ShoppingCart extends Component {
         curr.setDate(curr.getDate());
         var address = globalCart[index].address,
             defaultTimePicker = globalCart[index].time,
-            defaultDate = this.formatDateOrder(globalCart[index].date);
+            defaultDate = this.formatDateOrder(globalCart[index].date),
+            id_service = 'select-serving-option' + globalCart[index].id;
 
         var dish_detail = Dishes.findOne({ _id:  product[0].product_id}),
             days = dish_detail.days ? dish_detail.days : 0,
@@ -485,7 +487,7 @@ class ShoppingCart extends Component {
                     <div className="col s12 m6 l6">
                         <div className="service-option-cart">
                             <span className="service-option-icon"></span>
-                            <select id="select-serving-option" style={{...this, color: address ? 'rgba(0, 0, 0, 0.87)' : ''}} className="browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                            <select id={id_service} style={{...this, color: address ? 'rgba(0, 0, 0, 0.87)' : ''}} className="select-serving-option browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
                                 <option value="" disabled>How would you like to get your food?</option>
                                 { this.renderServingOption(seller_id) }
                             </select>
@@ -501,16 +503,15 @@ class ShoppingCart extends Component {
                         
                         <div className="input-field col s12 m12 l12 icon-position-common date-summary">
                             <i className="material-icons prefix location-address icon-cart-format">date_range</i>
-                            <input id="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
+                            <input id={"date" + globalCart[index].id} className="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
                                 style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
                                 onChange={(event) => this.handleChangeDate(event, seller_id, days)} />
-                            <label htmlFor="date"></label>
-
+                            {/* <label htmlFor="date"></label> */}
                         </div>
 
                         <div className="input-field col s12 m12 l12 no-background time-cart icon-position-common">
                             <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
-                            <input type="time" id="time" defaultValue= {defaultTimePicker ? defaultTimePicker : '' } 
+                            <input type="time" id={"time" + globalCart[index].id} className="time" defaultValue= {defaultTimePicker ? defaultTimePicker : '' } 
                                 onChange={(event) => this.handleChangeTime(event, seller_id, hours, mins)}
                                 placeholder="What time will be best?"
                             />
@@ -619,12 +620,14 @@ class ShoppingCart extends Component {
                                         '\nProduct infor: ' + checkSellerName[chefName];
 
                 // Send email
-                Meteor.call(
-                    'marketing.create_task_asana',
-                    '852791235008277', // projects_id to create task
-                    'Buyer : ' + foodie_name,
-                    content_message
-                );
+                if (!util.filterEmailInternalForNotification()) {
+                    Meteor.call(
+                        'marketing.create_task_asana',
+                        '852791235008277', // projects_id to create task
+                        'Buyer : ' + foodie_name,
+                        content_message
+                    );
+                }
             }
         }
     };

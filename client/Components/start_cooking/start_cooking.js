@@ -525,12 +525,15 @@ Template.request_card.events({
           var content_message = '\nBuyer infor : ' + 
                                 buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
     
-          Meteor.call(
-            'marketing.create_task_asana',
-            '852791235008282', // projects_id to create task
-            'Chef: ' + seller_name,
-            content_message
-          );
+          if (!util.filterEmailInternalForNotification()) {
+            Meteor.call(
+              'marketing.create_task_asana',
+              '852791235008282', // projects_id to create task
+              'Chef: ' + seller_name,
+              content_message
+            );
+          }
+                              
           
         }, 2000);
       }
@@ -716,12 +719,14 @@ Template.request_card.events({
                   var content_message = '\nBuyer infor : ' + 
                                         buyer_info + '\nSeller infor: ' + seller_info + '\nProduct infor: ' + sProduct_info;
             
-                  Meteor.call(
-                    'marketing.create_task_asana',
-                    '852791235008288', // projects_id to create task
-                    'Chef: ' + seller_name,
-                    content_message
-                  );
+                  if (!util.filterEmailInternalForNotification()) {
+                    Meteor.call(
+                      'marketing.create_task_asana',
+                      '852791235008288', // projects_id to create task
+                      'Chef: ' + seller_name,
+                      content_message
+                    );
+                  }
                   
                 }, 2000);
 

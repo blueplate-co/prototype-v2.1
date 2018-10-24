@@ -282,7 +282,7 @@ i.remove_button {
   color: #c6c6c6;
 }
 
-select#select-serving-option>option {
+select.select-serving-option>option {
   color: rgba(0, 0, 0, 0.87);
 }
 

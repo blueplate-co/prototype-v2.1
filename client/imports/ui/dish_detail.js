@@ -349,11 +349,6 @@ export class Dish_Detail extends Component {
 
         // this.addDishToLocalCart();
 
-        // Only work in production
-        if (util.checkCurrentSite()) {
-            this.addOrderClickToAsana(foodie_details, homecook_details);
-        }
-
         if (order) {
             var order_id = order._id;
             quantity = parseInt(order.quantity) + this.state.sumOrder;
@@ -406,8 +401,15 @@ export class Dish_Detail extends Component {
         }
     }
 
-    addOrderClickToAsana(foodie_details, kitchen) {
-        var  info_buyer = foodie_details.foodie_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone: " + foodie_details.mobile + ")";
+    addOrderClickToAsana() {
+        var foodie_details = '',
+            info_buyer = '';
+        if (Meteor.userId()) {
+            foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
+            info_buyer = foodie_details.foodie_name + " (id: " + Meteor.userId() + ", email: " + Meteor.user().emails[0].address + ", phone: " + foodie_details.mobile + ")";
+        }
+        
+        var kitchen = Kitchen_details.findOne({"user_id":  this.state.data.user_id});
         var seller_detail = Meteor.users.findOne({_id: kitchen.user_id}),
             seller_email = seller_detail.emails[0].address,
             seller_info = kitchen.chef_name +" (id: " + kitchen._id + ", email: " + seller_email + ", phone no: " + kitchen.kitchen_contact + ")";
@@ -418,12 +420,15 @@ export class Dish_Detail extends Component {
         
         var content_message = '\nBuyer infor : ' + info_buyer + '\nSeller infor: ' + seller_info + 
                                 '\nProduct infor: ' + product_info;
-        Meteor.call(
-            'marketing.create_task_asana',
-            '871582997693692', // projects_id to create task
-            'Buyer : ' + foodie_details.foodie_name,
-            content_message
-        );
+                                
+        if (!util.filterEmailInternalForNotification()) {
+            Meteor.call(
+                'marketing.create_task_asana',
+                '871582997693692', // projects_id to create task
+                'Buyer : ' + foodie_details.foodie_name,
+                content_message
+            );
+        }
     }
 
     handleOnDishAction() {
@@ -455,6 +460,12 @@ export class Dish_Detail extends Component {
      */
     checkFoodiesInfor(actionFoodies) {
         util.show_loading_progress();
+
+        // Only work in production
+        if (util.checkCurrentSite()) {
+            this.addOrderClickToAsana();
+        }
+
         // logged in
         if (Meteor.userId()) {
             // logged in with user_id, email
@@ -719,13 +730,11 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
                             
-                            <LazyLoad height={300} once>
-                                <InfoOrder order_obj={this.state.order_obj}
-                                    handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
-                                    product_id ={ this.state.data._id}
-                                    path_process = "/dish/"
-                                />
-                            </LazyLoad>
+                            <InfoOrder order_obj={this.state.order_obj}
+                                handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
+                                product_id ={ this.state.data._id}
+                                path_process = "/dish/"
+                            />
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">

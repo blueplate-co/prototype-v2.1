@@ -475,38 +475,6 @@ Meteor.methods({
     });
   },
   'marketing.create_task_asana'(projects_id, subject, content) {
-    if (!util.filterEmailInternalForNotification()) {
-      var sUrl = "https://app.asana.com/api/1.0/tasks";
-      var options = {
-          headers: { 
-            Authorization:'Bearer 0/8470c0ad0fedc326b75feb7a639575f7',
-            // 'Content-Type': 'application/json'
-          },
-          params: {
-            workspace: '220725248142233',
-            projects: projects_id,
-            // assignee: '425646707917578',
-            notes: content,
-            name: subject + ' ' + moment().format("DD MMM YYYY, h:mm:ss a")
-          }
-      }; 
-      try {
-        HTTP.call('POST', sUrl, options,  (error, result) => {
-          if (error) {
-                console.log("error",error);
-          } else {
-                //  console.log("result",result);
-          }
-        });
-  
-      } catch (e) {
-        // Got a network error, timeout, or HTTP error in the 400 or 500 range.
-        console.log("exception",e);
-      }
-      // console.log('Created task on asana: ')
-    }
-  },
-  'marketing.create_claim_task_asana'(projects_id, subject, content) {
     var sUrl = "https://app.asana.com/api/1.0/tasks";
     var options = {
         headers: { 
@@ -535,5 +503,5 @@ Meteor.methods({
       console.log("exception",e);
     }
     // console.log('Created task on asana: ')
-  }
+  },
 });

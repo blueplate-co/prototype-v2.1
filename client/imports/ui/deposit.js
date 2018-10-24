@@ -158,12 +158,14 @@ export default class Deposit extends Component {
                                             '\nProduct infor: ' + product_info;
     
                                 // Send email
-                                Meteor.call(
-                                    'marketing.create_task_asana',
-                                    '852791235008291', // projects_id to create task
-                                    'Buyer : ' + item.buyer_name,
-                                    content_message
-                                );
+                                if (!util.filterEmailInternalForNotification()) {
+                                    Meteor.call(
+                                        'marketing.create_task_asana',
+                                        '852791235008291', // projects_id to create task
+                                        'Buyer : ' + item.buyer_name,
+                                        content_message
+                                    );
+                                }
                             }
                             
                             FlowRouter.go('/orders_tracking');
