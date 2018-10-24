@@ -1,7 +1,4 @@
 import {
-  Mongo
-} from 'meteor/mongo';
-import {
   Meteor
 } from 'meteor/meteor';
 import {
@@ -10,10 +7,6 @@ import {
 import {
   Match
 } from 'meteor/check';
-import {
-  Session
-} from 'meteor/session';
-import { log } from 'util';
 
 
 Meteor.methods({
@@ -129,6 +122,17 @@ Meteor.methods({
       return Dishes.find({ kitchen_id: kitchen_id, deleted: false },{ sort: { online_status: -1, createdAt: -1 }}).fetch();
     }
     return Dishes.find({ deleted: false },{ sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
+  },
+  'dish.getListImagesMenu' (list_dish_id) {
+    if (list_dish_id.length > 0) {
+      let listImages = [];
+      list_dish_id.map((item) => {
+        let dish = Dishes.findOne({ _id: item });
+        let images = { origin: dish.meta.origin, small: dish.meta.small };
+        listImages.push(images);
+      });
+      return listImages;
+    }
   }
 });
 

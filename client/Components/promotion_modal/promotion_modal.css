@@ -5,9 +5,6 @@
         top: 15px;
         right: 0px;
     }
-    /* #promotion_modal #reminder_promotion_images {
-        top: 0px!important;
-    } */
 
     #promotion_modal .modal-content {
         padding-top: 240px!important;
@@ -26,6 +23,63 @@
     padding-top: 135px;
 }
 
+#promotion_modal.custom_theme_modal .modal-content {
+    padding-top: 35px;
+    padding-right: 25%;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #close_promotion_popup{
+    background-color: #FB9D09;
+    width: 110px!important;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+
+#promotion_modal.custom_theme_modal .modal-content #web_2{
+    position: absolute;
+    top: -30px;
+    left: 230px;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #web{
+    position: absolute;
+    top: -60px;
+    right: -30px;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #bat_2{
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #bat{
+    position: absolute;
+    bottom: 180px;
+    right: 20px;
+    width: 120px;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #pumpkin{
+    position: absolute;
+    bottom: 15px;
+    right: 150px;
+    width: 120px;
+}
+
+#promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+    background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+    height: 20px;
+    bottom: 0px;
+    display: block;
+    background-size: contain;
+    margin-bottom: -20px;
+    margin-top: 20px;
+    width: 80%;
+}
+
 #promotion_modal.promotion_infor {
     top: 25% !important;
     height: auto !important;
@@ -37,6 +91,14 @@
     border-radius: 15px!important;
 }
 
+#promotion_modal.promotion_infor.custom_theme_modal .modal-content h4 {
+    color: #FB9D09!important;
+}
+
+/* #promotion_modal.promotion_infor.custom_theme_modal .modal-content p {
+    color: #FB9D09!important;
+} */
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     #promotion_modal.promotion_infor {
@@ -47,6 +109,15 @@
     }
     #promotion_modal #reminder_promotion_images {
         top: -30px!important;
+    }
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -75px!important;
+        left: 120px;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 70% !important;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
     }
 }
 
@@ -64,6 +135,63 @@
     #promotion_modal .modal-content {
         padding-top: 160px!important;
     }
+    #promotion_modal.custom_theme_modal .modal-content {
+        padding-top: 35px!important;
+        padding-right: 25%;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web_2{
+        position: absolute;
+        top: -30px;
+        left: 230px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web{
+        position: absolute;
+        top: -60px;
+        right: -30px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat_2{
+        position: absolute;
+        bottom: 60%;
+        right: 20px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat{
+        position: absolute;
+        /* bottom: 80px; */
+        right: 20px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #pumpkin{
+        position: absolute;
+        bottom: 30%;
+        right: 80px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+        background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+        height: 20px;
+        bottom: 0px;
+        display: block;
+        background-size: contain;
+        margin-bottom: -20px;
+        margin-top: 20px;
+        width: 80%;
+    }
+    
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -75px!important;
+        left: 120px;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 80% !important;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
+    }
 }
 
 /* Portrait tablets and small desktops */
@@ -73,12 +201,70 @@
         width: 54% !important;
         border-radius: 15px !important;
         /* overflow: hidden !important; */
+        height: 30%!important;
     }
     #promotion_modal #reminder_promotion_images {
         top: -120px!important;
     }
     #promotion_modal .modal-content {
         padding-top: 160px!important;
+    }
+    #promotion_modal.custom_theme_modal .modal-content {
+        padding-top: 20px!important;
+        padding-right: 25%;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web_2{
+        position: absolute;
+        top: -30px;
+        left: 230px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web{
+        position: absolute;
+        top: -60px;
+        right: -30px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat_2{
+        position: absolute;
+        bottom: 85%;
+        right: 10px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat{
+        position: absolute;
+        bottom: 90%;
+        right: 20px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #pumpkin{
+        position: absolute;
+        bottom: 40%;
+        right: 10px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+        background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+        height: 20px;
+        bottom: 0px;
+        display: block;
+        background-size: contain;
+        margin-bottom: -20px;
+        margin-top: 20px;
+        width: 100%;
+    }
+    
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -237px!important;
+        left: 120px;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 70% !important;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
     }
 }
 
@@ -94,7 +280,64 @@
         top: -160px!important;
     }
     #promotion_modal .modal-content {
-        padding-top: 140px!important;
+        padding-top: 30px!important;
+    }
+    #promotion_modal.custom_theme_modal .modal-content {
+        padding-top: 35px;
+        padding-right: 25%;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web_2{
+        position: absolute;
+        top: -30px;
+        left: 230px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web{
+        position: absolute;
+        top: -60px;
+        right: -30px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat_2{
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat{
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #pumpkin{
+        position: absolute;
+        bottom: 0px;
+        right: 150px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+        background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+        height: 20px;
+        bottom: 0px;
+        display: block;
+        background-size: contain;
+        margin-bottom: -20px;
+        margin-top: 20px;
+        width: 80%;
+    }
+    
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -237px!important;
+        left: 50%;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 70% !important;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
     }
 }
 
@@ -109,7 +352,64 @@
         top: -160px!important;
     }
     #promotion_modal .modal-content {
-        padding-top: 140px!important;
+        padding-top: 40px!important;
+    }
+    #promotion_modal.custom_theme_modal .modal-content {
+        padding-top: 35px;
+        padding-right: 25%;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web_2{
+        position: absolute;
+        top: -30px;
+        left: 230px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web{
+        position: absolute;
+        top: -60px;
+        right: -30px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat_2{
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat{
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #pumpkin{
+        position: absolute;
+        bottom: 0px;
+        right: 150px;
+        width: 120px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+        background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+        height: 20px;
+        bottom: 0px;
+        display: block;
+        background-size: contain;
+        margin-bottom: -20px;
+        margin-top: 20px;
+        width: 80%;
+    }
+    
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -237px!important;
+        left: 50%;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 100% !important;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
     }
 }
 
@@ -126,6 +426,74 @@
         top: -10px!important;
     }
     #promotion_modal .modal-content {
-        padding-top: 240px!important;
+        padding-top: 130px!important;
+    }
+    #promotion_modal.custom_theme_modal .modal-content {
+        padding-top: 35px;
+        padding-right: 5%;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web_2{
+        position: absolute;
+        top: -30px;
+        left: 230px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #web{
+        position: absolute;
+        top: -60px;
+        right: -30px;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat_2{
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+        display: none;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bat{
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 120px;
+        display: none;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #pumpkin{
+        position: absolute;
+        bottom: 0px;
+        right: 150px;
+        width: 120px;
+        display: none;
+    }
+    
+    #promotion_modal.custom_theme_modal .modal-content #bottom-ribbon{
+        background: url(https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/halloween/candy.png) repeat-x;
+        height: 20px;
+        bottom: 0px;
+        display: block;
+        background-size: contain;
+        margin-bottom: -20px;
+        margin-top: 20px;
+        width: 100%;
+    }
+    
+    #promotion_modal.custom_theme_modal #reminder_promotion_images {
+        top: -75px!important;
+        left: 50%;
+    }
+    #promotion_modal.promotion_infor.custom_theme_modal {
+        width: 100% !important;
+        height: 100vh;
+        border-radius: 15px !important;
+        /* overflow: hidden !important; */
+    }
+    #promotion_modal.custom_theme_modal .modal-content #close_promotion_popup {
+        background-color: #FB9D09;
+        width: 80%!important;
+        position: absolute;
+        bottom: 10%;
+        left: 10%;
     }
 }

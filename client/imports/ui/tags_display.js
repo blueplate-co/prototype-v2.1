@@ -1,12 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import ReactDOM from 'react-dom';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-
 import { isMobileDevice } from './../../../imports/functions/isMobileDevice.js';
+import { lazyload } from 'react-lazyload';
 
+@lazyload({
+  height: 200,
+  once: true,
+  offset: 100
+})
 export default class TagsDisplay extends React.Component {
   constructor(props) {
     super(props);

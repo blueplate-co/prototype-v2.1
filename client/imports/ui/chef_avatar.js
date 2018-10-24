@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 export default class ChefAvatar extends Component {

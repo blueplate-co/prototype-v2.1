@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import KitchenCard from './kitchen_card';
 
 // App component - represents the whole app
@@ -24,21 +23,19 @@ export default class KitchenList extends Component {
 
   renderList = () => {
     return this.state.kitchen.map((item, index) => {
-      if (Dishes.find({ user_id: item.user_id, deleted: false }).fetch().length > 0) {
-        return (
-          <div key = {index}>
-            <KitchenCard
-              bannerProfileImg = {item.bannerProfileImg}
-              kitchenId = {item._id}
-              userId = {item.user_id}
-              kitchenName = {item.kitchen_name}
-              chefName = {item.chef_name}
-              averageRating = {item.average_rating}
-              orderCount = {item.order_count}
-            />
-          </div>
-        )
-      }
+      return (
+        <div key = {index}>
+          <KitchenCard
+            bannerProfileImg = {item.bannerProfileImg}
+            kitchenId = {item._id}
+            userId = {item.user_id}
+            kitchenName = {item.kitchen_name}
+            chefName = {item.chef_name}
+            averageRating = {item.average_rating}
+            orderCount = {item.order_count}
+          />
+        </div>
+      )
     })
   }
 
@@ -54,17 +51,22 @@ export default class KitchenList extends Component {
             <a href="/see_all/kitchen" >{ this.props.seemore }</a>
           </div>
         </div>
-
-        {/* list items */}
-          <div className="row">
-            {
-              (this.state.loading)
-              ?
-                <span>...loading</span>
-              :
-                this.renderList()
-            }
-          </div>
+        {
+          (!this.props.listLoading) ?
+            (
+              <div className="row">
+                {
+                  (this.state.loading)
+                  ?
+                    <span>...loading</span>
+                  :
+                    this.renderList()
+                }
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )
+        }
       </div>
     );
   }
