@@ -29,17 +29,7 @@
     margin: 10px;
 }
 
-#cart-total-kitchen {
-    margin-right: 20px;
-    padding-top: 20px;
-}
-
-#cart-kitchen-total {
-    margin-right: 25px;
-    color: rgba(0, 0, 0, 0.87);
-    font-weight: bold;
-}
-
-#cart-kitchen-price {
-    font-weight: 600;
+.shoppingcart-details {
+    padding: 0px 12px;
+    width: 100%;
 }

@@ -197,7 +197,10 @@ i.remove_button {
 .time-cart-icon {
   position: absolute;
   top: 12px;
-  left: -13px;
+}
+
+.time-cart {
+  margin-top: -10px;
 }
 
 .rc-time-picker {
@@ -321,3 +324,7 @@ select#select-serving-option>option {
   margin-right: 5px;
 }
 
+.react-datepicker__input-container {
+  margin-left: 44px;
+  width: 86%;
+}

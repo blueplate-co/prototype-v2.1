@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProgressiveImages from './progressive_image';
+import ProgressBar from './progress_bar.js';
 
 export default class ShoppingCart extends Component {
     constructor(props) {
@@ -14,11 +15,13 @@ export default class ShoppingCart extends Component {
                 chef_image_large: '',
                 chef_image_small: '',
                 arr_dish_infor: []
-            }
+            },
+            bLoadComplete: false
         };
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
+        var arr_chefs = [];
         if (this.state.dishDetails != null) {
             this.state.dishDetails.map( (item, idx) => {
                 var chef_infor_dish = {
@@ -29,6 +32,7 @@ export default class ShoppingCart extends Component {
                     arr_dish_infor: []
                 };
                 
+                // Get Chef infor
                 var chitken = Kitchen_details.findOne({ user_id: item.seller_id});
                 if (chitken) {
                     chef_infor_dish.chef_id = chitken._id;
@@ -40,6 +44,7 @@ export default class ShoppingCart extends Component {
                     }
                 }
 
+                // Get dish_detail infor 
                 item.arr_dishs.map( (dish_infor, idx_dish) => {
                     var inforDish = {
                         dish_id :'',
@@ -66,67 +71,91 @@ export default class ShoppingCart extends Component {
                         chef_infor_dish.arr_dish_infor.push(inforDish);
                     }
                 });
-                this.state.array_chef.push(chef_infor_dish);
+                arr_chefs.push(chef_infor_dish);
             });
-            console.log(this.state.array_chef);
+            this.setState({ array_chef:arr_chefs }, () => {
+                this.setState({ bLoadComplete: true});
+                console.log(this.state.array_chef);
+            });
         }
     }
-
-    renderProgressNav() {
-        return (
-            <div className="row shopping-progress-nav">
-                <ul className="col s12 m4 l4 bp-blue-text">
-                    <li className="cart-progress-component">
-                        <span className="cart-progress-step-number">1</span> 
-                        <span className="cart-progress-step-text">Order Summary</span>
-                    </li>
-                </ul>
-
-                <ul className="col s12 m4 l4 bp-blue-text">
-                    <li>
-                        <span className="cart-progress-step-number">2</span> 
-                        <span className="cart-progress-step-text">Payment</span>
-                    </li>
-                </ul>
-
-                <ul className="col s12 m4 l4 bp-blue-text">
-                    <li>
-                        <span className="cart-progress-step-number">3</span> 
-                        <span className="cart-progress-step-text">Manage order</span>
-                    </li>
-                </ul>
-            </div>
-        );
-    };
 
     renderServiceTimeAddress() {
 
     };
 
+    renderKitchenInfor() {
+        return (
+            this.state.array_chef.map( (itemCart, index) => {
+                return (
+                    <div className="cart-detail-summary">
+                        <div className="row cart-kitchen-detail">
+                            <div id="cart-kitchen-image" className="text-left">
+                                <ProgressiveImages
+                                    large={ itemCart.chef_image_large ? itemCart.chef_image_large: util.getDefaultChefImage() }
+                                    small={ itemCart.chef_image_small ? itemCart.chef_image_small: util.getDefaultChefImage() }
+                                />
+                            </div>
+                        </div>
+                        {/* Render dishs for per chef */}
+                        {this.renderDishDetailByKitchen(itemCart.arr_dish_infor)}
+                    </div>
+                )
+            })
+        );
+    };
+
+    renderDishDetailByKitchen = (arr_dish_infors) => {
+        return (
+            arr_dish_infors.map( (itemDish, index) => {
+                return (
+                    <div className="row">
+                        <div className="col s6 m6 l6 cart-address-perdish">
+                            <div className="service-option-cart">
+                                <span className="service-option-icon"></span>
+                                <select id="select-serving-option" className="browser-default no-border" >
+                                    <option value="" disabled>How would you like to get your food?</option>
+                                    { this.renderServingOption(itemDish.service_option) }
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div className="col s6 m6 l6 cart-dish-detail">
+                            
+                        </div>
+                    </div>
+                )
+            })
+        );
+    };
+
+    renderServingOption = (serviceOption) => {
+        return serviceOption.map(function(item, index){
+            return <option key={index} value={item}>{item}</option>
+        })
+    };
+
     render() {
         // console.log(this.state.dishDetails);
         return (
-            <div className="container">
-                {this.renderProgressNav()}
-                <div className="cart-detail-summary">
-                    <div className="row cart-kitchen-detail">
-                        <div id="cart-kitchen-image" className="text-left">
-                            <ProgressiveImages
-                                large={ util.getDefaultChefImage() }
-                                small={ util.getDefaultChefImage() }
-                            />
-                        </div>
+            <div className="container shoppingcart-details">
+                { (this.state.bLoadComplete) ? 
+                    <span>
+                        <ProgressBar step_progress="1" />
+                        <div className="row">
+                            <div className="col s12 m10 l9">
+                                {this.renderKitchenInfor()}
+                            </div>
 
-                        <div id="cart-total-kitchen" className="text-right">
-                            <span id="cart-kitchen-total">Total:</span>
-                            <span className="bp-blue-text" id="cart-kitchen-price">HK$ 202</span>
-                        </div>
-                    </div>
+                            <div className="col s12 m2 l3">
+                                <h5>display total</h5>
 
-                    <div className="row cart-dish-detail">
-                        <h5>dish</h5>
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    </span>
+                    :
+                    <span>Loading...</span>
+                }
             </div>
         );
     }

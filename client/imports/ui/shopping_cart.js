@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import ChefAvatar from '../ui/chef_avatar';
-import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
@@ -22,7 +21,8 @@ class ShoppingCart extends Component {
         this.renderKitchen = this.renderKitchen.bind(this);
         this.handleChangeServiceOption = this.handleChangeServiceOption.bind(this);
         this.state = {
-            discount: 0
+            discount: 0,
+            bDateReady: false
         }
     }
 
@@ -126,74 +126,73 @@ class ShoppingCart extends Component {
     }
 
     // when change time for kitchen
-    handleChangeTime(value, seller_id) {
-        for (var i = 0; i < globalCart.length; i++) {
-            if (globalCart[i].id == seller_id) {
-                globalCart[i].time = value.format('HH:mm');
-                // use old code from Michael to store preferred_time_ms
-                var yyyy = globalCart[i].date[6] + globalCart[i].date[7] + globalCart[i].date[8] + globalCart[i].date[9]
-                var mm = parseInt(globalCart[i].date[3] + globalCart[i].date[4]) - 1
-                var dd = globalCart[i].date[0] + globalCart[i].date[1]
-                var hh = globalCart[i].time[0] + globalCart[i].time[1]
-                var min = globalCart[i].time[3] + globalCart[i].time[4]
-                serve_date = new Date(yyyy, mm, dd, hh, min)
-                serve_date = Date.parse(serve_date);
-                globalCart[i].timeStamp = serve_date;
-            }
-        }
-        var readytime = [];
-        this.props.shoppingCart.map(function(item, index){
-            var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
-            readytime.push(specificReadytime);
-        });
+    handleChangeTime(el, seller_id, hours, mins) {
+        if (!this.validateTimeSelected(el.target.value, hours, mins)) {
+            setTimeout(() => {
+                $('#time').addClass('invalid');
+                $('#time').focus();
+            }, 10);
+            Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '4000', 'rounded bp-green');
+        } else {
+            for (var i = 0; i < globalCart.length; i++) {
+                if (globalCart[i].id == seller_id) {
+    
+                    if (globalCart[i].date == 'Invalid date' || globalCart[i].date == '') {
+                        el.target.value = '';
+                        $('#date').addClass('invalid');
+                        $('#date').focus();
+                        Materialize.toast('On which date would you like to be served?', '4000', 'rounded bp-green');
+                        return;
+                    }
 
-        for (var i = 0; i < readytime.length; i++) {
-            if (globalCart[i].timeStamp < readytime[i]) {
-                $('.rc-time-picker-input').addClass('invalid');
-                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
-                globalCart[i].timeStamp = '';
-                return true;
-            } else {
-                $('.rc-time-picker-input').removeClass('invalid');
+                    $('#date').removeClass('invalid');
+                    $('#time').removeClass('invalid');
+                    globalCart[i].time = el.target.value;
+                    // use old code from Michael to store preferred_time_ms
+                    var yyyy = globalCart[i].date[6] + globalCart[i].date[7] + globalCart[i].date[8] + globalCart[i].date[9]
+                    var mm = parseInt(globalCart[i].date[3] + globalCart[i].date[4]) - 1
+                    var dd = globalCart[i].date[0] + globalCart[i].date[1]
+                    var hh = globalCart[i].time[0] + globalCart[i].time[1]
+                    var min = globalCart[i].time[3] + globalCart[i].time[4]
+                    serve_date = new Date(yyyy, mm, dd, hh, min)
+                    serve_date = Date.parse(serve_date);
+                    globalCart[i].timeStamp = serve_date;
+                }
             }
         }
     }
 
     // when change date for kitchen
-    handleChangeDate(event, seller_id) {
-        for (var i = 0; i < globalCart.length; i++) {
-            if (globalCart[i].id == seller_id) {
-                globalCart[i].date = moment(event.target.value).format('DD/MM/YYYY');
-                // use old code from Michael to store preferred_time_ms
-                var yyyy = globalCart[i].date[6] + globalCart[i].date[7] + globalCart[i].date[8] + globalCart[i].date[9]
-                var mm = parseInt(globalCart[i].date[3] + globalCart[i].date[4]) - 1
-                var dd = globalCart[i].date[0] + globalCart[i].date[1]
-                var hh = globalCart[i].time[0] + globalCart[i].time[1]
-                var min = globalCart[i].time[3] + globalCart[i].time[4]
-                serve_date = new Date(yyyy, mm, dd, hh, min);
-                serve_date = Date.parse(serve_date);
-                globalCart[i].timeStamp = serve_date;
-            }
-
-        }
-
-        var readytime = [];
-        this.props.shoppingCart.map(function(item, index){
-            var specificReadytime = moment().add(item.ready_time, 'mins').valueOf();
-            readytime.push(specificReadytime);
-        });
-
-        for (var i = 0; i < readytime.length; i++) {
-            if (globalCart[i].timeStamp < readytime[i]) {
-                $('#date').addClass('invalid');
-                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
-                globalCart[i].timeStamp = '';
-                return true;
-            } else {
+    handleChangeDate(event, seller_id, days) {
+        var date_select = event.target.value;
+        var attemp_cart = globalCart;
+        this.validateDateSelected(moment(date_select), days, function(bValidDate) {
+            globalCart = attemp_cart;
+            if (bValidDate) {
+                for (var i = 0; i < globalCart.length; i++) {
+                    if (globalCart[i].id == seller_id) {
+                        globalCart[i].date = moment(date_select).format('DD/MM/YYYY');
+                        // use old code from Michael to store preferred_time_ms
+                        var yyyy = globalCart[i].date[6] + globalCart[i].date[7] + globalCart[i].date[8] + globalCart[i].date[9]
+                        var mm = parseInt(globalCart[i].date[3] + globalCart[i].date[4]) - 1
+                        var dd = globalCart[i].date[0] + globalCart[i].date[1]
+                        var hh = globalCart[i].time[0] + globalCart[i].time[1]
+                        var min = globalCart[i].time[3] + globalCart[i].time[4]
+                        serve_date = new Date(yyyy, mm, dd, hh, min);
+                        serve_date = Date.parse(serve_date);
+                        globalCart[i].timeStamp = serve_date;
+                    }
+                }
                 $('#date').removeClass('invalid');
+            } else  {
+                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
+                setTimeout(() => {
+                    $('#date').addClass('invalid');
+                    $('#date').focus();
+                }, 50);
             }
-        }
-        $("#date").css("color", "rgba(0, 0, 0, 0.87)");
+            $("#date").css("color", "rgba(0, 0, 0, 0.87)");
+        });
     }
 
     scrollToFieldRequired(el) {
@@ -213,7 +212,7 @@ class ShoppingCart extends Component {
                     valid = false;
                     this.scrollToFieldRequired('select-serving-option');
                     Materialize.toast('Oops! Please select your service to get your food.', '3000', 'rounded bp-green');
-                    return false;
+                    break;
                 }
 
                 if (item[key] == '' && key == 'address') {
@@ -221,7 +220,7 @@ class ShoppingCart extends Component {
                     Materialize.toast('Oops! Please complete your delivery address.', '3000', 'rounded bp-green');
                     this.scrollToFieldRequired('address_' + item.id);
                     valid = false;
-                    return false;
+                    break;
                 } else {
                     $('#address_' + item.id).removeClass('invalid');
                 }
@@ -230,14 +229,14 @@ class ShoppingCart extends Component {
                     valid = false;
                     this.scrollToFieldRequired('date');
                     Materialize.toast('Oops! Please select your date would you like to be served.', '3000', 'rounded bp-green');
-                    return false;
+                    break;
                 }
 
                 if (item[key] == '' && key == 'time') {
                     valid = false;
-                    this.scrollToFieldRequired('date');
+                    this.scrollToFieldRequired('time');
                     Materialize.toast('Oops! Please select your time.', '3000', 'rounded bp-green');
-                    return false;
+                    break;
                 }
 
 
@@ -420,6 +419,33 @@ class ShoppingCart extends Component {
         })
     }
 
+    validateDateSelected = (dateSelected, days, callback) => {
+        var date_ready = moment().add(days, 'days');
+        if (dateSelected.year() > date_ready.year()) {
+            this.setState({ bDateReady: false }, () => { callback(true) });
+        } else if (dateSelected.month() > date_ready.month()) {
+            this.setState({ bDateReady: false }, () => { callback(true) });
+        } else if (dateSelected.date() > date_ready.date()) {
+            this.setState({ bDateReady: false }, () => { callback(true) });
+        } else if (dateSelected.date() == date_ready.date()) {
+            this.setState({ bDateReady: true }, () => { callback(true) });
+        } else if (dateSelected.date() < date_ready.date()) {
+            this.setState({ bDateReady: false }, () => { callback(false) });
+        }
+    };
+
+
+    validateTimeSelected = (timeSelected, hours, mins) => {
+        var time_ready = moment().add(hours, 'hours').add(mins, 'minute');
+        timeSelected = moment(timeSelected, 'h:mm');
+        if (this.state.bDateReady) {
+            if (timeSelected.isBefore(time_ready)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     renderKitchen(seller_id, index) {
         var product = Shopping_cart.find({ seller_id: seller_id }).fetch();
         var sellerName = product[0].seller_name;
@@ -430,6 +456,13 @@ class ShoppingCart extends Component {
         var address = globalCart[index].address,
             defaultTimePicker = globalCart[index].time,
             defaultDate = this.formatDateOrder(globalCart[index].date);
+
+        var dish_detail = Dishes.findOne({ _id:  product[0].product_id}),
+            days = dish_detail.days ? dish_detail.days : 0,
+            hours = dish_detail.hours ? dish_detail.hours : 0,
+            mins = dish_detail.mins ? dish_detail.mins : 0,
+            time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
+
 
         // get user avatar from user_id
         let kitchen_details = Kitchen_details.findOne({ user_id: seller_id });
@@ -470,17 +503,15 @@ class ShoppingCart extends Component {
                             <i className="material-icons prefix location-address icon-cart-format">date_range</i>
                             <input id="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
                                 style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
-                                onChange={(event) => this.handleChangeDate(event, seller_id)} />
+                                onChange={(event) => this.handleChangeDate(event, seller_id, days)} />
                             <label htmlFor="date"></label>
+
                         </div>
-                        <div className="col s12 m12 l12 no-background time-cart">
+
+                        <div className="input-field col s12 m12 l12 no-background time-cart icon-position-common">
                             <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
-                            <TimePicker
-                                showSecond={false}
-                                className=""
-                                defaultValue={!defaultTimePicker ? '' : moment(defaultTimePicker, "h:mm")}
-                                onChange={(value) => this.handleChangeTime(value, seller_id)}
-                                focusOnOpen={true}
+                            <input type="time" id="time" defaultValue= {defaultTimePicker ? defaultTimePicker : '' } 
+                                onChange={(event) => this.handleChangeTime(event, seller_id, hours, mins)}
                                 placeholder="What time will be best?"
                             />
                         </div>
