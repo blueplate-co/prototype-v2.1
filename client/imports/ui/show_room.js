@@ -111,17 +111,18 @@ class ShowRoom extends Component {
           }
         });
       }
-    } else {
-      //- when user not logged in but have promotion cookies, must remind
-      if (getCookie('promotion')) {
-        let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPageNotLoggedIn') == 'false';
-        if (!bReminderFirst) {
-          sessionStorage.setItem('reminderFirstLoadPageNotLoggedIn', 'false');
-          $('#reminder_promotion_modal').modal();
-          $('#reminder_promotion_modal').modal('open');
-        }
-      }
     }
+    // } else {
+    //   //- when user not logged in but have promotion cookies, must remind
+    //   if (getCookie('promotion')) {
+    //     let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPageNotLoggedIn') == 'false';
+    //     if (!bReminderFirst) {
+    //       sessionStorage.setItem('reminderFirstLoadPageNotLoggedIn', 'false');
+    //       $('#reminder_promotion_modal').modal();
+    //       $('#reminder_promotion_modal').modal('open');
+    //     }
+    //   }
+    // }
 
 
     $('#searchQuery').val('');

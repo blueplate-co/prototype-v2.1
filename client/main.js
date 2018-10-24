@@ -1,7 +1,3 @@
-import {
-  Accounts
-} from 'meteor/accounts-base';
-
 Meteor.startup(function () {
   Notification.requestPermission()
 
@@ -18,15 +14,15 @@ Meteor.startup(function () {
     });
   }
 
-  window.fbAsyncInit = function () {
-    FB.init({
-      appId: '{your-app-id}',
-      cookie: true,
-      xfbml: true,
-      version: '{latest-api-version}'
-    });
-    FB.AppEvents.logPageView();
-  };
+  // window.fbAsyncInit = function () {
+  //   FB.init({
+  //     appId: '{your-app-id}',
+  //     cookie: true,
+  //     xfbml: true,
+  //     version: '{latest-api-version}'
+  //   });
+  //   FB.AppEvents.logPageView();
+  // };
 
 
   // check mobile device
