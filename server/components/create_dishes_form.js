@@ -66,7 +66,7 @@ Meteor.methods({
             region: "ap-southeast-1",
             headers: {
               "Cache-Control": "max-age=2592000000",
-              "Expires": "2026-04-04T12:06:11+00:00"
+              "Expires": new Date('01 01 2025')
             }
         },
         resize: [
