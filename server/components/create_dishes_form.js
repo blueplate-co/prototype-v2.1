@@ -63,7 +63,11 @@ Meteor.methods({
             key: "AKIAJLVB7Y7XKMLK7AVQ",
             secret: "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",
             bucket: "blueplate-images/images",
-            region: "ap-southeast-1"
+            region: "ap-southeast-1",
+            headers: {
+              "Cache-Control": "max-age=2592000000",
+              "Expires": "2026-04-04T12:06:11+00:00"
+            }
         },
         resize: [
             {
