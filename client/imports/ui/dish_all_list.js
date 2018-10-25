@@ -48,7 +48,7 @@ class DishAllList extends Component {
             {
               (hasThumbnail) ?
                 <ProgressiveImages
-                  large={ item.meta.large }
+                  large={ item.meta.medium }
                   small={ item.meta.small }
                 />
               : ""

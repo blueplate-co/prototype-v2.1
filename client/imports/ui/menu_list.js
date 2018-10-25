@@ -60,7 +60,7 @@ class MenuList extends Component {
 
     id.map((item, index) => {
       let dish = Dishes.find({ _id: item }).fetch();
-      let images = { origin: dish[0].meta.origin, small: dish[0].meta.small };
+      let images = { medium: dish[0].meta.medium, small: dish[0].meta.small };
       listImages.push(images);
     })
 
@@ -68,7 +68,7 @@ class MenuList extends Component {
       return listImages.map((item, index) => {
         if (item) {
           return (
-            <div key={index} className="slider-item" style={{backgroundImage: "url(" + item.origin + ")"}}></div>
+            <div key={index} className="slider-item" style={{backgroundImage: "url(" + item.medium + ")"}}></div>
           )
         } else {
           return (
@@ -79,7 +79,7 @@ class MenuList extends Component {
     } else {
       if (listImages.length > 0) {
         return (
-          <div key={index} className="slider-item" style={{backgroundImage: "url(" + listImages[0].origin + ")"}}></div>
+          <div key={index} className="slider-item" style={{backgroundImage: "url(" + listImages[0].medium + ")"}}></div>
         )
       } else {
         return (
