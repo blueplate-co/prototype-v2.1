@@ -141,8 +141,8 @@ class TopNavigation extends Component {
       Meteor.logout(() => {
         util.hide_loading_progress();
         this.setState({ isLogin: false })
-        FlowRouter.go("/");
-        location.href = '/';
+        FlowRouter.go("/main");
+        location.href = '/main';
       })
     } else {
       util.loginAccession("");

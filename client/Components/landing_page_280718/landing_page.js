@@ -1,15 +1,9 @@
 import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import {
   Template
 } from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';
 
 import React from 'react';
 import { render } from 'react-dom';
@@ -22,6 +16,9 @@ import LandingDishList from '../../imports/ui/landing_dish_list.js';
 import './landing_page.html';
 
 Template.landing_page.onRendered(function () {
+  if (Meteor.userId()) {
+    FlowRouter.go('/main');
+  }
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   $('body').css('overflow-y', 'hidden');

@@ -116,7 +116,7 @@ Template.login_modal.events({
               path_access != null && path_access.length > 0 ?
                 FlowRouter.go(path_access)
               :
-                FlowRouter.go("/");
+                FlowRouter.go("/main");
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
