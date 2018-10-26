@@ -18,6 +18,7 @@ import Modal from './modal';
 import TagsDisplay from './tags_display';
 import SearchMap from './search_map';
 import PromotionList from './promotion_list';
+import LazyLoad from 'react-lazyload';
 import { createCookie, getCookie } from '/imports/functions/common/promotion_common';
 
 // App component - represents the whole app
@@ -307,14 +308,14 @@ class ShowRoom extends Component {
               <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
             </div>
             <div className = "row">
-              {/* <LazyLoad once height={400}> */}
+              <LazyLoad once height={200}>
                 <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
-              {/* </LazyLoad> */}
+              </LazyLoad>
             </div>
             <div className = "row">
-              {/* <LazyLoad once height={400}> */}
+              <LazyLoad once height={200}>
                 <KitchenList title="Kitchens" seemore="see all"/>
-              {/* </LazyLoad> */}
+              </LazyLoad>
             </div>
             <Modal menu={this.state.selectedMenu}/>
           </div>
