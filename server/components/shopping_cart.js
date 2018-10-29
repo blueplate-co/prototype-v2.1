@@ -488,7 +488,24 @@ Meteor.methods({
           notes: content,
           name: subject + ' ' + moment().format("DD MMM YYYY, h:mm:ss a")
         }
-    }; 
+    };
+    //- if project is payout for chef project, add Keith and Tracy as follower
+    if (projects_id == '220725248142233') {
+      var options = {
+        headers: { 
+          Authorization:'Bearer 0/8470c0ad0fedc326b75feb7a639575f7',
+          // 'Content-Type': 'application/json'
+        },
+        params: {
+          workspace: '220725248142233',
+          projects: projects_id,
+          followers: ['564872337238154', '564872337238167'],
+          // assignee: '425646707917578',
+          notes: content,
+          name: subject + ' ' + moment().format("DD MMM YYYY, h:mm:ss a")
+        }
+      };
+    } 
     try {
       HTTP.call('POST', sUrl, options,  (error, result) => {
         if (error) {
