@@ -3,6 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import Sidebar from "react-sidebar";
 import { Index, MinimongoEngine } from 'meteor/easy:search';
+import T from 'i18n-react';
 
 const styles = {
   root: {
@@ -153,7 +154,7 @@ class TopNavigation extends Component {
     return localStorage.getItem("userMode") == "foodie" ? (
       <ul className="sidebar-container">
         <li className="not-cursor foodie-title-text">
-          <span id="menu-foodie-mode-title">Foodie</span>
+          <span id="menu-foodie-mode-title">{T.translate("sidebar.foodie")}</span>
           <img id="foodies-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foodie_sidebar_icon.svg"/>
         </li>
 
@@ -162,7 +163,7 @@ class TopNavigation extends Component {
             this.checkAccessPermission("wish-list");
           }}
         >
-          <span>Wishlist</span>
+          <T.span text="sidebar.wishlist" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/love.svg" />
         </li>
 
@@ -171,7 +172,7 @@ class TopNavigation extends Component {
             this.checkAccessPermission('orders_tracking');
           }}
         >
-          <span>Order Status</span>
+          <T.span text="sidebar.orderstatus" />
           { (this.props.orderStatus.length > 0)
             ?
               <span className="notification-status"></span>
@@ -187,7 +188,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Chat</span>
+          <T.span text="sidebar.chat" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chat-icon-blur.svg" />
         </li>
 
@@ -205,7 +206,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Shopping cart</span>
+          <T.span text="sidebar.shoppingcart" />
           <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
@@ -225,7 +226,7 @@ class TopNavigation extends Component {
             }
           }}
         >
-          <span>Switch to cooking</span>
+          <T.span text="sidebar.switchtocooking" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
@@ -235,10 +236,10 @@ class TopNavigation extends Component {
           }
         >
           {
-            this.state.isLogin ? 
-              <span>Log out</span>
+            this.state.isLogin ?
+              <T.span text="sidebar.logout" />
             :
-              <span>Log in</span>
+              <T.span text="sidebar.login" />
           }
         </li>
       </ul>
@@ -246,7 +247,7 @@ class TopNavigation extends Component {
       <ul className="sidebar-container">
 
         <li className="not-cursor chef-title-text">
-          <span id="menu-chef-mode-title">Chef</span>
+          <span id="menu-chef-mode-title">{T.translate('sidebar.chef')}</span>
           <img id="chef-title-img" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chef_sidebar_icon.svg" />
         </li>
 
@@ -257,7 +258,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span className="your-kitchen-menu">Your Kitchen</span>
+          <span className="your-kitchen-menu">{T.translate("sidebar.yourkitchen")}</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/kitchen.svg" />
         </li>
 
@@ -268,7 +269,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Dashboard</span>
+          <T.span text="sidebar.dashboard" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/dash.svg" />
         </li>
 
@@ -279,7 +280,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Chat</span>
+          <T.span text="sidebar.chat" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/chat-icon-blur.svg" />
         </li>
 
@@ -290,7 +291,7 @@ class TopNavigation extends Component {
             });
           }}
         >
-          <span>Current orders</span>
+          <T.span text="sidebar.currentorder" />
           { (this.props.currentOrder.length > 0)
             ?
               <span className="notification-status"></span>
@@ -310,7 +311,7 @@ class TopNavigation extends Component {
             FlowRouter.go("/main");
           }}
         >
-          <span>Switch to foodie</span>
+          <T.span text="sidebar.switchtofoodie" />
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/swift+mode.svg" />
         </li>
         <li
@@ -321,9 +322,9 @@ class TopNavigation extends Component {
         >
           {
             this.state.isLogin ?
-              <span>Log out</span>
+              <T.span text="sidebar.logout" />
             :
-              <span>Log in</span>
+              <T.span text="sidebar.login" />
           }
         </li>
       </ul>

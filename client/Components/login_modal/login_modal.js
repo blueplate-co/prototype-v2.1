@@ -120,7 +120,6 @@ Template.login_modal.events({
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
-                  debugger
                   if (Object.keys(res).length == 0) { // this user not already have promotion before
                     let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
                     Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
