@@ -208,7 +208,7 @@ class TopNavigation extends Component {
           }}
         >
           <span>Shopping cart</span>
-          <span id="cart-number-sidebar">{ (Meteor.userId()) ?  this.props.shoppingCart.length : JSON.parse(localStorage.getItem("localCart")).length }</span>
+          <span id="cart-number-sidebar">{ (Meteor.userId()) ?  this.props.shoppingCart.length : this.state.localShoppingCart }</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
 
@@ -526,7 +526,9 @@ class TopNavigation extends Component {
     });
 
     var localShoppingCart = JSON.parse(localStorage.getItem("localCart"));
-    this.setState({ localShoppingCart: localShoppingCart.length });
+    if (localShoppingCart) {
+      this.setState({ localShoppingCart: localShoppingCart.length });
+    }
 
     return true;
   }
@@ -606,7 +608,7 @@ class TopNavigation extends Component {
                       id="cart-icon"
                     >
                       <span id="cart-number">
-                        { (Meteor.userId()) ?  this.props.shoppingCart.length : JSON.parse(localStorage.getItem("localCart")).length }
+                        { (Meteor.userId()) ?  this.props.shoppingCart.length : this.state.localShoppingCart }
                       </span>
                       <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
                     </li>

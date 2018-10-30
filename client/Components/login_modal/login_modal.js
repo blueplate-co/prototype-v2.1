@@ -119,59 +119,61 @@ Template.login_modal.events({
                 
               // Insert or update data into DB after login success
               var dishesLocal = JSON.parse(localStorage.getItem("localCart"));
-              dishesLocal.map( (cart_item, index) => {
-                var foodie_details = Profile_details.findOne({user_id: Meteor.userId()});
-                
-                //check if the dish has been put in shopping check_shopping_cart
-                var order = Shopping_cart.findOne({"product_id": cart_item.product_id, 'buyer_id': Meteor.userId()});
-                var total_price_per_dish = 0;
-                
-                Meteor.call('shopping_cart.find_one', cart_item.product_id, Meteor.userId(), (err, res) => {
-                  if (res) {
-                      var order_id = order._id;
-                      var quantity = parseInt(order.quantity) + cart_item.quantity;
-                      total_price_per_dish = parseInt(cart_item.product_price) * quantity;
-                      Meteor.call('shopping_cart.update',
-                          order_id,
-                          quantity,
-                          total_price_per_dish,
-                          function(err) {
-                            localStorage.setItem("localCart", JSON.stringify([]));
-                            localStorage.removeItem('localStorage');
-
-                            // To make sure the dish we add from localStorage can display on foodies's shopping cart 
-                            if (location.pathname.indexOf('shopping_cart') > -1) {
-                              location.reload();
-                            }
-                          }
-                      )
-                    } else {
-                        var foodie_name = foodie_details.foodie_name;
-                        Meteor.call('shopping_cart.insert',
-                            Meteor.userId(),
-                            cart_item.seller_id,
-                            foodie_name,
-                            cart_item.seller_name,
-                            cart_item.address,
-                            cart_item.serving_option,
-                            cart_item.ready_time,
-                            cart_item.product_id,
-                            cart_item.product_name,
-                            cart_item.quantity,
-                            cart_item.product_price,
+              if (dishesLocal) {
+                dishesLocal.map( (cart_item, index) => {
+                  var foodie_details = Profile_details.findOne({user_id: Meteor.userId()});
+                  
+                  //check if the dish has been put in shopping check_shopping_cart
+                  var order = Shopping_cart.findOne({"product_id": cart_item.product_id, 'buyer_id': Meteor.userId()});
+                  var total_price_per_dish = 0;
+                  
+                  Meteor.call('shopping_cart.find_one', cart_item.product_id, Meteor.userId(), (err, res) => {
+                    if (res) {
+                        var order_id = order._id;
+                        var quantity = parseInt(order.quantity) + cart_item.quantity;
+                        total_price_per_dish = parseInt(cart_item.product_price) * quantity;
+                        Meteor.call('shopping_cart.update',
+                            order_id,
+                            quantity,
+                            total_price_per_dish,
                             function(err) {
                               localStorage.setItem("localCart", JSON.stringify([]));
                               localStorage.removeItem('localStorage');
-
+  
                               // To make sure the dish we add from localStorage can display on foodies's shopping cart 
-                            if (location.pathname.indexOf('shopping_cart') > -1) {
-                              location.reload();
+                              if (location.pathname.indexOf('shopping_cart') > -1) {
+                                location.reload();
+                              }
                             }
-                            }
-                        );
-                    }
+                        )
+                      } else {
+                          var foodie_name = foodie_details.foodie_name;
+                          Meteor.call('shopping_cart.insert',
+                              Meteor.userId(),
+                              cart_item.seller_id,
+                              foodie_name,
+                              cart_item.seller_name,
+                              cart_item.address,
+                              cart_item.serving_option,
+                              cart_item.ready_time,
+                              cart_item.product_id,
+                              cart_item.product_name,
+                              cart_item.quantity,
+                              cart_item.product_price,
+                              function(err) {
+                                localStorage.setItem("localCart", JSON.stringify([]));
+                                localStorage.removeItem('localStorage');
+  
+                                // To make sure the dish we add from localStorage can display on foodies's shopping cart 
+                              if (location.pathname.indexOf('shopping_cart') > -1) {
+                                location.reload();
+                              }
+                              }
+                          );
+                      }
+                    });
                   });
-                });
+              }
 
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
