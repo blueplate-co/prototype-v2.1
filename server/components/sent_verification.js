@@ -6,7 +6,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 //set up email envirnoment for sending out email
 Meteor.startup(() => {
-  process.env.MAIL_URL = "smtps://ACCOUNT%2EADMIN%40BLUEPLATE%2ECO:ilqkgygkgeojntmu@smtp.gmail.com:465";
+  process.env.MAIL_URL = "smtps://KEITH%2ECHAN%40BLUEPLATE%2ECO:Alpharius7281@smtp.gmail.com:465";
 });
 
 //method to be called to send verification email
@@ -28,7 +28,7 @@ Meteor.methods({
 });
 
 Accounts.emailTemplates.siteName = 'Blueplate Technologies';
-Accounts.emailTemplates.from = 'Alan Anderson <account.admin@blueplate.co>';
+Accounts.emailTemplates.from = 'Keith Chan <keith.chan@blueplate.co>';
 Accounts.emailTemplates.verifyEmail = {
   subject(user) {
    return "Blueplate.co - Verify your email address";
