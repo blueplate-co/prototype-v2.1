@@ -8,6 +8,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 import ProgressBar from './progress_bar.js';
+import InfoOrder from './info_order.js';
 
 //- empty cart store global in this page
 window.globalCart = localStorage.getItem("globalCart" + Meteor.userId());
@@ -22,64 +23,116 @@ class ShoppingCart extends Component {
         this.handleChangeServiceOption = this.handleChangeServiceOption.bind(this);
         this.state = {
             discount: 0,
-            bDateReady: false
+            bDateReady: false,
+            dishesLocal: JSON.parse(localStorage.getItem("localCart")),
+            shoppingCart: this.props.shoppingCart || [],
+            order_obj: {
+                name_ordering: '',
+                district_ordering: '',
+                email_ordering: '',
+                phone_ordering: '',
+            },
+            bGetInforUser: false, 
+            bHasChangeQty: false,
+            bExistAccount: true
         }
     }
 
     // remove item in shopping cart
-    removeItem(id) {
+    removeItem(id, product_id) {
         //- check again, if all products of kitchen are removed. update the global cart
-        let unique = [...new Set(this.props.shoppingCart.map(item => item.seller_id))];
-        globalCart = [];
-        for (var i = 0; i < globalCart.length; i++) {
-            for (var j = 0; j < unique.length; j++) {
-                if (globalCart[i].id !== unique[j]) {
-                    globalCart.splice(i, 1);
-                    localStorage.setItem('globalCart' + Meteor.userId(), globalCart);
+        let unique = [...new Set(this.state.shoppingCart.map(item => item.seller_id))];
+        Loop1:
+            for (var i = 0; i < globalCart.length; i++) {
+                for (var j = 0; j < unique.length; j++) {
+                    if (globalCart[i].id == unique[j]) {
+                        globalCart.splice(i, 1);
+                        localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+                        break Loop1;
+                    }
                 }
             }
-        }
 
-        if (globalCart.length == 0) {
-            localStorage.setItem('globalCart' + Meteor.userId(), '');
+        if (Meteor.userId()) {
+            Meteor.call('shopping_cart.remove', id);
         }
-        
-        Meteor.call('shopping_cart.remove', id);
+        var attemp_globalCart = globalCart;
+        var new_carts = this.state.shoppingCart.filter( (item) => item.product_id != product_id);
+        this.setState({ shoppingCart: new_carts, bHasChangeQty: true }, () => {
+            globalCart = attemp_globalCart;
+            localStorage.setItem("localCart", JSON.stringify(new_carts));
+            
+            if (globalCart == null || globalCart.length == 0) {
+                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
+            }
+        });
     }
 
     // increaseQty of item in shopping cart
-    increaseQty(id) {
-        var item = Shopping_cart.find({ _id: id }).fetch()[0];
-        var quantity = item.quantity + 1;
-        var total_price_per_dish = quantity * item.product_price;
-        total_price_per_dish = parseFloat(total_price_per_dish).toFixed(2);
-        Meteor.call('shopping_cart.update',
-            id,
-            quantity,
-            total_price_per_dish,
-            function (err) {
-                if (err) Materialize.toast('Oops! Error when update the quantities of the dish in your shopping cart. Please try again.' + err.message.message, 4000, 'rounded bp-green');
+    increaseQty(id, product_id, quantity) {
+        if (Meteor.userId()) {
+            var item = Shopping_cart.find({ _id: id }).fetch()[0];
+            var quantity = item.quantity + 1;
+            var total_price_per_dish = quantity * item.product_price;
+            total_price_per_dish = parseFloat(total_price_per_dish).toFixed(2);
+            Meteor.call('shopping_cart.update',
+                id,
+                quantity,
+                total_price_per_dish,
+                function (err) {
+                    if (err) Materialize.toast('Oops! Error when update the quantities of the dish in your shopping cart. Please try again.' + err.message.message, 4000, 'rounded bp-green');
+                }
+            )
+        } 
+
+        var attemp_carts = this.state.shoppingCart;
+        for (var i = 0; i < attemp_carts.length; i++) {
+            if (attemp_carts[i].product_id == product_id) {
+                attemp_carts[i].quantity = attemp_carts[i].quantity + 1;
+                attemp_carts[i].total_price_per_dish = attemp_carts[i].quantity * attemp_carts[i].product_price;
             }
-        )
+        }
+        var attemp_global_cart = globalCart;
+        this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
+            globalCart = attemp_global_cart;
+            localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+        });
     }
 
     // decreaseQty of item in shopping cart
-    decreaseQty(id) {
-        var item = Shopping_cart.find({ _id: id }).fetch()[0];
-        if (item.quantity == 1) { // not allow set quantity = 0
-            return true;
-        }
-        var quantity = item.quantity - 1;
-        var total_price_per_dish = quantity * item.product_price;
-        total_price_per_dish = parseFloat(total_price_per_dish).toFixed(2);
-        Meteor.call('shopping_cart.update',
-            id,
-            quantity,
-            total_price_per_dish,
-            function (err) {
-                if (err) Materialize.toast('Oops! Error when update the quantities of the dish in your shopping cart. Please try again.' + err.message.message, 4000, 'rounded bp-green');
+    decreaseQty(id, product_id, quantity) {
+        if (quantity === 1) {
+            return;
+        } else {
+            if (Meteor.userId()) {
+                var item = Shopping_cart.find({ _id: id }).fetch()[0];
+                var quantity = item.quantity - 1;
+                var total_price_per_dish = quantity * item.product_price;
+                total_price_per_dish = parseFloat(total_price_per_dish).toFixed(2);
+            
+                Meteor.call('shopping_cart.update',
+                    id,
+                    quantity,
+                    total_price_per_dish,
+                    function (err) {
+                        if (err) Materialize.toast('Oops! Error when update the quantities of the dish in your shopping cart. Please try again.' + err.message.message, 4000, 'rounded bp-green');
+                    }
+                )
+            } 
+
+            var attemp_carts = this.state.shoppingCart;
+            for (var i = 0; i < attemp_carts.length; i++) {
+                if (attemp_carts[i].product_id == product_id) {
+                    attemp_carts[i].quantity = attemp_carts[i].quantity - 1;
+                    attemp_carts[i].total_price_per_dish = attemp_carts[i].quantity * attemp_carts[i].product_price;
+                }
             }
-        )
+            var attemp_global_cart = globalCart;
+            this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
+                globalCart = attemp_global_cart;
+                localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+            });
+        }
     }
 
     // when change service option for kitchen
@@ -243,11 +296,6 @@ class ShoppingCart extends Component {
 
 
                 }
-                if (valid) {
-                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
-                    Session.set('product', globalCart);
-                    // globalCart = [];
-                }
             };
         return valid;
     }
@@ -259,46 +307,112 @@ class ShoppingCart extends Component {
             item.address = $('#address_' + item.id).val();
         });
         
-        var valid = this.validateShoppingCartCheckOut();
 
-        if (valid) {
-            globalCart.forEach((item, index) => {
-                Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
-                    if (!err) {
-                        var conversation_id = res;
-                        Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', conversation_id, (err, res) => {
-                            if (!err) {
-                                console.log('Start conversation');
-                            }
-                        });
-                        Meteor.call('message.createStatus', item.id , Meteor.userId(), 'Start conversation', conversation_id, (err, res) => {
-                            if (!err) {
-                                console.log('Start conversation');
-                            }
-                        });
-                    } else {
-                        console.log(err);
-                    }
-                })
+        globalCart.forEach((item, index) => {
+            Meteor.call('message.createConversasion', Meteor.userId(), item.id, (err, res) => {
+                if (!err) {
+                    var conversation_id = res;
+                    Meteor.call('message.createStatus', Meteor.userId() , item.id, 'Start conversation', conversation_id, (err, res) => {
+                        if (!err) {
+                            console.log('Start conversation');
+                        }
+                    });
+                    Meteor.call('message.createStatus', item.id , Meteor.userId(), 'Start conversation', conversation_id, (err, res) => {
+                        if (!err) {
+                            console.log('Start conversation');
+                        }
+                    });
+                } else {
+                    console.log(err);
+                }
             })
-            
-            if (!util.filterEmailInternalForNotification()) {
-                this.sendSummaryCheckoutDish();
-            }
-            //- send to Facebook Pixel
-            if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
-                fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
-            }
+        })
+        
+        if (!util.filterEmailInternalForNotification() && util.checkCurrentSite()) {
+            this.sendSummaryCheckoutDish();
+        }
+
+        //- send to Facebook Pixel
+        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
+            fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
+        }
+
+        // When not login, Meteor.userId() return null
+        localStorage.setItem('globalCartnull', JSON.stringify([]));
+        localStorage.removeItem('globalCartnull');
+
+        localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+
+        // If haven't check amount or change quantity of product
+        if ( !localStorage.getItem('bEnoughtAmount' + Meteor.userId()) || this.state.bHasChangeQty )  {
             this.checkEnoughtCurrentAmount();
         } else {
+            Session.set('product', ''); // reset session
+            Session.set('product', globalCart);
+            globalCart = [];
             util.hide_loading_progress();
+            FlowRouter.go('/payment');
+        }
+    }
+    
+    handleGetInfor() {
+        if (this.validateShoppingCartCheckOut()) {
+
+            if (Meteor.userId()) {
+                this.handleCheckout();
+            } else {
+                this.setState({ bGetInforUser: true});
+            }
         }
     }
 
     checkEnoughtCurrentAmount() {
-        Meteor.call('payment.getCredits', (err, credits) => {
-            var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+        util.show_loading_progress();
+        if (this.state.bExistAccount) {
+            Meteor.call('payment.getCredits', (err, credits) => {
+                var shoppingCart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+                var total = 0;
+                for (var i = 0; i < shoppingCart.length; i++) {
+                    if (checking_promotion_dish(shoppingCart[i].product_id).length > 0) {
+                        total += parseFloat(shoppingCart[i].total_price_per_dish * get_amount_promotion(shoppingCart[i].product_id));
+                    } else {
+                        total += parseFloat(shoppingCart[i].total_price_per_dish);
+                    }
+                }
+    
+                // get Stripe balance
+                Meteor.call('payment.getStripeBalance', (err, res) => {
+                    let balance = parseFloat(res.account_balance / 100).toFixed(2);
+                    Meteor.call('promotion.check_history', (err, res) => {
+                        if (Object.keys(res).length == 0) {
+                            var promotion_credits = 0;
+                        } else {
+                            var promotion_credits = res.balance;
+                        }
+                        localStorage.setItem('sTotalAmount' + Meteor.userId(), total - promotion_credits);
+    
+                        // check pending order of buyer
+                        var pendingOrder = Order_record.find({
+                            buyer_id: Meteor.userId(),
+                            status: 'Created'
+                        }).fetch();
+                        var pendingCost = 0;
+                        for (var i = 0; i < pendingOrder.length; i++) {
+                            if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
+                                pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
+                            } else {
+                                pendingCost += pendingOrder[i].total_price;
+                            }
+                        }
+                        var trueBalance = (parseFloat(credits) + parseFloat(balance) + parseFloat(promotion_credits)) - parseFloat(pendingCost);
+                        
+                        this.checkEnoughtAMount(trueBalance, total);
+                    });
+                });
+            });
+        } else {
             var total = 0;
+            var shoppingCart = this.state.shoppingCart;
             for (var i = 0; i < shoppingCart.length; i++) {
                 if (checking_promotion_dish(shoppingCart[i].product_id).length > 0) {
                     total += parseFloat(shoppingCart[i].total_price_per_dish * get_amount_promotion(shoppingCart[i].product_id));
@@ -306,44 +420,27 @@ class ShoppingCart extends Component {
                     total += parseFloat(shoppingCart[i].total_price_per_dish);
                 }
             }
+            localStorage.setItem('sTotalAmount' + Meteor.userId(), total - this.state.discount);
 
-            // get Stripe balance
-            Meteor.call('payment.getStripeBalance', (err, res) => {
-                let balance = parseFloat(res.account_balance / 100).toFixed(2);
-                Meteor.call('promotion.check_history', (err, res) => {
-                    if (Object.keys(res).length == 0) {
-                        var promotion_credits = 0;
-                    } else {
-                        var promotion_credits = res.balance;
-                    }
-                    localStorage.setItem('sTotalAmount' + Meteor.userId(), total - promotion_credits);
+            this.checkEnoughtAMount(this.state.discount, total);
+        }
+    }
 
-                    // check pending order of buyer
-                    var pendingOrder = Order_record.find({
-                        buyer_id: Meteor.userId(),
-                        status: 'Created'
-                    }).fetch();
-                    var pendingCost = 0;
-                    for (var i = 0; i < pendingOrder.length; i++) {
-                        if (checking_promotion_dish(pendingOrder[i].product_id).length > 0) {
-                            pendingCost += parseFloat(pendingOrder[i].total_price * get_amount_promotion(pendingOrder[i].product_id));
-                        } else {
-                            pendingCost += pendingOrder[i].total_price;
-                        }
-                    }
-                    var trueBalance = (parseFloat(credits) + parseFloat(balance) + parseFloat(promotion_credits)) - parseFloat(pendingCost);
-                    // sum of two wallet is not enough to pay
-                    if (trueBalance < total) {
-                        // not enough money to pay
-                        localStorage.setItem('bEnoughtAmount' + Meteor.userId(), false);
-                    } else {
-                        localStorage.setItem('bEnoughtAmount' + Meteor.userId(), true);
-                    }
-                    util.hide_loading_progress();
-                    FlowRouter.go('/payment');
-                });
-            });
-        });
+    checkEnoughtAMount(trueBalance, total) {
+         // sum of two wallet is not enough to pay
+         if (trueBalance < total) {
+            // not enough money to pay
+            localStorage.setItem('bEnoughtAmount' + Meteor.userId(), false);
+        } else {
+            localStorage.setItem('bEnoughtAmount' + Meteor.userId(), true);
+        }
+        
+        this.setState({ bHasChangeQty: false });
+        Session.set('product', ''); // reset session
+        Session.set('product', globalCart);
+        globalCart = [];
+        util.hide_loading_progress();
+        FlowRouter.go('/payment');
     }
     
     handleOnViewDetailDish(dish_id) {
@@ -367,7 +464,7 @@ class ShoppingCart extends Component {
                             <div className="detail-thumbnail view-detail-dish" style={{ backgroundImage: "url(" + detail.meta.large + ")" }} onClick={() => this.handleOnViewDetailDish(item.product_id)}></div>
                         </div>
                         <div className="col s9 m9 l9 product-info">
-                            <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id) }></span>
+                            <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id, item.product_id) }></span>
                             <span className="detail-title view-detail-dish" onClick={() => this.handleOnViewDetailDish(item.product_id)}>{ detail.dish_name }</span>
                             {
                                 (checking_promotion_dish(detail._id).length > 0) ?
@@ -384,9 +481,9 @@ class ShoppingCart extends Component {
                                 )
                             }
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }><i className="fa fa-minus-circle quantity-icon-format"></i></span>
+                                <span onClick={ () => this.decreaseQty(item._id, item.product_id, item.quantity) }><i className="fa fa-minus-circle quantity-icon-format"></i></span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }><i className="fa fa-plus-circle quantity-icon-format"></i></span>
+                                <span onClick={ () => this.increaseQty(item._id, item.product_id, item.quantity) }><i className="fa fa-plus-circle quantity-icon-format"></i></span>
                             </div>
                         </div>
                     </div>
@@ -448,7 +545,7 @@ class ShoppingCart extends Component {
     };
 
     renderKitchen(seller_id, index) {
-        var product = Shopping_cart.find({ seller_id: seller_id }).fetch();
+        var product = this.state.shoppingCart.filter( item => item.seller_id == seller_id );
         var sellerName = product[0].seller_name;
         var curr = new Date();
         var seller_images = '';
@@ -487,7 +584,8 @@ class ShoppingCart extends Component {
                     <div className="col s12 m6 l6">
                         <div className="service-option-cart">
                             <span className="service-option-icon"></span>
-                            <select id={id_service} style={{...this, color: address ? 'rgba(0, 0, 0, 0.87)' : ''}} className="select-serving-option browser-default no-border drop-down-servicing" defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
+                            <select id={id_service} style={{...this, color: address ? 'rgba(0, 0, 0, 0.87)' : ''}} className="select-serving-option browser-default no-border drop-down-servicing" 
+                                defaultValue={globalCart[index].service} onChange={(event) => this.handleChangeServiceOption(event, seller_id)} >
                                 <option value="" disabled>How would you like to get your food?</option>
                                 { this.renderServingOption(seller_id) }
                             </select>
@@ -495,7 +593,7 @@ class ShoppingCart extends Component {
 
                         <div className="input-field col s12 m12 l12 icon-position-common">
                             <i className="material-icons prefix location-address icon-cart-format">location_on</i>
-                            <input id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address" placeholder="Let’s input your delivery address" type="text" 
+                            <textarea id={"address_" + seller_id} name={"address_" + seller_id} defaultValue={address} className="address materialize-textarea" placeholder="Let’s input your delivery address" type="text" 
                                 onChange={(event) => this.handleChangeAddress(event, seller_id)} />
                             {/* <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label> */}
                         </div>
@@ -537,23 +635,19 @@ class ShoppingCart extends Component {
 
     renderListKitchen() {
         //- get unique seller_id
-        globalCart = localStorage.getItem("globalCart" + Meteor.userId());
-        var hasLocalStorage = false;
-        if (typeof globalCart != 'object' && globalCart != "" ) {
-            hasLocalStorage = true;
-            globalCart = JSON.parse(globalCart);
+        globalCart = JSON.parse(localStorage.getItem("globalCart" + Meteor.userId()));
+        if (typeof globalCart == 'object' && globalCart == null ) {
+            globalCart = [];
         }
 
-        let unique = [...new Set(this.props.shoppingCart.map(item => item.seller_id))];
+        var unique = [];
+        unique = [...new Set(this.state.shoppingCart.map(item => item.seller_id))];
+
         if (unique.length > 0) {
             return (
                 unique.map((item, index) => {
                     //- create new object to store all information about this kitchen
                     var kitchen = { id: item, service: "", date: moment(null).format('DD/MM/YYYY'), time: "", timeStamp: '', address: "" };
-                    if (!hasLocalStorage) {
-                        hasLocalStorage = true;
-                        globalCart = [];
-                    }
 
                     if (globalCart.length > 0) {
                         globalCart.map( (cartItem, idx) => {
@@ -580,13 +674,13 @@ class ShoppingCart extends Component {
     }
 
     handleOnContinueShoppping() {
-        FlowRouter.go('/');
+        FlowRouter.go('/main');
     }
 
     // Internal sms: send order info message to admin when has new order
     sendSummaryCheckoutDish() {
         var checkSellerName ={};
-        this.props.shoppingCart.map( (item, index) => {
+        this.state.shoppingCart.map( (item, index) => {
             var seller_detail = Meteor.users.findOne({_id: item.seller_id});
             var seller_email = seller_detail.emails[0].address;
             var kitchen_contact = Kitchen_details.findOne({user_id: item.seller_id}).kitchen_contact;
@@ -634,36 +728,43 @@ class ShoppingCart extends Component {
 
     componentDidMount() {
         $(window).scrollTop(0);
+
+        if (Meteor.userId()) {
+            this.setState({ shoppingCart: this.state.shoppingCart })
+        } else {
+            this.setState({ shoppingCart: this.state.dishesLocal })
+        }
+
         //- send to Facebook Pixel
         if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
             fbq('track', 'ViewContent', { content_name: 'Shopping Cart', content_ids: Meteor.userId() });
         }
         // check if have already cookies, create a promotion balance for this user
         if (getCookie('promotion')) {
-            Meteor.call('promotion.check_history', (err, res) => {
-                if (Object.keys(res).length == 0) { // this user not already have promotion before
-                    let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
-                    Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
-                        if (!err) {
-                            delete_cookies('promotion');
-                            console.log('OK');
-                        }
-                    });
-                }
-            });
-        }
-        Meteor.call('promotion.check_history', (err, res) => {
-            if (Object.keys(res).length > 0) {
-                this.setState({
-                    discount: res.balance
-                })
+            let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
+            if (Meteor.userId()) {
+                Meteor.call('promotion.check_history', (err, res) => {
+                    if (Object.keys(res).length == 0) { // this user not already have promotion before
+                        Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
+                            if (!err) {
+                                delete_cookies('promotion');
+                                console.log('OK');
+                            }
+                        });
+                    } else {
+                        this.setState({ discount: res.balance });
+                    }
+                });
             } else {
-                this.setState({
-                    discount: 0
-                })
+                this.setState({ discount: amount });
             }
-        });
+        }
     }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     this.setState({ shoppingCart: nextProps.shoppingCart});
+    //     return true;
+    // }
 
     componentWillUpdate() {
         //- run google places autocomplete with timeout to make sure HTML is rendered
@@ -675,17 +776,31 @@ class ShoppingCart extends Component {
         }, 500);
     }
 
+    handleBackToShopping() {
+        this.setState({ bGetInforUser: false});
+    };
+
+    handleOnSaveOrderingInfo() {
+        this.setState({ bExistAccount: false }, () => {
+           this.handleCheckout(); 
+        });
+    };
+
     render() {
         var total = 0,
             subtotal = 0;
-        for (var i = 0; i < this.props.shoppingCart.length; i++ ) {
-            subtotal += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
-            if (checking_promotion_dish(this.props.shoppingCart[i].product_id).length > 0) {
-                total += parseFloat(this.props.shoppingCart[i].total_price_per_dish * get_amount_promotion(this.props.shoppingCart[i].product_id))
-            } else {
-                total += parseFloat(this.props.shoppingCart[i].total_price_per_dish);
+
+        if (this.state.shoppingCart) {
+            for (var i = 0; i < this.state.shoppingCart.length; i++ ) {
+                subtotal += parseFloat(this.state.shoppingCart[i].total_price_per_dish);
+                if (checking_promotion_dish(this.state.shoppingCart[i].product_id).length > 0) {
+                    total += parseFloat(this.state.shoppingCart[i].total_price_per_dish * get_amount_promotion(this.state.shoppingCart[i].product_id))
+                } else {
+                    total += parseFloat(this.state.shoppingCart[i].total_price_per_dish);
+                }
             }
         }
+
         if (this.state.discount > 0) {
             total = total - this.state.discount;
             if (total < 0) {
@@ -694,44 +809,60 @@ class ShoppingCart extends Component {
                 total = total.toFixed(2);
             }
         }
-        Session.set('product', '');
 
         return (
-            <div className="container">
+            <div className="container shopping-cart-details">
                 <ProgressBar step_progress="1" />
-                {
-                    (this.props.listLoading) ?
-                        <span>Loading...</span>
-                    :    
-                        this.renderListKitchen()
-                }
 
-                {
-                    (!this.props.listLoading && globalCart.length > 0) ? 
+                <div className="row">
+
+                { !this.state.bGetInforUser ?
                         <span>
-                            <div className="row subtotal">
-                                <div className="col s6 m9 text-right">Subtotal:</div>
-                                <div className="col s6 m3 text-right">HK$ { subtotal }</div>
+                            <div className="col s12 m8 l8">
+                                {
+                                    (this.props.listLoading) ?
+                                        <span>Loading...</span>
+                                    :    
+                                        this.renderListKitchen()
+                                }
                             </div>
 
-                            <div className="row discount">
-                                <div className="col s6 m9 text-right">Discount:</div>
-                                <div className="col s6 m3 text-right">HK$ { this.state.discount }</div>
-                            </div>
+                            {
+                                (!this.props.listLoading && this.state.shoppingCart.length > 0) ? 
+                                    <div id="view-detail-total" className="col s12 m3 l3">
+                                        <div id="total-block">
+                                            <div className="row subtotal">
+                                                <div className="col s6 m6 text-left">Subtotal:</div>
+                                                <div className="col s6 m6 text-left">HK$ { subtotal }</div>
+                                            </div>
 
-                            <div className="row total">
-                                <div className="col s6 m9 text-right total-text">Total:</div>
-                                <div className="col s6 m3 text-right bp-blue-text">HK$ { total }</div>
-                            </div>
-                            <div className="row text-center">
-                                <button id="checkout-shoppingcart" className="btn checkout" disabled={this.props.shoppingCart.length == 0} onClick={ () => this.handleCheckout() } >Checkout</button>
-                                <p className="no-charge-money">You won’t be charged yet !</p>
-                            </div>
+                                            <div className="row discount">
+                                                <div className="col s6 m6 text-left">Discount:</div>
+                                                <div className="col s6 m6 text-left">HK$ { this.state.discount }</div>
+                                            </div>
+
+                                            <div className="row total">
+                                                <div className="col s6 m6 text-left total-text">Total:</div>
+                                                <div className="col s6 m6 text-left bp-blue-text">HK$ { total }</div>
+                                            </div>
+                                            <div className="row text-center btn-shopping-cart">
+                                                <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >next</button>
+                                                <p className="no-charge-money">You won’t be charged yet !</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    :
+                                        ''
+                            }
                         </span>
                     :
-                        ''
-                }
+                        <InfoOrder order_obj={this.state.order_obj}
+                            handleOnSaveOrderingInfo={() => this.handleOnSaveOrderingInfo()}
+                            handleBackToShopping={() => this.handleBackToShopping()}
+                        />
+                    }
 
+                </div>
             </div>
         )
     }
@@ -748,3 +879,21 @@ export default withTracker(props => {
         discount: discount
     };
 })(ShoppingCart);
+
+
+$(document).ready(function () {
+    $(window).bind("scroll", function(e) {
+          var top = $(window).scrollTop();
+        if (53 < top && top < 1360) {
+          $("#view-detail-total").addClass("cart-scroll-fix-top");
+        } else {
+          $("#view-detail-total").removeClass("cart-scroll-fix-top");
+        } 
+
+        // if (top > 1091) {
+        //     $("#detail-dish-info").addClass("dish-scroll-bottom");
+        // } else {
+        //     $("#detail-dish-info").removeClass("dish-scroll-bottom");
+        // }
+    });
+});

@@ -25,15 +25,9 @@
     #ordering-popup.ordering-popup-infor {
         /* height: 55% !important; */
         width: 43% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 
-    .email_ordering {
-        width: 52%;
-        display: inline-block;
-    }
-    
     #district-option {
         display: inline-block;
         /* margin-left: 2%; */
@@ -46,15 +40,9 @@
         top: 23% !important;
         /* height: 60% !important; */
         width: 50% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 
-    .email_ordering {
-        width: 55%;
-        display: inline-block;
-    }
-    
     #district-option {
         /* margin-left: 1%; */
         display: inline-block;
@@ -67,7 +55,6 @@
         top: 23% !important;
         /* height: 59% !important; */
         width: 54% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 
@@ -96,7 +83,6 @@
         top: 23% !important;
         /* height: 58% !important; */
         width: 62% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 }
@@ -109,7 +95,6 @@
         top: 13% !important;
         /* height: 60% !important; */
         width: 62% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 }
@@ -121,7 +106,6 @@
     #ordering-popup.ordering-popup-infor {
         /* height: 65% !important; */
         width: 72% !important;
-        border-radius: 15px !important;
         overflow: hidden !important;
     }
 }
@@ -144,7 +128,6 @@
         top: 0% !important;
         height: 100% !important;
         width: 100% !important;
-        border-radius: 0px !important;
     }
 
     #ordering-popup .modal-content {
@@ -180,7 +163,7 @@
     background-color: transparent;
     border-bottom: 1px solid #9e9e9e;
     -webkit-appearance: button;
-    margin-top: 16px;
+    margin-top: 15px;
 }
 
 #district-option {

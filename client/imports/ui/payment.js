@@ -293,9 +293,12 @@ class Payment extends Component {
                     util.hide_loading_progress();
                     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                 } else {
-                    localStorage.setItem('globalCart' + Meteor.userId(), '');
+                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
+                    localStorage.removeItem('bEnoughtAmount' + Meteor.userId());
+
                     Meteor.call('shopping_cart.remove', item._id);
                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
+                    Session.set('product', ''); // reset session
                     Session.clear;
                     Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
 
@@ -442,9 +445,11 @@ class Payment extends Component {
                         action: false
                     })
                 } else {
-                    localStorage.setItem('globalCart' + Meteor.userId(), '');
+                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
                     Meteor.call('shopping_cart.remove', item._id)
                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
+                    localStorage.removeItem('bEnoughtAmount' + Meteor.userId());
+                    Session.set('product', ''); // reset session
                     Session.clear;
                     Materialize.toast("Your order has been sent to chef. Please wait for chef's confirmation and track your order here.", 8000, 'rounded bp-green');
 
