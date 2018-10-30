@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 // App component - represents the whole app
-class LandingDishList extends Component {
+export default class LandingDishList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: true,
+      dishes: []
     }
   }
 
+  componentDidMount() {
+    Meteor.call('dish.getDishListLandingPage', (err, res) => {
+      if (!err) {
+        this.setState({
+          dishes: res,
+          loading: false
+        })
+      } else  {
+        this.setState({
+          dishes: [],
+          loading: false
+        })
+      }
+    });
+  }
+
   renderList = () => {
-    if (this.props.dishes.length == 0) {
+    if (this.state.dishes.length == 0 && !this.state.loading) {
       return <p>Has no dishes to be displayed</p>
     }
     let hasThumbnail;
-    return this.props.dishes.map((item, index) => {
+    return this.state.dishes.map((item, index) => {
       if (item.meta) {
         hasThumbnail = true;
       } else {
@@ -72,12 +88,3 @@ class LandingDishList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  const handle = Meteor.subscribe('landingDishes');
-  return {
-      currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
-      dishes: Dishes.find({deleted: false, online_status: true},{sort: {average_rating: -1, createdAt: -1}, limit: 4 }).fetch(),
-  };
-})(LandingDishList);

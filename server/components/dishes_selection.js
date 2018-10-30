@@ -123,6 +123,9 @@ Meteor.methods({
     }
     return Dishes.find({ deleted: false },{ sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
   },
+  'dish.getDishListLandingPage' (kitchen_id) {
+    return Dishes.find({ deleted: false },{ sort: { online_status: -1, createdAt: -1 }, limit: 4 }).fetch();
+  },
   'dish.getListImagesMenu' (list_dish_id) {
     if (list_dish_id.length > 0) {
       let listImages = [];

@@ -9,7 +9,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import LandingDishList from '../../imports/ui/landing_dish_list.js';
-import { createCookie, getCookie } from '/imports/functions/common/promotion_common';
+import { createCookie } from '/imports/functions/common/promotion_common';
 
 
 
