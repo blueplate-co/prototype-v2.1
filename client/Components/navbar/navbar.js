@@ -7,7 +7,6 @@ import { render } from 'react-dom';
 
 // custom component
 import TopNavigation from '../../imports/ui/top_navigation';
-import Message from '../../imports/ui/message';
 
 
 
