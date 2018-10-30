@@ -11,7 +11,7 @@ const ShowroomBanner = props => {
     banner_img: {
       minHeight: '276px',
       height: '100%',
-      backgroundImage: `url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/thu_aug_30_2018_banner_small.png')`,
+      backgroundImage: `url('https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/thu_aug_30_2018_banner_small_resize.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       backgroundRepeat: 'no-repeat',

@@ -39,7 +39,7 @@ export default class ProgressiveImages extends Component {
                             })
                             // loaded
                         })
-                    }, 1000);
+                    }, 200);
                 };
             }
         }

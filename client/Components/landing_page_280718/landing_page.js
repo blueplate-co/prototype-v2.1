@@ -1,20 +1,15 @@
 import {
-  Accounts
-} from 'meteor/accounts-base';
-import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import {
   Template
 } from 'meteor/templating';
-import {
-  Blaze
-} from 'meteor/blaze';
 
 import React from 'react';
 import { render } from 'react-dom';
 
 import LandingDishList from '../../imports/ui/landing_dish_list.js';
+import { createCookie, getCookie } from '/imports/functions/common/promotion_common';
 
 
 
@@ -22,6 +17,63 @@ import LandingDishList from '../../imports/ui/landing_dish_list.js';
 import './landing_page.html';
 
 Template.landing_page.onRendered(function () {
+  //- procedure for promotion
+  var url_string = window.location.href; //window.location.href
+  var url = new URL(url_string);
+  var promotion = url.searchParams.get("promotion");
+  var dish = url.searchParams.get("dish");
+  var kitchen = url.searchParams.get("kitchen");
+  // check if already have cookies
+  var dc = document.cookie;
+  var prefix = "promotion" + "=";
+  var begin = dc.indexOf(prefix);
+  //- when user already logged in, just apply promotion program for them
+  if (Meteor.userId() && promotion) {
+    Meteor.call('promotion.check_history', (err, res) => {
+      if (Object.keys(res).length == 0) { // this user not already have promotion before
+        let amount = parseInt(promotion.replace( /^\D+/g, ''));
+        Meteor.call('promotion.insert_history', Meteor.userId(), promotion, amount, (err, res) => {
+          if (err) {
+            Materialize.toast(err, 4000, 'rounded bp-green');
+          } else {
+              setTimeout(() => {
+                $('#promotion_modal').modal();
+                $('#promotion_modal').modal('open');
+              }, 5000);
+            //- end promotion modal
+          }
+        });
+      }
+    });
+  } else {
+    //- when user not logged in, create a cookies to store this program
+    if (begin == -1 && promotion) {
+      createCookie('promotion', promotion, 'Fri, 31 Dec 9999 23:59:59 GMT');
+      setTimeout(() => {
+        $('#promotion_modal').modal();
+        $('#promotion_modal').modal('open');
+      }, 5000);
+    }
+  }
+
+  //- FOR USER ALREADY JOINED THE PROMOTION PROGRAM
+  if (Meteor.userId()) {
+    let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPage'+Meteor.userId()) == 'false';
+    if (!bReminderFirst) {
+      sessionStorage.setItem('reminderFirstLoadPage'+Meteor.userId(), 'false');
+      Meteor.call('promotion.check_history', (err, res) => {
+        if (Object.keys(res).length > 0) { //- have promotion in history
+          let amountProgram = parseInt(res.name_of_promotion.replace( /^\D+/g, '')); //- convert hkd50 -> 50, hkd100 -> 100
+          if (res.balance == amountProgram) { //- when still have amount of money
+            $('#reminder_promotion_modal').modal();
+            $('#reminder_promotion_modal').modal('open');
+          }
+        }
+      });
+    }
+    FlowRouter.go('/main');
+  }
+
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   $('body').css('overflow-y', 'hidden');

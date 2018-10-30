@@ -114,7 +114,7 @@ class TopNavigation extends Component {
     Session.set('search_nearby', false);
     $('#searchQuery').val('');
     Session.set()
-    FlowRouter.go("/");
+    FlowRouter.go("/main");
   }
 
   checkKitchenProfileExists = () => {
@@ -141,8 +141,8 @@ class TopNavigation extends Component {
       Meteor.logout(() => {
         util.hide_loading_progress();
         this.setState({ isLogin: false })
-        FlowRouter.go("/");
-        location.href = '/';
+        FlowRouter.go("/main");
+        location.href = '/main';
       })
     } else {
       util.loginAccession("");
