@@ -186,7 +186,7 @@ export default class InfoOrder extends Component {
                 Meteor.call('manualVerifyEmail');
                 //- create Stripe user id for that user register
                 Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
-                // that.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
+                that.sendWelcomeEmail(user.name_ordering, user.email_ordering, password);
             }
         });
         // check if have already cookies, create a promotion balance for this user
