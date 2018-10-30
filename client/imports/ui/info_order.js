@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { open_dialog_edit_confirm } from '/imports/functions/common';
 import { Accounts } from 'meteor/accounts-base';
 import districts from '/imports/functions/common/districts_common.json';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
@@ -54,7 +53,7 @@ export default class InfoOrder extends Component {
                 $('#email').removeClass('invalid');
             }
         }
-        order_info[field] = ev.target.value.trim();
+        order_info[field] = ev.target.value;
 
         var phone_formated = $('#phone_ordering').intlTelInput("getNumber");
         order_info['phone_ordering'] = phone_formated;
@@ -74,43 +73,28 @@ export default class InfoOrder extends Component {
         $el.focus();
     };
 
-    handleOnCloseOrderInfo() {
-        var hasChangeField = $('.dirty_field'),
-        bChangeField = hasChangeField.length > 0;
-
-        if (bChangeField) {
-            open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure exit?", () => {
-              // Cancel
-      
-            }, () => {
-                $('#ordering-popup').removeClass('.dirty_field');
-                $('#ordering-popup').modal('close');
-            });
-        } else {
-            $('#ordering-popup').modal('close');
-        }
-    };
-
     handleOnSaveOrderingInfo() {
         util.show_loading_progress();
         var ordering_info = this.state.order_obj;
         var password = this.generatePassword();
 
         this.state.foodies_name !== undefined && this.state.foodies_name !== '' ? this.state.order_obj.name_ordering = this.state.foodies_name : "do nothing";
+
+        if (!this.validateInforOrdering(ordering_info)) {
+            util.hide_loading_progress();
+            return false;
+        }
+        
         //- validation about phone number before
         let full_phonenumber = $('#phone_ordering').val();
         let phone_number = this.getCountryCode(full_phonenumber).withoutCountryCode.replace(/ /g, '');
         let country_code = this.getCountryCode(full_phonenumber).countryCode.replace('+','');
-        //- verify the verification code
         let verification_code = $('#verify_code').val().replace(/ /g, '');
-        if (verification_code.length !== 4 || isNaN(parseInt(verification_code))) { // length must = 4 and 4 number
-            Materialize.toast('Must have right format verification number.', 4000, 'rounded bp-green');
-            util.hide_loading_progress();
-            return false;
-        }
+
         Meteor.call('message.verify_verification_number', phone_number, country_code, verification_code, (err, res) => {
             if (err) {
-                Materialize.toast('Error when verify the phone number with verification code. Please try again.', 4000, 'rounded bp-green');
+                this.scrollToFieldRequired('verify_code', 'invalid');
+                Materialize.toast(err+ '. Please try again.', 6000, 'rounded bp-green');
                 util.hide_loading_progress();
                 return false;
             } else {
@@ -121,10 +105,6 @@ export default class InfoOrder extends Component {
                     return false;
                 } else {
                     //- CONTINOUS RUN STEP BY STEP
-                    if (!this.validateInforOrdering(ordering_info)) {
-                        util.hide_loading_progress();
-                        return false;
-                    }
                     util.show_loading_progress();
                     this.createFoodiesName(this.state.order_obj.name_ordering);
             
@@ -136,7 +116,6 @@ export default class InfoOrder extends Component {
                     }
                     
                     this.handleFoodiesProfile(ordering_info);
-                    util.hide_loading_progress();
                 }
             }
         });
@@ -151,18 +130,19 @@ export default class InfoOrder extends Component {
             // Create new profile
             Meteor.call('ordering.createProfileOrder', ordering_info, (err, res) => {
                 if (!err) {
-                    $('#ordering-popup').removeClass('.dirty_field');
-                    $('#ordering-popup').modal('close');
-                    this.props.handleOnSaveOrderingInfo();
+                    this.insertProductIntodDataBase();
+                } else {
+                    util.hide_loading_progress();
                 }
             });
         } else {
             // Update profile
             Meteor.call('ordering.updateProfileOrder', ordering_info, (err, res) => {
                 if (!err) {
-                    $('#ordering-popup').removeClass('.dirty_field');
-                    $('#ordering-popup').modal('close');
-                    this.props.handleOnSaveOrderingInfo();
+                    this.insertProductIntodDataBase();
+                } else {
+                    util.hide_loading_progress();
+
                 }
             })
         }
@@ -225,6 +205,59 @@ export default class InfoOrder extends Component {
         }
     }
 
+    // Insert or update data into DB after login success
+    insertProductIntodDataBase = () => {
+        var that = this;
+        var dishesLocal = JSON.parse(localStorage.getItem("localCart"));
+        dishesLocal.map( (cart_item, index) => {
+          var foodie_details = Profile_details.findOne({user_id: Meteor.userId()});
+          
+          //check if the dish has been put in shopping check_shopping_cart
+          var order = Shopping_cart.findOne({"product_id": cart_item.product_id, 'buyer_id': Meteor.userId()});
+          var total_price_per_dish = 0;
+          
+          Meteor.call('shopping_cart.find_one', cart_item.product_id, Meteor.userId(), (err, res) => {
+            if (res) {
+                var order_id = order._id;
+                var quantity = parseInt(order.quantity) + cart_item.quantity;
+                total_price_per_dish = parseInt(cart_item.product_price) * quantity;
+                Meteor.call('shopping_cart.update',
+                    order_id,
+                    quantity,
+                    total_price_per_dish,
+                    function(err) {
+                        localStorage.setItem("localCart", JSON.stringify([]));
+                        if (dishesLocal.length == index + 1) {
+                            that.props.handleOnSaveOrderingInfo();
+                        }
+                    }
+                )
+              } else {
+                  var foodie_name = foodie_details.foodie_name;
+                  Meteor.call('shopping_cart.insert',
+                      Meteor.userId(),
+                      cart_item.seller_id,
+                      foodie_name,
+                      cart_item.seller_name,
+                      cart_item.address,
+                      cart_item.serving_option,
+                      cart_item.ready_time,
+                      cart_item.product_id,
+                      cart_item.product_name,
+                      cart_item.quantity,
+                      cart_item.product_price,
+                      function(err) {
+                            localStorage.setItem("localCart", JSON.stringify([]));
+                            if (dishesLocal.length == index + 1) {
+                                that.props.handleOnSaveOrderingInfo();
+                            }
+                      }
+                  );
+              }
+            });
+        });
+    }
+
     createFoodiesName(fullName) {
         var first_name = '',
             last_name = '';
@@ -244,6 +277,8 @@ export default class InfoOrder extends Component {
     }
 
     validateInforOrdering(ordering_info) {
+        let verification_code = $('#verify_code').val().replace(/ /g, '');
+
         if (ordering_info.name_ordering.trim() == '') {
             this.scrollToFieldRequired('name_ordering', 'invalid');
             Materialize.toast('Name is required.', 4000, 'rounded bp-green');
@@ -267,6 +302,11 @@ export default class InfoOrder extends Component {
                 this.scrollToFieldRequired('phone_ordering', 'invalid');
                 Materialize.toast('Mobile number is not valid format.', 4000, 'rounded bp-green');
                 return false;
+            } else if (verification_code.length !== 4 || isNaN(parseInt(verification_code))) { // length must = 4 and 4 number
+                this.scrollToFieldRequired('verify_code', 'invalid');
+                Materialize.toast('Verification number invalid.', 4000, 'rounded bp-green');
+                util.hide_loading_progress();
+                return false;
             }
             return true;
         } 
@@ -278,8 +318,7 @@ export default class InfoOrder extends Component {
     };
 
     handleLogin() {
-        $('#ordering-popup').modal('close');
-        util.loginAccession(this.props.path_process + this.props.product_id);
+        util.loginAccession(location.origin +"/shopping_cart");
     };
 
     getCountryCode(input) {
@@ -363,14 +402,14 @@ export default class InfoOrder extends Component {
 
     render() {
         return (
-            <div id="ordering-popup" className="modal modal-fixed-footer ordering-popup-infor">
-                <div className="modal-content">
+            <div id="ordering-popup" className="ordering-popup-infor container">
+                <div className="">
                     <h5>Please let's us know who are you!</h5>
                     {
                         (this.state.foodies_name !== undefined && this.state.foodies_name !== '') ?
                             ''
                         :
-                            <div className="input-field col s6">
+                            <div className="input-field">
                                 <input id="name_ordering" type="text" className="form_field" value={this.state.order_obj.name_ordering} onChange={this.handleOnChange.bind(this, 'name_ordering')}/>
                                 <label className="active" htmlFor="name_ordering">name</label>
                             </div>
@@ -381,18 +420,18 @@ export default class InfoOrder extends Component {
                         ''
                         :
                         <span>
-                            <div className="row" id="email-distric-display">
-                                <div className="no-padding input-field col l12 m12 s12 email_ordering">
+                            <div className="" id="email-distric-display">
+                                <div className="no-padding input-field email_ordering">
                                     <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
                                     <label className="active" htmlFor="email_ordering">email</label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l7 m7 s7">
+                                <div className="input-field col l7 m7 s7">
                                     <input id="phone_ordering" type="text" className="form_field" value={this.state.order_obj.phone_ordering} onChange={this.handleOnChange.bind(this, 'phone_ordering')}/>
                                     <label className="active" htmlFor="phone_ordering">phone number</label>
                                 </div>
-                                <div className="no-padding input-field col l5 m5 s5">
+                                <div className="input-field col l5 m5 s5">
                                     <button disabled={this.state.verification_timing || !this.state.isValidPhone} className="verify-btn waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleSendVerifyCode()}>
                                         {
                                             (!this.state.verification_timing) ?
@@ -408,7 +447,7 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="no-padding input-field col l5 m5 s4">
+                                <div className="input-field col l5 m5 s4">
                                     <input id="verify_code" type="text" className="form_field" />
                                     <label className="active" htmlFor="email_ordering">Verify code</label>
                                 </div>
@@ -436,7 +475,7 @@ export default class InfoOrder extends Component {
                             <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
                         </div>
                         <div className="col l6 m12 s12">
-                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-close" onClick={() => this.handleOnCloseOrderInfo()}>close</a>
+                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-close" onClick={() => this.props.handleBackToShopping()}>back</a>
                             <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>save</a>
                         </div>
                     </div>

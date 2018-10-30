@@ -325,6 +325,75 @@ export class Dish_Detail extends Component {
     //     localStorage.setItem('localCart', JSON.stringify(localDishs));
     // };
 
+    addOrderNotLogin() {
+        util.show_loading_progress();
+        var dish_details = this.state.data;
+        var homecook_id = dish_details.user_id;
+        var homecook_details = Kitchen_details.findOne({"user_id": homecook_id});
+        var homecook_name =  homecook_details.chef_name;
+        var dish_id = dish_details._id;
+        var dish_price = dish_details.dish_selling_price;
+        var dish_name = dish_details.dish_name;
+        var ready_time = dish_details.cooking_time;
+        var quantity = this.state.sumOrder;
+
+        var serving_option = dish_details.serving_option;
+        var address = Session.get('address');
+
+        var local_cart_item = {
+            buyer_id: '',
+            buyer_name: '',
+            seller_id: homecook_id,
+            seller_name: homecook_name,
+            address: address,
+            serving_option: serving_option,
+            ready_time: ready_time,
+            product_id: dish_id,
+            product_name: dish_name,
+            quantity: quantity,
+            product_price: dish_price,
+            total_price_per_dish: parseFloat(dish_price) * quantity
+        };
+        
+        var localDishs = JSON.parse(localStorage.getItem("localCart"));
+
+        if (typeof localDishs == "object" && localDishs == null ) {
+            localDishs = [];
+        }
+
+        if (localDishs != null && localDishs.length > 0) {
+            
+            for (var i = 0; i < localDishs.length; i++) {
+                var bHasSellerId = false,
+                    bHasDishId = false;
+
+                if (localDishs[i].seller_id === homecook_id) {
+                    bHasSellerId = true;
+                    if (localDishs[i].product_id === dish_id) {
+                        bHasDishId = true;
+                        localDishs[i].quantity = localDishs[i].quantity + quantity;
+                        localDishs[i].total_price_per_dish = localDishs[i].total_price_per_dish + parseFloat(dish_price) * quantity
+                        util.hide_loading_progress();
+                        Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
+                    } 
+                }
+            }
+
+            if (!bHasSellerId || !bHasDishId) {
+                localDishs.push(local_cart_item);
+                util.hide_loading_progress();
+                Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
+            }
+        } else {
+            localDishs.push(local_cart_item);
+            util.hide_loading_progress();
+            Materialize.toast(dish_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 6000, "rounded bp-green");
+        }
+
+        localStorage.setItem('localCart', JSON.stringify(localDishs));
+    };
+
+
     dishOrder() {
         util.show_loading_progress();
 
@@ -477,7 +546,7 @@ export class Dish_Detail extends Component {
                 if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
                     util.hide_loading_progress();
                     // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
-                    this.openInfoOrdering();
+                    // this.openInfoOrdering();
                 } else {
                     this.handleOnDishAction();
                 }
@@ -486,23 +555,24 @@ export class Dish_Detail extends Component {
             //- not logged in
             this.setState({ action: actionFoodies});
             util.hide_loading_progress();
-            this.openInfoOrdering();
+            // this.openInfoOrdering();
+            this.addOrderNotLogin();
         }
     }
 
-    openInfoOrdering() {
-        // Clear data info
-        var order_info = this.state.order_obj;
-        order_info.name_ordering = '';
-        order_info.district_ordering = '';
-        order_info.email_ordering = '';
-        order_info.phone_ordering = '';
-        this.setState( { order_obj: order_info});
+    // openInfoOrdering() {
+    //     // Clear data info
+    //     var order_info = this.state.order_obj;
+    //     order_info.name_ordering = '';
+    //     order_info.district_ordering = '';
+    //     order_info.email_ordering = '';
+    //     order_info.phone_ordering = '';
+    //     this.setState( { order_obj: order_info});
 
-        $('.dirty_field').removeClass('dirty_field');
-        $('#ordering-popup').modal('open');
-        $('#name_ordering').focus();
-    }
+    //     $('.dirty_field').removeClass('dirty_field');
+    //     $('#ordering-popup').modal('open');
+    //     $('#name_ordering').focus();
+    // }
     
     dishRequest() {
         var dish_id = this.state.data._id
@@ -730,11 +800,11 @@ export class Dish_Detail extends Component {
                                 </div>
                             </div>
                             
-                            <InfoOrder order_obj={this.state.order_obj}
+                            {/* <InfoOrder order_obj={this.state.order_obj}
                                 handleOnSaveOrderingInfo={() => this.handleOnDishAction()}
                                 product_id ={ this.state.data._id}
                                 path_process = "/dish/"
-                            />
+                            /> */}
                         </div>
                     : 
                         <div className="preloader-wrapper small active loading-dish-detail">

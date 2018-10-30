@@ -521,4 +521,7 @@ Meteor.methods({
     }
     // console.log('Created task on asana: ')
   },
+  'shopping_cart.find_one'(product_id, buyer_id) {
+    return Shopping_cart.findOne({product_id: product_id, buyer_id: buyer_id});
+  }
 });

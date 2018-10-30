@@ -1,6 +1,4 @@
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Blaze } from 'meteor/blaze';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
@@ -41,6 +39,7 @@ Template.login_modal.events({
   },
   'click #login, keypress': function(event){
     if (event.which === 1||event.which === 13){
+      util.show_loading_progress();
       var path_access = $('#path_access').val();
       var email = $('#login_email').val().trim();
       var password = $('#login_password').val().trim();
@@ -91,7 +90,6 @@ Template.login_modal.events({
           }
           else if (Meteor.user().emails[0].verified === true) {
             // $('#loginLoader').hide(); // hide the loader
-            util.hide_loading_progress()
             localStorage.setItem("loggedIn", true);
             $('#login_modal').modal('close');
             if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
@@ -116,7 +114,53 @@ Template.login_modal.events({
               path_access != null && path_access.length > 0 ?
                 FlowRouter.go(path_access)
               :
-                FlowRouter.go("/main");
+                // FlowRouter.go("/");
+                ""
+                
+              // Insert or update data into DB after login success
+              var dishesLocal = JSON.parse(localStorage.getItem("localCart"));
+              dishesLocal.map( (cart_item, index) => {
+                var foodie_details = Profile_details.findOne({user_id: Meteor.userId()});
+                
+                //check if the dish has been put in shopping check_shopping_cart
+                var order = Shopping_cart.findOne({"product_id": cart_item.product_id, 'buyer_id': Meteor.userId()});
+                var total_price_per_dish = 0;
+                
+                Meteor.call('shopping_cart.find_one', cart_item.product_id, Meteor.userId(), (err, res) => {
+                  if (res) {
+                      var order_id = order._id;
+                      var quantity = parseInt(order.quantity) + cart_item.quantity;
+                      total_price_per_dish = parseInt(cart_item.product_price) * quantity;
+                      Meteor.call('shopping_cart.update',
+                          order_id,
+                          quantity,
+                          total_price_per_dish,
+                          function(err) {
+                            localStorage.setItem("localCart", JSON.stringify([]));
+                          }
+                      )
+                    } else {
+                        var foodie_name = foodie_details.foodie_name;
+                        Meteor.call('shopping_cart.insert',
+                            Meteor.userId(),
+                            cart_item.seller_id,
+                            foodie_name,
+                            cart_item.seller_name,
+                            cart_item.address,
+                            cart_item.serving_option,
+                            cart_item.ready_time,
+                            cart_item.product_id,
+                            cart_item.product_name,
+                            cart_item.quantity,
+                            cart_item.product_price,
+                            function(err) {
+                              localStorage.setItem("localCart", JSON.stringify([]));
+                            }
+                        );
+                    }
+                  });
+                });
+
               // check if have already cookies, create a promotion balance for this user
               if (getCookie('promotion')) {
                 Meteor.call('promotion.check_history', (err, res) => {
@@ -133,7 +177,7 @@ Template.login_modal.events({
                 });
               }
             }
-
+            util.hide_loading_progress()
           } else {
 
             //- logout

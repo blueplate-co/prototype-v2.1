@@ -311,6 +311,28 @@ select.select-serving-option>option {
   margin-bottom: 40px;
 }
 
+.shopping-cart-details {
+  width: 100%;
+  padding: 0px 12px 0px 20px;
+}
+
+#view-detail-total {
+  float: right;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.236073);
+  margin-left: 30px !important;
+  border-radius: 8px;
+}
+
+#total-block {
+  padding-top: 20px;
+  margin: 5px;
+  line-height: 28px;
+}
+
+.btn-shopping-cart {
+  padding-top: 40px;
+}
+
 /* Style for progress_bar.js file */
 .cart-progress-step-number {
   color: #FFFFFF;
@@ -323,8 +345,68 @@ select.select-serving-option>option {
   font-size: 18px !important;
   margin-right: 5px;
 }
+/* end Style for progress_bar.js file */
 
 .react-datepicker__input-container {
   margin-left: 44px;
   width: 86%;
+}
+
+textarea.materialize-textarea {
+  padding: 0px;
+  resize: vertical;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+  .cart-scroll-fix-top {
+    position: fixed;
+    right: 36px !important;
+    top: 81px;
+  }
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cart-scroll-fix-top {
+    position: fixed;
+    right: 4px !important;
+    top: 81px;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  .cart-scroll-fix-top {
+    position: fixed;
+    right: 20px !important;
+    top: 81px;
+    width: 25% !important;
+  }
+
+  #view-detail-total {
+    width: 26%;
+    margin-left: auto !important;
+  }
+
+  .shopping-cart-details {
+    padding: 0px 15px 0px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  #view-detail-total {
+    margin-left: auto !important;
+    width: 100%;
+    float: left;
+  }
+}
+
+/* Portrait phones and smaller 480*/
+@media (max-width: 520px) {
+  #view-detail-total {
+    float: left;
+    margin-left: auto !important;
+    width: 100%;
+  }
 }
