@@ -137,6 +137,12 @@ Template.login_modal.events({
                           total_price_per_dish,
                           function(err) {
                             localStorage.setItem("localCart", JSON.stringify([]));
+                            localStorage.removeItem('localStorage');
+
+                            // To make sure the dish we add from localStorage can display on foodies's shopping cart 
+                            if (location.pathname.indexOf('shopping_cart') > -1) {
+                              location.reload();
+                            }
                           }
                       )
                     } else {
@@ -155,6 +161,12 @@ Template.login_modal.events({
                             cart_item.product_price,
                             function(err) {
                               localStorage.setItem("localCart", JSON.stringify([]));
+                              localStorage.removeItem('localStorage');
+
+                              // To make sure the dish we add from localStorage can display on foodies's shopping cart 
+                            if (location.pathname.indexOf('shopping_cart') > -1) {
+                              location.reload();
+                            }
                             }
                         );
                     }

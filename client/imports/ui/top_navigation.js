@@ -72,7 +72,8 @@ class TopNavigation extends Component {
       status: "Search",
       credits: 0,
       avatar: '',
-      isLogin: Meteor.userId() != undefined ? true : false
+      isLogin: Meteor.userId() != undefined ? true : false,
+      localShoppingCart: 0
     };
   }
 
@@ -140,6 +141,7 @@ class TopNavigation extends Component {
       util.show_loading_progress();
       Meteor.logout(() => {
         util.hide_loading_progress();
+        localStorage.removeItem("globalCart" + Meteor.userId());
         this.setState({ isLogin: false })
         FlowRouter.go("/main");
         location.href = '/main';
@@ -206,7 +208,7 @@ class TopNavigation extends Component {
           }}
         >
           <span>Shopping cart</span>
-          <span id="cart-number-sidebar">{this.props.shoppingCart.length}</span>
+          <span id="cart-number-sidebar">{ (Meteor.userId()) ?  this.props.shoppingCart.length : JSON.parse(localStorage.getItem("localCart")).length }</span>
           <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/shopping+cart.svg" />
         </li>
 
@@ -522,6 +524,10 @@ class TopNavigation extends Component {
         });
       });
     });
+
+    var localShoppingCart = JSON.parse(localStorage.getItem("localCart"));
+    this.setState({ localShoppingCart: localShoppingCart.length });
+
     return true;
   }
 
@@ -588,27 +594,23 @@ class TopNavigation extends Component {
                         ""
                     }
 
-                    {
-                      (Meteor.userId()) ? 
-                        <li
-                          onClick={() => {
-                            //- send to Facebook Pixel
-                            if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
-                              fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
-                            }
-                            FlowRouter.go("/shopping_cart");
-                          }}
-                          className="icon"
-                          id="cart-icon"
-                        >
-                          <span id="cart-number">
-                            {this.props.shoppingCart.length}
-                          </span>
-                          <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
-                        </li>
-                      :
-                      ""
-                    }
+                    <li
+                      onClick={() => {
+                        //- send to Facebook Pixel
+                        if (location.hostname == 'www.blueplate.co' && !util.filterEmailInternalForNotification()) {
+                          fbq('trackCustom', 'ClickOnShoppingCartTopNav', { content_id: Meteor.userId() });
+                        }
+                        FlowRouter.go("/shopping_cart");
+                      }}
+                      className="icon"
+                      id="cart-icon"
+                    >
+                      <span id="cart-number">
+                        { (Meteor.userId()) ?  this.props.shoppingCart.length : JSON.parse(localStorage.getItem("localCart")).length }
+                      </span>
+                      <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/cart-icon.svg" />
+                    </li>
+
                     {
                       (Meteor.userId()) ?
                         <li className="icon" onClick={() => this.openProfile()}>

@@ -523,5 +523,8 @@ Meteor.methods({
   },
   'shopping_cart.find_one'(product_id, buyer_id) {
     return Shopping_cart.findOne({product_id: product_id, buyer_id: buyer_id});
+  },
+  'shopping_cart.find_by_buyer'(buyer_id) {
+    return Shopping_cart.find({ buyer_id: buyer_id }).fetch();
   }
 });

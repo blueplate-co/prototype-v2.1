@@ -262,69 +262,6 @@ export class Dish_Detail extends Component {
         this.setState({ sumOrder: this.state.sumOrder+1 });
     }
 
-    /**
-     * Check if localStorage.getItem("localCart") is empty
-     * parse localDishs to array object
-     * 
-     * else if length of localDishs more than 0
-     * > check exist seller_id in localDishs
-     * >> if true: continou check exist dish_id in localDishs, increa quantity for this dish_id
-     * >> else push dish_id into array arr_dishs for this seller_id
-     * 
-     * If not exist seller_id in localDishs, push new object oDishCart into localDishs.
-     */
-    // addDishToLocalCart() {
-    //     var oDishCart = {
-    //         seller_id: this.state.data.user_id,
-    //         arr_dishs: [{
-    //             dish_id: this.state.data._id,
-    //             quantity: this.state.sumOrder
-    //         }]
-    //     }
-    //     var localDishs = JSON.parse(localStorage.getItem("localCart"));
-
-    //     if (typeof localDishs == "object" && localDishs == null ) {
-    //         localDishs = [];
-    //     }
-
-    //     if (localDishs != null && localDishs.length > 0) {
-    //         var bAlreadyExistSeller = false,
-    //             bAlreadyExistDish = false;
-
-    //         localDishs.map ( (item, index) => {
-    //             if (item.seller_id == oDishCart.seller_id) {
-    //                 bAlreadyExistSeller = true;
-    //                 item.arr_dishs.map((dishItem, dishIdx) => {
-
-    //                     if (dishItem.dish_id === oDishCart.arr_dishs[0].dish_id) {
-    //                         bAlreadyExistDish = true;
-    //                         dishItem.quantity = dishItem.quantity + oDishCart.arr_dishs[0].quantity;
-    //                     }
-    //                 });
-
-    //                 if (!bAlreadyExistDish) {
-    //                     let newObjDish = {
-    //                         dish_id: oDishCart.arr_dishs[0].dish_id,
-    //                         quantity: this.state.sumOrder
-    //                     }
-    //                     item.arr_dishs.push(newObjDish);
-    //                 }
-    //             } 
-    //         });
-
-    //         /** If not exist oDishCart in localDishs
-    //          * add oDishCart into localDishs
-    //         */
-    //         if (!bAlreadyExistSeller) {
-    //             localDishs.push(oDishCart);
-    //         }
-    //     } else {
-    //         localDishs.push(oDishCart);
-    //     }
-
-    //     localStorage.setItem('localCart', JSON.stringify(localDishs));
-    // };
-
     addOrderNotLogin() {
         util.show_loading_progress();
         var dish_details = this.state.data;
@@ -415,8 +352,6 @@ export class Dish_Detail extends Component {
         //check if the dish has been put in shopping check_shopping_cart
         var order = Shopping_cart.findOne({"product_id": dish_id, 'buyer_id': foodie_id});
         var total_price_per_dish = 0;
-
-        // this.addDishToLocalCart();
 
         if (order) {
             var order_id = order._id;
@@ -545,7 +480,8 @@ export class Dish_Detail extends Component {
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
                 if ( (typeof foodie_details == 'undefined') || (foodie_details !== undefined && foodie_details.foodie_name == '')) {
                     util.hide_loading_progress();
-                    // Materialize.toast('Please complete your foodie profile before order.', 4000, 'rounded bp-green');
+                    Materialize.toast('Please complete your foodie profile before order.', 6000, 'rounded bp-green');
+                    FlowRouter.go('/profile');
                     // this.openInfoOrdering();
                 } else {
                     this.handleOnDishAction();

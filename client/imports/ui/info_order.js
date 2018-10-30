@@ -318,7 +318,7 @@ export default class InfoOrder extends Component {
     };
 
     handleLogin() {
-        util.loginAccession(location.origin +"/shopping_cart");
+        util.loginAccession("");
     };
 
     getCountryCode(input) {

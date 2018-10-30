@@ -25,7 +25,7 @@ class ShoppingCart extends Component {
             discount: 0,
             bDateReady: false,
             dishesLocal: JSON.parse(localStorage.getItem("localCart")),
-            shoppingCart: this.props.shoppingCart || [],
+            shoppingCart: [],
             order_obj: {
                 name_ordering: '',
                 district_ordering: '',
@@ -60,7 +60,10 @@ class ShoppingCart extends Component {
         var new_carts = this.state.shoppingCart.filter( (item) => item.product_id != product_id);
         this.setState({ shoppingCart: new_carts, bHasChangeQty: true }, () => {
             globalCart = attemp_globalCart;
-            localStorage.setItem("localCart", JSON.stringify(new_carts));
+
+            if (!Meteor.userId()) {
+                localStorage.setItem("localCart", JSON.stringify(new_carts));
+            }
             
             if (globalCart == null || globalCart.length == 0) {
                 localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
@@ -95,7 +98,9 @@ class ShoppingCart extends Component {
         var attemp_global_cart = globalCart;
         this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
             globalCart = attemp_global_cart;
-            localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+            if (Meteor.userId()) {
+                localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+            }
         });
     }
 
@@ -130,7 +135,9 @@ class ShoppingCart extends Component {
             var attemp_global_cart = globalCart;
             this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
                 globalCart = attemp_global_cart;
-                localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+                if (Meteor.userId()) {
+                    localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
+                }
             });
         }
     }
@@ -361,6 +368,7 @@ class ShoppingCart extends Component {
             if (Meteor.userId()) {
                 this.handleCheckout();
             } else {
+                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
                 this.setState({ bGetInforUser: true});
             }
         }
@@ -650,11 +658,17 @@ class ShoppingCart extends Component {
                     var kitchen = { id: item, service: "", date: moment(null).format('DD/MM/YYYY'), time: "", timeStamp: '', address: "" };
 
                     if (globalCart.length > 0) {
+                        let bExistDishId = false;
                         globalCart.map( (cartItem, idx) => {
-                            if (cartItem.id != item ) {
-                                globalCart.push(kitchen);
+                            if (cartItem.id == item ) {
+                                bExistDishId = true;
                             }
                         });
+
+                        if (!bExistDishId) {
+                            globalCart.push(kitchen);
+                        }
+
                     } else {
                         globalCart.push(kitchen);
                     }
@@ -730,7 +744,11 @@ class ShoppingCart extends Component {
         $(window).scrollTop(0);
 
         if (Meteor.userId()) {
-            this.setState({ shoppingCart: this.state.shoppingCart })
+            Meteor.call('shopping_cart.find_by_buyer', Meteor.userId(), (err, res) => {
+                if (!err) {
+                    this.setState({ shoppingCart: res });
+                }
+            });
         } else {
             this.setState({ shoppingCart: this.state.dishesLocal })
         }
@@ -760,11 +778,6 @@ class ShoppingCart extends Component {
             }
         }
     }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     this.setState({ shoppingCart: nextProps.shoppingCart});
-    //     return true;
-    // }
 
     componentWillUpdate() {
         //- run google places autocomplete with timeout to make sure HTML is rendered
@@ -805,10 +818,10 @@ class ShoppingCart extends Component {
             total = total - this.state.discount;
             if (total < 0) {
                 total = 0;
-            } else {
-                total = total.toFixed(2);
             }
         }
+        subtotal = subtotal.toFixed(2);
+        total = total.toFixed(2);
 
         return (
             <div className="container shopping-cart-details">
@@ -828,7 +841,7 @@ class ShoppingCart extends Component {
                             </div>
 
                             {
-                                (!this.props.listLoading && this.state.shoppingCart.length > 0) ? 
+                                (this.state.shoppingCart.length > 0) ? 
                                     <div id="view-detail-total" className="col s12 m3 l3">
                                         <div id="total-block">
                                             <div className="row subtotal">
@@ -871,12 +884,9 @@ class ShoppingCart extends Component {
 export default withTracker(props => {
     Meteor.subscribe('userEmail');
     const handle = Meteor.subscribe('getUserShoppingCart');
-    var discount = 0;
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
-        shoppingCart: Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch(),
-        discount: discount
     };
 })(ShoppingCart);
 
