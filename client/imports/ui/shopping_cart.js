@@ -750,7 +750,11 @@ class ShoppingCart extends Component {
                 }
             });
         } else {
-            this.setState({ shoppingCart: this.state.dishesLocal })
+            if (!this.state.dishesLocal) {
+                this.setState({ shoppingCart: [] })
+            } else {
+                this.setState({ shoppingCart: this.state.dishesLocal });
+            }
         }
 
         //- send to Facebook Pixel
@@ -882,8 +886,12 @@ class ShoppingCart extends Component {
 }
 
 export default withTracker(props => {
+    console.time('Start tracker shopping cart');
     Meteor.subscribe('userEmail');
     const handle = Meteor.subscribe('getUserShoppingCart');
+    if (handle.ready()) {
+        console.timeEnd('Start tracker shopping cart');
+    }
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),
@@ -893,7 +901,7 @@ export default withTracker(props => {
 
 $(document).ready(function () {
     $(window).bind("scroll", function(e) {
-          var top = $(window).scrollTop();
+        var top = $(window).scrollTop();
         if (53 < top && top < 1360) {
           $("#view-detail-total").addClass("cart-scroll-fix-top");
         } else {
