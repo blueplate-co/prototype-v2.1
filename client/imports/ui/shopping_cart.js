@@ -9,6 +9,7 @@ import { checking_promotion_dish, get_amount_promotion } from '/imports/function
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 import ProgressBar from './progress_bar.js';
 import InfoOrder from './info_order.js';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 //- empty cart store global in this page
 window.globalCart = localStorage.getItem("globalCart" + Meteor.userId());
@@ -676,14 +677,6 @@ class ShoppingCart extends Component {
                     return this.renderKitchen(item, index);
                 })
             )
-        } else {
-            return (
-                <div className="row text-center">
-                    <div id="empty-shopping-cart"></div>
-                    <p className="row empty-text-cart">There is no item in your shopping cart</p>
-                    <button id="btn-continue-shopping" onClick={ () => this.handleOnContinueShoppping()}>continue shopping</button>
-                </div>
-            )
         }
     }
 
@@ -803,9 +796,9 @@ class ShoppingCart extends Component {
         });
     };
 
-    render() {
+    renderTotalPrice() {
         var total = 0,
-            subtotal = 0;
+        subtotal = 0;
 
         if (this.state.shoppingCart) {
             for (var i = 0; i < this.state.shoppingCart.length; i++ ) {
@@ -828,50 +821,60 @@ class ShoppingCart extends Component {
         total = total.toFixed(2);
 
         return (
+            <div id="view-detail-total" className="col s12 m3 l3">
+                <div id="total-block">
+                    <div className="row subtotal">
+                        <div className="col s6 m6 text-left">Subtotal:</div>
+                        <div className="col s6 m6 text-left">HK$ { subtotal }</div>
+                    </div>
+
+                    <div className="row discount">
+                        <div className="col s6 m6 text-left">Discount:</div>
+                        <div className="col s6 m6 text-left">HK$ { this.state.discount }</div>
+                    </div>
+
+                    <div className="row total">
+                        <div className="col s6 m6 text-left total-text">Total:</div>
+                        <div className="col s6 m6 text-left bp-blue-text">HK$ { total }</div>
+                    </div>
+                    <div className="row text-center btn-shopping-cart">
+                        <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >next</button>
+                        <p className="no-charge-money">You won’t be charged yet !</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    render() {
+       
+
+        return (
             <div className="container shopping-cart-details">
                 <ProgressBar step_progress="1" />
 
                 <div className="row">
-
-                { !this.state.bGetInforUser ?
-                        <span>
-                            <div className="col s12 m8 l8">
-                                {
-                                    (this.props.listLoading) ?
-                                        <span>Loading...</span>
-                                    :    
-                                        this.renderListKitchen()
-                                }
-                            </div>
-
-                            {
-                                (this.state.shoppingCart.length > 0) ? 
-                                    <div id="view-detail-total" className="col s12 m3 l3">
-                                        <div id="total-block">
-                                            <div className="row subtotal">
-                                                <div className="col s6 m6 text-left">Subtotal:</div>
-                                                <div className="col s6 m6 text-left">HK$ { subtotal }</div>
+                    { !this.state.bGetInforUser ?
+                        (this.props.listLoading) ?
+                                <BouncingLoader />
+                            :
+                                <span>
+                                    {(this.state.shoppingCart.length > 0) ? 
+                                        <span>
+                                            <div className="col s12 m8 l8">
+                                                {this.renderListKitchen()}
                                             </div>
-
-                                            <div className="row discount">
-                                                <div className="col s6 m6 text-left">Discount:</div>
-                                                <div className="col s6 m6 text-left">HK$ { this.state.discount }</div>
-                                            </div>
-
-                                            <div className="row total">
-                                                <div className="col s6 m6 text-left total-text">Total:</div>
-                                                <div className="col s6 m6 text-left bp-blue-text">HK$ { total }</div>
-                                            </div>
-                                            <div className="row text-center btn-shopping-cart">
-                                                <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >next</button>
-                                                <p className="no-charge-money">You won’t be charged yet !</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            {this.renderTotalPrice()}
+                                        </span>
                                     :
-                                        ''
-                            }
-                        </span>
+                                        <div className="row text-center">
+                                            <div id="empty-shopping-cart"></div>
+                                            <p className="row empty-text-cart">There is no item in your shopping cart</p>
+                                            <button id="btn-continue-shopping" onClick={ () => this.handleOnContinueShoppping()}>continue shopping</button>
+                                        </div>
+                                    }
+                                </span>
+                        
                     :
                         <InfoOrder order_obj={this.state.order_obj}
                             handleOnSaveOrderingInfo={() => this.handleOnSaveOrderingInfo()}

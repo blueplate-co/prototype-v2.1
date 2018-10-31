@@ -4,6 +4,7 @@ import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
 import { checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 // App component - represents the whole app
 export default class DishList extends Component {
@@ -121,7 +122,7 @@ export default class DishList extends Component {
           {
             (this.state.loading)
             ?
-              <span>...loading</span>
+              <BouncingLoader />
             :
               this.renderList()
           }

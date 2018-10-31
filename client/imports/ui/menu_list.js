@@ -4,6 +4,7 @@ import Rating from './rating';
 import Like from './like_button';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 
 class MenuList extends Component {
@@ -143,13 +144,13 @@ class MenuList extends Component {
                 {
                   (this.state.loading)
                   ?
-                    <span>...loading</span>
+                    <BouncingLoader />
                   :
                     this.renderList()
                 }
               </div>
             ) : (
-              <p>Loading...</p>
+              <BouncingLoader />
             )
         }
       </div>

@@ -5,6 +5,7 @@ import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 // App component - represents the whole app
 class WishDishList extends Component {
@@ -88,7 +89,7 @@ class WishDishList extends Component {
             {
               (this.props.listLoading)
               ?
-                <span>...loading</span>
+                <BouncingLoader />
               :
                 this.renderList()
             }

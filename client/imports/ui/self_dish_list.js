@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
-import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import Rating from './rating';
 import ProgressiveImages from './progressive_image';
 import DishStatus from './dish_status';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 // App component - represents the whole app
 class SelfDishList extends Component {
@@ -105,7 +104,7 @@ class SelfDishList extends Component {
             {
               (this.props.listLoading)
               ?
-                <span>...loading</span>
+                <BouncingLoader />
               :
                 this.renderList()
             }
