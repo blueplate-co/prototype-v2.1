@@ -210,3 +210,7 @@ select:focus {
   /* border-radius: 22px !important; */
   border-color: #26a69a !important;
 }
+
+select.invalid:focus {
+  border-color: #EA6055 !important;
+}

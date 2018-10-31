@@ -99,7 +99,7 @@ class ShoppingCart extends Component {
         var attemp_global_cart = globalCart;
         this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
             globalCart = attemp_global_cart;
-            if (Meteor.userId()) {
+            if (!Meteor.userId()) {
                 localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
             }
         });
@@ -136,7 +136,7 @@ class ShoppingCart extends Component {
             var attemp_global_cart = globalCart;
             this.setState({ shoppingCart: attemp_carts, bHasChangeQty: true }, () => {
                 globalCart = attemp_global_cart;
-                if (Meteor.userId()) {
+                if (!Meteor.userId()) {
                     localStorage.setItem('localCart', JSON.stringify(this.state.shoppingCart));
                 }
             });

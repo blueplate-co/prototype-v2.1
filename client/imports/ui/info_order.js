@@ -17,6 +17,7 @@ export default class InfoOrder extends Component {
     };
 
     componentDidMount() {
+        $(window).scrollTop(0);
         $('#phone_ordering').intlTelInput({
             initialCountry: "HK",
             utilsScript: "../intlTelInput/utils.js"
@@ -290,11 +291,7 @@ export default class InfoOrder extends Component {
                 this.scrollToFieldRequired('email', 'invalid');
                 Materialize.toast('Email is required.', 4000, 'rounded bp-green');
                 return false;
-            }  else if (ordering_info.district_ordering.trim() == '') {
-                this.scrollToFieldRequired('district_ordering', 'invalid');
-                Materialize.toast('Please select your district.', 4000, 'rounded bp-green');
-                return false;
-            } else if (!util.validationEmail(ordering_info.email_ordering)) {
+            }  else if (!util.validationEmail(ordering_info.email_ordering)) {
                 this.scrollToFieldRequired('email', 'invalid');
                 Materialize.toast('Email is not valid format.', 4000, 'rounded bp-green');
                 return false;
@@ -308,6 +305,11 @@ export default class InfoOrder extends Component {
                 util.hide_loading_progress();
                 return false;
             }
+            // else if (ordering_info.district_ordering.trim() == '') {
+            //     this.scrollToFieldRequired('district_ordering', 'invalid');
+            //     Materialize.toast('Please select your district.', 4000, 'rounded bp-green');
+            //     return false;
+            // } 
             return true;
         } 
     //     else if ( ordering_info.address_conversion.lng == '' || ordering_info.address_conversion.lat == '' ) {
@@ -404,14 +406,18 @@ export default class InfoOrder extends Component {
         return (
             <div id="ordering-popup" className="ordering-popup-infor container">
                 <div className="">
-                    <h5>Please let's us know who are you!</h5>
+                    <div className="text-center">
+                        <p id="btn-back-infor-icon" onClick={() => this.props.handleBackToShopping()}><i className="material-icons arrow-back-icon">arrow_back</i></p>
+                        <p id="get-infor-title-content">Please let's us know who are you!</p>
+                    </div>
+
                     {
                         (this.state.foodies_name !== undefined && this.state.foodies_name !== '') ?
                             ''
                         :
                             <div className="input-field">
                                 <input id="name_ordering" type="text" className="form_field" value={this.state.order_obj.name_ordering} onChange={this.handleOnChange.bind(this, 'name_ordering')}/>
-                                <label className="active" htmlFor="name_ordering">name</label>
+                                <label htmlFor="name_ordering">name</label>
                             </div>
                     }
 
@@ -423,7 +429,7 @@ export default class InfoOrder extends Component {
                             <div className="" id="email-distric-display">
                                 <div className="no-padding input-field email_ordering">
                                     <input id="email" type="text" className="form_field" value={this.state.order_obj.email_ordering || ''} onChange={this.handleOnChange.bind(this, 'email_ordering')}/>
-                                    <label className="active" htmlFor="email_ordering">email</label>
+                                    <label htmlFor="email_ordering">email</label>
                                 </div>
                             </div>
                             <div className="row">
@@ -447,11 +453,11 @@ export default class InfoOrder extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="input-field col l5 m5 s4">
+                                <div className="input-field col s12">
                                     <input id="verify_code" type="text" className="form_field" />
-                                    <label className="active" htmlFor="email_ordering">Verify code</label>
+                                    <label htmlFor="email_ordering">Verify code</label>
                                 </div>
-                                <div className="col l7 m7 s8" id="district-option">
+                                {/* <div className="col l7 m7 s8" id="district-option">
                                     <i className="dropdown-arrow material-icons">expand_more</i>
                                     <select ref="dropdown" className="browser-default" id="district_ordering" value={this.state.order_obj.district_ordering} onChange={this.handleOnChange.bind(this, 'district_ordering')}>
                                         <option value="">Choose a district</option>
@@ -463,7 +469,7 @@ export default class InfoOrder extends Component {
                                                 })
                                         }
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
                         </span>
                     }
@@ -471,11 +477,8 @@ export default class InfoOrder extends Component {
                 </div>
                 <div className="modal-footer get-info">
                     <div className="row">
-                        <div className="col l6 m12 s12">
+                        <div className="col l6 m12 s12 text-right">
                             <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
-                        </div>
-                        <div className="col l6 m12 s12">
-                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-close" onClick={() => this.props.handleBackToShopping()}>back</a>
                             <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>save</a>
                         </div>
                     </div>
