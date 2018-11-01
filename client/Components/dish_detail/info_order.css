@@ -20,6 +20,31 @@
     cursor: pointer;
 }
 
+#get-infor-title-content {
+    font-size: 20px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+#btn-back-infor-icon {
+    color: #56AACD;
+    font-size: 10px;
+    border-radius: 50%;
+    padding: 0px 4px;
+    border: 1px solid #56AACD;
+    display: inline-block;
+    float: left;
+    cursor: pointer;
+}
+
+#btn-back-infor-icon:hover {
+    color: #FFFFFF;
+    background-color: #56AACD;
+}
+
+.arrow-back-icon {
+    margin-top: 2px;
+}
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     #ordering-popup.ordering-popup-infor {
@@ -58,11 +83,6 @@
         overflow: hidden !important;
     }
 
-    #have-accn-text {
-        text-align: left;
-        float: none !important;
-    }
-
     #ordering-popup .get-info {
         height: 90px;
     }
@@ -70,11 +90,6 @@
 
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
-    #have-accn-text {
-        text-align: left;
-        float: none !important;
-    }
-
     #ordering-popup .get-info {
         height: 90px;
     }
@@ -112,11 +127,6 @@
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
-    #have-accn-text {
-        position: absolute;
-        top: -50px;
-    }
-
     #ordering-popup .get-info {
         height: 70px;
     }
@@ -136,8 +146,7 @@
 }
 
 #have-accn-text {
-    margin-top: 10px;
-    margin-left: 10px;
+    display: inline-block;
     float: left;
 }
 

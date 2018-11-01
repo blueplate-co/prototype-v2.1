@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
 import Rating from './rating';
-import ProgressiveImages from './progressive_image';
-import ChefAvatar from './chef_avatar';
 import Like from './like_button';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
-import { navbar_find_by } from './../../../imports/functions/find_by';
 
 // App component - represents the whole app
 class WishMenuList extends Component {
@@ -127,7 +124,7 @@ class WishMenuList extends Component {
             {
               (this.props.listLoading)
               ?
-                <span>...loading</span>
+                <BouncingLoader />
               :
                 this.renderList()
             }

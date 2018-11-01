@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import KitchenCard from './kitchen_card';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 // App component - represents the whole app
 export default class KitchenList extends Component {
@@ -58,7 +59,7 @@ export default class KitchenList extends Component {
                 {
                   (this.state.loading)
                   ?
-                    <span>...loading</span>
+                    <BouncingLoader />
                   :
                     this.renderList()
                 }

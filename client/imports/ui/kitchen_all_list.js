@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
 import KitchenCard from './kitchen_card';
 
 import { navbar_find_by } from './../../../imports/functions/find_by';
+import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 // App component - represents the whole app
 class KitchenAllList extends Component {
@@ -56,7 +56,7 @@ class KitchenAllList extends Component {
             {
               (this.props.listLoading)
               ?
-                <span>...loading</span>
+                <BouncingLoader />
               :
                 this.renderList()
             }
