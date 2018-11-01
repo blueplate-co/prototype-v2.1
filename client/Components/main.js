@@ -1,22 +1,7 @@
+
+window.detectBrowser = window.detectBrowser || {};
 Meteor.startup(function () {
-  Notification.requestPermission()
-
-  // GoogleMaps.load({
-  //   v: '3',
-  //   key: 'AIzaSyBxRWAwnS9h8pP1mF6sAa4ZnkqGYUPBGac'
-  // });
-
-  // window.fbAsyncInit = function () {
-  //   FB.init({
-  //     appId: '{your-app-id}',
-  //     cookie: true,
-  //     xfbml: true,
-  //     version: '{latest-api-version}'
-  //   });
-  //   FB.AppEvents.logPageView();
-  // };
-
-
+  Notification.requestPermission();
   // check mobile device
   window.detectmob = function () {
     if (navigator.userAgent.match(/Android/i) ||
@@ -32,6 +17,8 @@ Meteor.startup(function () {
       return false;
     }
   }
+
+  
 
   // (function (d, s, id) {
   //   var js, fjs = d.getElementsByTagName(s)[0];

@@ -410,3 +410,45 @@ textarea.materialize-textarea {
     width: 100%;
   }
 }
+
+
+/* DATETIME PICKER */
+.dtp-picker-days {
+  width: 100%;
+}
+
+.dtp div.dtp-date, .dtp div.dtp-time {
+  background-color: #56aacd!important;
+}
+
+.dtp-actual-day {
+  background-color: #56aacd!important;
+}
+
+.dtp-header {
+  background-color: #56aacd!important;
+}
+
+.dtp .p10>a {
+  color: #fff!important;
+}
+
+.dtp table.dtp-picker-days tr>td>a.selected {
+  background: #56AACD!important;
+}
+
+.dtp-buttons .btn {
+  width: auto!important;
+  font-size: 15px;
+  border-radius: 25px;
+  padding: 0 1.5em!important;
+  margin: 0px 5px!important;
+}
+
+line.hour-hand {
+  stroke: #56aacd!important; 
+}
+
+circle.dtp-select-hour {
+  /* fill: #56aacd!important; */
+}
