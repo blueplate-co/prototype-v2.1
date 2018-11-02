@@ -197,7 +197,6 @@ class ShoppingCart extends Component {
         } else {
             for (var i = 0; i < globalCart.length; i++) {
                 if (globalCart[i].id == seller_id) {
-    
                     if (globalCart[i].date == 'Invalid date' || globalCart[i].date == '') {
                         el.target.value = '';
                         $('#date'+seller_id).addClass('invalid');
@@ -460,6 +459,7 @@ class ShoppingCart extends Component {
         return product.map((item, index) => {
             var detail = {},
                 background = '';
+
             if (item.product_type == "dish") {
                 detail = Dishes.findOne({ _id: item.product_id });
             } else {
@@ -467,6 +467,29 @@ class ShoppingCart extends Component {
                 background = Dishes.findOne({ _id: detail.dishes_id[0] }).meta.large;
             }
 
+            setTimeout(() => {
+                if (util.detectBrowser().name == 'safari') {
+                    var self = this;
+                    $('.date-picker').bootstrapMaterialDatePicker({
+                        time: false,
+                        format: 'YYYY-MM-DD'
+                    }).on('change', (event) => {
+                        let seller_id = event.target.attributes['data-sellerid'].nodeValue;
+                        let days = event.target.attributes['data-days'].nodeValue;
+                        self.handleChangeDate(event, seller_id, days);
+                    });
+                    $('.time-picker').bootstrapMaterialDatePicker({
+                        date: false,
+                        format: 'HH:mm'
+                    }).on('change', (event) => {
+                        let seller_id = event.target.attributes['data-sellerid'].nodeValue;
+                        let hours = event.target.attributes['data-hours'].nodeValue;
+                        let mins = event.target.attributes['data-mins'].nodeValue;
+                        this.handleChangeTime(event, seller_id, hours, mins);
+                    });
+                }
+            }, 500);
+            
             return (
                 (item.product_type == "dish") ?
                 (
@@ -582,6 +605,15 @@ class ShoppingCart extends Component {
             hours = menu_detail.lead_hours ? menu_detail.lead_hours : 0;
             mins = menu_detail.min_order ? menu_detail.min_order : 0;
         }
+        if (util.detectBrowser().name  == 'safari' && moment(defaultDate).format('YYYY-MM-DD') == 'Invalid date') {
+            defaultDate = '';
+        }
+
+        var dish_detail = Dishes.findOne({ _id:  product[0].product_id}),
+            days = dish_detail.days ? dish_detail.days : 0,
+            hours = dish_detail.hours ? dish_detail.hours : 0,
+            mins = dish_detail.mins ? dish_detail.mins : 0,
+            time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
 
 
         // get user avatar from user_id
@@ -619,22 +651,45 @@ class ShoppingCart extends Component {
                             {/* <label htmlFor={"address_" + seller_id} id={"label_" + seller_id}></label> */}
                         </div>
 
-                        
-                        <div className="input-field col s12 m12 l12 icon-position-common date-summary">
-                            <i className="material-icons prefix location-address icon-cart-format">date_range</i>
-                            <input id={"date" + globalCart[index].id} className="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
-                                style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
-                                onChange={(event) => this.handleChangeDate(event, seller_id, days)} />
-                            {/* <label htmlFor="date"></label> */}
-                        </div>
+                        {
+                            (util.detectBrowser().name  !== 'safari') ?
+                            (
+                                <div className="input-field col s12 m12 l12 icon-position-common date-summary">
+                                    <i className="material-icons prefix location-address icon-cart-format">date_range</i>
+                                    <input id={"date" + globalCart[index].id} className="date" type="date" defaultValue={ defaultDate ? defaultDate : ''} 
+                                        style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
+                                        onChange={(event) => this.handleChangeDate(event, seller_id, days)} />
+                                    {/* <label htmlFor="date"></label> */}
+                                </div>
+                            ) : (
+                                <div className="input-field col s12 m12 l12 icon-position-common date-summary">
+                                    <i className="material-icons prefix location-address icon-cart-format">date_range</i>
+                                    <input id={"date" + globalCart[index].id} data-sellerid={seller_id} data-days={days} className="date-picker" type="text" defaultValue={ defaultDate ? defaultDate : ''}
+                                        style={{...this, color: defaultDate.indexOf('Invalid date') < 0 ? 'rgba(0, 0, 0, 0.87)' : ''}}
+                                    />
+                                </div>
+                            )
+                        }
 
-                        <div className="input-field col s12 m12 l12 no-background time-cart icon-position-common">
-                            <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
-                            <input type="time" id={"time" + globalCart[index].id} className="time" defaultValue= {defaultTimePicker ? defaultTimePicker : '' } 
-                                onChange={(event) => this.handleChangeTime(event, seller_id, hours, mins)}
-                                placeholder="What time will be best?"
-                            />
-                        </div>
+                        {
+                            (util.detectBrowser().name  !== 'safari') ?
+                            (
+                                <div className="input-field col s12 m12 l12 no-background time-cart icon-position-common">
+                                    <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
+                                    <input type="time" id={"time" + globalCart[index].id} className="time" defaultValue= {defaultTimePicker ? defaultTimePicker : '' } 
+                                        onChange={(event) => this.handleChangeTime(event, seller_id, hours, mins)}
+                                        placeholder="What time will be best?"
+                                    />
+                                </div>
+                            ) : (
+                                <div className="input-field col s12 m12 l12 no-background time-cart icon-position-common">
+                                    <i className="material-icons prefix time-cart-icon icon-cart-format">timer</i>
+                                    <input type="text" id={"time" + globalCart[index].id} data-sellerid={seller_id} data-hours={hours} data-mins={mins} className="time-picker" defaultValue= {defaultTimePicker ? defaultTimePicker : '' }
+                                        placeholder="What time will be best?"
+                                    />
+                                </div>
+                            )
+                        }
                     </div>
 
                     <div className="col s12 m6 l6">
@@ -668,7 +723,7 @@ class ShoppingCart extends Component {
             return (
                 unique.map((item, index) => {
                     //- create new object to store all information about this kitchen
-                    var kitchen = { id: item, service: "", date: moment(null).format('DD/MM/YYYY'), time: "", timeStamp: '', address: "" };
+                    var kitchen = { id: item, service: "", date: "", time: "", timeStamp: '', address: "" };
 
                     if (globalCart.length > 0) {
                         let bExistDishId = false;
@@ -901,12 +956,8 @@ class ShoppingCart extends Component {
 }
 
 export default withTracker(props => {
-    console.time('Start tracker shopping cart');
     Meteor.subscribe('userEmail');
     const handle = Meteor.subscribe('getUserShoppingCart');
-    if (handle.ready()) {
-        console.timeEnd('Start tracker shopping cart');
-    }
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),

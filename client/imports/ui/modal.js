@@ -148,6 +148,7 @@ export default class Modal extends Component {
             // FlowRouter.go('/');
             util.loginAccession("");
         } else {
+            util.show_loading_progress();
             if (Session.get('selectedItem') == 'menu') {
                 var menu_details = Menu.findOne({"_id":this.state.item._id});
                 var foodie_details = Profile_details.findOne({"user_id": Meteor.userId()});
@@ -191,6 +192,7 @@ export default class Modal extends Component {
                         total_price_per_dish,
                         function(err) {
                             if (err) Materialize.toast('Oops! Error when update your shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
+                            util.hide_loading_progress();
                         }
                     )
                 } else {
@@ -211,10 +213,12 @@ export default class Modal extends Component {
                         function(err) {
                             if (err) {
                                 Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded bp-green");
+                                util.hide_loading_progress();
                             } else {
                                 Materialize.toast(menu_name + ' from ' + homecook_name + ' has been added to your shopping cart.', 4000, "rounded bp-green");
                                 $('#dish-modal').modal('close');
                                 Session.set('modal', false);
+                                util.hide_loading_progress();
                             }
                         }
                     );

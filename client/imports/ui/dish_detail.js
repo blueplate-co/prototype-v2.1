@@ -722,9 +722,9 @@ export class Dish_Detail extends Component {
                                 {/* Disqus comment */}
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 disqus-dish-detail-container">
-                                        <LazyLoad height={200} once>
+                                        {/* <LazyLoad height={200} once> */}
                                             <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")} />
-                                        </LazyLoad>
+                                        {/* </LazyLoad> */}
                                     </div>
                                 </div>
                                 {/* End Disqus comment */}

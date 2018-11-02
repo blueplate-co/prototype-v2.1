@@ -1,4 +1,3 @@
-
 window.util = window.util || {};
 (function() {
   "use strict";  //  Safe wrapper for use strict.
@@ -69,7 +68,12 @@ window.util = window.util || {};
       return bHasEmail;
     }
     return false;
-  }
+  };
+
+  util.detectBrowser = function() {
+    const { detect } = require('detect-browser');
+    return detect();
+  };
 }());
 /**
  * Validate phone number

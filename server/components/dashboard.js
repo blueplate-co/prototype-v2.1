@@ -1,4 +1,3 @@
-import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import moment from "moment";
 
@@ -32,7 +31,6 @@ Meteor.methods({
         ];
         result = Order_record.aggregate(pipeline);
         return result;
-        break;
       case "month":
         var result = [];
         var userId = Meteor.userId();
@@ -56,7 +54,6 @@ Meteor.methods({
         ];
         result = Order_record.aggregate(pipeline);
         return result;
-        break;
       case "year":
         var result = [];
         var userId = Meteor.userId();
@@ -80,7 +77,6 @@ Meteor.methods({
         ];
         result = Order_record.aggregate(pipeline);
         return result;
-        break;
     }
   },
   "dashboard.salesCount"() {
