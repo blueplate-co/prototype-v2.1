@@ -1,27 +1,11 @@
 <template name='show_room'>
   <div class="show_room_wrapper">
     <div class="row" id="show_room_container">
-
-      <!-- REACTJS COMPONENT RENDER AT HERE -->
-
+      <div class="bouncing-loader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </div>
-</template>
-
-<template name='show_room_dish'>
-  {{#each find_dishes_by}}
-    {{> dishes_list}}
-  {{/each}}
-</template>
-
-<template name='show_room_menu'>
-  {{#each find_menu_by}}
-    {{> menu_card}}
-  {{/each}}
-</template>
-
-<template name='show_room_chef'>
-  {{#each find_kitchen_by}}
-    {{> kitchen_card}} {{check_count}}
-  {{/each}}
 </template>
