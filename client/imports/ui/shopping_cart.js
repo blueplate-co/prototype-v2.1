@@ -609,13 +609,6 @@ class ShoppingCart extends Component {
             defaultDate = '';
         }
 
-        var dish_detail = Dishes.findOne({ _id:  product[0].product_id}),
-            days = dish_detail.days ? dish_detail.days : 0,
-            hours = dish_detail.hours ? dish_detail.hours : 0,
-            mins = dish_detail.mins ? dish_detail.mins : 0,
-            time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
-
-
         // get user avatar from user_id
         let kitchen_details = Kitchen_details.findOne({ user_id: seller_id });
         if (kitchen_details && kitchen_details.profileImg) {
