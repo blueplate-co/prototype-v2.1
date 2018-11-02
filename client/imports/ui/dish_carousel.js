@@ -196,7 +196,7 @@ export default class DishCarousel extends Component {
                     {
                         (this.state.status == false) ?
                             <button disabled className="btn">Offline</button>
-                        :   <button className="btn" onClick={ this.order } >Order</button>
+                        :   <button className="btn" onClick={ () => this.props.order() } >Order</button>
                     }
                 </div>
               </div>
