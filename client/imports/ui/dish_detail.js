@@ -289,6 +289,7 @@ export class Dish_Detail extends Component {
             product_name: dish_name,
             quantity: quantity,
             product_price: dish_price,
+            product_type: "dish",
             total_price_per_dish: parseFloat(dish_price) * quantity
         };
         
@@ -388,6 +389,7 @@ export class Dish_Detail extends Component {
                 dish_name,
                 quantity,
                 dish_price,
+                "dish",
                 function(err) {
                     if (err) {
                         util.hide_loading_progress();

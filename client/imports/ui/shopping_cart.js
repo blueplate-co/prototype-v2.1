@@ -458,15 +458,17 @@ class ShoppingCart extends Component {
 
     renderSingleProduct(product) {
         return product.map((item, index) => {
-            var type = "dish";
-            var detail = Dishes.find({ _id: item.product_id }).fetch()[0];
-            if (!detail) {
-                detail = Menu.find({ _id: item.product_id }).fetch()[0];
-                type = "menu";
-                var background = Dishes.find({ _id: detail.dishes_id[0] }).fetch()[0].meta.large;
+            var detail = {},
+                background = '';
+            if (item.product_type == "dish") {
+                detail = Dishes.findOne({ _id: item.product_id });
+            } else {
+                detail = Menu.findOne({ _id: item.product_id });
+                background = Dishes.findOne({ _id: detail.dishes_id[0] }).meta.large;
             }
+
             return (
-                (type == "dish") ?
+                (item.product_type == "dish") ?
                 (
                     <div key={index} className="row detail-product">
                         <div className="col s3 m3 l3 detail-image-product">
@@ -499,17 +501,17 @@ class ShoppingCart extends Component {
                 )   :
                 (
                     <div key={index} className="row detail-product">
-                        <div className="col s1 m1 l1 xl1">
+                        <div className="col s3 m3 l3 detail-image-product">
                             <div className="detail-thumbnail" style={{ backgroundImage: "url(" + background + ")" }} ></div>
                         </div>
-                        <div className="col s11 m11 l11 xl11 product-info">
-                            <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id) }></span>
+                        <div className="col s9 m9 l9 product-info">
+                            <span className="fa fa-times remove-item" onClick={ () => this.removeItem(item._id, item.product_id) }></span>
                             <span className="detail-title">{ detail.menu_name }</span>
                             <span className="detail-price">HK${ detail.menu_selling_price }</span>
                             <div className="quantity-control">
-                                <span onClick={ () => this.decreaseQty(item._id) }>-</span>
+                                <span onClick={ () => this.decreaseQty(item._id, item.product_id, item.quantity) }>-</span>
                                 <span>{ item.quantity }</span>
-                                <span onClick={ () => this.increaseQty(item._id) }>+</span>
+                                <span onClick={ () => this.increaseQty(item._id, item.product_id, item.quantity) }>+</span>
                             </div>
                         </div>
                     </div>
@@ -556,20 +558,30 @@ class ShoppingCart extends Component {
     renderKitchen(seller_id, index) {
         var product = this.state.shoppingCart.filter( item => item.seller_id == seller_id );
         var sellerName = product[0].seller_name;
-        var curr = new Date();
         var seller_images = '';
-        var kitchen_id = '';
-        curr.setDate(curr.getDate());
+        var kitchen_id = '',
+            days = '',
+            hours = '',
+            mins = '';
+            
         var address = globalCart[index].address,
             defaultTimePicker = globalCart[index].time,
             defaultDate = this.formatDateOrder(globalCart[index].date),
             id_service = 'select-serving-option' + globalCart[index].id;
 
-        var dish_detail = Dishes.findOne({ _id:  product[0].product_id}),
-            days = dish_detail.days ? dish_detail.days : 0,
-            hours = dish_detail.hours ? dish_detail.hours : 0,
-            mins = dish_detail.mins ? dish_detail.mins : 0,
-            time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
+
+        if (product[0].product_type == 'dish') {
+            let dish_detail = Dishes.findOne({ _id:  product[0].product_id});
+            days = dish_detail.days ? dish_detail.days : 0;
+            hours = dish_detail.hours ? dish_detail.hours : 0;
+            mins = dish_detail.mins ? dish_detail.mins : 0;
+            // time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
+        } else {
+            let menu_detail = Menu.findOne({ _id: product[0].product_id });
+            days = menu_detail.lead_days ? menu_detail.lead_days : 0;
+            hours = menu_detail.lead_hours ? menu_detail.lead_hours : 0;
+            mins = menu_detail.min_order ? menu_detail.min_order : 0;
+        }
 
 
         // get user avatar from user_id
@@ -824,21 +836,21 @@ class ShoppingCart extends Component {
             <div id="view-detail-total" className="col s12 m3 l3">
                 <div id="total-block">
                     <div className="row subtotal">
-                        <div className="col s6 m6 text-left">Subtotal:</div>
-                        <div className="col s6 m6 text-left">HK$ { subtotal }</div>
+                        <div className="col s6 m5 text-left">Subtotal:</div>
+                        <div className="col s6 m5 text-left">HK$ { subtotal }</div>
                     </div>
 
                     <div className="row discount">
-                        <div className="col s6 m6 text-left">Discount:</div>
-                        <div className="col s6 m6 text-left">HK$ { this.state.discount }</div>
+                        <div className="col s6 m5 text-left">Discount:</div>
+                        <div className="col s6 m5 text-left">HK$ { this.state.discount }</div>
                     </div>
 
                     <div className="row total">
-                        <div className="col s6 m6 text-left total-text">Total:</div>
-                        <div className="col s6 m6 text-left bp-blue-text">HK$ { total }</div>
+                        <div className="col s6 m5 text-left total-text">Total:</div>
+                        <div className="col s6 m5 text-left bp-blue-text">HK$ { total }</div>
                     </div>
                     <div className="row text-center btn-shopping-cart">
-                        <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >next</button>
+                        <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >continue</button>
                         <p className="no-charge-money">You won’t be charged yet !</p>
                     </div>
                 </div>

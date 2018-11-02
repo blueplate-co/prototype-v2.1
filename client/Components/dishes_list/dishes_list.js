@@ -126,6 +126,7 @@ Template.dishes_thumbnails.events({
             dish_name,
             quantity,
             dish_price,
+            "dish",
             function(err) {
               if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
             }
@@ -228,6 +229,7 @@ Template.dishes_card_layout.events({
             dish_name,
             quantity,
             dish_price,
+            "dish",
             function(err) {
               if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, 'rounded bp-green');
             }

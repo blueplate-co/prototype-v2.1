@@ -89,6 +89,7 @@ Template.display_menu_details.events({
       menu_name,
       quantity,
       menu_price,
+      "menu",
       function(err) {
         if (err) Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded bp-green");
       }

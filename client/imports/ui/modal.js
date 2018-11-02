@@ -145,7 +145,7 @@ export default class Modal extends Component {
     // when click order button
     order = () => {
         if (!Meteor.userId()) {
-            FlowRouter.go('/');
+            // FlowRouter.go('/');
             util.loginAccession("");
         } else {
             if (Session.get('selectedItem') == 'menu') {
@@ -183,7 +183,7 @@ export default class Modal extends Component {
     
                 if (order) {
                     var order_id = order._id;
-                    quantity = menu_details.min_order; /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
+                    quantity = parseInt(menu_details.min_order); /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
                     total_price_per_dish = parseInt(menu_price) * quantity
                     Meteor.call('shopping_cart.update',
                         order_id,
@@ -194,7 +194,7 @@ export default class Modal extends Component {
                         }
                     )
                 } else {
-                    quantity = menu_details.min_order; /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
+                    quantity = parseInt(menu_details.min_order); /* quantity selected was disabled, so the quantity adds to the shopping cart is the min order set from the menu */
                     Meteor.call('shopping_cart.insert',
                         foodie_id,
                         homecook_id,
@@ -207,6 +207,7 @@ export default class Modal extends Component {
                         menu_name,
                         quantity,
                         menu_price,
+                        "menu",
                         function(err) {
                             if (err) {
                                 Materialize.toast('Oops! Error when add into shopping cart. Please try again. ' + err.message, 4000, "rounded bp-green");

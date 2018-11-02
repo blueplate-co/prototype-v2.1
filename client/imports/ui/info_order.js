@@ -247,6 +247,7 @@ export default class InfoOrder extends Component {
                       cart_item.product_name,
                       cart_item.quantity,
                       cart_item.product_price,
+                      cart_item.product_type,
                       function(err) {
                             localStorage.setItem("localCart", JSON.stringify([]));
                             if (dishesLocal.length == index + 1) {
@@ -477,9 +478,9 @@ export default class InfoOrder extends Component {
                 </div>
                 <div className="modal-footer get-info">
                     <div className="row">
-                        <div className="col l6 m12 s12 text-right">
+                        <div className="col l12 m12 s12 text-right">
                             <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
-                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>save</a>
+                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>continue</a>
                         </div>
                     </div>
                 </div>

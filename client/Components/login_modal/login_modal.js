@@ -9,14 +9,17 @@ import './login_modal.html';
 Template.login_modal.events({
   'click .login-facebook':function(event){
     event.preventDefault();
-    $('#loginLoader').show(); // show the loader
-    Meteor.loginWithFacebook({requestPermissions:['public_profile','email']}, function(err){
+    // $('#loginLoader').show(); // show the loader
+    Meteor.loginWithFacebook({requestPermissions:['public_profile','email']}, function(err, res){
       if (err) {
-        $('#loginLoader').hide(); // hide the loader
+        // $('#loginLoader').hide(); // hide the loader
         console.log('Handle errors here: ', err);
       } else {
-        $('#loginLoader').hide(); // hide the loader
+        // $('#loginLoader').hide(); // hide the loader
+
         localStorage.setItem("loggedIn", true);
+        // Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+
         FlowRouter.go("/");
         $('#login_modal').modal('close');
       }
@@ -160,6 +163,7 @@ Template.login_modal.events({
                               cart_item.product_name,
                               cart_item.quantity,
                               cart_item.product_price,
+                              cart_item.product_type,
                               function(err) {
                                 localStorage.setItem("localCart", JSON.stringify([]));
                                 localStorage.removeItem('globalCartnull');

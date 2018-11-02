@@ -128,7 +128,8 @@ Meteor.methods({
     dish_id,
     dish_name,
     quantity,
-    dish_price,
+    product_price,
+    product_type
   ) {
     check(foodie_id, String);
     check(homecook_id, String);
@@ -140,7 +141,8 @@ Meteor.methods({
     check(dish_id, Match.Any);
     check(dish_name, Match.Any);
     check(quantity, Match.Any);
-    check(dish_price, Match.Any);
+    check(product_price, Match.Any);
+    check(product_type, String);
 
     Shopping_cart.insert({
       buyer_id: foodie_id,
@@ -153,8 +155,9 @@ Meteor.methods({
       product_id: dish_id,
       product_name: dish_name,
       quantity: quantity,
-      product_price: dish_price,
-      total_price_per_dish: parseInt(quantity) * parseFloat(dish_price),
+      product_price: product_price,
+      product_type: product_type,
+      total_price_per_dish: parseInt(quantity) * parseFloat(product_price),
       updatedAt: new Date(),
       createdAt: new Date()
     })
