@@ -583,9 +583,9 @@ class ShoppingCart extends Component {
         var sellerName = product[0].seller_name;
         var seller_images = '';
         var kitchen_id = '',
-            days = '',
-            hours = '',
-            mins = '';
+            days = 0,
+            hours = 0,
+            mins = 0;
             
         var address = globalCart[index].address,
             defaultTimePicker = globalCart[index].time,
@@ -599,12 +599,13 @@ class ShoppingCart extends Component {
             hours = dish_detail.hours ? dish_detail.hours : 0;
             mins = dish_detail.mins ? dish_detail.mins : 0;
             // time_ready = "Cooking time is: " + days + " day " + hours + " hour " + mins + " min";
-        } else {
+        } else if (product[0].product_type == 'menu') {
             let menu_detail = Menu.findOne({ _id: product[0].product_id });
             days = menu_detail.lead_days ? menu_detail.lead_days : 0;
             hours = menu_detail.lead_hours ? menu_detail.lead_hours : 0;
             mins = menu_detail.min_order ? menu_detail.min_order : 0;
         }
+        
         if (util.detectBrowser().name  == 'safari' && moment(defaultDate).format('YYYY-MM-DD') == 'Invalid date') {
             defaultDate = '';
         }
