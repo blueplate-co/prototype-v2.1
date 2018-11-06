@@ -4,6 +4,18 @@ import { search_distinct_in_shopping_cart } from '/imports/functions/shopping_ca
 import { search_distinct_for_delivery_in_shopping_cart } from '/imports/functions/shopping_cart.js'
 import { search_distinct_in_shopping_cart_seller_specific } from '/imports/functions/shopping_cart.js';
 
+// integrate reactjs
+import React from 'react';
+import { render } from 'react-dom';
+
+import ShoppingCart from '../../imports/ui/shopping_cart';
+
+Template.shopping_cart_card.onRendered(function(){
+  render(<ShoppingCart />, document.getElementById('shoppingcart-container'));
+
+});
+
+
 Template.shopping_cart_card.helpers({
   'check_shopping_cart': function () {
     return Shopping_cart.findOne({ "buyer_id": Meteor.userId() })

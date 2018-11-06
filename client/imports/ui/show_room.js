@@ -263,9 +263,7 @@ class ShowRoom extends Component {
             <TagsDisplay />
             <PromotionList title="Special Discount" />
             <div className="row">
-              <LazyLoad once height={200}>
-                <DishList title="Dishes Highlight" showStatus="false"/>
-              </LazyLoad>
+              <DishList title="Dishes Highlight" showStatus="false"/>
             </div>
             <div className="row">
               <LazyLoad once height={100}>
