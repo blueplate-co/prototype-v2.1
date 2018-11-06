@@ -1,6 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 
 Order_ratings = new Mongo.Collection('order_ratings');
 

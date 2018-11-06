@@ -11,7 +11,7 @@
 }
 
 .comment-input-wrapper .comment-input {
-    background: #EFEFF1;
+    background: #f9f9f9;
     outline: none;
     color: #000;
     border-radius: 5px;
@@ -19,6 +19,7 @@
     min-height: 7em;
     position: relative;
     padding-bottom: 30px;
+    border: 1px solid #e6e6e6;
 }
 
 .comment-input-wrapper #post-comment {
@@ -32,30 +33,35 @@
     float: right;
 }
 
+.comment-input-wrapper #post-comment.disabled {
+    padding: 5px 10px;
+    background: #b1b1b1;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: not-allowed;
+    user-select: none;
+    float: right;
+}
+
 .post-item {
     display: grid;
     grid-template-columns: 80px auto;
 }
 
 .post-meta {
-    display: inline-flex;
-    vertical-align: baseline;
-}
-
-.post-meta i {
-    padding: 0px 10px;
-    font-size: 5px;
-    color: #ccc;
     margin-top: 10px;
 }
 
 .post-author {
     font-weight: bolder;
     font-size: 1.1em;
+    width: 100%;
+    display: block;
 }
 
 .post-time {
-    color: #ccc;
+    color: #b1b1b1;
     font-size: 0.85em;
     margin-top: 3px;
 }
