@@ -112,7 +112,7 @@ export default class SignUp extends Component {
         util.hide_loading_progress();
         that.setState({signUpLoading: false});
         //- create Stripe user id for that user register
-        // Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
+        Meteor.call('payment.createCustomer', Meteor.users.findOne({_id: Meteor.userId()}).emails[0].address);
         Meteor.logout(function(err){});
         Materialize.toast('Signup successful.', 4000, 'rounded bp-green');
       } else {
