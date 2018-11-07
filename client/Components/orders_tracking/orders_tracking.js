@@ -11,8 +11,8 @@ import { render } from 'react-dom';
 
 Template.orders_tracking.onRendered(function(){
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/orders_tracking');
+    FlowRouter.go("/login");
+    // util.loginAccession('/orders_tracking');
   }
 
   $('.tooltip').tipso({

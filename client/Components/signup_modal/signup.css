@@ -30,38 +30,40 @@ padding: 0px;
   margin: 16px;
 }
 
-#signup_modal {
-  /* min-height: 585px !important; */
-  height: auto !important;
-  /* overflow: scroll; */
+#signup_modal .row .col {
+  float: none;
+  margin: 0 auto;
+}
+
+#have-accn-login {
+  color: #727272;
+  font-size: 13px;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #407E97 !important;
+}
+
+.btn-signup-text {
+  margin-bottom: 30px !important;
+}
+
+.signup-page-main-page {
+  position: fixed;
+  top: 20px;
+  left: 45px;
 }
 
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
-  #signup_modal {
-      top: 8% !important;
-      width: 48% !important;
-      border-radius: 15px !important;
-  }
 }
 
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
-  #signup_modal {
-      top: 13% !important;
-      width: 55% !important;
-      border-radius: 15px !important;
-  }
 }
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
-  #signup_modal {
-      top: 13% !important;
-      width: 59% !important;
-      border-radius: 15px !important;
-  }
-
   .btn-signup-text {
     margin-bottom: 40px;
   }
@@ -82,12 +84,6 @@ padding: 0px;
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
 
-  #signup_modal {
-      top: 13% !important;
-      width: 65% !important;
-      border-radius: 15px !important;
-  }
-
   .btn-signup-text {
     margin-bottom: 40px;
   }
@@ -106,10 +102,6 @@ padding: 0px;
 }
 
 @media (max-width: 640px) {
-  #signup_modal {
-      width: 77% !important;
-      border-radius: 15px !important;
-  }
 
   .btn-signup-text {
     margin-bottom: 40px;
@@ -118,12 +110,6 @@ padding: 0px;
 
 /* Portrait phones and smaller 480*/
 @media (max-width: 520px) {
-  #signup_modal {
-      top: 0% !important;
-      height: 100% !important;
-      width: 100% !important;
-      border-radius: 0px !important;
-  }
 
   .btn-signup-text {
     margin-bottom: 0px;

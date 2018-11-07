@@ -35,6 +35,13 @@ window.util = window.util || {};
       return false;
   };
 
+  util.isEmpty = function(value) {
+    if (!value || value.length == 0) {
+      return false;
+    }
+    return true;
+  };
+
   util.show_loading_progress = function() {
     $('#showLoadFull').css('display', 'block');
   };

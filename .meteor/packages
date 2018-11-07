@@ -51,3 +51,6 @@ monbro:mongodb-mapreduce-aggregation
 mrt:jquery-validate
 easy:search
 meteorhacks:inject-initial
+accounts-facebook
+service-configuration
+accounts-google

@@ -9,8 +9,8 @@
         <div class="nav-wrapper">
           <a href="#!" class="brand-logo"><img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/logo.svg" alt="logo" class="logo"></a>
           <ul class="right">
-            <li>
-              <a class = "modal-trigger" href="#login_modal">
+            <li id="langding-page-login">
+              <a href="">
                 <img class="login_icon" src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/login_icon_new.svg">
               </a>
             </li>
@@ -19,9 +19,6 @@
       </nav>
     </div>
   </header>
-
-  {{> login_modal}}
-  {{> signup_modal}}
   {{> promotion_modal}}
   {{> reminder_promotion_modal}}
   <!--{{> marketing_popup}} -->
@@ -44,8 +41,8 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-          <a class = "modal-trigger" href="#signup_modal">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" id="langding-page-signup">
+          <a href="">
             <button class="button chef_signup signup">Sign up</button>
           </a>
         </div>

@@ -85,7 +85,8 @@ class TopNavigation extends Component {
         FlowRouter.go("/profile");
       }
     } else {
-      util.loginAccession('/profile/edit_foodie_profile');
+      // util.loginAccession('/profile/edit_foodie_profile');
+      FlowRouter.go('/login');
     }
   };
 
@@ -129,7 +130,8 @@ class TopNavigation extends Component {
   checkAccessPermission = (access_path) => {
     this.setState({ sidebarOpen: false });
     if (!Meteor.user() && !Meteor.loggingIn()) {
-      util.loginAccession("/" + access_path);
+      // util.loginAccession("/" + access_path);
+      FlowRouter.go('/login');
     } else {
       FlowRouter.go("/" + access_path);
     }
@@ -147,7 +149,8 @@ class TopNavigation extends Component {
         location.href = '/main';
       })
     } else {
-      util.loginAccession("");
+      // util.loginAccession("");
+      FlowRouter.go('/login');
     }
   }
 
@@ -217,7 +220,8 @@ class TopNavigation extends Component {
             this.setState({ sidebarOpen: false });
             localStorage.setItem("userMode", "chef");
             if (!Meteor.user()) {
-              util.loginAccession("/profile/show_homecook_profile");
+              // util.loginAccession("/profile/show_homecook_profile");
+              FlowRouter.go('/login');
             } else {
               setTimeout(() => {
                 this.setState({ sidebarOpen: true });
@@ -619,7 +623,7 @@ class TopNavigation extends Component {
                           <img style={{ width: '35px', height: '35px', borderRadius: '50%'}} src={this.state.avatar} />
                         </li>
                       :
-                        <a id="login-text" href="#signup_modal" className="bp-blue-text">sign up</a>
+                        <div id="login-text" className="bp-blue-text" onClick={() => FlowRouter.go('/register')}>Sign up</div>
                     }
                   </ul>
                 </div>

@@ -795,6 +795,8 @@ class ShoppingCart extends Component {
 
     componentDidMount() {
         $(window).scrollTop(0);
+        $('.page-footer').show();
+        $('#top-navigation-container').show();
 
         if (Meteor.userId()) {
             Meteor.call('shopping_cart.find_by_buyer', Meteor.userId(), (err, res) => {

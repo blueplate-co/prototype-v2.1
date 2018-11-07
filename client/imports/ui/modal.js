@@ -145,8 +145,8 @@ export default class Modal extends Component {
     // when click order button
     order = () => {
         if (!Meteor.userId()) {
-            // FlowRouter.go('/');
-            util.loginAccession("");
+            FlowRouter.go('/login');
+            // util.loginAccession("");
         } else {
             util.show_loading_progress();
             if (Session.get('selectedItem') == 'menu') {

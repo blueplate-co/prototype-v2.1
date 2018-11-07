@@ -212,6 +212,12 @@ Template.landing_page.events({
   },
   'click .landing_see_more': function(event) {
     FlowRouter.go('/main');
+  },
+  'click #langding-page-login': function(event) {
+    FlowRouter.go('/login');
+  },
+  'click #langding-page-signup': function(event) {
+    FlowRouter.go('/register');
   }
 })
 

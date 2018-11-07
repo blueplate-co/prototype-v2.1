@@ -16,8 +16,8 @@ Meteor.subscribe('listAllTransactions');
 
 Template.start_cooking.onRendered(function() {
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/cooking/orders');
+    FlowRouter.go("/login");
+    // util.loginAccession('/cooking/orders');
   }
   this.$('ul.tabs').tabs();
 })

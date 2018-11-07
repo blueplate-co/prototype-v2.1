@@ -1,3 +1,5 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
 Template.forgot_password.events({
   'click #submit_forgot_password': function(event) {
     event.preventDefault();
@@ -15,11 +17,10 @@ Template.forgot_password.events({
             $('.message_response').text('We are sorry but something went wrong. Please try again. ' + err.message);
           }
         } else {
-          $('#login_modal').modal('close');
           $('.forgot_password').remove();
-          $('#login_modal').append(login_content);
+          FlowRouter.go('/login');
           util.hide_loading_progress();
-          Materialize.toast('An email has been sent to you. Please click the link given to reset your password', 6000, 'rounded bp-green');
+          Materialize.toast('An email has been sent to you. Please click the link given to reset your password', 8000, 'rounded bp-green');
           // $('.message_response').text('An email has been sent to the address above. Please click the link given to reset your password.');
         }
       });
@@ -28,7 +29,6 @@ Template.forgot_password.events({
   },
 
   'click #cancel_forgot_password': function() {
-    $('.forgot_password').remove();
-    $('#login_modal').append(login_content);
+    FlowRouter.go('/login');
   }
 })

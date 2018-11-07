@@ -6,8 +6,8 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 Template.dishes_summary.onRendered(function(){
   window.scrollTo(0,0);
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/cooking/dishes');
+    FlowRouter.go("/login");
+    // util.loginAccession('/cooking/dishes');
   }
   $('.modal').modal({
     dismissible: false, // Modal can be dismissed by clicking outside of the modal

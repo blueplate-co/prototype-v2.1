@@ -243,7 +243,8 @@ Meteor.methods({
       home_address: ordering_obj.address_ordering,
       home_address_conversion: ordering_obj.address_conversion,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      profileImg: ordering_obj.profileImg
     });
   },
 

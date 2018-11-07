@@ -11,8 +11,8 @@ import Deposit from '../../imports/ui/deposit';
 
 Template.deposit.onRendered(function(){
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/deposit');
+    FlowRouter.go("/login");
+    // util.loginAccession('/deposit');
   }
 
   render(<Deposit />, document.getElementById('deposit_container'));

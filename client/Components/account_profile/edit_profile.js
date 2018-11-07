@@ -46,8 +46,8 @@ Template.edit_foodie_profile.helpers({
 
 Template.edit_foodie_profile.onRendered(function () {
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/orders_tracking');
+    FlowRouter.go("/login");
+    // util.loginAccession('/orders_tracking');
   }
 
   setTimeout(() => {
@@ -253,8 +253,8 @@ Template.edit_homecook_profile.helpers({
 
 Template.edit_homecook_profile.onRendered(function () {
   if(!Meteor.userId()){ 
-    FlowRouter.go("/");
-    util.loginAccession('/profile/show_homecook_profile');
+    FlowRouter.go("/login");
+    // util.loginAccession('/profile/show_homecook_profile');
   }
 
   setTimeout(() => {

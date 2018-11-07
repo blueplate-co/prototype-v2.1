@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import districts from '/imports/functions/common/districts_common.json';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 export default class InfoOrder extends Component {
     constructor(props) {
@@ -321,7 +322,8 @@ export default class InfoOrder extends Component {
     };
 
     handleLogin() {
-        util.loginAccession("");
+        // util.loginAccession("");
+        FlowRouter.go('/login');
     };
 
     getCountryCode(input) {

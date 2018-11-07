@@ -35,8 +35,8 @@ const ShowroomBanner = props => {
         FlowRouter.go('/profile/create_homecook_profile')
       }
     } else {
-      FlowRouter.go('/')
-      util.loginAccession("/profile/show_homecook_profile");
+      FlowRouter.go('/login')
+      // util.loginAccession("/profile/show_homecook_profile");
     }
   }
 
