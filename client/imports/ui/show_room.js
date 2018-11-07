@@ -5,9 +5,6 @@ import DishList from './dish_list';
 import MenuList from './menu_list';
 import ShowroomBanner from './showroom_banner';
 import KitchenList from './kitchen_list';
-import DishAllList from './dish_all_list';
-import MenuAllList from './menu_all_list';
-import KitchenAllList from './kitchen_all_list';
 import DishSearchList from './dish_search_list';
 import MenuSearchList from './menu_search_list';
 import KitchenSearchList from './kitchen_search_list';
@@ -115,18 +112,6 @@ class ShowRoom extends Component {
         });
       }
     }
-    // } else {
-    //   //- when user not logged in but have promotion cookies, must remind
-    //   if (getCookie('promotion')) {
-    //     let bReminderFirst = sessionStorage.getItem('reminderFirstLoadPageNotLoggedIn') == 'false';
-    //     if (!bReminderFirst) {
-    //       sessionStorage.setItem('reminderFirstLoadPageNotLoggedIn', 'false');
-    //       $('#reminder_promotion_modal').modal();
-    //       $('#reminder_promotion_modal').modal('open');
-    //     }
-    //   }
-    // }
-
 
     $('#searchQuery').val('');
     $("[role=navigation]").height('65px');
@@ -223,28 +208,6 @@ class ShowRoom extends Component {
 
   render() {
     switch (this.state.screen) {
-      case 'all_dish':
-        return (
-          <div>
-            <DishAllList title="All dishes" seemore=""/ >
-          </div>
-        )
-        break;
-      case 'all_menu':
-        return (
-          <div>
-            <MenuAllList title="All Menus" seemore="" />
-            <Modal menu={this.state.selectedMenu}/>
-          </div>
-        )
-        break;
-      case 'all_kitchen':
-        return (
-          <div>
-            <KitchenAllList title="All Kitchens" seemore=""/>
-          </div>
-        )
-        break;
       case 'search':
         return (
           <div>
@@ -288,7 +251,6 @@ class ShowRoom extends Component {
             </div>
           </div>
         )
-        break;
       case 'wish_list':
         return (
           <div>
@@ -297,26 +259,27 @@ class ShowRoom extends Component {
             <Modal menu={this.state.selectedMenu}/>
           </div>
         )
-        break;
       default:
         return (
           <div>
             <TagsDisplay />
             <PromotionList title="Special Discount" />
             <div className="row">
-                <DishList title="Dishes Highlight" seemore="see all" showStatus="false"/>
+              <DishList title="Dishes Highlight" showStatus="false"/>
             </div>
             <div className="row">
-              <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
-            </div>
-            <div className = "row">
-              <LazyLoad once height={200}>
-                <MenuList title="Menus Highlight" seemore="see all" popup={ this.handleMenuPopup }/>
+              <LazyLoad once height={100}>
+                <ShowroomBanner kitchenExisted = {this.state.kitchenExisted} />
               </LazyLoad>
             </div>
             <div className = "row">
-              <LazyLoad once height={200}>
-                <KitchenList title="Kitchens" seemore="see all"/>
+              <LazyLoad once height={400}>
+                <MenuList title="Menus Highlight" popup={ this.handleMenuPopup }/>
+              </LazyLoad>
+            </div>
+            <div className = "row">
+              <LazyLoad once height={400}>
+                <KitchenList title="Kitchens"/>
               </LazyLoad>
             </div>
             <Modal menu={this.state.selectedMenu}/>

@@ -27,12 +27,6 @@ export default class Dashboard extends Component {
             <OrderSummary />
             <Support />
             <DashboardSummary />
-            {/* <DashboardBalance />
-          <TotalViews />
-          <TotalSales />
-          <Conversions />
-          <OrderSummary />
-          <DashboardSummary /> */}
           </div>
         </div>
       </div>

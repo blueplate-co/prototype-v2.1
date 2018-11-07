@@ -6,12 +6,12 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ProgressiveImages from './progressive_image';
 import DishMap from './dish_map';
 import DishListRelate from './dish_list_relate.js';
-import InfoOrder from './info_order.js';
 import { checking_promotion_dish, get_amount_promotion, delete_cookies, getCookie, createCookie } from '/imports/functions/common/promotion_common';
-import DisqusComment from './disqus';
+import CommentBox from './comment';
 import { Session } from 'meteor/session';
 import Like from './like_button';
 import LazyLoad from 'react-lazyload';
+import BouncingLoader from './bouncing_loader/bouncing_loader';
 
 // Dish detail component
 export class Dish_Detail extends Component {
@@ -190,7 +190,7 @@ export class Dish_Detail extends Component {
             }
             
             return (
-                <LazyLoad height={500} once>
+                // <LazyLoad height={500} once>
                     <div>
                         <a className="col s12 m12 l1 chef-story-image"
                             href={"/kitchen/" + this.state.data.kitchen_id}
@@ -240,11 +240,11 @@ export class Dish_Detail extends Component {
                             }
                         </div>
                     </div>
-                </LazyLoad>
+                // </LazyLoad>
             );
         } else {
             return (
-                <span>loading...</span>
+                <BouncingLoader />
             );
         }
     };
@@ -719,15 +719,11 @@ export class Dish_Detail extends Component {
                                         {this.renderChefInfo()}
                                     </div>
                                 </div>
-                                {/* Disqus comment */}
                                 <div className="row chef-story-row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7 disqus-dish-detail-container">
-                                        {/* <LazyLoad height={200} once> */}
-                                            <DisqusComment url={window.location.href} page={'dish_' + FlowRouter.getParam("dish_id")} />
-                                        {/* </LazyLoad> */}
+                                        <CommentBox articleType="dish" articleId={FlowRouter.getParam("dish_id")} />
                                     </div>
                                 </div>
-                                {/* End Disqus comment */}
                                 <div className="row show_dish_detail_wrapper">
                                     <div className="col s12 m7 l7">
                                         <p className="chef-relate-title">Chef related dishes</p>
@@ -745,19 +741,7 @@ export class Dish_Detail extends Component {
                             /> */}
                         </div>
                     : 
-                        <div className="preloader-wrapper small active loading-dish-detail">
-                            <div className="spinner-layer spinner-green-only">
-                                <div className="circle-clipper left">
-                                    <div className="circle"></div>
-                                </div>
-                                <div className="gap-patch">
-                                    <div className="circle"></div>
-                                </div>
-                                <div className="circle-clipper right">
-                                    <div className="circle"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <BouncingLoader/>
                 }
             </div>
         )
