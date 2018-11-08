@@ -5,11 +5,22 @@ ServiceConfiguration.configurations.remove({
     service: "facebook"
 });
 
-ServiceConfiguration.configurations.insert({
-    service: "facebook",
-    appId: '429076164293822',
-    secret: '545a35b1cc07c80e9bae4e9c4c4b529a'
-});
+if (Meteor.absoluteUrl() == 'www.blueplate.co') {
+    //- production
+    ServiceConfiguration.configurations.insert({
+        service: "facebook",
+        appId: '429076164293822',
+        secret: '545a35b1cc07c80e9bae4e9c4c4b529a'
+    });
+} else {
+    //- localhost
+    ServiceConfiguration.configurations.insert({
+        service: "facebook",
+        appId: '967673270089239',
+        secret: '62a53d21223a1088bcec9b8980a32f9d'
+    });
+}
+
 
 Accounts.onCreateUser(function(options, user) {
     console.log(options);

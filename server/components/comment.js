@@ -3,7 +3,7 @@ Comment = new Mongo.Collection('comment');
 Meteor.methods({
     'comment.count'(article_type, article_id) {
         try {
-            return Comment.find({ article_type: 'dish', article_id: 'EDTZwWtxbcA7n8SG3' }).count();
+            return Comment.find({ article_type: article_type, article_id: article_id }).count();
         } catch (error) {
             return error;
         }
@@ -26,6 +26,14 @@ Meteor.methods({
                         localField: 'user_id',
                         foreignField: 'user_id',
                         as: 'profile'
+                    }
+                },
+                {
+                    $lookup: {
+                      from: 'kitchen_details',
+                      localField: 'user_id',
+                      foreignField: 'user_id',
+                      as: 'kitchen'
                     }
                 },
                 { $sort : { create_at : -1 } },

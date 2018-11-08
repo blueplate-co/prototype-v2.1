@@ -9,7 +9,8 @@ class PostItem extends Component {
             name: '',
             date: '',
             content: '',
-            expanded: false
+            expanded: false,
+            kitchen: ''
         }
     }
 
@@ -47,19 +48,44 @@ class PostItem extends Component {
             avatar: this.props.item.profile[0].profileImg ? this.props.item.profile[0].profileImg.medium : 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foody.svg',
             name: this.props.item.profile[0].foodie_name ? this.props.item.profile[0].foodie_name : `(${this.props.item.profile[0].email})`,
             content: this.props.item.content,
-            date: this.timeSince(new Date(this.props.item.create_at))
+            date: this.timeSince(new Date(this.props.item.create_at)),
+            kitchen: this.props.item.kitchen.length > 0 ? this.props.item.kitchen[0]._id : ''
         })
     }
 
     render() {
         return (
             <div key={this.props.item._id} className="row post-item">
-                <img src={this.state.avatar} className="commenter-avatar"/>
+                {
+                    (this.state.kitchen) ?
+                        <a href={'/kitchen/'+ this.state.kitchen}>
+                            <span className="chef-badge">
+                                <svg width="12" height="12" viewBox="0 0 81 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M48.9846 75.6667H22.1488C19.4827 75.6667 17.3211 73.5127 17.3211 70.8558V46.738C17.3211 44.3551 15.7649 42.187 13.4506 41.5866C6.66554 39.8267 1.70998 33.5485 2.0132 26.1693C2.33112 18.4311 8.65681 12.0209 16.416 11.5694C18.5278 11.4465 20.549 11.7571 22.4068 12.4144C24.036 12.9911 25.8559 12.3225 26.6343 10.7836C29.1539 5.80191 34.3222 2.38235 40.3028 2.38235C46.2834 2.38235 51.4517 5.80191 53.9707 10.7836C54.7491 12.3225 56.569 12.9911 58.1988 12.4144C60.0566 11.7571 62.0778 11.4465 64.1896 11.5694C71.9482 12.0209 78.2745 18.4311 78.5924 26.1693C78.8956 33.5485 73.9395 39.8267 67.155 41.5866C64.8407 42.187 63.2845 44.3551 63.2845 46.738V70.8558C63.2845 73.5127 61.1229 75.6667 58.4568 75.6667H58.1773" stroke="#fff" strokeWidth="4" strokeLinecap="round"/>
+                                </svg>
+                            </span>
+                            <img src={this.state.avatar} className="commenter-avatar"/>
+                        </a>
+                    :
+                        <a href="#">
+                            <img src={this.state.avatar} className="commenter-avatar"/>
+                        </a>
+                }
                 <div className="col l12 m12 s12 post-container no-padding">
-                    <span className="post-meta">
-                        <h7 className="post-author">{this.state.name}</h7>
-                        <h7 className="post-time">{this.state.date}</h7>
-                    </span>
+                    {
+                        (this.state.kitchen) ?
+                            <a href={'/kitchen/'+ this.state.kitchen}>
+                                <span className="post-meta">
+                                    <h7 className="post-author">{this.state.name}</h7>
+                                    <h7 className="post-time">{this.state.date}</h7>
+                                </span>
+                            </a>
+                        :
+                            <span className="post-meta">
+                                <h7 className="post-author">{this.state.name}</h7>
+                                <h7 className="post-time">{this.state.date}</h7>
+                            </span>
+                    }
                     <span className="post-content">
                         <p>{this.state.content}</p>
                     </span>
