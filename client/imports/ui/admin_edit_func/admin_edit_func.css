@@ -1,0 +1,90 @@
+#admin-table-edit>table {
+    width: 100%;
+}
+
+.dish-name-td {
+    width: 150px;
+}
+
+#admin-table-edit>table>tbody>tr>td {
+    /* border: 1px solid rgba(0,0,0,0.3); */
+}
+
+#admin-table-edit>table>thead>tr>th {
+    /* border: 1px solid rgba(0,0,0,0.3); */
+}
+
+.table-hover>tbody>tr:hover {
+    /* background-color: #56aacd94 !important; */
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #615d5d40;
+}
+
+.dish-stt {
+    width: 10px;
+}
+
+.admin-edit-font-weight {
+    font-weight: bold;
+}
+
+.admin-edit-click {
+    cursor: pointer;
+}
+
+.admin-dish-img {
+    width: 11%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 50%;
+}
+
+#admin-edit-submit {
+    display: inline-block;
+    margin-left: 15px;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    border: 1px solid #56AACD;
+    border-radius: 15px;
+    background-color: #56AACD;
+    font-weight: 600;
+}
+
+#admin-edit-submit:hover {
+    cursor: pointer;
+    background-color: #FFFFFF;
+    color: #56AACD;
+}
+
+#admin-edit-cancel {
+    display: inline-block;
+    padding: 5px 15px;
+    color: #56AACD;
+    border: 1px solid #56AACD;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+#admin-edit-cancel:hover {
+    cursor: pointer;
+    background-color: #56AACD;
+    color: #FFFFFF;
+}
+
+#admin-edit-footer {
+    position: fixed;
+    bottom: -21px;
+    right: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fafafa;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.29028);
+}
+
+.create_dishes_form_container {
+    margin-bottom: 80px;
+}
