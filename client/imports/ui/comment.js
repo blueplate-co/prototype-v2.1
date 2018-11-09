@@ -81,10 +81,12 @@ class PostItem extends Component {
                                 </span>
                             </a>
                         :
-                            <span className="post-meta">
-                                <h7 className="post-author">{this.state.name}</h7>
-                                <h7 className="post-time">{this.state.date}</h7>
-                            </span>
+                            <a href={'/kitchen/'+ this.state.kitchen}>
+                                <span className="post-meta">
+                                    <h7 className="post-author">{this.state.name}</h7>
+                                    <h7 className="post-time">{this.state.date}</h7>
+                                </span>
+                            </a>
                     }
                     <span className="post-content">
                         <p>{this.state.content}</p>
@@ -201,6 +203,11 @@ export default class CommentBox extends Component {
                     Meteor.call('comment.count', this.props.articleType, this.props.articleId, (err, res) => {
                         if (!err) {
                             this.setState({ count: res })
+                        }
+                    });
+                    Meteor.call('comment.notification', this.props.articleType, this.props.articleType, this.state.content, (err, res) => {
+                        if (err) {
+                            console.log('Error when send notification')
                         }
                     });
                 })
