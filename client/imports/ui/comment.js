@@ -180,6 +180,7 @@ export default class CommentBox extends Component {
         this.setState({
             loading: true
         });
+        var content = this.state.content;
         Meteor.call('comment.insert', this.props.articleType, this.props.articleId, this.state.content, (err) => {
             if (!err) {
                 document.getElementById("comment-content").innerHTML = "";
@@ -205,7 +206,7 @@ export default class CommentBox extends Component {
                             this.setState({ count: res })
                         }
                     });
-                    Meteor.call('comment.notification', this.props.articleType, this.props.articleType, this.state.content, (err, res) => {
+                    Meteor.call('comment.notification', this.props.articleType, this.props.articleId, content, (err, res) => {
                         if (err) {
                             console.log('Error when send notification')
                         }

@@ -68,11 +68,11 @@ Meteor.methods({
         var ownerId = '';
         var product_name = '';
         if (article_type == 'dish') {
-            let product = Dishes.find({ _id: article_id });
+            let product = Dishes.findOne({ _id: article_id });
             ownerId = product.user_id;
             product_name = product.dish_name;
         } else {
-            let product = Menu.find({ _id: article_id });
+            let product = Menu.findOne({ _id: article_id });
             ownerId = product.user_id;
             product_name = product.menu_name;
         }
@@ -81,13 +81,16 @@ Meteor.methods({
             var ownerName = Kitchen_details.findOne({user_id: Meteor.userId()}).chef_name;
             var all_comments = Comment.find({ article_id: article_id }).fetch();
             var participants = [];
-            for (var i = 0; i < all_comments; i++) {
+            for (var i = 0; i < all_comments.length; i++) {
                 if (all_comments[i].user_id !== Meteor.userId()) {
                     participants.push(all_comments[i].user_id);
                 }
             }
             var title = ownerName + 'has comment on ' + product_name;
-            for (var i = 0; i < participants; i++) {
+            uniqueParticipants = participants.filter(function(item, pos) {
+                return participants.indexOf(item) == pos;
+            });
+            for (var i = 0; i < uniqueParticipants.length; i++) {
                 Notifications.insert({
                     item_id: article_id,
                     receiver_id: participants[i],
@@ -100,20 +103,23 @@ Meteor.methods({
                 });
             }
         } else {
-            var all_comments = Comment.aggregate(pipeline);
             var participants = [];
-            for (var i = 0; i < all_comments; i++) {
+            var all_comments = Comment.find({ article_id: article_id }).fetch();
+            for (var i = 0; i < all_comments.length; i++) {
                 if (all_comments[i].user_id !== Meteor.userId()) {
                     participants.push(all_comments[i].user_id);
                 }
             }
             var title = 'New comment on ' + product_name;
-            for (var i = 0; i < participants; i++) {
+            uniqueParticipants = participants.filter(function(item, pos) {
+                return participants.indexOf(item) == pos;
+            });
+            for (var i = 0; i < uniqueParticipants.length; i++) {
                 Notifications.insert({
                     item_id: article_id,
                     receiver_id: participants[i],
                     sender_id: Meteor.userId(),
-                    title: 'New comment',
+                    title: title,
                     content: content,
                     read: false,
                     createdAt: new Date(),
