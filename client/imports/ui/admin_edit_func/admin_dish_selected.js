@@ -252,7 +252,6 @@ export class AdminDishSelected extends Component {
 
         if (field === 'dish_selling_price' || field === 'dish_cost') {
             dish_editing['dish_profit'] = dish_editing.dish_selling_price - dish_editing.dish_cost;
-            dish_editing['dish_profit'] = dish_editing.dish_selling_price - dish_editing.dish_cost;
         }
 
         this.setState({ dish_selected: dish_editing});

@@ -24,7 +24,7 @@ Meteor.methods({
                 hours: dish.hours,
                 mins: dish.mins,
                 dish_cost: dish.dish_cost,
-                dish_selling_price: dish.dish_selling_price,
+                dish_selling_price: dish.dish_selling_price * 1.15,
                 dish_profit: dish.dish_profit,
                 allergy_tags: dish.allergy_tags,
                 dietary_tags: dish.dietary_tags,
