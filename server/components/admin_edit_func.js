@@ -30,7 +30,28 @@ Meteor.methods({
                 dietary_tags: dish.dietary_tags,
                 dish_tags: dish.dish_tags,
                 updatedAt: new Date(),
+                user_edit: Meteor.userId()
             }
           });
+    },
+    'admin.insert_new_ingredient'(ingredient) {
+        Ingredients.insert({
+            dish_name: ingredient.dish_name,
+            user_id: ingredient.user_id,
+            ingredient_name: ingredient.ingredient_name,
+            ingredient_quantity: ingredient.ingredient_quantity,
+            ingredient_unit: ingredient.ingredient_unit,
+        });
+    },
+    'admin.update_exist_ingredient'(ingredient) {
+        Ingredients.update({
+            _id: ingredient._id
+        }, {
+            $set: {
+                ingredient_name: ingredient.ingredient_name,
+                ingredient_quantity: ingredient.ingredient_quantity,
+                ingredient_unit: ingredient.ingredient_unit
+            }
+        })
     }
 });
