@@ -21,7 +21,7 @@ export default class AdminListDish extends Component {
     };
 
     handleOnDeleteDish(dish_id) {
-        open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this menu?", () => {},() => {
+        open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this dish?", () => {},() => {
             util.show_loading_progress();
             Meteor.call('dish.remove', dish_id, (err, res) => {
                 if (!err) {
@@ -81,6 +81,7 @@ export default class AdminListDish extends Component {
     };
 
     handleOnCancelEdit() {
+        $(window).scrollTop(0);
         this.setState({selectedDish: false});
     };
     

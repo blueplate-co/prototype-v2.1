@@ -11,12 +11,7 @@ import './admin_edit_func.html';
 
 Template.admin_edit_function.onRendered(function(){
     if (Meteor.userId()) {
-        var validEmail = Meteor.user().emails[0].address.indexOf('@blueplate.co') > 0;
-        if (validEmail) {
-            render(<AdminEditFunc/>, document.getElementById('admin_edit_function'));
-        } else {
-            FlowRouter.go('/main');
-        }
+        render(<AdminEditFunc/>, document.getElementById('admin_edit_function'));
     } else {
         FlowRouter.go('/main');
     }

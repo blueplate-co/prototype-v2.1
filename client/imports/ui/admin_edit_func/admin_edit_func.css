@@ -1,5 +1,6 @@
 #admin-table-edit>table {
     width: 100%;
+    margin: 0px;
 }
 
 .dish-name-td {
@@ -39,7 +40,6 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    border-radius: 50%;
 }
 
 #admin-edit-submit {
@@ -87,4 +87,35 @@
 
 .create_dishes_form_container {
     margin-bottom: 80px;
+}
+
+.add-ingredient-btn {
+    color: #56AACD;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    font-size: 3rem !important;
+}
+
+.add-ingredient-btn:hover { 
+    cursor: pointer;
+    color: #FFFFFF;
+    background-color: #407E97;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+.admin-edit-del-ingredient-btn {
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.admin-edit-del-ingredient-btn:hover {
+    margin-top: 10px;
+    background-color: #407E97;
+    color: #FFFFFF !important;
+    cursor: pointer;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+#ingredient_unit {
+    border: none;
+    border-bottom: 1px solid #f2f2f2;
 }

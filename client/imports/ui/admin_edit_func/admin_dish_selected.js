@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './admin_edit_func.css';
 import { withTracker } from 'meteor/react-meteor-data';
 import dishUnits from '/imports/functions/common/dish_unit.json';
+import { open_dialog_delete_confirm, open_dialog_edit_confirm } from '/imports/functions/common';
 
 export class AdminDishSelected extends Component {
     constructor(props) {
@@ -9,8 +10,7 @@ export class AdminDishSelected extends Component {
 
         this.state={
             dish_selected: this.props.dish_selected || {},
-            ingredients: [],
-            profit_calculation: 0
+            ingredients: []
         }
     };
 
@@ -19,7 +19,20 @@ export class AdminDishSelected extends Component {
     };
 
     handleOnCancelEdit() {
-        this.props.handleOnCancelEdit();
+        var hasChangeField = $('.dirty_field'),
+        bChangeField = hasChangeField.length > 0;
+
+        if (bChangeField) {
+            open_dialog_edit_confirm("Are you sure?", "Some change field not save, are you sure cancel?", () => {
+                // Cancel
+
+            }, () => {
+                this.props.handleOnCancelEdit();
+            });
+        } else {
+            this.props.handleOnCancelEdit();
+        }
+        
     };
 
     handleOnChangeService(field, event) {
@@ -108,25 +121,36 @@ export class AdminDishSelected extends Component {
             this.state.ingredients.map( (ingredient, idx) => {
                 return (
                     <div className="row" key={idx}>
-                        <div className="col s4 m4 l4">
-                            < input id="ingredient_name" value={ingredient.ingredient_name} className="form_field" name="ingredient_name" type="text"></input>
+                        <div className="col s3 m3 l3">
+                            <input id="ingredient_name" value={ingredient.ingredient_name} className="form_field" 
+                                onChange={(event) => this.handleOnChangeIngredient('ingredient_name', idx, event)}
+                                name="ingredient_name" type="text"/>
+                        </div>
+
+                        <div className="col s3 m3 l3">
+                            <input id="ingredient_quantity" value={ingredient.ingredient_quantity} className="form_field" 
+                                onChange={(event) => this.handleOnChangeIngredient('ingredient_quantity', idx, event)}
+                                name="ingredient_quantity" placeholder="0" type="number" min="0"/>
                         </div>
 
                         <div className="col s4 m4 l4">
-                            <input id="ingredient_quantity" value={ingredient.ingredient_quantity} className="form_field" name="ingredient_quantity" placeholder="0" type="number" min="0"/>
-                        </div>
-
-                        <div className="col s4 m4 l4">
-                            <select ref="dropdown" className="browser-default" id="">
-                                <option value={ingredient.ingredient_unit} defaultValue={ingredient.ingredient_unit}>{ingredient.ingredient_unit}</option>
+                            <select ref="dropdown" className="browser-default" id="ingredient_unit"
+                                onChange={(event) => this.handleOnChangeIngredient('ingredient_unit', idx, event)}>
+                                <option  value={ingredient.ingredient_unit}>{ingredient.ingredient_unit}</option>
                                 {
                                     dishUnits.ingredient_unit.map((item, index) => {
                                         return (
-                                                <option key = {index} value = {item.shortform}>{item.name}</option>
+                                                <option key={index} value={item.shortform}>{item.name}</option>
                                             )
                                         })
                                 }
                             </select>
+                        </div>
+
+                        <div className="col s2 m2 l2">
+                            <span onClick={() => this.handleDeleteIngredient(ingredient, idx)}>
+                                <i className="material-icons grey-text text-lighten-1 admin-edit-del-ingredient-btn">highlight_off</i>
+                            </span>
                         </div>
                     </div>
                 );
@@ -228,33 +252,90 @@ export class AdminDishSelected extends Component {
 
         if (field === 'dish_selling_price' || field === 'dish_cost') {
             dish_editing['dish_profit'] = dish_editing.dish_selling_price - dish_editing.dish_cost;
-            this.setState({ profit_calculation: dish_editing.dish_selling_price - dish_editing.dish_cost});
+            dish_editing['dish_profit'] = dish_editing.dish_selling_price - dish_editing.dish_cost;
         }
 
         this.setState({ dish_selected: dish_editing});
     };
+
+    submitIngredient() {
+        var arr_ingredients = this.state.ingredients;
+
+        arr_ingredients.map( (item, index) => {
+            if (item.new_field) {
+                Meteor.call('admin.insert_new_ingredient', item);
+            } else if (item._id) {
+                Meteor.call('admin.update_exist_ingredient', item);
+            }
+        });
+    }
 
     handleOnSubmit() {
         util.show_loading_progress();
         var dish = this.state.dish_selected;
         var dish_tags = $('#dish_tags').material_chip('data');
         dish.dish_tags = dish_tags;
+        this.submitIngredient();
 
         Meteor.call('admin.update_dish', dish, (err, res) => {
             if (!err) {
+                Materialize.toast('Update dish success', 4000, 'rounded bp-green');
                 util.hide_loading_progress();
-                console.log('updated');
                 this.props.handleOnCancelEdit();
             } else {
-                console.log(err);
+                Materialize.toast(err.message, 4000, 'rounded bp-green');
                 util.hide_loading_progress();
             }
         })
     };
 
+    handleOnChangeIngredient(field, index, event) {
+        var arr_ingredients = this.state.ingredients;
+
+        arr_ingredients[index][field] = event.target.value;
+        this.setState({ ingredients: arr_ingredients})
+    };
+
+    handleAddIngredient() {
+        var new_ingredient_obj = {
+            dish_name: this.state.dish_selected.dish_name,
+            ingredient_name: '',
+            ingredient_quantity: '',
+            ingredient_unit: '',
+            user_id: this.state.dish_selected.user_id,
+            new_field: true
+        };
+
+        var arr_ingredients = this.state.ingredients;
+        arr_ingredients.push(new_ingredient_obj);
+        this.setState({ ingredients: arr_ingredients});
+    };
+
+    handleDeleteIngredient(ingredient, index) {
+        open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this item?", () => {},() => {
+            util.show_loading_progress();
+            var arr_ingredients = this.state.ingredients;
+            arr_ingredients.splice(index, 1);
+            if (ingredient.new_field) { // If is new ingredient
+                util.hide_loading_progress();
+                this.setState({ ingredients: arr_ingredients});
+            } else if (ingredient._id) { // If exist ingredient
+                Meteor.call('ingredient.remove', ingredient._id, (err, res) => {
+                    if (!err) {
+                        this.setState({ ingredients: arr_ingredients});
+                        util.hide_loading_progress();
+                    } else {
+                        console.log(err);
+                        util.hide_loading_progress();
+                    }
+                });
+            }
+        });
+    };
+
     render() {
         var dish_selected = this.state.dish_selected;
-       var  dish_selling_price = parseFloat(dish_selected.dish_selling_price/1.15).toFixed(2);
+        var dish_selling_price = parseFloat(dish_selected.dish_selling_price/1.15).toFixed(2);
 
         return(
             <div className="create_dishes_form_container container">
@@ -355,6 +436,11 @@ export class AdminDishSelected extends Component {
                             </div>
                         </div>
                         {this.renderIngredient(dish_selected.dish_name, dish_selected.user_id)}
+                        <div className="row text-right">
+                            <span onClick={() => this.handleAddIngredient()}> 
+                                <i className="medium material-icons add-ingredient-btn">control_point</i>
+                            </span>
+                        </div>
 
                     </div>
                     
@@ -386,7 +472,7 @@ export class AdminDishSelected extends Component {
                             </div>
 
                             <div className="col s4 m4 l4">
-                                <input id="dish_profit" defaultValue={dish_selected.dish_profit} className="form_field" value={this.state.profit_calculation}
+                                <input id="dish_profit" className="form_field" value={dish_selected.dish_profit}
                                     name="dish_profit" type="text" readOnly/>
                             </div>
                         </div>
