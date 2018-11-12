@@ -2,6 +2,30 @@ window.util = window.util || {};
 (function() {
   "use strict";  //  Safe wrapper for use strict.
 
+  util.listDistrict = function () {
+    let districts = [
+      'Central and Western',
+      'Eastern',
+      'Southern',
+      'Wan Chai',
+      'Sham Shui Po',
+      'Kowloon City',
+      'Kwun Tong',
+      'Wong Tai Sin',
+      'Yau Tsim Mong',
+      'Islands',
+      'Kwai Tsing',
+      'North',
+      'Sai Kung',
+      'Sha Tin',
+      'Tai Po',
+      'Tsuen Wan',
+      'Tuen Mun',
+      'Yuen Long'
+    ];
+    return districts;
+  };
+
   util.getDefaultFoodiesImage = function () {
     return 'https://s3-ap-southeast-1.amazonaws.com/blueplate-images/icons/foody.svg';
   };

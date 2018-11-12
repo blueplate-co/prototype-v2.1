@@ -6,13 +6,11 @@ import React from 'react';
 import { render } from 'react-dom';
 
 // import for show room react component
-import ShowRoom from '../../imports/ui/show_room.js';
+// import ShowRoom from '../../imports/ui/show_room.js';
+import ShowRoom from '../../imports/ui/new_showroom';
 
 Template.show_room.onRendered(function(){
-
-  // render show room container from REACT
   render(<ShowRoom />, document.getElementById('show_room_container'));
-
 });
 
 Meteor.subscribe('theDishes');
