@@ -323,8 +323,7 @@ export default class InfoOrder extends Component {
     handleLogin() {
         // util.loginAccession("");
         FlowRouter.go('/login');
-        $('#path_access').val('33333333333333');
-        debugger
+        $('#path_access').val('/shopping_cart');
     };
 
     getCountryCode(input) {

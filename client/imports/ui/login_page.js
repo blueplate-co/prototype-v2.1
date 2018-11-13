@@ -205,7 +205,7 @@ export default class LoginPage extends Component {
                                 />
                                 <label className="active" htmlFor="password">password</label>
                             </div>
-                            <input id="path_access" type="text" className="form_field" />
+                            <input id="path_access" type="hidden" className="form_field" />
                         </div>
 
                         <div className="row" id="loginpage-btn">
