@@ -7,7 +7,7 @@ import { render } from 'react-dom';
 
 // import for show room react component
 // import ShowRoom from '../../imports/ui/show_room.js';
-import ShowRoom from '../../imports/ui/new_showroom';
+import ShowRoom from '../../imports/ui/showroom/new_showroom';
 
 Template.show_room.onRendered(function(){
   render(<ShowRoom />, document.getElementById('show_room_container'));

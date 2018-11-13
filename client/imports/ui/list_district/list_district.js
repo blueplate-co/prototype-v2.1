@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './list_district.css';
 
 const DistrictItem = (props) => {
   return (

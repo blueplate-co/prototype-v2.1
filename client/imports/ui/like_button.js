@@ -120,7 +120,7 @@ export default class Like extends Component {
     render() {
         return (
             <span onClick={ this.actionLike } title="like" className={ (this.state.like ? 'like-container like' : 'like-container unlike') }>
-                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
                         <g id="ic/favorite/line/GY" stroke="#FFFFFF" strokeWidth="2">
                             <path d="M12,8 C11.33,6.268 9.453,5 7.5,5 C4.957,5 3,6.932 3,9.5 C3,16.0145833 9.79433594,21 12,21 C14.2056641,21 21,16.0139974 21,9.5 C21,6.932 19.043,5 16.5,5 C14.545,5 12.67,6.268 12,8 Z" id="Shape"></path>

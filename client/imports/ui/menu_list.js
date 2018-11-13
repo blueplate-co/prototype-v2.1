@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Session } from 'meteor/session';
-import Rating from './rating';
+import Rating from './rating/rating';
 import Like from './like_button';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';

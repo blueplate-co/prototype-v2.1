@@ -1,11 +1,5 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
-import { Mongo } from "meteor/mongo";
-import { Session } from "meteor/session";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-
-import Rating from "./rating";
-import ProgressiveImages from "./progressive_image";
 import { validatePhoneNumber, getCountryCodeFromKitChen, getCountryCodeFromProfile } from '/imports/functions/common';
 
 // App component - represents the whole app

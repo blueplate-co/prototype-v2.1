@@ -1,0 +1,80 @@
+.dish-card {
+    border-radius: 7px;
+    min-height: 100px;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+.dish-card .thumbnail {
+    position: relative;
+    padding-bottom: 56.2%;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 7px;
+    position: relative;
+}
+
+
+.dish-card .thumbnail .like-container {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 24px;
+}
+
+.dish-card .dish-card-title {
+    font-size: 16px;
+    margin: 10px 0px 5px 0px;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dish-card .dish-card-title:hover {
+    text-decoration: underline;
+}
+
+.dish-card .rating-wrapper {
+    display: inline-flex;
+    width: 100%;
+}
+
+.dish-card .rating-number {
+    margin: 0px 5px;
+    color: #32acd1;
+    font-weight: 500;
+}
+
+.dish-card .dish-meta-price-option {
+    display: inline-flex;
+}
+
+.dish-card .dish-price {
+    color: #56AACD;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.dish-card .dish-serving-option {
+    display: inline-flex;
+    margin: 0px;
+    font-size: 11px;
+    color: #4c4c4c;
+}
+
+.dish-card .dish-serving-option li {
+    padding: 0px 2px;
+    display: flex;
+    align-items: center;
+}
+
+.dish-card .dish-serving-option li:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f111";
+    font-size: 5px;
+    margin: 5px;
+}

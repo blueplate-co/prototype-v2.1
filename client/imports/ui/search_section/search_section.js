@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './search_section.css';
 
 // App component - represents the whole app
 export default class SearchSection extends Component {
@@ -26,7 +27,7 @@ export default class SearchSection extends Component {
                             <div className="col s12 m12 l12">
                                 <label>I want to</label>
                                 <select className="browser-default" id="servingOption">
-                                    <option value="" disabled selected>Dine in/Pick up/ Delivery</option>
+                                    <option value="" disabled defaultValue>Dine in/Pick up/ Delivery</option>
                                     <option value="dinein">Dine in</option>
                                     <option value="delivery">Delivery</option>
                                     <option value="pickup">Pick up</option>
@@ -35,7 +36,7 @@ export default class SearchSection extends Component {
                             <div className="col s12 m12 l12">
                                 <label>at</label>
                                 <select className="browser-default" id="district">
-                                    <option value="" disabled selected>Choose your district</option>
+                                    <option value="" disabled defaultValue>Choose your district</option>
                                     <option value="Central and Western">Central and Western</option>
                                     <option value="Eastern">Eastern</option>
                                     <option value="Southern">Southern</option>

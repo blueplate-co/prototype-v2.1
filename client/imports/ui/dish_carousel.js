@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 
-import Rating from './rating';
+import Rating from './rating/rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
 import ChefAvatar from './chef_avatar';

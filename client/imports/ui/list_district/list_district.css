@@ -1,0 +1,48 @@
+#list-district h2 {
+    font-size: 1.7em;
+}
+
+#list-district .list-district-wrapper {
+    width: 100%;
+    overflow-y: auto;
+}
+
+#list-district .list-district-wrapper ul {
+    display: inline-flex;
+}
+
+#list-district .list-district-wrapper .district-item {
+    color: #fff;
+    margin-right: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 170px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 2em;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+}
+
+#list-district .list-district-wrapper .district-item img {
+    object-fit: cover;
+    position: absolute;
+    left: 0px;
+    height: 250px;
+}
+
+#list-district .list-district-wrapper .district-item .shadow-mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    left: 0px;
+    z-index: 5;
+}
+
+#list-district .list-district-wrapper .district-item span {
+    z-index: 10;
+}

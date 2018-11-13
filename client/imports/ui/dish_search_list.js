@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
 
-import Rating from './rating';
+import Rating from './rating/rating';
 import ProgressiveImages from './progressive_image';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Like from './like_button';

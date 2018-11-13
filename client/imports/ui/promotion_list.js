@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import Rating from './rating';
+import Rating from './rating/rating';
 import ProgressiveImages from './progressive_image';
 import Like from './like_button';
 import { get_promotion_list, checking_promotion_dish, get_amount_promotion } from '/imports/functions/common/promotion_common';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DishItem from './dish_card_item';
+import DishItem from '../dish_card_item/dish_card_item';
 
 // App component - represents the whole app
 export default class PopularDishList extends Component {

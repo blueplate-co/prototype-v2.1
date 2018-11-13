@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './rating.css';
 
 // App component - represents the whole app
 export default class Rating extends Component {
