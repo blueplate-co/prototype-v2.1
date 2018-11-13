@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './admin_edit_func.css';
 import { withTracker } from 'meteor/react-meteor-data';
 import dishUnits from '/imports/functions/common/dish_unit.json';
-import { open_dialog_delete_confirm, open_dialog_edit_confirm } from '/imports/functions/common';
+import { open_dialog_edit_confirm } from '/imports/functions/common';
 
 export class AdminDishSelected extends Component {
     constructor(props) {
@@ -311,25 +311,23 @@ export class AdminDishSelected extends Component {
     };
 
     handleDeleteIngredient(ingredient, index) {
-        open_dialog_delete_confirm("Are you sure?", "Are you sure to delete this item?", () => {},() => {
-            util.show_loading_progress();
-            var arr_ingredients = this.state.ingredients;
-            arr_ingredients.splice(index, 1);
-            if (ingredient.new_field) { // If is new ingredient
-                util.hide_loading_progress();
-                this.setState({ ingredients: arr_ingredients});
-            } else if (ingredient._id) { // If exist ingredient
-                Meteor.call('ingredient.remove', ingredient._id, (err, res) => {
-                    if (!err) {
-                        this.setState({ ingredients: arr_ingredients});
-                        util.hide_loading_progress();
-                    } else {
-                        console.log(err);
-                        util.hide_loading_progress();
-                    }
-                });
-            }
-        });
+        util.show_loading_progress();
+        var arr_ingredients = this.state.ingredients;
+        arr_ingredients.splice(index, 1);
+        if (ingredient.new_field) { // If is new ingredient
+            util.hide_loading_progress();
+            this.setState({ ingredients: arr_ingredients});
+        } else if (ingredient._id) { // If exist ingredient
+            Meteor.call('ingredient.remove', ingredient._id, (err, res) => {
+                if (!err) {
+                    this.setState({ ingredients: arr_ingredients});
+                    util.hide_loading_progress();
+                } else {
+                    console.log(err);
+                    util.hide_loading_progress();
+                }
+            });
+        }
     };
 
     render() {
