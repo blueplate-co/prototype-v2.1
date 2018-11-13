@@ -143,10 +143,10 @@ class TopNavigation extends Component {
       util.show_loading_progress();
       Meteor.logout(() => {
         util.hide_loading_progress();
-        localStorage.removeItem("globalCart" + Meteor.userId());
+        localStorage.setItem('globalCart', JSON.stringify(null));
+        localStorage.removeItem("globalCart");
         this.setState({ isLogin: false })
         FlowRouter.go("/main");
-        location.href = '/main';
       })
     } else {
       // util.loginAccession("");
@@ -504,7 +504,7 @@ class TopNavigation extends Component {
         var stripebalance = parseFloat(res.account_balance / 100);
       }
       Meteor.call('payment.getCredits', (err, res) => {
-        credits = res + stripebalance;
+        credits = (res + stripebalance).toFixed(2);
         var promotion_credits = 0;
         Meteor.call('promotion.check_history', (err, res) => {
           if (Object.keys(res).length > 0) {
