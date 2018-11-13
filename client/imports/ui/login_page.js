@@ -139,7 +139,6 @@ export default class LoginPage extends Component {
                         Meteor.call('shopping_cart.update', order_id, quantity, total_price_per_dish,
                             function(err) {
                                 localStorage.setItem("localCart", JSON.stringify([]));
-                                localStorage.removeItem('globalCartnull');
 
                                 // To make sure the dish we add from localStorage can display on foodies's shopping cart 
                                 if (location.pathname.indexOf('shopping_cart') > -1) {
@@ -164,7 +163,6 @@ export default class LoginPage extends Component {
                             cart_item.product_type,
                             function(err) {
                                 localStorage.setItem("localCart", JSON.stringify([]));
-                                localStorage.removeItem('globalCartnull');
 
                                 // To make sure the dish we add from localStorage can display on foodies's shopping cart 
                                 if (location.pathname.indexOf('shopping_cart') > -1) {
@@ -207,6 +205,7 @@ export default class LoginPage extends Component {
                                 />
                                 <label className="active" htmlFor="password">password</label>
                             </div>
+                            <input id="path_access" type="text" className="form_field" />
                         </div>
 
                         <div className="row" id="loginpage-btn">

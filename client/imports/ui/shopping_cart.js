@@ -12,7 +12,7 @@ import InfoOrder from './info_order.js';
 import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 //- empty cart store global in this page
-window.globalCart = localStorage.getItem("globalCart" + Meteor.userId());
+window.globalCart = localStorage.getItem("globalCart");
 // var kitchen = { id: item, service: "", date: "", time: "", timeStamp: "", address: "" };
 
 // Shopping cart component
@@ -48,7 +48,7 @@ class ShoppingCart extends Component {
                 for (var j = 0; j < unique.length; j++) {
                     if (globalCart[i].id == unique[j]) {
                         globalCart.splice(i, 1);
-                        localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+                        localStorage.setItem('globalCart', JSON.stringify(globalCart));
                         break Loop1;
                     }
                 }
@@ -65,9 +65,13 @@ class ShoppingCart extends Component {
             if (!Meteor.userId()) {
                 localStorage.setItem("localCart", JSON.stringify(new_carts));
             }
+
+            if (this.state.shoppingCart.length == 0) {
+                globalCart = [];
+            }
             
             if (globalCart == null || globalCart.length == 0) {
-                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
+                localStorage.setItem('globalCart', JSON.stringify(null));
             }
         });
     }
@@ -344,11 +348,7 @@ class ShoppingCart extends Component {
             fbq('track', 'InitiateCheckout', { content_ids: Meteor.userId(), contents: globalCart, num_items: globalCart.length });
         }
 
-        // When not login, Meteor.userId() return null
-        localStorage.setItem('globalCartnull', JSON.stringify([]));
-        localStorage.removeItem('globalCartnull');
-
-        localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+        localStorage.setItem('globalCart', JSON.stringify(globalCart));
 
         // If haven't check amount or change quantity of product
         if ( !localStorage.getItem('bEnoughtAmount' + Meteor.userId()) || this.state.bHasChangeQty )  {
@@ -368,7 +368,7 @@ class ShoppingCart extends Component {
             if (Meteor.userId()) {
                 this.handleCheckout();
             } else {
-                localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(globalCart));
+                localStorage.setItem('globalCart', JSON.stringify(globalCart));
                 this.setState({ bGetInforUser: true});
             }
         }
@@ -705,7 +705,7 @@ class ShoppingCart extends Component {
 
     renderListKitchen() {
         //- get unique seller_id
-        globalCart = JSON.parse(localStorage.getItem("globalCart" + Meteor.userId()));
+        globalCart = JSON.parse(localStorage.getItem("globalCart"));
         if (typeof globalCart == 'object' && globalCart == null ) {
             globalCart = [];
         }
@@ -884,21 +884,21 @@ class ShoppingCart extends Component {
         total = total.toFixed(2);
 
         return (
-            <div id="view-detail-total" className="col s12 m3 l3">
+            <div id="view-detail-total" className="col s12 m12 l12">
                 <div id="total-block">
                     <div className="row subtotal">
-                        <div className="col s6 m5 text-left">Subtotal:</div>
-                        <div className="col s6 m5 text-left">HK$ { subtotal }</div>
+                        <div className="col s6 m7 text-right">Subtotal:</div>
+                        <div className="col s6 m5 text-right">HK$ { subtotal }</div>
                     </div>
 
                     <div className="row discount">
-                        <div className="col s6 m5 text-left">Discount:</div>
-                        <div className="col s6 m5 text-left">HK$ { this.state.discount }</div>
+                        <div className="col s6 m7 text-right">Discount:</div>
+                        <div className="col s6 m5 text-right">HK$ { this.state.discount }</div>
                     </div>
 
                     <div className="row total">
-                        <div className="col s6 m5 text-left total-text">Total:</div>
-                        <div className="col s6 m5 text-left bp-blue-text">HK$ { total }</div>
+                        <div className="col s6 m7 text-right total-text">Total:</div>
+                        <div className="col s6 m5 text-right bp-blue-text">HK$ { total }</div>
                     </div>
                     <div className="row text-center btn-shopping-cart">
                         <button id="checkout-shoppingcart" className="btn checkout" disabled={this.state.shoppingCart.length == 0} onClick={ () => this.handleGetInfor() } >continue</button>
@@ -911,7 +911,6 @@ class ShoppingCart extends Component {
 
     render() {
        
-
         return (
             <div className="container shopping-cart-details">
                 <ProgressBar step_progress="1" />
@@ -924,7 +923,7 @@ class ShoppingCart extends Component {
                                 <span>
                                     {(this.state.shoppingCart.length > 0) ? 
                                         <span>
-                                            <div className="col s12 m8 l8">
+                                            <div className="col s12 m12 l12">
                                                 {this.renderListKitchen()}
                                             </div>
                                             {this.renderTotalPrice()}
@@ -959,21 +958,3 @@ export default withTracker(props => {
         listLoading: !handle.ready(),
     };
 })(ShoppingCart);
-
-
-$(document).ready(function () {
-    $(window).bind("scroll", function(e) {
-        var top = $(window).scrollTop();
-        if (53 < top && top < 1360) {
-          $("#view-detail-total").addClass("cart-scroll-fix-top");
-        } else {
-          $("#view-detail-total").removeClass("cart-scroll-fix-top");
-        } 
-
-        // if (top > 1091) {
-        //     $("#detail-dish-info").addClass("dish-scroll-bottom");
-        // } else {
-        //     $("#detail-dish-info").removeClass("dish-scroll-bottom");
-        // }
-    });
-});

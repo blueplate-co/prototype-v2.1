@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Accounts } from 'meteor/accounts-base';
-import districts from '/imports/functions/common/districts_common.json';
 import { delete_cookies, getCookie } from '/imports/functions/common/promotion_common';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
@@ -324,6 +323,8 @@ export default class InfoOrder extends Component {
     handleLogin() {
         // util.loginAccession("");
         FlowRouter.go('/login');
+        $('#path_access').val('33333333333333');
+        debugger
     };
 
     getCountryCode(input) {
@@ -410,7 +411,6 @@ export default class InfoOrder extends Component {
             <div id="ordering-popup" className="ordering-popup-infor container">
                 <div className="">
                     <div className="text-center">
-                        <p id="btn-back-infor-icon" onClick={() => this.props.handleBackToShopping()}><i className="material-icons arrow-back-icon">arrow_back</i></p>
                         <p id="get-infor-title-content">Please let's us know who are you!</p>
                     </div>
 
@@ -479,10 +479,18 @@ export default class InfoOrder extends Component {
 
                 </div>
                 <div className="modal-footer get-info">
+                    <div className="row have-accn-text">
+                        <span>Already have account?<span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}> Login</span>
+                        </span>
+                    </div>
+
                     <div className="row">
-                        <div className="col l12 m12 s12 text-right">
-                            <p id="have-accn-text">Already have account? <span className="bp-blue-text handle-login-text" onClick={ () => this.handleLogin()}>Login</span></p>
-                            <a href="#!" className="waves-effect waves-green btn-flat btn-info-ordering-confirm" onClick={() => this.handleOnSaveOrderingInfo()}>continue</a>
+                        <div className="col s6 m6 l6 text-right order-btn-footer">
+                            <span id="btn-back-infor-icon" onClick={() => this.props.handleBackToShopping()}>back</span>
+                        </div>
+
+                        <div className="col s6 m6 l6 order-btn-footer">
+                            <span className="btn-continue-payment" onClick={() => this.handleOnSaveOrderingInfo()}>continue</span>
                         </div>
                     </div>
                 </div>

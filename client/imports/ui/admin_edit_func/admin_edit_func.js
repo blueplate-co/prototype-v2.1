@@ -49,7 +49,7 @@ export default class AdminEditFunc extends Component {
     render() {
         return (
             (this.state.listDishes.length > 0) ? 
-                <div className="container-fluid">
+                <div className="container">
                     <AdminListDish listDishes={this.state.listDishes} />
                 </div>
             :
