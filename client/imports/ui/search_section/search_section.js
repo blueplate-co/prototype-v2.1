@@ -21,10 +21,10 @@ export default class SearchSection extends Component {
                 <div className="content-hero">
                     <div>
                         <div className="row">
-                            <h1>Homemade food beats any restaurant</h1>
+                            <h1>Homemade food, exclusively made for you</h1>
                         </div>
                         <div className="row searching-form">
-                            <div className="col s12 m12 l12">
+                            <div className="col s12 m6 l4">
                                 <label>I want to</label>
                                 <select className="browser-default" id="servingOption">
                                     <option value="" disabled defaultValue>Dine in/Pick up/ Delivery</option>
@@ -33,7 +33,7 @@ export default class SearchSection extends Component {
                                     <option value="pickup">Pick up</option>
                                 </select>
                             </div>
-                            <div className="col s12 m12 l12">
+                            <div className="col s12 m6 l4">
                                 <label>at</label>
                                 <select className="browser-default" id="district">
                                     <option value="" disabled defaultValue>Choose your district</option>
@@ -56,6 +56,9 @@ export default class SearchSection extends Component {
                                     <option value="Tuen Mun">Tuen Mun</option>
                                     <option value="Yuen Long">Yuen Long</option>
                                 </select>
+                            </div>
+                            <div className="col l4 m3 s6">
+                                <button className="btn" id="btn-search">Search</button>
                             </div>
                         </div>
                     </div>

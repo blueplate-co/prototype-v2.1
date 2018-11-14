@@ -4,24 +4,24 @@ window.util = window.util || {};
 
   util.listDistrict = function () {
     let districts = [
-      'Central and Western',
-      'Eastern',
-      'Southern',
-      'Wan Chai',
-      'Sham Shui Po',
-      'Kowloon City',
-      'Kwun Tong',
-      'Wong Tai Sin',
-      'Yau Tsim Mong',
-      'Islands',
-      'Kwai Tsing',
-      'North',
-      'Sai Kung',
-      'Sha Tin',
-      'Tai Po',
-      'Tsuen Wan',
-      'Tuen Mun',
-      'Yuen Long'
+      { name: 'Central and Western', images: 'https://c1.staticflickr.com/9/8646/15885419357_08a2904a90_b.jpg' },
+      { name: 'Eastern', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Island_East_Night_View_201106.jpg/1200px-Island_East_Night_View_201106.jpg' },
+      { name: 'Southern', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Ap_Lei_Chau_and_Aberdeen.JPG/1200px-Ap_Lei_Chau_and_Aberdeen.JPG' },
+      { name: 'Wan Chai', images: 'https://www.tripsavvy.com/thmb/6u8KT4092JWMBKZn6cQvofoALKY=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-584942044-594490323df78c537b459c7a.jpg' },
+      { name: 'Sham Shui Po', images: 'http://www.sham-shui-po.com/images/slide1.jpg' },
+      { name: 'Kowloon City', images: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/HK_Kowloon_City_District_2008.jpg' },
+      { name: 'Kwun Tong', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Kwun_Tong_District.jpg/1200px-Kwun_Tong_District.jpg' },
+      { name: 'Wong Tai Sin', images: 'https://previews.agefotostock.com/previewimage/medibigoff/35eb1ab2024951aecc9c057efff17bf5/y8a-2493857.jpg' },
+      { name: 'Yau Tsim Mong', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/13-08-08-hongkong-by-RalfR-Panorama2.jpg/1200px-13-08-08-hongkong-by-RalfR-Panorama2.jpg' },
+      { name: 'Islands', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Hong_Kong_Island_Skyline_201108.jpg/1200px-Hong_Kong_Island_Skyline_201108.jpg' },
+      { name: 'Kwai Tsing', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Kwai_Tsing_Container_Terminals.jpg/1200px-Kwai_Tsing_Container_Terminals.jpg' },
+      { name: 'North', images: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Ping_Shek_Playground.JPG' },
+      { name: 'Sai Kung', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Tseung_Kwan_O_Overview_201406.jpg/1200px-Tseung_Kwan_O_Overview_201406.jpg' },
+      { name: 'Sha Tin', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sha_Tin_Shing_Mun_River.JPG/1200px-Sha_Tin_Shing_Mun_River.JPG' },
+      { name: 'Tai Po', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tai_Po_New_Town_overview_2017.jpg/1200px-Tai_Po_New_Town_overview_2017.jpg' },
+      { name: 'Tsuen Wan', images: 'https://extranet.who.int/agefriendlyworld/wp-content/uploads/2015/07/----------------------------------profile-pic1.jpg' },
+      { name: 'Tuen Mun', images: 'https://www.itishk.com/wp-content/uploads/2013/04/tuen-mun-castle-peak.jpg' },
+      { name: 'Yuen Long', images: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Yuen_Long_Skyline_201006.jpg/1200px-Yuen_Long_Skyline_201006.jpg'}
     ];
     return districts;
   };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Like from '../like_button';
 import Rating from '../rating/rating';
-import PreOrder from '../pre-order/pre-order';
+import DishDistance from '../dish-distance/dish-distance';
 import './dish_card_item.css';
 
 export default class DishItem extends Component {
@@ -14,7 +14,7 @@ export default class DishItem extends Component {
             <div className="dish-card col l3 m6 s12">
                 <div className="thumbnail" style={{ backgroundImage: "url(https://www.telegraph.co.uk/content/dam/Travel/2017/February/italy-food-Ribollita-AP.jpg)" }}>
                     <Like type="dish" />
-                    <PreOrder />
+                    <DishDistance />
                 </div>
                 <h5 className="dish-card-title" title="Dish name goes here long text now">Dish name goes here long text now</h5>
                 <div className="rating-wrapper">

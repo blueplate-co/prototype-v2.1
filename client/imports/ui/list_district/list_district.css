@@ -4,7 +4,13 @@
 
 #list-district .list-district-wrapper {
     width: 100%;
-    overflow-y: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+#list-district .list-district-scrollable {
+    position: relative;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.25s;
 }
 
 #list-district .list-district-wrapper ul {
@@ -16,8 +22,8 @@
     margin-right: 10px;
     border-radius: 10px;
     border: none;
-    width: 170px;
-    height: 250px;
+    width: 20vw;
+    height: 230px;
     display: flex;
     align-items: center;
     padding: 8px;
@@ -25,6 +31,8 @@
     font-weight: bold;
     position: relative;
     overflow: hidden;
+    justify-content: center;
+    text-align: center;
 }
 
 #list-district .list-district-wrapper .district-item img {
@@ -45,4 +53,36 @@
 
 #list-district .list-district-wrapper .district-item span {
     z-index: 10;
+    font-size: 1.7rem;
+}
+
+#list-district .list-district-wrapper .list-navigator {
+    position: absolute;
+    z-index: 100;
+    color: #32acd1;
+    font-size: 30px;
+    top: 115px;
+    cursor: pointer;
+}
+
+#list-district .list-district-wrapper .list-navigator#left-navigator {
+    left: 10px;
+}
+
+#list-district .list-district-wrapper .list-navigator#right-navigator {
+    right: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+    #list-district .list-district-scrollable {
+        overflow-x: scroll;
+        position: relative;
+    }
+    #list-district .list-district-wrapper .list-navigator {
+        display: none;
+    }
+    #list-district .list-district-wrapper .district-item {
+        width: 30vw;
+        height: 230px;
+    }
 }
