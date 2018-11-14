@@ -61,13 +61,13 @@ export default class ListDistrict extends Component {
   }
 
   slideLeft() {
-    let cardWidth = document.getElementsByClassName('district-item')[0].offsetWidth + 10;
+    let cardWidth = document.getElementsByClassName('district-item')[0].offsetWidth + 20;
     let newOffset = this.state.offsetX + (cardWidth * 2);
     this.setState({ offsetX: newOffset, position: this.state.position - 2 })
   }
 
   slideRight() {
-    let cardWidth = document.getElementsByClassName('district-item')[0].offsetWidth + 10;
+    let cardWidth = document.getElementsByClassName('district-item')[0].offsetWidth + 20;
     let newOffset = this.state.offsetX - (cardWidth * 2);
     this.setState({ offsetX: newOffset, position: this.state.position + 2 })
   }

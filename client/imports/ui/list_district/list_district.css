@@ -19,11 +19,11 @@
 
 #list-district .list-district-wrapper .district-item {
     color: #fff;
-    margin-right: 10px;
+    margin-right: 20px;
     border-radius: 10px;
     border: none;
-    width: 20vw;
-    height: 230px;
+    width: 240px;
+    height: 322px;
     display: flex;
     align-items: center;
     padding: 8px;
@@ -39,7 +39,7 @@
     object-fit: cover;
     position: absolute;
     left: 0px;
-    height: 250px;
+    object-position: center;
 }
 
 #list-district .list-district-wrapper .district-item .shadow-mask {
@@ -53,7 +53,8 @@
 
 #list-district .list-district-wrapper .district-item span {
     z-index: 10;
-    font-size: 1.7rem;
+    font-size: 24px;
+    font-weight: 500;
 }
 
 #list-district .list-district-wrapper .list-navigator {
@@ -61,16 +62,16 @@
     z-index: 100;
     color: #32acd1;
     font-size: 30px;
-    top: 115px;
+    top: 162px;
     cursor: pointer;
 }
 
 #list-district .list-district-wrapper .list-navigator#left-navigator {
-    left: 10px;
+    left: 15px;
 }
 
 #list-district .list-district-wrapper .list-navigator#right-navigator {
-    right: 10px;
+    right: 15px;
 }
 
 @media only screen and (max-width: 992px) {
