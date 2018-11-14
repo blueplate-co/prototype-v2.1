@@ -26,7 +26,7 @@
     height: 322px;
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 40px;
     font-size: 2em;
     font-weight: bold;
     position: relative;
@@ -38,8 +38,8 @@
 #list-district .list-district-wrapper .district-item img {
     object-fit: cover;
     position: absolute;
-    left: 0px;
     object-position: center;
+    height: 100%;
 }
 
 #list-district .list-district-wrapper .district-item .shadow-mask {
@@ -83,7 +83,21 @@
         display: none;
     }
     #list-district .list-district-wrapper .district-item {
+        width: 18vw;
+        height: 265px;
+    }
+}
+
+@media only screen and (max-width: 991px) and (min-width: 601px) {
+    #list-district .list-district-wrapper .district-item {
         width: 30vw;
-        height: 230px;
+        height: 280px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #list-district .list-district-wrapper .district-item {
+        width: 40vw;
+        height: 265px;
     }
 }

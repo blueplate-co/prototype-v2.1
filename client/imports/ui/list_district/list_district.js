@@ -3,11 +3,19 @@ import './list_district.css';
 
 const DistrictItem = (props) => {
   return (
-    <div key={props.district.name} className="district-item">
-      <img src={props.district.images} />
-      <div className="shadow-mask"></div>
-      <span>{props.district.name}</span>
-    </div>
+    (props.scrollable) ? (
+      <div key={props.district.name} className="district-item">
+        <img src={props.district.images} />
+        <div className="shadow-mask"></div>
+        <span>{props.district.name}</span>
+      </div>
+    ) : (
+      <div key={props.district.name} className="district-item" style={{ width: `${props.width}px`, height: `${props.height}px` }}>
+        <img src={props.district.images} />
+        <div className="shadow-mask"></div>
+        <span>{props.district.name}</span>
+      </div>
+    )
   )
 }
 
@@ -21,7 +29,9 @@ export default class ListDistrict extends Component {
     this.state = {
       position: 0,
       offsetX: 0,
-      width: window.innerWidth
+      widthWindow: window.innerWidth,
+      widthItem: 240,
+      heightItem: 322
     }
   }
 
@@ -34,6 +44,14 @@ export default class ListDistrict extends Component {
         position: 0,
         offsetX: 0
       })
+    } else {
+      let containerWidth = document.getElementsByClassName('list-district-scrollable')[0].offsetWidth;
+      let itemWidth = (containerWidth - 60) / 4;
+      let itemHeight = itemWidth / 3 * 4;
+      this.setState({
+        width: itemWidth,
+        height: itemHeight
+      });
     }
   }
 
@@ -42,21 +60,38 @@ export default class ListDistrict extends Component {
   }
 
   handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth },() => {
-      if (this.state.width < 992) {
+    this.setState({ widthWindow: window.innerWidth },() => {
+      if (this.state.widthWindow < 992) {
         this.setState({
           position: 0,
           offsetX: 0
         })
+      } else {
+        let containerWidth = document.getElementsByClassName('list-district-scrollable')[0].offsetWidth;
+        let itemWidth = (containerWidth - 60) / 4;
+        let itemHeight = itemWidth / 3 * 4;
+        this.setState({
+          position: 0,
+          offsetX: 0,
+          width: itemWidth,
+          height: itemHeight
+        });
       }
     });
   };
 
   renderListDistrict() {
     return (
-      window.util.listDistrict().map((item, index) => {
-        return <DistrictItem key={index} district={item} />
-      })
+      (this.state.widthWindow > 992) ?
+      (
+        window.util.listDistrict().map((item, index) => {
+          return <DistrictItem key={index} district={item} scrollable={false} width={this.state.width} height={this.state.heightItem} />
+        })
+      ) : (
+        window.util.listDistrict().map((item, index) => {
+          return <DistrictItem key={index} district={item} scrollable={true} />
+        })
+      )
     )
   }
 
