@@ -951,7 +951,7 @@ class ShoppingCart extends Component {
 }
 
 export default withTracker(props => {
-    Meteor.subscribe('userEmail');
+    // Meteor.subscribe('userEmail');
     const handle = Meteor.subscribe('getUserShoppingCart');
     return {
         currentUser: Meteor.user(),

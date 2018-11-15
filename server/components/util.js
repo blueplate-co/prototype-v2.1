@@ -16,7 +16,7 @@ Meteor.publish("userData", function() {
 });
 
 Meteor.publish("userEmail", function() {
-    return Meteor.users.find({}, {fields: {emails: 1}});
+  return Meteor.users.find({}, {fields: {emails: 1}});
 });
 
 Meteor.publish("theBonusHistory", function() {

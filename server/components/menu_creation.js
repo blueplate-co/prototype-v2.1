@@ -168,6 +168,7 @@ Meteor.methods({
 
 Meteor.methods({
   'menu.getListMenuShowroom': function(kitchen_id) {
+    this.unblock();
     if (kitchen_id.length > 0) {
       return Menu.find({ kitchen_id: kitchen_id, deleted: false }, { sort: { online_status: -1, createdAt: -1 }}).fetch();
     } else {
