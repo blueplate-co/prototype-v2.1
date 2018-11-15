@@ -30,6 +30,7 @@ Meteor.methods({
                 dietary_tags: dish.dietary_tags,
                 dish_tags: dish.dish_tags,
                 updatedAt: new Date(),
+                meta: dish.meta,
                 user_edit: Meteor.userId()
             }
           });
@@ -53,5 +54,8 @@ Meteor.methods({
                 ingredient_unit: ingredient.ingredient_unit
             }
         })
+    },
+    'admin.remove_image'(img_id) {
+        Images.remove({ _id: img_id});
     }
 });

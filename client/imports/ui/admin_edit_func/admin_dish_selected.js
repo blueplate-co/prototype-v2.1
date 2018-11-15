@@ -10,7 +10,9 @@ export class AdminDishSelected extends Component {
 
         this.state={
             dish_selected: this.props.dish_selected || {},
-            ingredients: []
+            ingredients: [],
+            img_change: '',
+            fileObj: null
         }
     };
 
@@ -269,12 +271,43 @@ export class AdminDishSelected extends Component {
         });
     }
 
+    checkUploadImage(dish) {
+        var new_img_new = this.changeImgName(this.state.fileObj.path);
+        Meteor.call('saveToKraken', new_img_new, this.state.fileObj.path, (error, res) => {
+            debugger
+            if(error) {
+                // console.log('kraken errors', error);
+            } else {
+                Meteor.call('admin.remove_image', this.state.fileObj._id, (err, res) => {
+                    if (!err) {
+                        // console.log('remove success');
+                    }
+                });
+            }
+        });
+
+        //- declare some sizes
+        var meta_img = {
+            'origin': 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + new_img_new,
+            'large': 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + new_img_new,
+            'medium': 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/medium/' + new_img_new,
+            'small': 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/small/' + new_img_new
+        }
+
+        dish.meta = meta_img;
+    }
+
     handleOnSubmit() {
         util.show_loading_progress();
         var dish = this.state.dish_selected;
         var dish_tags = $('#dish_tags').material_chip('data');
         dish.dish_tags = dish_tags;
         this.submitIngredient();
+
+        debugger
+        if (this.state.fileObj) {
+            this.checkUploadImage(dish);
+        }
 
         Meteor.call('admin.update_dish', dish, (err, res) => {
             if (!err) {
@@ -330,6 +363,80 @@ export class AdminDishSelected extends Component {
         }
     };
 
+    handleClickImage() {
+        $('#admin-img-file').trigger('click');
+    };
+
+    handleChangeImage(event) {
+        var that = this;
+        // var file = document.querySelector('input[type=file]').files[0]; //sames as here
+        var file = event.target.files[0];
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+            util.show_loading_progress();
+            
+            // Get path image
+            upload = Images.insert({
+                file: reader.result,
+                isBase64: true,
+                fileName: file.name,
+                streams: 'dynamic',
+                chunkSize: 'dynamic',
+                meta: {
+                    base64: reader.result
+                }
+            }, false);
+            
+            upload.on('start', function () {});
+            upload.on('end', function (error, fileObj) {
+                if (error) {
+                    that.setState({ fileObj: null})
+                    util.hide_loading_progress();
+                } else {
+                    that.setState({ img_change: reader.result, fileObj: fileObj});
+                    util.hide_loading_progress();
+                }
+            });
+            upload.start();
+        }
+
+        if (file) {
+            reader.readAsDataURL(file); //reads the data as a URL
+        } else {
+            that.setState({ img_change: ''});
+        }
+    }
+
+    changeImgName(imgPath) {
+        //- return new name DateTime in milliseconds + unique ID
+        let currentDate = new Date()
+        var milliseconds = currentDate.getMilliseconds()
+        //- uniqid
+        let uniqid = require('uniqid');
+
+        //- get extension from img path
+        let fileExtension = require('file-extension')
+        let extension = fileExtension(imgPath)
+
+        return milliseconds + '_' + uniqid()+ '.' + extension
+    }
+
+    renderDishImage(dish_selected) {
+        var img_change = this.state.img_change;
+        var img_url = img_change != '' ? img_change : dish_selected.meta.origin;
+        return (
+            <div className="row admin-image-upload" style={{backgroundImage: 'url(' +img_url+')'}} onClick={()=>this.handleClickImage()}>
+                <div id="admin-img-block">
+                    <input type="file" id="admin-img-file" hidden onChange={(event)=>this.handleChangeImage(event)}/>
+                </div>
+                <div id="admin-image-hover-overlap">
+                    <p id="admin-change-img-text">Change dish image</p>
+                </div>
+            </div>
+        );
+    };
+
     render() {
         var dish_selected = this.state.dish_selected;
         var dish_selling_price = parseFloat(dish_selected.dish_selling_price/1.15).toFixed(2);
@@ -337,7 +444,8 @@ export class AdminDishSelected extends Component {
         return(
             <div className="create_dishes_form_container container">
                 <div className="dish_descriptions" id="dish_descriptions">
-                    {/* {{> uploadForm }} */}
+                    {this.renderDishImage(dish_selected)}
+                    
                     <div className="row">
                         <div className="col l12 m12 s12">
                             <span>Not sure what to do? </span><a className="modal-close" href="/seller-handbook/articles/vEHhJS49AtipqyHWq">This article </a><span>should help.</span>
