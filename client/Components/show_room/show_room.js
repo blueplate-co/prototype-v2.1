@@ -15,7 +15,4 @@ Template.show_room.onRendered(function(){
 
 });
 
-Meteor.subscribe('theDishes');
-Meteor.subscribe('theMenu');
-Meteor.subscribe('theKitchenDetail');
 Meteor.subscribe('listAllNotifications');

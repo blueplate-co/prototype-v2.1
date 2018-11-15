@@ -749,7 +749,7 @@ export class Dish_Detail extends Component {
 }
 
 export default withTracker(props => {
-    const handle = Meteor.subscribe('userEmail');
+    // const handle = Meteor.subscribe('userEmail');
     return {
         currentUser: Meteor.user(),
         listLoading: !handle.ready(),

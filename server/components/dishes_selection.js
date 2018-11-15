@@ -118,6 +118,7 @@ Meteor.methods({
     return Kitchen_details.findOne({user_id: user_id});
   },
   'dish.getDishListShowroom' (kitchen_id) {
+    this.unblock();
     if (kitchen_id.length > 0) {
       return Dishes.find({ kitchen_id: kitchen_id, deleted: false },{ sort: { online_status: -1, createdAt: -1 }}).fetch();
     }

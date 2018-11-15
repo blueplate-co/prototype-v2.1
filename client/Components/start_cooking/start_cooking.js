@@ -1,10 +1,6 @@
-import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Meteor } from 'meteor/meteor';
 import {  Template } from 'meteor/templating';
-import { Blaze } from 'meteor/blaze';
-import {  FilesCollection } from 'meteor/ostrio:files';
-import { ReactiveVar } from 'meteor/reactive-var'
 import { search_distinct_in_order_record} from '/imports/functions/shopping_cart.js';
 import { date_time_conversion } from '/imports/functions/date_time_conversion.js';
 

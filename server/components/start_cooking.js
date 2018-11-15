@@ -4,11 +4,46 @@ import { check } from 'meteor/check';
 Transactions = new Mongo.Collection('transactions');
 
 Meteor.publish('theProfileDetail', function(){
-    return Profile_details.find({});
+  if (Meteor.userId()) {
+    return Profile_details.find({ user_id: Meteor.userId() });
+  }
+  return []
 });
 
-Meteor.publish('theKitchenDetail', function(){
-    return Kitchen_details.find();
+Meteor.publish('theKitchenDetailByDish', function(dish_id){
+  let homecook_id = Dishes.findOne({ _id: dish_id }).user_id;
+  return Kitchen_details.find({ user_id: homecook_id })
+});
+
+Meteor.publish('getShoppingCartOfCurrentUser', function(){
+  return Shopping_cart.find({ buyer_id: Meteor.userId() })
+});
+
+Meteor.publish('getDishesInShoppingCartOfCurrentUser', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId(), product_type: 'dish' }).fetch();
+  let products_id = [];
+  for (var i = 0; i < products.length; i++) {
+    products_id.push(products[i].product_id);
+  }
+  return Dishes.find({ _id: { $in: products_id } })
+});
+
+Meteor.publish('getMenusInShoppingCartOfCurrentUser', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId(), product_type: 'menu' }).fetch();
+  let products_id = [];
+  for (var i = 0; i < products.length; i++) {
+    products_id.push(products[i].product_id);
+  }
+  return Menu.find({ _id: { $in: products_id } })
+});
+
+Meteor.publish('getAllKitchenDetailOfSellerInShoppingcart', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+  let seller_id = [];
+  for (var i = 0; i < products.length; i++) {
+    seller_id.push(products[i].seller_id);
+  }
+  return Kitchen_details.find({ user_id: { $in: seller_id } })
 });
 
 Transactions.deny({
@@ -186,6 +221,10 @@ Meteor.publish('listAllOrdersBuyer', function() {
 });
 
 Meteor.publish('listAllTransactions', function() {
-  var transactions = Transactions.find({});
-  return transactions;
+  if (Meteor.userId()) {
+    return [
+      Transactions.find({ $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() } ] })
+    ]
+  }
+  return []
 })

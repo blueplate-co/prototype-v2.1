@@ -54,3 +54,4 @@ meteorhacks:inject-initial
 accounts-facebook
 service-configuration
 accounts-google
+meteorhacks:unblock
