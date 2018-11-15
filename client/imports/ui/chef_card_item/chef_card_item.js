@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Like from '../like_button';
 import Rating from '../rating/rating';
 import DishDistance from '../dish-distance/dish-distance';
-import './dish_card_item.css';
+import './chef_card_item.css';
 
 export default class DishItem extends Component {
     constructor(props) {
@@ -11,7 +11,7 @@ export default class DishItem extends Component {
 
     render() {
         return (
-            <div className="dish-card col l3 m6 s12">
+            <div className="dish-card">
                 <div className="thumbnail" style={{ backgroundImage: "url(https://www.telegraph.co.uk/content/dam/Travel/2017/February/italy-food-Ribollita-AP.jpg)" }}>
                     <Like type="dish" />
                     <DishDistance />

@@ -3,7 +3,7 @@ import LazyLoad from 'react-lazyload';
 
 import SearchSection from '../search_section/search_section';
 import ListDistrict from '../list_district/list_district';
-import PopularDishList from '../popular_dish_list/popular_dish_list';
+import RecommendChefList from '../recommend_chef_list/recommend_chef_list';
 import ListCategories from '../list_categories/list_categories';
 
 // App component - represents the whole app
@@ -23,7 +23,7 @@ export default class ShowRoom extends Component {
               <ListDistrict />
             </LazyLoad>
             <LazyLoad height={200} once>
-              <PopularDishList />
+              <RecommendChefList />
             </LazyLoad>
             <LazyLoad height={200} once>
               <ListCategories />
