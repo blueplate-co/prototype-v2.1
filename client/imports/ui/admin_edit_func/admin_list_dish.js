@@ -14,9 +14,15 @@ export default class AdminListDish extends Component {
         }
     };
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({ listDishes: nextProps.listDishes});
+    }
+
     handleOnEditDish(index) {
-        this.setState({dish_selected: this.state.listDishes[index], selectedDish: true}, () => {
-            console.log(this.state.dish_selected)
+        var dishEdit = this.state.listDishes[index];
+        dishEdit.dish_selling_price = parseFloat(dishEdit.dish_selling_price/1.15).toFixed(2);
+        this.setState({dish_selected: dishEdit, selectedDish: true}, () => {
+            // console.log(this.state.dish_selected)
         });
     };
 
@@ -54,25 +60,25 @@ export default class AdminListDish extends Component {
                     {this.state.listDishes.map((dish, index) => {
                        var dish_selling_price = parseFloat(dish.dish_selling_price/1.15).toFixed(2);
                         return (
-                        <tr className="row" key={index}>
-                            <td className="dish-stt">{index+1}</td>
-                            <td className="dish-name-td">{dish.dish_name}</td>
+                            <tr className="row" key={index}>
+                                <td className="dish-stt">{index+1}</td>
+                                <td className="dish-name-td">{dish.dish_name}</td>
 
-                            <td className="center">{dish.dish_cost}</td>
+                                <td className="center">{dish.dish_cost}</td>
 
-                            <td className="center">{dish_selling_price}</td>
+                                <td className="center">{dish_selling_price}</td>
 
-                            <td className="center admin-dish-img" style={{backgroundImage: `url(${dish.meta.origin})`}}>
-                            </td>
+                                <td className="center admin-dish-img" style={{backgroundImage: `url(${dish.meta.origin})`}}>
+                                </td>
 
-                            <td className="center admin-edit-click" onClick={() => this.handleOnEditDish(index)}>
-                                <span><i className="material-icons grey-text text-lighten-1">edit</i></span>
-                            </td>
+                                <td className="center admin-edit-click" onClick={() => this.handleOnEditDish(index)}>
+                                    <span><i className="material-icons grey-text text-lighten-1">edit</i></span>
+                                </td>
 
-                            <td className="center admin-edit-click" onClick={() => this.handleOnDeleteDish(dish._id)}>
-                                <span><i className="material-icons grey-text text-lighten-1">delete</i></span>
-                            </td>
-                        </tr>
+                                <td className="center admin-edit-click" onClick={() => this.handleOnDeleteDish(dish._id)}>
+                                    <span><i className="material-icons grey-text text-lighten-1">delete</i></span>
+                                </td>
+                            </tr>
                         );
                     })}
                 </tbody>    

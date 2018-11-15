@@ -274,7 +274,6 @@ export class AdminDishSelected extends Component {
     checkUploadImage(dish) {
         var new_img_new = this.changeImgName(this.state.fileObj.path);
         Meteor.call('saveToKraken', new_img_new, this.state.fileObj.path, (error, res) => {
-            debugger
             if(error) {
                 // console.log('kraken errors', error);
             } else {
@@ -304,7 +303,6 @@ export class AdminDishSelected extends Component {
         dish.dish_tags = dish_tags;
         this.submitIngredient();
 
-        debugger
         if (this.state.fileObj) {
             this.checkUploadImage(dish);
         }
@@ -428,7 +426,7 @@ export class AdminDishSelected extends Component {
         return (
             <div className="row admin-image-upload" style={{backgroundImage: 'url(' +img_url+')'}} onClick={()=>this.handleClickImage()}>
                 <div id="admin-img-block">
-                    <input type="file" id="admin-img-file" hidden onChange={(event)=>this.handleChangeImage(event)}/>
+                    <input type="file" id="admin-img-file" className="form_field" hidden onChange={(event)=>this.handleChangeImage(event)}/>
                 </div>
                 <div id="admin-image-hover-overlap">
                     <p id="admin-change-img-text">Change dish image</p>
@@ -439,7 +437,6 @@ export class AdminDishSelected extends Component {
 
     render() {
         var dish_selected = this.state.dish_selected;
-        var dish_selling_price = parseFloat(dish_selected.dish_selling_price/1.15).toFixed(2);
 
         return(
             <div className="create_dishes_form_container container">
@@ -557,7 +554,7 @@ export class AdminDishSelected extends Component {
                                   <span>Cost</span>        
                             </div>
                             <div className="col s4 m4 l4">
-                                <span>Selling price *	</span>
+                                <span>Selling price *</span>
                             </div>
                             <div className="col s4 m4 l4">
                                 <span>Expected profit</span>
@@ -571,7 +568,7 @@ export class AdminDishSelected extends Component {
                             </div>
 
                             <div className="col s4 m4 l4">
-                                <input id="dish_selling_price" defaultValue={dish_selling_price} className="form_field" 
+                                <input id="dish_selling_price" defaultValue={dish_selected.dish_selling_price} className="form_field" 
                                     name="dish_selling_price" placeholder="0" type="number" min="0"
                                     onChange={(event) => this.handleOnChangeField('dish_selling_price', event)}/>
                             </div>

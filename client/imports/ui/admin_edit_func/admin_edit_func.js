@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import BouncingLoader from '../bouncing_loader/bouncing_loader.js';
 import AdminListDish from './admin_list_dish.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { withTracker } from 'meteor/react-meteor-data';
 
-export default class AdminEditFunc extends Component {
+export class AdminEditFunc extends Component {
     constructor(props) {
         super(props);
 
@@ -39,21 +40,28 @@ export default class AdminEditFunc extends Component {
             }
         }
         
-        Meteor.call('admin.get_list_dish', (err, res) => {
-            if (res) {
-                this.setState({ listDishes: res });
-            }
-        });
+        // Meteor.call('admin.get_list_dish', (err, res) => {
+        //     if (res) {
+        //         this.setState({ listDishes: res });
+        //     }
+        // });
     }
 
     render() {
         return (
-            (this.state.listDishes.length > 0) ? 
+            (this.props.listDishes.length > 0) ? 
                 <div className="container">
-                    <AdminListDish listDishes={this.state.listDishes} />
+                    <AdminListDish listDishes={this.props.listDishes} />
                 </div>
             :
                 <BouncingLoader />
         );
     }
 }
+
+export default withTracker(props => {
+    return {
+        currentUser: Meteor.user(),
+        listDishes: Dishes.find({deleted: false}).fetch(),
+    };
+})(AdminEditFunc);
