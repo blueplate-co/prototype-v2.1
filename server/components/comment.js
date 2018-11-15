@@ -65,6 +65,7 @@ Meteor.methods({
         }
     },
     'comment.notification'(article_type, article_id, content) {
+        //- prepare all information of comment
         var ownerId = '';
         var product_name = '';
         if (article_type == 'dish') {
@@ -76,56 +77,99 @@ Meteor.methods({
             ownerId = product.user_id;
             product_name = product.menu_name;
         }
-        //- when ownerId == userid ==> send notification to all participant join this chat expect owner
         if (Meteor.userId() == ownerId) {
             var ownerName = Kitchen_details.findOne({user_id: Meteor.userId()}).chef_name;
-            var all_comments = Comment.find({ article_id: article_id }).fetch();
-            var participants = [];
-            for (var i = 0; i < all_comments.length; i++) {
-                if (all_comments[i].user_id !== Meteor.userId()) {
-                    participants.push(all_comments[i].user_id);
-                }
-            }
-            var title = ownerName + 'has comment on ' + product_name;
-            uniqueParticipants = participants.filter(function(item, pos) {
-                return participants.indexOf(item) == pos;
-            });
-            for (var i = 0; i < uniqueParticipants.length; i++) {
-                Notifications.insert({
-                    item_id: article_id,
-                    receiver_id: participants[i],
-                    sender_id: Meteor.userId(),
-                    title: title,
-                    content: content,
-                    read: false,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                });
-            }
-        } else {
-            var participants = [];
-            var all_comments = Comment.find({ article_id: article_id }).fetch();
-            for (var i = 0; i < all_comments.length; i++) {
-                if (all_comments[i].user_id !== Meteor.userId()) {
-                    participants.push(all_comments[i].user_id);
-                }
-            }
-            var title = 'New comment on ' + product_name;
-            uniqueParticipants = participants.filter(function(item, pos) {
-                return participants.indexOf(item) == pos;
-            });
-            for (var i = 0; i < uniqueParticipants.length; i++) {
-                Notifications.insert({
-                    item_id: article_id,
-                    receiver_id: participants[i],
-                    sender_id: Meteor.userId(),
-                    title: title,
-                    content: content,
-                    read: false,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                });
+        }
+
+
+        //- GET ALL USERS HAS COMMENTED ON THIS POST
+        var all_comments = Comment.find({ article_id: article_id }).fetch();
+        var participants = [];
+        //- push userid not owner and not already in participants list
+        for (var i = 0; i < all_comments.length; i++) {
+            if (all_comments[i].user_id !== Meteor.userId() && participants.indexOf(all_comments[i].user_id) == -1) {
+                participants.push(all_comments[i].user_id);
             }
         }
+
+        //- GET ALL USERS HAS LIKE THIS POST
+        if (article_type == 'dish') {
+            let all_likes = DishesLikes.find({ dish_id: article_id }).fetch();
+            //- push userid not owner and not already in participants list
+            for (var i = 0; i < all_likes.length; i++) {
+                if (all_likes[i].user_id !== Meteor.userId() && participants.indexOf(all_likes[i].user_id) == -1) {
+                    participants.push(all_likes[i].user_id);
+                }
+            }
+        } else {
+            let all_likes = MenusLikes.find({ menu_id: article_id }).fetch();
+            //- push userid not owner and not already in participants list
+            for (var i = 0; i < all_likes.length; i++) {
+                if (all_likes[i].user_id !== Meteor.userId() && participants.indexOf(all_likes[i].user_id) == -1) {
+                    participants.push(all_likes[i].user_id);
+                }
+            }
+        }
+
+        //- GET ALL USER HAS VIEWS THIS POST
+        if (article_type == 'dish') {
+            let all_views = DishesViews.find({ dish_id: article_id }).fetch();
+            //- push userid not owner and not already in participants list
+            for (var i = 0; i < all_views.length; i++) {
+                if (all_views[i].user_id !== Meteor.userId() && participants.indexOf(all_views[i].user_id) == -1) {
+                    participants.push(all_views[i].user_id);
+                }
+            }
+        } else {
+            let all_views = MenusViews.find({ menu_id: article_id }).fetch();
+            //- push userid not owner and not already in participants list
+            for (var i = 0; i < all_views.length; i++) {
+                if (all_views[i].user_id !== Meteor.userId() && participants.indexOf(all_views[i].user_id) == -1) {
+                    participants.push(all_views[i].user_id);
+                }
+            }
+        }
+        //- remove all null item in array
+        var participants = participants.filter(function (element) {
+            return element != null;
+        });
+        console.log(participants);
+        var reply_comment_url = `${Meteor.absoluteUrl()}/${article_type}/${article_id}`;
+        for (var i = 0; i < participants.length; i++) {
+            let ownerEmail = Meteor.users.findOne({ _id: ownerId }).emails[0].address;
+            // console.log('User id: ' + participants[i]);
+            // console.log('User of id: ' + Meteor.users.findOne({ _id: participants[i] }));
+            let emails = Meteor.users.findOne({ _id: participants[i] }).emails[0].address;
+            if (ownerId == Meteor.userId()) {
+                //- commenter is owner
+                Meteor.call(
+                    'requestdish.sendEmail',
+                    ownerName + " <" + emails + ">",
+                    '',
+                    ownerName + ' has commented on ' + product_name,
+                    `${ownerName} has commented on ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                );    
+            } else {
+                //- commeter is not owner
+                if (emails !== ownerEmail) {
+                    Meteor.call(
+                        'requestdish.sendEmail',
+                        ownerName + " <" + emails + ">",
+                        '',
+                        ownerName + ' has commented on ' + product_name,
+                        `${ownerName} has commented on ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                    ); 
+                } else {
+                    Meteor.call(
+                        'requestdish.sendEmail',
+                        ownerName + " <" + emails + ">",
+                        '',
+                        ownerName + ' has commented on your ' + product_name,
+                        `${ownerName} has commented on your ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                    ); 
+                }
+            }
+        }
+        
     }
 })
