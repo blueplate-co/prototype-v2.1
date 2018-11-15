@@ -46,6 +46,10 @@ Meteor.publish('getAllKitchenDetailOfSellerInShoppingcart', function(){
   return Kitchen_details.find({ user_id: { $in: seller_id } })
 });
 
+Meteor.publish('theKitchenDetail', function(kitchen_id) {
+  return Kitchen_details.find({ _id: kitchen_id })
+});
+
 Transactions.deny({
   remove() {
     return true
