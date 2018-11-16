@@ -146,6 +146,12 @@ Meteor.publish('getWishList', function () {
   return Dishes.find({ _id: { $in: dishID } })
 })
 
+Meteor.publish('getAllDishesOfUserByDishId', function(dish_id) {
+  let user_id = Dishes.findOne({ _id: dish_id }).user_id;
+  console.log(user_id);
+  return Dishes.find({ user_id: user_id });
+});
+
 Transactions.deny({
   remove() {
     return true
