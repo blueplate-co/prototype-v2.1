@@ -68,6 +68,7 @@ Meteor.methods({
         });
     },
     'promotion.check_history'() {
+        this.unblock();
         if (Meteor.userId()) {
             var existed_promotion_history = Promotion_history.findOne({
                 user_id: Meteor.userId()

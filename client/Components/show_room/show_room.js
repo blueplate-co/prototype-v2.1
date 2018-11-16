@@ -16,3 +16,4 @@ Template.show_room.onRendered(function(){
 });
 
 Meteor.subscribe('listAllNotifications');
+Meteor.subscribe('currentProfileDetails');

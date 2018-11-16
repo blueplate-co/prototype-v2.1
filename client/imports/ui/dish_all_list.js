@@ -121,7 +121,7 @@ class DishAllList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
+  // const handle = Meteor.subscribe('theDishes');
   navbar_find_by("Kitchen_details");
   var kitchen_info = Session.get('searched_result');
   var kitchen_id = [];

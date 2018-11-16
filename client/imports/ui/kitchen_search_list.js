@@ -79,7 +79,6 @@ class KitchenSearchList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe("theKitchenDetail");
   var kitchen_results = [];
   if (Session.get('search_result')) {
     for (var i = 0; i < Session.get('search_result').kitchen.length; i++) {
@@ -88,7 +87,6 @@ export default withTracker(props => {
   }
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
       kitchens: kitchen_results,
   };
 })(KitchenSearchList);

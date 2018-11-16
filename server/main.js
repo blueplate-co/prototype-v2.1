@@ -35,19 +35,7 @@ Meteor.publish('theIngredients', function(){
 
 Meteor.publish('getUserShoppingCart', function(){
   return Shopping_cart.find({ buyer_id: Meteor.userId() })
-})
-
-Meteor.publish('getDishesLikes', function(){
-  return DishesLikes.find();
-})
-
-Meteor.publish('getMenusLikes', function(){
-  return MenusLikes.find();
-})
-
-Meteor.publish('getKitchensLikes', function(){
-  return KitchenLikes.find();
-})
+});
 
 Meteor.publish('getAnnoucement', function(){
   return Annoucement.find();

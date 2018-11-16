@@ -395,6 +395,7 @@ class TopNavigation extends Component {
         let uniqueMenuKitchen = [...new Set(result.menu.map(item => item.kitchen_id))];
         let uniqueKitchen = [...new Set(result.kitchen.map(item => item._id))];
         let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+        // MUST SUBSCRIBE HERE
         // concat 3 arrays and remove duplicated items
         for (var i = 0; i < kitchen_id_list.length; ++i) {
           for (var j = i + 1; j < kitchen_id_list.length; ++j) {
@@ -454,7 +455,6 @@ class TopNavigation extends Component {
         Session.set('search_nearby', true);
         Meteor.call('mapping.nearby', position.coords.latitude, position.coords.longitude, 10, (err, res) => {
           if (!err) {
-            console.log(res);
             //- result store all result from get search nearby
             var result = {
               dish: [],
