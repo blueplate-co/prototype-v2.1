@@ -47,7 +47,11 @@ Meteor.publish('getAllKitchenDetailOfSellerInShoppingcart', function(){
 });
 
 Meteor.publish('theKitchenDetail', function(kitchen_id) {
-  return Kitchen_details.find({ _id: kitchen_id })
+  if (kitchen_id) {
+    return Kitchen_details.find({ _id: kitchen_id });
+  } else {
+    return Kitchen_details.find({ user_id: Meteor.userId() });
+  }
 });
 
 Meteor.publish('theAllKitchenDetail', function() {
