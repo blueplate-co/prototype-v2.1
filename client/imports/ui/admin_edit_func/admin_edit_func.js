@@ -11,7 +11,8 @@ export class AdminEditFunc extends Component {
 
         this.state = {
             listDishes: [],
-            select_dish_option: true
+            select_dish_option: true,
+            select_kitchen_option: false
         }
     };
 
@@ -51,29 +52,43 @@ export class AdminEditFunc extends Component {
 
     handleOnChangeOption(field, event) {
         var checked = event.target.checked;
-        this.setState({ select_dish_option: checked});
+        if (field == 'search_dish') {
+            this.setState({ select_dish_option: checked, select_kitchen_option: !checked})
+        } else {
+            this.setState({ select_dish_option: !checked, select_kitchen_option: checked});
+        }
     };
 
     render() {
         return (
-            <div className='container'>
+            <div>
                 <div className="row admin-select-show-option">
                     <div className="card z-depth-0" id="checkbox">
                         <input type="checkbox" className="dish_checkboxes filled-in"
-                            id='dish_checkboxes' defaultChecked={this.state.select_dish_option} 
+                            id='dish_checkboxes' defaultChecked={this.state.select_dish_option}
+                            checked={this.state.select_dish_option} 
                             onChange={(event) => this.handleOnChangeOption('search_dish', event)}/>
                         <label htmlFor='dish_checkboxes'>Dish<div className="right icon"></div></label>
                     </div>
+
+                    <div className="card z-depth-0" id="checkbox">
+                        <input type="checkbox" className="kitchen_checkboxes filled-in"
+                            id='kitchen_checkboxes' checked={this.state.select_kitchen_option} 
+                            onChange={(event) => this.handleOnChangeOption('search_kitchen', event)}/>
+                        <label htmlFor='kitchen_checkboxes'>Kitchen<div className="right icon"></div></label>
+                    </div>
                 </div>
 
-               { (this.props.listDishes.length > 0 && this.props.listKitChens.length > 0) ?
-                    (this.state.select_dish_option) ? 
-                        <AdminListDish listDishes={this.props.listDishes} />
-                    :
-                        <AdminListKitchen listKitchens={this.props.listKitChens}/>
-                :
-                    <BouncingLoader />
-               }
+                <div className='container'>
+                    { (this.props.listDishes.length > 0 && this.props.listKitChens.length > 0) ?
+                            (this.state.select_dish_option) ? 
+                                <AdminListDish listDishes={this.props.listDishes} />
+                            :
+                                <AdminListKitchen listKitchens={this.props.listKitChens}/>
+                        :
+                            <BouncingLoader />
+                    }
+                </div>
             </div>
         );
     }

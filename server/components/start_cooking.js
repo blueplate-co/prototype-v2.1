@@ -54,6 +54,10 @@ Meteor.publish('theKitchenDetail', function(kitchen_id) {
   }
 });
 
+Meteor.publish('theKitchens', function(kitchen_id) {
+  return Kitchen_details.find({ });
+});
+
 Meteor.publish('theAllKitchenDetail', function() {
   return Kitchen_details.find({ })
 });
