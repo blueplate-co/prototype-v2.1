@@ -123,7 +123,7 @@ export default class ListDistrict extends Component {
                   </ul>
                 </div>
                 {
-                  (this.state.listLength - this.state.position > 3) ? <i className="fa fa-chevron-right list-navigator" aria-hidden="true" onClick={() => this.slideRight()} id="right-navigator"></i> : ''
+                  (this.state.listLength - this.state.position > 3 && this.state.position < 14) ? <i className="fa fa-chevron-right list-navigator" aria-hidden="true" onClick={() => this.slideRight()} id="right-navigator"></i> : ''
                 }
               </div>
             </div>

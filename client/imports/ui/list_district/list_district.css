@@ -37,10 +37,6 @@
     cursor: pointer;
 }
 
-#list-district .list-district-wrapper .district-item:hover {
-    transform: scale(1.03);
-}
-
 #list-district .list-district-wrapper .district-item img {
     object-fit: cover;
     position: absolute;
