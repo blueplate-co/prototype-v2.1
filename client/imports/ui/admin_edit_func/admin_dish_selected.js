@@ -3,6 +3,7 @@ import './admin_edit_func.css';
 import { withTracker } from 'meteor/react-meteor-data';
 import dishUnits from '/imports/functions/common/dish_unit.json';
 import { open_dialog_edit_confirm } from '/imports/functions/common';
+import ButtonFooter from './admin_common_component/button_footer/button_footer.js';
 
 export class AdminDishSelected extends Component {
     constructor(props) {
@@ -605,19 +606,14 @@ export class AdminDishSelected extends Component {
                         <div className="col l9 m12 s12">
                             <p>Type in a keyword and press 'enter' to create a tag. Our search engine uses these tags to shortlist and filter results.</p>
                             <br/>
-                            <div className="chips" id="dish_tags" onChange={(event) => this.handleOnchangeDishTag(event)}></div>
+                            <div className="chips" id="dish_tags"></div>
                         </div>
                     </div>
                     
-                    <div id="admin-edit-footer" className="row text-right">
-                        <div className="admin-cancel-edit" id="admin-edit-cancel" onClick={() => this.handleOnCancelEdit()}>
-                            <span>Cancel</span>             
-                        </div>
-
-                        <div className="admin-cancel-edit" id="admin-edit-submit" onClick={() => this.handleOnSubmit()}>
-                            <span>Submit</span>             
-                        </div>
-                    </div>
+                    <ButtonFooter 
+                        handleOnCancelEdit={()=>this.handleOnCancelEdit()}
+                        handleOnSubmit={()=>this.handleOnSubmit()}
+                    />
                 </div>
             </div>
         );

@@ -3,13 +3,15 @@ import BouncingLoader from '../bouncing_loader/bouncing_loader.js';
 import AdminListDish from './admin_list_dish.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';
+import AdminListKitchen from './admin_kitchen/admin_list_kitchen.js';
 
 export class AdminEditFunc extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            listDishes: []
+            listDishes: [],
+            select_dish_option: true
         }
     };
 
@@ -47,14 +49,32 @@ export class AdminEditFunc extends Component {
         // });
     }
 
+    handleOnChangeOption(field, event) {
+        var checked = event.target.checked;
+        this.setState({ select_dish_option: checked});
+    };
+
     render() {
         return (
-            (this.props.listDishes.length > 0) ? 
-                <div className="container">
-                    <AdminListDish listDishes={this.props.listDishes} />
+            <div className='container'>
+                <div className="row admin-select-show-option">
+                    <div className="card z-depth-0" id="checkbox">
+                        <input type="checkbox" className="dish_checkboxes filled-in"
+                            id='dish_checkboxes' defaultChecked={this.state.select_dish_option} 
+                            onChange={(event) => this.handleOnChangeOption('search_dish', event)}/>
+                        <label htmlFor='dish_checkboxes'>Dish<div className="right icon"></div></label>
+                    </div>
                 </div>
-            :
-                <BouncingLoader />
+
+               { (this.props.listDishes.length > 0 && this.props.listKitChens.length > 0) ?
+                    (this.state.select_dish_option) ? 
+                        <AdminListDish listDishes={this.props.listDishes} />
+                    :
+                        <AdminListKitchen listKitchens={this.props.listKitChens}/>
+                :
+                    <BouncingLoader />
+               }
+            </div>
         );
     }
 }
@@ -63,5 +83,6 @@ export default withTracker(props => {
     return {
         currentUser: Meteor.user(),
         listDishes: Dishes.find({deleted: false}).fetch(),
+        listKitChens: Kitchen_details.find({}).fetch()
     };
 })(AdminEditFunc);

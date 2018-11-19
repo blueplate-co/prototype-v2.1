@@ -1,0 +1,98 @@
+#admin-table-edit-kitchen>table {
+    width: 100%;
+    margin: 0px;
+}
+
+#admin-table-edit-kitchen {
+    margin-bottom: 60px;
+}
+
+.admin-kitchen-address {
+    max-width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kitchen-name-td {
+    width: 110px;
+}
+
+.admin-kitchen-img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 70px;
+    width: 70px;
+    background-position: center center;
+}
+
+#admin-kitchen-banner {
+    height: 240px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-attachment: fixed; */
+    position: relative;
+}
+
+#admin-kitchen-image-selected {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 80px;
+    background-position: center center;
+    border-radius: 50%;
+    width: 80px;
+    position: absolute;
+    bottom: 0;
+    left: 7%;
+    text-align: center;
+}
+
+#admin-kitchen-banner:hover {
+    cursor: pointer;
+}
+
+#admin-kitchen-banner:hover>.admin-banner-overlap {
+    background-color: #0c0b0b8c;
+    position: relative;
+    height: 100%;
+    visibility: visible;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100px;
+}
+
+.admin-banner-overlap {
+    height: 100%;
+    visibility: hidden;
+    transition: opacity .2s;
+    text-align: center;
+}
+
+#admin-banner-text {
+    color: #FFFFFF;
+    position: relative;
+    top: 85%;
+    font-weight: 600;
+    right: 15px;
+    text-align: right;
+}
+
+#admin-kitchen-image-selected:hover>#admin-image-text {
+    cursor: pointer;
+    background-color: #0c0b0b8c;
+    visibility: visible;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#admin-image-text {
+    color: #FFFFFF;
+    visibility: hidden;
+    font-weight: 500;
+    position: absolute;
+    font-size: 10px;
+    padding: 10px;
+}

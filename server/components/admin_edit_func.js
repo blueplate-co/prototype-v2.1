@@ -57,5 +57,29 @@ Meteor.methods({
     },
     'admin.remove_image'(img_id) {
         Images.remove({ _id: img_id});
+    },
+    'admin.update_kitchen'(kitchenObj) {
+        Kitchen_details.update({
+            _id: kitchenObj._id
+        }, {
+            $set: {
+                kitchen_name: kitchenObj.kitchen_name,
+                chef_name: kitchenObj.chef_name,
+                kitchen_address_country: kitchenObj.kitchen_address_country,
+                kitchen_address: kitchenObj.kitchen_address,
+                kitchen_address_conversion: kitchenObj.kitchen_address_conversion,
+                kitchen_contact: kitchenObj.kitchen_contact,
+                serving_option: kitchenObj.serving_option,
+                cooking_exp: kitchenObj.cooking_exp,
+                cooking_story: kitchenObj.cooking_story,
+                kitchen_speciality: kitchenObj.kitchen_speciality,
+                kitchen_tags: kitchenObj.kitchen_tags,
+                house_rule: kitchenObj.house_rule,
+                profileImg: kitchenObj.profileImg,
+                bannerProfileImg: kitchenObj.bannerProfileImg,
+                admin_update_id: Meteor.userId(),
+                updatedAt: new Date()
+            }
+        });
     }
 });
