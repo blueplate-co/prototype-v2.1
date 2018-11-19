@@ -43,38 +43,42 @@
     width: 100%;
 }
 
-.dish-card .rating-number {
-    margin: 0px 5px;
-    color: #32acd1;
-    font-weight: 500;
-}
-
 .dish-card .dish-meta-price-option {
-    display: inline-flex;
+    display: block;
 }
 
 .dish-card .dish-price {
-    color: #56AACD;
-    font-size: 18px;
+    color: #000;
+    font-size: 13px;
     font-weight: bold;
 }
 
-.dish-card .dish-serving-option {
+.dish-card .dish-tags {
     display: inline-flex;
     margin: 0px;
     font-size: 11px;
     color: #4c4c4c;
 }
 
-.dish-card .dish-serving-option li {
+.dish-card .dish-tags li {
     padding: 0px 2px;
     display: flex;
     align-items: center;
 }
 
-.dish-card .dish-serving-option li:before {
+.dish-card .dish-tags li:first-child {
+    padding: 0px;
+}
+
+.dish-card .dish-tags li:before {
     font: normal normal normal 14px/1 FontAwesome;
     content: "\f111";
     font-size: 5px;
     margin: 5px;
+}
+
+.dish-card .dish-tags li:first-child:before {
+    content: "";
+    font-size: 5px;
+    margin: 0px;
 }

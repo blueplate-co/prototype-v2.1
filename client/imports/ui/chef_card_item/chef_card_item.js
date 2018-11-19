@@ -17,17 +17,16 @@ export default class DishItem extends Component {
                     <DishDistance />
                 </div>
                 <h5 className="dish-card-title" title="Dish name goes here long text now">Dish name goes here long text now</h5>
+                <ul className="dish-tags">
+                    <li>Dine in</li>
+                    <li>Delivery</li>
+                    <li>Pickup</li>
+                </ul>
+                <div className="dish-meta-price-option">
+                    <span className="dish-price">From: $100</span>
+                </div>
                 <div className="rating-wrapper">
                     <Rating rating={5} />
-                    <span className="rating-number">15</span>
-                </div>
-                <div className="dish-meta-price-option">
-                    <span className="dish-price">$100</span>
-                    <ul className="dish-serving-option">
-                        <li>Dine in</li>
-                        <li>Delivery</li>
-                        <li>Pickup</li>
-                    </ul>
                 </div>
             </div>
         )

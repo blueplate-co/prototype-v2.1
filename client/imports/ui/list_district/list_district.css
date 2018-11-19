@@ -33,6 +33,12 @@
     overflow: hidden;
     justify-content: center;
     text-align: center;
+    transition: cubic-bezier(0.215, 0.610, 0.355, 1) 0.2s all;
+    cursor: pointer;
+}
+
+#list-district .list-district-wrapper .district-item:hover {
+    transform: scale(1.03);
 }
 
 #list-district .list-district-wrapper .district-item img {
