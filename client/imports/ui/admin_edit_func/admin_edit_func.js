@@ -65,8 +65,7 @@ export class AdminEditFunc extends Component {
                 <div className="row admin-select-show-option">
                     <div className="card z-depth-0" id="checkbox">
                         <input type="checkbox" className="dish_checkboxes filled-in"
-                            id='dish_checkboxes' defaultChecked={this.state.select_dish_option}
-                            checked={this.state.select_dish_option} 
+                            id='dish_checkboxes' checked={this.state.select_dish_option} 
                             onChange={(event) => this.handleOnChangeOption('search_dish', event)}/>
                         <label htmlFor='dish_checkboxes'>Dish<div className="right icon"></div></label>
                     </div>

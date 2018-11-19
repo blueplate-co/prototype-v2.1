@@ -253,6 +253,7 @@ export default class AdminKitchenSelected extends Component {
     }
 
     componentDidMount() {
+        $(window).scrollTop(0);
         $('#kitchen_contact').intlTelInput({
             initialCountry: "HK",
             utilsScript: "../intlTelInput/utils.js"

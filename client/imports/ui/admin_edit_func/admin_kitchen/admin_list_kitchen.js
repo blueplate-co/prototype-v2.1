@@ -19,9 +19,7 @@ export default class AdminListKitchen extends Component {
 
     handleOnEditKitchen(index) {
         var oKitchenSelected = this.state.listKitChens[index];
-        this.setState({ oKitchenSelected: oKitchenSelected, bSelectedKitchen: true }, () => {
-            console.log(this.state.oKitchenSelected);
-        });
+        this.setState({ oKitchenSelected: oKitchenSelected, bSelectedKitchen: true });
     }
 
     renderListDishes() {
