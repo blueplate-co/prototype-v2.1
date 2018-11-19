@@ -93,7 +93,7 @@ export default class DishList extends Component {
                   </ul>
                 : (
                   <div className="row">
-                    <div className="col l6 m6 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                    <div className="col l6 m6 dish-price no-padding text-left">$ { parseFloat(item.dish_selling_price).toFixed(2) }</div>
                   </div>
                 )
               ) : ('')

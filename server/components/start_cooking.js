@@ -148,8 +148,49 @@ Meteor.publish('getWishList', function () {
 
 Meteor.publish('getAllDishesOfUserByDishId', function(dish_id) {
   let user_id = Dishes.findOne({ _id: dish_id }).user_id;
-  console.log(user_id);
   return Dishes.find({ user_id: user_id });
+});
+
+Meteor.publish('getKitchenProfileInConversation', function() {
+  if (Meteor.userId()) {
+    let all_conversation = Conversation.find({$or: [{buyer_id: Meteor.userId()},{seller_id: Meteor.userId()}] }).fetch();
+    let all_userid = [];
+    for (var i = 0; i < all_conversation.length; i++) {
+      if (all_userid.indexOf(all_conversation[i].buyer_id) == -1) {
+        all_userid.push(all_conversation[i].buyer_id);
+      }
+      if (all_userid.indexOf(all_conversation[i].seller_id) == -1) {
+        all_userid.push(all_conversation[i].seller_id);
+      }
+    }
+    return [
+      Kitchen_details.find({ user_id: { $in: all_userid } })
+    ]
+  } else {
+    console.log('No publish');
+    return [];
+  }
+});
+
+Meteor.publish('getProfileDetailInConversation', function() {
+  if (Meteor.userId()) {
+    let all_conversation = Conversation.find({$or: [{buyer_id: Meteor.userId()},{seller_id: Meteor.userId()}] }).fetch();
+    let all_userid = [];
+    for (var i = 0; i < all_conversation.length; i++) {
+      if (all_userid.indexOf(all_conversation[i].buyer_id) == -1) {
+        all_userid.push(all_conversation[i].buyer_id);
+      }
+      if (all_userid.indexOf(all_conversation[i].seller_id) == -1) {
+        all_userid.push(all_conversation[i].seller_id);
+      }
+    }
+    return [
+      Profile_details.find({ user_id: { $in: all_userid } })
+    ]
+  } else {
+    console.log('No publish');
+    return [];
+  }
 });
 
 Transactions.deny({

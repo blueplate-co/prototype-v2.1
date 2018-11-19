@@ -191,7 +191,7 @@ class Message extends Component {
             // get unread message from friends
             // get conversation id of friends with current user
             var name = '';
-            if (item.chef_name) {
+            if (item.hasOwnProperty('chef_name')) {
               name = item.chef_name;
             } else {
               name = item.foodie_name;
@@ -326,7 +326,6 @@ class Message extends Component {
       var conversation = Conversation.findOne({
         _id: this.props.conversation[this.state.index]._id
       });
-
       if (Meteor.userId() == conversation.buyer_id) {
         // current user is buyer in current conversation. Get info of opponent. Opponent is kitchen profile
         var profile = Kitchen_details.findOne({
@@ -389,8 +388,6 @@ class Message extends Component {
 }
 
 export default withTracker(props => {
-  const handleConversation = Meteor.subscribe("theConversations");
-  const handleMessages = Meteor.subscribe("theMessages");
 
   var all_messages = [];
   var all_conversation = [];
