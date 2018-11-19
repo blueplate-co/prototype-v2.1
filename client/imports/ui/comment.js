@@ -206,7 +206,7 @@ export default class CommentBox extends Component {
                             this.setState({ count: res })
                         }
                     });
-                    Meteor.call('comment.notification', this.props.articleType, this.props.articleId, content, (err, res) => {
+                    Meteor.call('comment.notification', this.props.articleType, this.props.articleId, content,  (err, res) => {
                         if (err) {
                             console.log('Error when send notification')
                         }

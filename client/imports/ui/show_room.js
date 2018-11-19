@@ -278,14 +278,11 @@ class ShowRoom extends Component {
               </LazyLoad>
             </div>
             <div className = "row">
-              <LazyLoad once height={400}>
-                <KitchenList title="Kitchens"/>
-              </LazyLoad>
+              <KitchenList title="Kitchens"/>
             </div>
             <Modal menu={this.state.selectedMenu}/>
           </div>
         )
-        break;
     }
   }
 }

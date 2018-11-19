@@ -1,0 +1,166 @@
+#admin-table-edit>table {
+    width: 100%;
+    margin: 0px;
+}
+
+.dish-name-td {
+    width: 200px;
+}
+
+#admin-table-edit>table>tbody>tr>td {
+    /* border: 1px solid rgba(0,0,0,0.3); */
+}
+
+#admin-table-edit>table>thead>tr>th {
+    /* border: 1px solid rgba(0,0,0,0.3); */
+}
+
+.table-hover>tbody>tr:hover {
+    /* background-color: #56aacd94 !important; */
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #615d5d40;
+}
+
+.dish-stt {
+    width: 10px;
+}
+
+.admin-edit-font-weight {
+    font-weight: bold;
+}
+
+.admin-edit-click {
+    cursor: pointer;
+}
+
+.admin-dish-img {
+    width: 11%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#admin-edit-submit {
+    display: inline-block;
+    margin-left: 15px;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    border: 1px solid #56AACD;
+    border-radius: 15px;
+    background-color: #56AACD;
+    font-weight: 600;
+}
+
+#admin-edit-submit:hover {
+    cursor: pointer;
+    background-color: #FFFFFF;
+    color: #56AACD;
+}
+
+#admin-edit-cancel {
+    display: inline-block;
+    padding: 5px 15px;
+    color: #56AACD;
+    border: 1px solid #56AACD;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+#admin-edit-cancel:hover {
+    cursor: pointer;
+    background-color: #56AACD;
+    color: #FFFFFF;
+}
+
+#admin-edit-footer {
+    position: fixed;
+    bottom: -21px;
+    right: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fafafa;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.29028);
+}
+
+.create_dishes_form_container {
+    margin-bottom: 80px;
+}
+
+.add-ingredient-btn {
+    color: #56AACD;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    font-size: 3rem !important;
+}
+
+.add-ingredient-btn:hover { 
+    cursor: pointer;
+    color: #FFFFFF;
+    background-color: #407E97;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+.admin-edit-del-ingredient-btn {
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.admin-edit-del-ingredient-btn:hover {
+    margin-top: 10px;
+    background-color: #407E97;
+    color: #FFFFFF !important;
+    cursor: pointer;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+#ingredient_unit {
+    border: none;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.admin-image-upload {
+    width: 100%;
+    height: 340px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 30px;
+}
+
+.admin-image-upload:hover {
+    cursor: pointer;
+}
+#admin-image-hover-overlap {
+    z-index: 99999;
+    height: 100%;
+    visibility: hidden;
+    transition: opacity .2s, visibility .2s;
+    text-align: center;
+}
+
+#admin-change-img-text {
+    color: #FFFFFF;
+    position: relative;
+    top: 50%;
+}
+
+.admin-image-upload:hover #admin-image-hover-overlap {
+    background-color: #0c0b0b8c;
+    /* background-image: url(https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697057-facebook-512.png); */
+    position: relative;
+    height: 100%;
+    visibility: visible;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 30px;
+    background-size: 100px;
+}
+
+#admin-img-block {
+    position: relative;
+    top: 50%;
+    left: 33%;
+}

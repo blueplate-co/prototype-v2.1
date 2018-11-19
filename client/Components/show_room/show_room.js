@@ -13,7 +13,6 @@ Template.show_room.onRendered(function(){
   render(<ShowRoom />, document.getElementById('show_room_container'));
 });
 
-Meteor.subscribe('theDishes');
-Meteor.subscribe('theMenu');
-Meteor.subscribe('theKitchenDetail');
 Meteor.subscribe('listAllNotifications');
+Meteor.subscribe('currentProfileDetails');
+Meteor.subscribe('theKitchenDetail', null)

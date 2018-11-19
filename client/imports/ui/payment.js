@@ -293,7 +293,7 @@ class Payment extends Component {
                     util.hide_loading_progress();
                     Materialize.toast('Oops! Error occur. Please try again.' + err, 4000, 'rounded bp-green');
                 } else {
-                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
+                    localStorage.setItem('globalCart', JSON.stringify(null));
                     localStorage.removeItem('bEnoughtAmount' + Meteor.userId());
 
                     Meteor.call('shopping_cart.remove', item._id);
@@ -445,7 +445,7 @@ class Payment extends Component {
                         action: false
                     })
                 } else {
-                    localStorage.setItem('globalCart' + Meteor.userId(), JSON.stringify(null));
+                    localStorage.setItem('globalCart', JSON.stringify(null));
                     Meteor.call('shopping_cart.remove', item._id)
                     Meteor.call('notification.place_order', item.seller_id, Meteor.userId(), item.product_id, item.quantity);
                     localStorage.removeItem('bEnoughtAmount' + Meteor.userId());

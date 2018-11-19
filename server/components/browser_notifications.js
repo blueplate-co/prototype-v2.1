@@ -172,6 +172,10 @@ Meteor.methods({
 
 
 Meteor.publish('listAllNotifications', function() {
-  var notifications = Notifications.find({});
-  return notifications;
+  if (Meteor.userId()) {
+    return [
+      Notifications.find({receiver_id: Meteor.userId()})
+    ]
+  }
+  return []
 })

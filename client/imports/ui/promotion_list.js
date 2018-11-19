@@ -111,9 +111,9 @@ class PromotionList extends React.Component {
 }
 
 export default withTracker(props => {
-    const handle = Meteor.subscribe('theDishes');
     var promotion_dishes = get_promotion_list();
     var result = [];
+    const handle = Meteor.subscribe('getPromotionDishList', promotion_dishes);
     if (promotion_dishes.length > 0) {
         for (var i = 0; i < promotion_dishes.length; i++) {
             var single_dish = Dishes.findOne({ _id: promotion_dishes[i].id });

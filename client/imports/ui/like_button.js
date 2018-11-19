@@ -13,6 +13,10 @@ export default class Like extends Component {
     actionLike = (event) => {
         // not excute parent click event
         event.stopPropagation();
+        if (!Meteor.userId()) {
+            Materialize.toast('Please login first to like this dish.', 4000, 'rounded bp-green');
+            return;
+        }
         var profile = Profile_details.findOne({
             user_id: Meteor.userId()
         }).foodie_name;

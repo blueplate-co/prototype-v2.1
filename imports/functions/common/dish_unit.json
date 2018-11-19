@@ -1,0 +1,142 @@
+{
+ "ingredient_unit": [
+    {
+      "name": "g",
+      "shortform": "g"
+    },
+    {
+      "name": "kg",
+      "shortform": "kg"
+    },
+    {
+      "name": "litre",
+      "shortform": "l"
+    },
+    {
+      "name": "ml",
+      "shortform": "ml"
+    },
+    {
+      "name": "m",
+      "shortform": "m"
+    },
+    {
+      "name": "cm",
+      "shortform": "cm"
+    },
+    {
+      "name": "teaspoon",
+      "shortform": "tsp"
+    },
+    {
+      "name": "tablespoon",
+      "shortform": "tbs"
+    },
+    {
+      "name": "cup",
+      "shortform": "c"
+    },
+    {
+      "name": "pound",
+      "shortform": "lb"
+    },
+    {
+      "name": "ounce",
+      "shortform": "oz"
+    },
+    {
+      "name": "inch",
+      "shortform": "in"
+    },
+    {
+      "name": "portion(s)",
+      "shortform": "portions"
+    },
+    {
+      "name": "piece(s)",
+      "shortform": "pieces"
+    }
+  ],
+  
+  "allergy_list":[
+    {
+      "name": "Milk",
+      "file_name": "milk"
+    },
+    {
+      "name": "Tree-nuts",
+      "file_name": "tree_nuts"
+    },
+    {
+      "name": "Fish",
+      "file_name": "fish"
+    },
+    {
+      "name": "Egg",
+      "file_name": "egg"
+    },
+    {
+      "name": "Wheat",
+      "file_name": "wheat"
+    },
+    {
+      "name": "Shellfish",
+      "file_name": "shellfish"
+    },
+    {
+      "name": "Peanuts",
+      "file_name": "peanuts"
+    },
+    {
+      "name": "Soy",
+      "file_name": "soy"
+    }
+  ],
+
+  "dietary_list": [
+    {
+      "name": "Diabetic",
+      "file_name": "diabetic"
+    },
+    {
+      "name": "Low Sodium",
+      "file_name": "low_sodium"
+    },
+    {
+      "name": "Pescetartrian",
+      "file_name": "pescetartrian"
+    },
+    {
+      "name": "Gluten free",
+      "file_name": "gluten_free"
+    },
+    {
+      "name": "Low carbs",
+      "file_name": "low_carb"
+    },
+    {
+      "name": "Vegan",
+      "file_name": "vegan"
+    },
+    {
+      "name": "High Protein",
+      "file_name": "high_protein"
+    },
+    {
+      "name": "Nuts Free",
+      "file_name": "nuts_free"
+    },
+    {
+      "name": "Vegetarian",
+      "file_name": "vegetarian"
+    },
+    {
+      "name": "Lactose Free",
+      "file_name": "lactose_free"
+    },
+    {
+      "name": "Paleo",
+      "file_name": "paleo"
+    }
+  ]
+}

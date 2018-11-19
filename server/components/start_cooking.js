@@ -4,11 +4,197 @@ import { check } from 'meteor/check';
 Transactions = new Mongo.Collection('transactions');
 
 Meteor.publish('theProfileDetail', function(){
-    return Profile_details.find({});
+  if (Meteor.userId()) {
+    return Profile_details.find({ user_id: Meteor.userId() });
+  }
+  return []
 });
 
-Meteor.publish('theKitchenDetail', function(){
-    return Kitchen_details.find();
+Meteor.publish('theKitchenDetailByDish', function(dish_id){
+  let homecook_id = Dishes.findOne({ _id: dish_id }).user_id;
+  return Kitchen_details.find({ user_id: homecook_id })
+});
+
+Meteor.publish('getShoppingCartOfCurrentUser', function(){
+  return Shopping_cart.find({ buyer_id: Meteor.userId() })
+});
+
+Meteor.publish('getDishesInShoppingCartOfCurrentUser', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId(), product_type: 'dish' }).fetch();
+  let products_id = [];
+  for (var i = 0; i < products.length; i++) {
+    products_id.push(products[i].product_id);
+  }
+  return Dishes.find({ _id: { $in: products_id } })
+});
+
+Meteor.publish('getMenusInShoppingCartOfCurrentUser', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId(), product_type: 'menu' }).fetch();
+  let products_id = [];
+  for (var i = 0; i < products.length; i++) {
+    products_id.push(products[i].product_id);
+  }
+  return Menu.find({ _id: { $in: products_id } })
+});
+
+Meteor.publish('getAllKitchenDetailOfSellerInShoppingcart', function(){
+  let products = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+  let seller_id = [];
+  for (var i = 0; i < products.length; i++) {
+    seller_id.push(products[i].seller_id);
+  }
+  return Kitchen_details.find({ user_id: { $in: seller_id } })
+});
+
+Meteor.publish('theKitchenDetail', function(kitchen_id) {
+  if (kitchen_id) {
+    return Kitchen_details.find({ _id: kitchen_id });
+  } else {
+    return Kitchen_details.find({ user_id: Meteor.userId() });
+  }
+});
+
+Meteor.publish('theAllKitchenDetail', function() {
+  return Kitchen_details.find({ })
+});
+
+Meteor.publish('getPromotionDishList', function(promotion_dishes) {
+  let dish_id = promotion_dishes.map((item) => {
+    return item.id
+  });
+  return Dishes.find({ _id: { $in: dish_id } })
+});
+
+Meteor.publish('listKitchenDetail', function(kitchen_list) {
+  return Kitchen_details.find({ _id: { $in: kitchen_list } })
+});
+
+Meteor.publish('getDishesInShoppingCartLocalOfCurrentUSer', function(localCart){
+  let dish_list = localCart.filter(item => {
+    return item.product_type == 'dish'
+  });
+  dish_list_id = dish_list.map(item => {
+    return item.product_id;
+  });
+  return Dishes.find({ _id: { $in: dish_list_id } })
+});
+
+Meteor.publish('getMenuInShoppingCartLocalOfCurrentUSer', function(localCart){
+  let menu_list = localCart.filter(item => {
+    return item.product_type == 'menu'
+  });
+  menu_list_id = menu_list.map(item => {
+    return item.product_id;
+  });
+  return Menu.find({ _id: { $in: menu_list_id } })
+});
+
+Meteor.publish('getAllKitchenDetailOfSellerLocalInShoppingcart', function(localCart){
+  kitchen_id = localCart.map(item => {
+    return item.seller_id;
+  });
+  return Kitchen_details.find({ user_id: { $in: kitchen_id } })
+});
+
+Meteor.publish('getUserAccountOfSellerByDishId', function(dish_id) {
+  let user_id = Dishes.findOne({ _id: dish_id }).user_id;
+  return Meteor.users.find({_id: user_id});
+});
+
+Meteor.publish('getUserAccountOfSeller', function(localCart) {
+  kitchen_id_local = localCart.map(item => {
+    return item.seller_id;
+  });
+  var db_shopping_cart = Shopping_cart.find({ buyer_id: Meteor.userId() }).fetch();
+  kitchen_id_db = db_shopping_cart.map(item => {
+    return item.seller_id;
+  });
+  let kitchen_id = [...kitchen_id_local, ...kitchen_id_db];
+  return Meteor.users.find({ user_id: {$in: kitchen_id } });
+});
+
+Meteor.publish('getDishOfHomecook', function(homecook_id) {
+  if (homecook_id) {
+    var user_id = Kitchen_details.findOne({ _id: homecook_id }).user_id;
+    return Dishes.find({ user_id: user_id });
+  } else {
+    let menus = Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
+    let dish_id = [];
+    for (var i = 0; i < menus.length; i++) {
+      if (menus[i].dishes_id.length > 0) {
+        for (var j = 0; j < menus[i].dishes_id.length; j++) {
+          dish_id.push(menus[i].dishes_id[j]);
+        }
+      }
+    }
+    return Dishes.find({ _id: {$in: dish_id} })
+  }
+});
+
+Meteor.publish('currentProfileDetails', function () {
+  if (Meteor.userId()) {
+    return Profile_details.find({                                                                    
+      user_id: Meteor.userId()                                                                               
+    })
+  } else {
+    return []
+  }
+})
+
+Meteor.publish('getWishList', function () {
+  var dishID = [];
+  var dishLike = DishesLikes.find({ user_id: Meteor.userId() }).fetch();
+  for (var i = 0; i < dishLike.length; i++) {
+    dishID.push(dishLike[i].dish_id);
+  }
+  return Dishes.find({ _id: { $in: dishID } })
+})
+
+Meteor.publish('getAllDishesOfUserByDishId', function(dish_id) {
+  let user_id = Dishes.findOne({ _id: dish_id }).user_id;
+  return Dishes.find({ user_id: user_id });
+});
+
+Meteor.publish('getKitchenProfileInConversation', function() {
+  if (Meteor.userId()) {
+    let all_conversation = Conversation.find({$or: [{buyer_id: Meteor.userId()},{seller_id: Meteor.userId()}] }).fetch();
+    let all_userid = [];
+    for (var i = 0; i < all_conversation.length; i++) {
+      if (all_userid.indexOf(all_conversation[i].buyer_id) == -1) {
+        all_userid.push(all_conversation[i].buyer_id);
+      }
+      if (all_userid.indexOf(all_conversation[i].seller_id) == -1) {
+        all_userid.push(all_conversation[i].seller_id);
+      }
+    }
+    return [
+      Kitchen_details.find({ user_id: { $in: all_userid } })
+    ]
+  } else {
+    console.log('No publish');
+    return [];
+  }
+});
+
+Meteor.publish('getProfileDetailInConversation', function() {
+  if (Meteor.userId()) {
+    let all_conversation = Conversation.find({$or: [{buyer_id: Meteor.userId()},{seller_id: Meteor.userId()}] }).fetch();
+    let all_userid = [];
+    for (var i = 0; i < all_conversation.length; i++) {
+      if (all_userid.indexOf(all_conversation[i].buyer_id) == -1) {
+        all_userid.push(all_conversation[i].buyer_id);
+      }
+      if (all_userid.indexOf(all_conversation[i].seller_id) == -1) {
+        all_userid.push(all_conversation[i].seller_id);
+      }
+    }
+    return [
+      Profile_details.find({ user_id: { $in: all_userid } })
+    ]
+  } else {
+    console.log('No publish');
+    return [];
+  }
 });
 
 Transactions.deny({
@@ -186,6 +372,10 @@ Meteor.publish('listAllOrdersBuyer', function() {
 });
 
 Meteor.publish('listAllTransactions', function() {
-  var transactions = Transactions.find({});
-  return transactions;
+  if (Meteor.userId()) {
+    return [
+      Transactions.find({ $or: [{ buyer_id: Meteor.userId() }, { seller_id: Meteor.userId() } ] })
+    ]
+  }
+  return []
 })

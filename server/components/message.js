@@ -8,7 +8,7 @@ Meteor.publish("theConversations", function() {
 });
 
 Meteor.publish("theMessages", function() {
-  return Messages.find({});
+  return Messages.find({ $or: [ {sender_id: Meteor.userId()}, {receiver_id: Meteor.userId()} ] });
 });
 
 Meteor.methods({

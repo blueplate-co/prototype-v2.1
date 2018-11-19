@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 const progressNavBar = {
-    marginTop: '-22px',
+    // marginTop: '-22px',
     paddingTop: '0px'
 }, stepProgressOne = {
     padding: '0px 8px'
@@ -16,7 +16,7 @@ export default class ProgressBar extends Component {
     render() {
 
         return (
-            <div className="row shopping-progress-nav" style={progressNavBar}>
+            <div className="row shopping-progress-nav text-center" style={progressNavBar}>
                 <ul className={this.props.step_progress == '1' ? "col s12 m4 l4 bp-blue-text step-progress"  : 'col s12 m4 l4 bp-blue-text display-on-device-step'}>
 
                     <li className="cart-progress-component">

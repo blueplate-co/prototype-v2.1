@@ -143,10 +143,10 @@ class TopNavigation extends Component {
       util.show_loading_progress();
       Meteor.logout(() => {
         util.hide_loading_progress();
-        localStorage.removeItem("globalCart" + Meteor.userId());
+        localStorage.setItem('globalCart', JSON.stringify(null));
+        localStorage.removeItem("globalCart");
         this.setState({ isLogin: false })
         FlowRouter.go("/main");
-        location.href = '/main';
       })
     } else {
       // util.loginAccession("");
@@ -395,6 +395,7 @@ class TopNavigation extends Component {
         let uniqueMenuKitchen = [...new Set(result.menu.map(item => item.kitchen_id))];
         let uniqueKitchen = [...new Set(result.kitchen.map(item => item._id))];
         let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
+        // MUST SUBSCRIBE HERE
         // concat 3 arrays and remove duplicated items
         for (var i = 0; i < kitchen_id_list.length; ++i) {
           for (var j = i + 1; j < kitchen_id_list.length; ++j) {
@@ -454,7 +455,6 @@ class TopNavigation extends Component {
         Session.set('search_nearby', true);
         Meteor.call('mapping.nearby', position.coords.latitude, position.coords.longitude, 10, (err, res) => {
           if (!err) {
-            console.log(res);
             //- result store all result from get search nearby
             var result = {
               dish: [],
@@ -504,7 +504,7 @@ class TopNavigation extends Component {
         var stripebalance = parseFloat(res.account_balance / 100);
       }
       Meteor.call('payment.getCredits', (err, res) => {
-        credits = res + stripebalance;
+        credits = (res + stripebalance).toFixed(2);
         var promotion_credits = 0;
         Meteor.call('promotion.check_history', (err, res) => {
           if (Object.keys(res).length > 0) {

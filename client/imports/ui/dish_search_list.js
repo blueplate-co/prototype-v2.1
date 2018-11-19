@@ -141,7 +141,6 @@ class DishSearchList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
   var dish_results = [];
   if (Session.get('search_result')) {
     for (var i = 0; i < Session.get('search_result').dish.length; i++) {
@@ -150,7 +149,6 @@ export default withTracker(props => {
   }
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
       dishes: dish_results,
   };
 })(DishSearchList);

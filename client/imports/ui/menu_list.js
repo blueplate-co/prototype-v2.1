@@ -7,7 +7,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import BouncingLoader from './bouncing_loader/bouncing_loader.js';
 
 
-class MenuList extends Component {
+export default class MenuList extends Component {
 
   constructor(props) {
     super(props);
@@ -157,11 +157,4 @@ class MenuList extends Component {
     );
   }
 }
-
-export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
-  return {
-      listLoading: !handle.ready()
-  };
-})(MenuList);
 

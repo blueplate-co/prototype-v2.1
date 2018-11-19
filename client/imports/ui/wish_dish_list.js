@@ -100,7 +100,6 @@ class WishDishList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theDishes');
   var result = [];
   var dishID = [];
   var dishLike = DishesLikes.find({ user_id: Meteor.userId() }).fetch();
@@ -115,7 +114,6 @@ export default withTracker(props => {
   }
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
       dishes: result
   };
 })(WishDishList);

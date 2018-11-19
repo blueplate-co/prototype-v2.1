@@ -155,7 +155,6 @@ class MenuSearchList extends Component {
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe('theMenu');
   var menu_results = [];
   if (Session.get('search_result')) {
     for (var i = 0; i < Session.get('search_result').menu.length; i++) {
@@ -164,7 +163,6 @@ export default withTracker(props => {
   }
   return {
       currentUser: Meteor.user(),
-      listLoading: !handle.ready(),
       menus: menu_results,
   };
 })(MenuSearchList);
