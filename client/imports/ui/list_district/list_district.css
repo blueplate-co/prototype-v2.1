@@ -68,6 +68,16 @@
     cursor: pointer;
 }
 
+#list-district .list-district-wrapper .district-item .district-meta {
+    z-index: 10;
+}
+
+#list-district .list-district-wrapper .district-item .kitchen_number {
+    display: block;
+    width: 100%;
+    font-size: 13px;
+}
+
 #list-district .list-district-wrapper .list-navigator#left-navigator {
     left: 15px;
 }

@@ -1,22 +1,43 @@
 import React, { Component } from 'react';
 import './list_district.css';
+import { Meteor } from 'meteor/meteor';
 
-const DistrictItem = (props) => {
-  return (
-    (props.scrollable) ? (
-      <div key={props.district.name} className="district-item">
-        <img src={props.district.images} />
-        <div className="shadow-mask"></div>
-        <span>{props.district.name}</span>
-      </div>
-    ) : (
-      <div key={props.district.name} className="district-item" style={{ width: `${props.width}px`, height: `${props.height}px` }}>
-        <img src={props.district.images} />
-        <div className="shadow-mask"></div>
-        <span>{props.district.name}</span>
-      </div>
+class DistrictItem extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  getNumberKitchensByDistrict = (data, name) => {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i]._id == name) {
+        return data[i].count;
+      }
+    }
+  }
+
+  render() {
+    return (
+      (this.props.scrollable) ? (
+        <div key={this.props.district.name} className="district-item">
+          <img src={this.props.district.images} />
+          <div className="shadow-mask"></div>
+          <div className="district-meta">
+            <span>{this.props.district.name}</span>
+            <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+          </div>
+        </div>
+      ) : (
+        <div key={this.props.district.name} className="district-item" style={{ width: this.props.width + 'px', height: this.props.height + 'px' }}>
+          <img src={this.props.district.images} />
+          <div className="shadow-mask"></div>
+          <div className="district-meta">
+            <span>{this.props.district.name}</span>
+            <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+          </div>
+        </div>
+      )
     )
-  )
+  }
 }
 
 // App component - represents the whole app
@@ -29,6 +50,7 @@ export default class ListDistrict extends Component {
     this.state = {
       position: 0,
       offsetX: 0,
+      districtCounter: [],
       widthWindow: window.innerWidth,
       widthItem: 240,
       heightItem: 322
@@ -36,6 +58,9 @@ export default class ListDistrict extends Component {
   }
 
   componentDidMount() {
+    Meteor.call('district.count', (err, res) => {
+      this.setState({ districtCounter: res })
+    });
     this.setState({
       listLength: document.getElementsByClassName('district-item').length
     });
@@ -85,11 +110,11 @@ export default class ListDistrict extends Component {
       (this.state.widthWindow > 992) ?
       (
         window.util.listDistrict().map((item, index) => {
-          return <DistrictItem key={index} district={item} scrollable={false} width={this.state.width} height={this.state.heightItem} />
+          return <DistrictItem key={index} district={item} scrollable={false} width={this.state.width} height={this.state.heightItem} counter={this.state.districtCounter}/>
         })
       ) : (
         window.util.listDistrict().map((item, index) => {
-          return <DistrictItem key={index} district={item} scrollable={true} />
+          return <DistrictItem key={index} district={item} scrollable={true} counter={this.state.districtCounter} />
         })
       )
     )
