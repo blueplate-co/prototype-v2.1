@@ -116,7 +116,7 @@ class TopNavigation extends Component {
     Session.set('search_nearby', false);
     $('#searchQuery').val('');
     Session.set()
-    FlowRouter.go("/main");
+    FlowRouter.go("/");
   }
 
   checkKitchenProfileExists = () => {
@@ -146,7 +146,7 @@ class TopNavigation extends Component {
         localStorage.setItem('globalCart', JSON.stringify(null));
         localStorage.removeItem("globalCart");
         this.setState({ isLogin: false })
-        FlowRouter.go("/main");
+        FlowRouter.go("/");
       })
     } else {
       // util.loginAccession("");
@@ -313,7 +313,7 @@ class TopNavigation extends Component {
             setTimeout(() => {
               this.setState({ sidebarOpen: true });
             }, 500);
-            FlowRouter.go("/main");
+            FlowRouter.go("/");
           }}
         >
           <span>Switch to foodie</span>
