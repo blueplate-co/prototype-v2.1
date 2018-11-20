@@ -24,6 +24,65 @@ Meteor.methods({
         console.log(dishIndex.search(keyword).mongoCursor);
         return keyword;
     },
+    'searchingKitchenByDistrict'(district, option) {
+        if (option == 'all') {
+            var pipeline = [
+                {
+                  $match: {
+                    'profile.district': district
+                  }
+                },
+                {
+                   "$lookup":
+                   {
+                      from: "kitchen_details",
+                      localField: "_id",
+                      foreignField: "user_id",
+                      as: "kitchen_details"
+                   }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                }
+            ];
+        } else {
+            var pipeline = [{
+                    $match: {
+                        'profile.district': district
+                    }
+                },
+                {
+                    "$lookup": {
+                        from: "kitchen_details",
+                        localField: "_id",
+                        foreignField: "user_id",
+                        as: "kitchen_details"
+                    }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $elemMatch: {
+                                serving_option: option
+                            }
+                        }
+                    }
+                }
+            ];
+        }
+        return Meteor.users.aggregate(pipeline);
+    },
     'searchingDishAndMenuByDistrict'(district) {
         const pipeline = [{
                 $match: {
