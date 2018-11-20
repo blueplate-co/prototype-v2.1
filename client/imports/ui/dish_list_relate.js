@@ -85,13 +85,13 @@ export class DishListRelate extends Component {
                 (checking_promotion_dish(item._id).length > 0) ?
                   <div className="row">
                     <ul className="promotion-price-list">
-                      <li className="dish-price no-padding">$ { item.dish_selling_price * get_amount_promotion(item._id) }</li>
-                      <li className="dish-old-price no-padding">$ { item.dish_selling_price }</li>
+                      <li className="dish-price no-padding">$ { parseFloat(item.dish_selling_price * get_amount_promotion(item._id)).toFixed(2) }</li>
+                      <li className="dish-old-price no-padding">$ { parseFloat(item.dish_selling_price).toFixed(2) }</li>
                     </ul>
                   </div>
                 : (
                   <div className="row">
-                    <div className="col l6 m6 s12 dish-price no-padding text-left">$ { item.dish_selling_price }</div>
+                    <div className="col l6 m6 s12 dish-price no-padding text-left">$ { parseFloat(item.dish_selling_price).toFixed(2) }</div>
                   </div>
                 )
               ) : ('')
