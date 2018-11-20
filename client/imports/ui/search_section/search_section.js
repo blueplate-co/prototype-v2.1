@@ -37,24 +37,13 @@ export default class SearchSection extends Component {
                                 <label>at</label>
                                 <select className="browser-default" id="district">
                                     <option value="" disabled defaultValue>Choose your district</option>
-                                    <option value="Central and Western">Central and Western</option>
-                                    <option value="Eastern">Eastern</option>
-                                    <option value="Southern">Southern</option>
-                                    <option value="Wan Chai">Wan Chai</option>
-                                    <option value="Sham Shui Po">Sham Shui Po</option>
-                                    <option value="Kowloon City">Kowloon City</option>
-                                    <option value="Kwun Tong">Kwun Tong</option>
-                                    <option value="Wong Tai Sin">Wong Tai Sin</option>
-                                    <option value="Yau Tsim Mong">Yau Tsim Mong</option>
-                                    <option value="Islands">Islands</option>
-                                    <option value="Kwai Tsing">Kwai Tsing</option>
-                                    <option value="North">North</option>
-                                    <option value="Sai Kung">Sai Kung</option>
-                                    <option value="Sha Tin">Sha Tin</option>
-                                    <option value="Tai Po">Tai Po</option>
-                                    <option value="Tsuen Wan">Tsuen Wan</option>
-                                    <option value="Tuen Mun">Tuen Mun</option>
-                                    <option value="Yuen Long">Yuen Long</option>
+                                    {
+                                        window.util.listDistrict().map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.name}>{item.name}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                             <div className="col l4 m3 s6">

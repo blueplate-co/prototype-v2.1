@@ -32,7 +32,7 @@ export class SearchMap extends Component {
   };
 
   componentDidMount = () => {
-    util.show_loading_progress();
+    // util.show_loading_progress();
   }
 
   componentWillReceiveProps = () => {

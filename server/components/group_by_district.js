@@ -13,6 +13,13 @@ Meteor.methods({
                 }
             },
             {
+                $match: {
+                    'kitchen_details': {
+                        $ne: []
+                    }
+                }
+            },
+            {
                 "$group" : {_id:"$profile.district", count:{$sum:1}}
             }
         ]
