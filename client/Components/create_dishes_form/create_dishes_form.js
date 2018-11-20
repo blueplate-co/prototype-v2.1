@@ -73,26 +73,21 @@ Template.uploadForm.events({
           template.currentUpload.set(this);
         });
 
-        upload.on('end', function(error, Images) {
+        upload.on('end', function(error, fileObject) {
           if (error) {
             alert('Error during upload: ' + error.message);
           } else {
             Meteor.setTimeout(function() {
-              Session.set('tempImages', Images.meta.base64);
+              Session.set('tempImages', fileObject.meta.base64);
               var dish_url = Session.get('tempImages');
               $(".circle_base").css("background-image", "url(" + dish_url + ")");
             }, 500);
-            Session.set('image_id', Images._id);
+            Session.set('image_id', fileObject._id);
+            Session.set('image_path', fileObject.path);
             /** above is the line that prevents meteor from reloading **/
 
-            let newImgName = changeImgName(Images.path)
-            console.log('image new name: ', newImgName)
-            //- meteor call
-            Meteor.call('saveToKraken', newImgName, Images.path, (error, result)=>{
-              if(error) console.log('kraken errors', error);
-              console.log(result);
-            });
-
+            let newImgName = changeImgName(fileObject.path);
+            Session.set('newImgName', newImgName);
             //- declare some sizes
             var original = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/original/' + newImgName;
             var large    = 'https://blueplate-images.s3.ap-southeast-1.amazonaws.com/images/large/' + newImgName;
@@ -108,8 +103,6 @@ Template.uploadForm.events({
 
             //- set to session
             Session.set('imgMeta', sizes);
-            console.log('sizes', Session.get('imgMeta'));
-
           }
           Meteor._reload.onMigrate(function() {
             return [false];
@@ -472,6 +465,17 @@ Template.create_dishes_form.events({
         return true;
       }
 
+      var image_path = Session.get('image_path');
+      if (image_path) {
+        
+        let newImgName = Session.get('newImgName');
+        //- meteor call
+        Meteor.call('saveToKraken', newImgName, image_path, (error, result)=>{
+          if(error) console.log('kraken errors', error);
+          console.log(result);
+        });
+      }
+
       var dish_profit = dish_selling_price - dish_cost;
       // Ingredients_temporary.find({}).forEach(function(doc) {
       //   Ingredients.insert(doc);
@@ -541,6 +545,8 @@ Template.create_dishes_form.events({
           }
         })
         Session.set('image_id',null);
+        Session.set('image_path', null);
+        Session.set('newImgName', null);
         Session.keys = {}
         Session.set('ingredient_temp', []);
         Session.set('tempImages', []);
@@ -582,9 +588,17 @@ Template.create_dishes_form.events({
     var dish_selling_price = parseFloat($('#dish_selling_price').val() * 1.15);
     console.log(dish_selling_price); // add 15% fee
     var dish_profit = dish_selling_price - dish_cost;
+    var image_path = Session.get('image_path');
+    if (image_path) {
+      let newImgName = Session.get('newImgName');
+      //- meteor call
+      Meteor.call('saveToKraken', newImgName, image_path, (error, result)=>{
+        if(error) console.log('kraken errors', error);
+        console.log(result);
+      });
+    }
 
     var dish_tags = $('#dish_tags').material_chip('data')
-    console.log(Session.get('imgMeta'));
 
     Meteor.call('dish.update',
       Session.get('selected_dishes_id'),
@@ -624,6 +638,8 @@ Template.create_dishes_form.events({
               Session.set('selected_dishes_id', null);
               Session.set('imgMeta', []);
               Session.set('deleted_tags', []);
+              Session.set('image_path', null);
+              Session.set('newImgName', null);
         }
       }
     );
