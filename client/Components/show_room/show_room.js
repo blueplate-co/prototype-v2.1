@@ -18,3 +18,5 @@ Template.show_room.onRendered(function(){
 Meteor.subscribe('listAllNotifications');
 Meteor.subscribe('currentProfileDetails');
 Meteor.subscribe('theKitchenDetail', null)
+Meteor.subscribe('theMenu');
+Meteor.subscribe('theAllKitchenDetail');
