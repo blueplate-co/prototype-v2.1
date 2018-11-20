@@ -1,0 +1,30 @@
+.search-page-container {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+}
+
+.map-container {
+    position: fixed;
+    right: 12px!important;
+    top: 188px;
+    height: calc(100vh - 188px);
+}
+
+.list-result {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
+    padding: 0px 22px!important;
+    position: relative;
+}
+
+.no-dishes-container {
+
+}
+
+.no-dishes-container img {
+    width: 100%;
+}
