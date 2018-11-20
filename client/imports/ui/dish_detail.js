@@ -163,7 +163,7 @@ export class Dish_Detail extends Component {
 
     renderTags() {
         if (Object.keys(this.state.data).length > 0) {
-            if (this.state.data.dish_tags.length == 0) {
+            if (!this.state.data.dish_tags || (this.state.data.dish_tags != null && this.state.data.dish_tags.length == 0)) {
                 return("No tags available");
             }
             return (
@@ -670,12 +670,12 @@ export class Dish_Detail extends Component {
                                                     (checking_promotion_dish(dish_detail._id).length > 0) ?
                                                         <ul className="promotion-price-list">
                                                             <li id="dish-price" className="dish-price no-padding">$ { dish_detail.dish_selling_price * get_amount_promotion(dish_detail._id) }</li>
-                                                            <li className="dish-old-price no-padding" style={{ fontStyle: 'normal', fontWeight: '400', fontSize: '1.5rem', lineHeight: '32px', marginRight: '15px' }}>$ { dish_detail.dish_selling_price }</li>
+                                                            <li className="dish-old-price no-padding" style={{ fontStyle: 'normal', fontWeight: '400', fontSize: '1.5rem', lineHeight: '32px', marginRight: '15px' }}>$ { parseFloat(dish_detail.dish_selling_price).toFixed(2) }</li>
                                                             <li className="promotion_tag_inline">{ '- ' + get_amount_promotion(dish_detail._id) * 100 + ' %' }</li>
                                                         </ul>
                                                     :
                                                         <div className="no-margin">
-                                                            <div id="dish-price" className="dish-price text-left">$ { dish_detail.dish_selling_price }</div>
+                                                            <div id="dish-price" className="dish-price text-left">$ { parseFloat(dish_detail.dish_selling_price).toFixed(2) }</div>
                                                         </div>
                                                 }
                                                 <div className="rating-detail">
