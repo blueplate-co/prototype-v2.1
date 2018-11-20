@@ -403,7 +403,7 @@ export class AdminDishSelected extends Component {
         if (file) {
             reader.readAsDataURL(file); //reads the data as a URL
         } else {
-            that.setState({ img_change: ''});
+            that.setState({ img_change: '', fileObj: null });
         }
     }
 

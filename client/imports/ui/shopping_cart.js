@@ -197,7 +197,8 @@ class ShoppingCart extends Component {
                 $('#time'+seller_id).addClass('invalid');
                 $('#time'+seller_id).focus();
             }, 10);
-            Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '4000', 'rounded bp-green');
+            var message = 'Oops, the dish you selected is only available by ' + moment().add(hours, 'hours').add(mins, 'minute').format('HH:mm a');
+            Materialize.toast(message, '8000', 'rounded bp-green');
         } else {
             for (var i = 0; i < globalCart.length; i++) {
                 if (globalCart[i].id == seller_id) {
@@ -249,8 +250,9 @@ class ShoppingCart extends Component {
                         $('#' + id_evt).removeClass('invalid');
                     }
                 }
-            } else  {
-                Materialize.toast('Preferred Ready Time must be later than the Latest Ready Time', '3000', 'rounded bp-green');
+            } else {
+                var message = 'Oops, the dish you selected is only available by ' + moment().add(days, 'days').format('DD/MM/YYYY');
+                Materialize.toast(message, '8000', 'rounded bp-green');
                 setTimeout(() => {
                     $('#'+ id_evt).addClass('invalid');
                     $('#'+id_evt).focus();
@@ -555,8 +557,12 @@ class ShoppingCart extends Component {
         var date_ready = moment().add(days, 'days');
         if (dateSelected.year() > date_ready.year()) {
             this.setState({ bDateReady: false }, () => { callback(true) });
+        } else if (date_ready.year() > dateSelected.year()) {
+            this.setState({ bDateReady: false }, () => { callback(false) });
         } else if (dateSelected.month() > date_ready.month()) {
             this.setState({ bDateReady: false }, () => { callback(true) });
+        } else if (date_ready.month() > dateSelected.month()) {
+            this.setState({ bDateReady: false }, () => { callback(false) });
         } else if (dateSelected.date() > date_ready.date()) {
             this.setState({ bDateReady: false }, () => { callback(true) });
         } else if (dateSelected.date() == date_ready.date()) {
