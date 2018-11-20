@@ -5,9 +5,8 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { render } from 'react-dom';
 
-// import for show room react component
-import ShowRoom from '../../imports/ui/show_room.js';
+import Search from '../../imports/ui/search';
 
 Template.search.onRendered(function(){
-  render(<ShowRoom screen="search" />, document.getElementById('search_container'));
+  render(<Search />, document.getElementById('search_container'));
 });

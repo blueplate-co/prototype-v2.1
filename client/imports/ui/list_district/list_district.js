@@ -18,23 +18,27 @@ class DistrictItem extends Component {
   render() {
     return (
       (this.props.scrollable) ? (
-        <div key={this.props.district.name} className="district-item">
-          <img src={this.props.district.images} />
-          <div className="shadow-mask"></div>
-          <div className="district-meta">
-            <span>{this.props.district.name}</span>
-            <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+        <a href={`search?option=all&district=${this.props.district.name}`}>
+          <div key={this.props.district.name} className="district-item">
+            <img src={this.props.district.images} />
+            <div className="shadow-mask"></div>
+            <div className="district-meta">
+              <span>{this.props.district.name}</span>
+              <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+            </div>
           </div>
-        </div>
+        </a>
       ) : (
-        <div key={this.props.district.name} className="district-item" style={{ width: this.props.width + 'px', height: this.props.height + 'px' }}>
-          <img src={this.props.district.images} />
-          <div className="shadow-mask"></div>
-          <div className="district-meta">
-            <span>{this.props.district.name}</span>
-            <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+        <a href={`search?option=all&district=${this.props.district.name}`}>
+          <div key={this.props.district.name} className="district-item" style={{ width: this.props.width + 'px', height: this.props.height + 'px' }}>
+            <img src={this.props.district.images} />
+            <div className="shadow-mask"></div>
+            <div className="district-meta">
+              <span>{this.props.district.name}</span>
+              <span className="kitchen_number">{this.getNumberKitchensByDistrict(this.props.counter, this.props.district.name)} kitchens</span>
+            </div>
           </div>
-        </div>
+        </a>
       )
     )
   }
