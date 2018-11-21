@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import Rating from '../rating/rating';
 import DishDistance from '../dish-distance/dish-distance';
+import ChefMinPrice from './chef_min_price';
 import './chef_card_item.css';
 
-export default class DishItem extends Component {
+export default class ChefItem extends Component {
     constructor(props) {
         super(props);
+    }
+
+    renderTagList() {
+        if (this.props.tags.length == 0) {
+            return <li>No tag displayed</li>
+        } else {
+            return this.props.tags.map((item, index) => {
+                return <li key={index}>{item.tag}</li>
+            });
+        }
     }
 
     render() {
@@ -26,12 +37,10 @@ export default class DishItem extends Component {
                     }
                     <h5 className="dish-card-title" title={this.props.name}>{this.props.name}</h5>
                     <ul className="dish-tags">
-                        <li>Dine in</li>
-                        <li>Delivery</li>
-                        <li>Pickup</li>
+                        {this.renderTagList()}
                     </ul>
                     <div className="dish-meta-price-option">
-                        <span className="dish-price">From: $100</span>
+                        <ChefMinPrice chefId={this.props.id} />
                     </div>
                     <div className="rating-wrapper">
                         <Rating rating={this.props.rating} />

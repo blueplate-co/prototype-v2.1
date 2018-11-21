@@ -14,7 +14,7 @@ export default class NearbyList extends Component {
   componentDidMount() {}
 
   renderListDish() {
-      return <DishItem />
+      return <ChefItem />
   }
 
   render() {

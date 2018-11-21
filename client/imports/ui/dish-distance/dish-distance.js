@@ -11,7 +11,7 @@ export default class DishDistance extends React.Component {
     }
 
     calculationDistance = (kitchenlocation, lat, lng) => {
-        if (kitchenlocation && kitchenlocation !== {} ) {
+        if (kitchenlocation && kitchenlocation !== {} && lat && lng ) {
             var R = 6371; // Radius of the earth in km
             var dLat = this.deg2rad(lat - kitchenlocation.lat); // deg2rad below
             var dLon = this.deg2rad(lng - kitchenlocation.lng);
@@ -22,9 +22,12 @@ export default class DishDistance extends React.Component {
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             var d = R * c; // Distance in km
             d = parseFloat(d).toFixed(2);
+            if (isNaN(d)) {
+                return 'Unknown location';
+            }
             return d + ' km';
         } else {
-            return 'Unknown kitchen location';
+            return 'Unknown location';
         }
     };
 

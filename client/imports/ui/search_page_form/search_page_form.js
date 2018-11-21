@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import './search_page_form.css';
 
 export default class SearchPageForm extends Component {
@@ -31,14 +32,16 @@ export default class SearchPageForm extends Component {
             serving_option = event.target.value;
             this.setState({
                 serving_option: serving_option
-            })
-            location.href = '/search?option=' + serving_option + '&district=' + district;
+            });
+            FlowRouter.go('/search?option=' + serving_option + '&district=' + district);
+            this.props.changeUrl(district, serving_option);
         } else {
             district = event.target.value;
             this.setState({
                 district: district
             })
-            location.href = '/search?option=' + serving_option + '&district=' + district;
+            FlowRouter.go('/search?option=' + serving_option + '&district=' + district);
+            this.props.changeUrl(district, serving_option);
         }
     }
 

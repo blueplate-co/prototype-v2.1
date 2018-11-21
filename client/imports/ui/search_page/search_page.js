@@ -8,6 +8,7 @@ import './search_page.css';
 export default class Search extends Component {
     constructor(props) {
         super(props);
+        this.handleChangeUrl = this.handleChangeUrl.bind(this);
         this.state = {
             serving_option: '',
             district: '',
@@ -16,6 +17,48 @@ export default class Search extends Component {
             lat: '',
             lng: ''
         }
+    }
+
+    handleChangeUrl(district, serving_option) {
+        this.fetchData(district, serving_option);
+    }
+
+    fetchData(district, serving_option) {
+        this.setState({ loading: true })
+        Meteor.call('searchingKitchenByDistrict', district, serving_option, (err, res) => {
+            if (!err) {
+                if( navigator.geolocation ) {
+                    // Call getCurrentPosition with success and failure callbacks
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        this.setState({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                            loading: false,
+                            data: res
+                        })
+                    }, (err) => {
+                        // when fail
+                        this.setState({
+                            loading: false,
+                            data: res
+                        })
+                        Materialize.toast(err.message, 4000, 'rounded bp-green');
+                    });
+                } else {
+                    this.setState({
+                        loading: false,
+                        data: res
+                    })
+                    Materialize.toast("Sorry, your browser does not support geolocation services.", 4000, 'rounded bp-red');
+                }
+            } else {
+                this.setState({
+                    loading: false,
+                    data: res
+                })
+                Materialize.toast('Oops! Error when searching. Please try again. ' + err, 4000, 'rounded bp-green');
+            }
+        });
     }
 
     componentDidMount() {
@@ -29,40 +72,7 @@ export default class Search extends Component {
                 serving_option: serving_option,
                 district: district
             },() => {
-                Meteor.call('searchingKitchenByDistrict', district, serving_option, (err, res) => {
-                    if (!err) {
-                        if( navigator.geolocation ) {
-                            // Call getCurrentPosition with success and failure callbacks
-                            navigator.geolocation.getCurrentPosition((position) => {
-                                this.setState({
-                                    lat: position.coords.latitude,
-                                    lng: position.coords.longitude,
-                                    loading: false,
-                                    data: res
-                                })
-                            }, (err) => {
-                                // when fail
-                                this.setState({
-                                    loading: false,
-                                    data: res
-                                })
-                                Materialize.toast(err.message, 4000, 'rounded bp-green');
-                            });
-                        } else {
-                            this.setState({
-                                loading: false,
-                                data: res
-                            })
-                            Materialize.toast("Sorry, your browser does not support geolocation services.", 4000, 'rounded bp-red');
-                        }
-                    } else {
-                        this.setState({
-                            loading: false,
-                            data: res
-                        })
-                        Materialize.toast('Oops! Error when searching. Please try again. ' + err, 4000, 'rounded bp-green');
-                    }
-                });
+                this.fetchData(district, serving_option);
             });
         }, 500);
     }
@@ -77,7 +87,7 @@ export default class Search extends Component {
             )
         } else {
             return this.state.data.map((item) => {
-                return <ChefItem key={item.kitchen_details[0]._id} id={item.kitchen_details[0]._id} name={item.kitchen_details[0].kitchen_name} rating={item.kitchen_details[0].average_rating} banner={item.kitchen_details[0].bannerProfileImg} location={item.kitchen_details[0].kitchen_address_conversion} currentLat={this.state.lat} currentLng={this.state.lng} />
+                return <ChefItem key={item.kitchen_details[0]._id} id={item.kitchen_details[0]._id} name={item.kitchen_details[0].kitchen_name} rating={item.kitchen_details[0].average_rating} banner={item.kitchen_details[0].bannerProfileImg} tags={item.kitchen_details[0].kitchen_tags} location={item.kitchen_details[0].kitchen_address_conversion} currentLat={this.state.lat} currentLng={this.state.lng} />
             });
         }
     }
@@ -86,7 +96,7 @@ export default class Search extends Component {
         return (
             <div className="search-page-container">
                 <div className="row col l12 result-container">
-                    <SearchPageForm serving_option={this.state.serving_option} district={this.state.district}/>
+                    <SearchPageForm serving_option={this.state.serving_option} district={this.state.district} changeUrl={this.handleChangeUrl}/>
                     <div className="col l8 list-result">
                     {
                         (this.state.loading) ? (
@@ -98,7 +108,7 @@ export default class Search extends Component {
                     </div>
                 </div>
                 <div className="col l4 map-container">
-                    <SearchMap />
+                    <SearchMap data={this.state.data} />
                 </div>
             </div>
         )

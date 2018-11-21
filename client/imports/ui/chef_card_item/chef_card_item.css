@@ -54,7 +54,6 @@
 }
 
 .dish-card .dish-tags {
-    display: inline-flex;
     margin: 0px;
     font-size: 11px;
     color: #4c4c4c;
@@ -62,7 +61,7 @@
 
 .dish-card .dish-tags li {
     padding: 0px 2px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
 }
 
@@ -75,10 +74,4 @@
     content: "\f111";
     font-size: 5px;
     margin: 5px;
-}
-
-.dish-card .dish-tags li:first-child:before {
-    content: "";
-    font-size: 5px;
-    margin: 0px;
 }
