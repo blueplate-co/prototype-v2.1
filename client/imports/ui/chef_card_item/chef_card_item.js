@@ -10,7 +10,7 @@ export default class ChefItem extends Component {
     }
 
     renderTagList() {
-        if (this.props.tags.length == 0) {
+        if (!this.props.tags || Object.keys(this.props.tags).length == 0) {
             return <li>No tag displayed</li>
         } else {
             return this.props.tags.map((item, index) => {

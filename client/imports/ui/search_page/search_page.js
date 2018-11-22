@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchMap from '../search_map';
 import SearchPageForm from '../search_page_form/search_page_form';
+import SearchPageFormMobile from '../search_page_form_mobile/search_page_form_mobile';
 import ChefItem from '../chef_card_item/chef_card_item';
 import BouncingLoader from '../bouncing_loader/bouncing_loader';
 import './search_page.css';
@@ -9,18 +10,28 @@ export default class Search extends Component {
     constructor(props) {
         super(props);
         this.handleChangeUrl = this.handleChangeUrl.bind(this);
+        this.toggleMap = this.toggleMap.bind(this);
+        this.generateClassList = this.generateClassList.bind(this);
         this.state = {
             serving_option: '',
             district: '',
             loading: true,
             data: [],
             lat: '',
-            lng: ''
+            lng: '',
+            width: window.innerWidth,
+            showMap: true
         }
     }
 
     handleChangeUrl(district, serving_option) {
         this.fetchData(district, serving_option);
+    }
+
+    toggleMap() {
+        this.setState({
+            showMap: !this.state.showMap
+        })
     }
 
     fetchData(district, serving_option) {
@@ -61,6 +72,14 @@ export default class Search extends Component {
         });
     }
 
+    componentWillMount() {
+        window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+    
+    handleWindowSizeChange = () => {
+        this.setState({ widthWindow: window.innerWidth });
+    };
+
     componentDidMount() {
         window.scrollTo(0, 0);
         setTimeout(() => {
@@ -92,12 +111,40 @@ export default class Search extends Component {
         }
     }
 
+    generateClassList() {
+        var width = window.innerWidth;
+        if (width > 992) {
+            if (this.state.showMap) {
+                return "col l8 m12 s12 list-result";
+            } else {
+                return "col l12 m12 s12 list-result";
+            }
+        } else {
+
+        }
+        if (width < 992 && width > 600) {
+            if (this.state.showMap) {
+                return "col l8 m12 s12 list-result inline-list";
+            } else {
+                return "col l12 m12 s12 list-result";
+            }
+        }
+        if (width < 600) {
+            if (this.state.showMap) {
+                return "col l8 m12 s12 list-result";
+            } else {
+                return "col l12 m12 s12 list-result";
+            }
+        }
+    }
+
     render() {
         return (
             <div className="search-page-container">
-                <div className="row col l12 result-container">
-                    <SearchPageForm serving_option={this.state.serving_option} district={this.state.district} changeUrl={this.handleChangeUrl}/>
-                    <div className="col l8 list-result">
+                <div className="row col l12 m12 s12 result-container">
+                    <SearchPageForm serving_option={this.state.serving_option} district={this.state.district} changeUrl={this.handleChangeUrl} toggleMap={this.toggleMap}/>
+                    <SearchPageFormMobile serving_option={this.state.serving_option} district={this.state.district} changeUrl={this.handleChangeUrl} toggleMap={this.toggleMap}/>
+                    <div className={this.generateClassList()}>
                     {
                         (this.state.loading) ? (
                             <BouncingLoader />
@@ -107,8 +154,10 @@ export default class Search extends Component {
                     }
                     </div>
                 </div>
-                <div className="col l4 map-container">
-                    <SearchMap data={this.state.data} />
+                <div className="col l4 m12 s12 map-container">
+                    {
+                        (this.state.showMap) ? <SearchMap data={this.state.data} /> : null
+                    }
                 </div>
             </div>
         )

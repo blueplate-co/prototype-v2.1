@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import './search_section.css';
 
 // App component - represents the whole app
@@ -10,8 +11,10 @@ export default class SearchSection extends Component {
     }
   }
 
-  componentDidMount() {
-
+  handleSearch() {
+      let servingOption = document.getElementById('servingOption').value;
+      let district = document.getElementById('district').value;
+      FlowRouter.go('/search?option='+servingOption+'&district='+district);
   }
 
   render() {
@@ -28,9 +31,9 @@ export default class SearchSection extends Component {
                                 <label>I want to</label>
                                 <select className="browser-default" id="servingOption">
                                     <option value="" disabled defaultValue>Dine in/Pick up/ Delivery</option>
-                                    <option value="dinein">Dine in</option>
-                                    <option value="delivery">Delivery</option>
-                                    <option value="pickup">Pick up</option>
+                                    <option value="Dine-in">Dine in</option>
+                                    <option value="Delivery">Delivery</option>
+                                    <option value="Pick-up">Pick up</option>
                                 </select>
                             </div>
                             <div className="col s12 m6 l4">
@@ -47,7 +50,7 @@ export default class SearchSection extends Component {
                                 </select>
                             </div>
                             <div className="col l4 m3 s6">
-                                <button className="btn" id="btn-search">Search</button>
+                                <button className="btn" onClick={() => this.handleSearch()} id="btn-search">Search</button>
                             </div>
                         </div>
                     </div>
