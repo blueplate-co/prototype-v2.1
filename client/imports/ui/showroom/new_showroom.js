@@ -9,6 +9,7 @@ import NearbyList from '../nearby_list/nearby_list';
 import WhoWeAre from '../whoweare/whoweare';
 import HowWork from '../howwork/howwork';
 import WhyChosing from '../whychoosing/whychoosing';
+import BecomeChef from '../become_chef/become_chef';
 import FAQs from '../faqs/faqs';
 
 // App component - represents the whole app
@@ -44,6 +45,9 @@ export default class ShowRoom extends Component {
             </LazyLoad>
             <LazyLoad height={200} once>
               <WhyChosing />
+            </LazyLoad>
+            <LazyLoad height={200} once>
+              <BecomeChef />
             </LazyLoad>
             <LazyLoad height={200} once>
               <FAQs />
