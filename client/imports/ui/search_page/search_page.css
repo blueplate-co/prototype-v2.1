@@ -62,7 +62,7 @@
         position: fixed;
         right: 12px!important;
         top: 160px;
-        height: 55vh;
+        height: calc(100vh - 435px);
     }
     .toggle-search-map {
         width: 100%;
