@@ -53,11 +53,11 @@ export default class ListCategories extends Component {
 
   renderListCategories() {
     return (
-      <ul className="category-list">
+      <div className="category-list">
         <CategoryItem name="Bake" />
         <CategoryItem name="Meal" />
         <CategoryItem name="Marketplace" />
-      </ul>
+      </div>
     )
   }
 

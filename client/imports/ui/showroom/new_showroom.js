@@ -6,6 +6,7 @@ import ListDistrict from '../list_district/list_district';
 import RecommendChefList from '../recommend_chef_list/recommend_chef_list';
 import ListCategories from '../list_categories/list_categories';
 import NearbyList from '../nearby_list/nearby_list';
+import WhoWeAre from '../whoweare/whoweare';
 
 // App component - represents the whole app
 export default class ShowRoom extends Component {
@@ -31,6 +32,9 @@ export default class ShowRoom extends Component {
             </LazyLoad>
             <LazyLoad height={200} once>
               <ListCategories />
+            </LazyLoad>
+            <LazyLoad height={200} once>
+              <WhoWeAre />
             </LazyLoad>
         </div>
       )
