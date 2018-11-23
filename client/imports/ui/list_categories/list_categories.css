@@ -1,0 +1,39 @@
+.category-list {
+    display: grid!important;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    grid-gap: 20px;
+}
+
+.category-item {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    height: 115px;
+    display: inline-flex;
+}
+
+.category-item a {
+    display: inline-flex;
+    width: 100%;
+}
+
+.category-banner {
+    height: 100%;
+    width: 40%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.category-info {
+    width: 100%;
+    padding: 10px;
+}
+
+.category-info .category-heading {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.category-info .category-description {
+    font-size: 0.9em;
+}
