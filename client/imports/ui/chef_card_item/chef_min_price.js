@@ -9,13 +9,15 @@ export default class ChefMinPrice extends React.Component {
     }
 
     componentDidMount() {
-        Meteor.call('getMinPriceRange', this.props.chefId, (err, res) => {
-            if (!err) {
-                this.setState({
-                    price: res
-                })
-            }
-        });
+        if (this.props.chefId) {
+            Meteor.call('getMinPriceRange', this.props.chefId, (err, res) => {
+                if (!err) {
+                    this.setState({
+                        price: res
+                    })
+                }
+            });
+        }
     }
 
     render() {
