@@ -1,0 +1,23 @@
+.why-choosing-container {
+    padding: 20px 0px;
+    background-color: #F7F7F7;
+}
+
+.why-choosing-container  h2 {
+    font-size: 2em;
+}
+
+.choosing-item {
+    text-align: center;
+}
+
+.choosing-content {
+    text-align: left;
+    font-size: 0.8em;
+    margin: 8px 0px;
+}
+
+.choosing-image-container {
+    width: 100%;
+    height: 150px;
+}
