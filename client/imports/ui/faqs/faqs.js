@@ -5,6 +5,10 @@ export default class FAQs extends Component {
         super(props);
     }
 
+    componentDidMount() {
+        $('.collapsible').collapsible();
+    }
+
     render() {
         return (
             <section className="faqs-container">
