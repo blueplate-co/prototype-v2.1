@@ -127,6 +127,7 @@ class Message extends Component {
         }
       );
 
+      message = message + '\nPlease reply this message on our platform at ' + location.href;
       var contentMessage = 'Blueplate: ' + userMessage + ', ' + message;
       phoneNumber = validatePhoneNumber(phoneNumber, countryCode);
 
