@@ -1,0 +1,14 @@
+.faq_container .collapsible-header {
+    color: #000!important;
+    font-size: 16px!important;
+}
+
+.detail {
+    font-size: 14px;
+    color: black;
+    text-align: left;
+}
+
+.collapsible-header i {
+    float: right!important;
+}
