@@ -42,12 +42,33 @@ Meteor.methods({
                    }
                 },
                 {
+                   "$lookup":
+                   {
+                      from: "dishes",
+                      localField: "_id",
+                      foreignField: "user_id",
+                      as: "dishes"
+                   }
+                },
+                {
                     $match: {
                         'kitchen_details': {
                             $ne: []
                         }
                     }
-                }
+                },
+                {
+                  	$addFields: {
+                  	  	numberOfDishes: { $size: "$dishes" }
+                  	}
+                },
+                {
+                    $match: {
+                        'numberOfDishes': {
+                            $gte: 1
+                        }
+                    }
+                }    
             ];
         } else {
             var pipeline = [{
@@ -69,6 +90,34 @@ Meteor.methods({
                             $ne: []
                         }
                     }
+                },
+                {
+                    "$lookup":
+                    {
+                        from: "dishes",
+                        localField: "_id",
+                        foreignField: "user_id",
+                        as: "dishes"
+                    }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                            numberOfDishes: { $size: "$dishes" }
+                    }
+                },
+                {
+                     $match: {
+                         'numberOfDishes': {
+                             $gte: 1
+                         }
+                     }
                 },
                 {
                     $match: {
