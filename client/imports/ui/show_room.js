@@ -13,7 +13,7 @@ import WishMenuList from './wish_menu_list';
 import ListFilter from './list_filter';
 import Modal from './modal';
 import TagsDisplay from './tags_display';
-import SearchMap from './search_map';
+// import SearchMap from './search_map';
 import PromotionList from './promotion_list';
 import LazyLoad from 'react-lazyload';
 import { createCookie } from '/imports/functions/common/promotion_common';
@@ -244,7 +244,7 @@ class ShowRoom extends Component {
                 </div>
                 <div className="col l4 m6 s12 search-map-container">
                   <i id="close_map" onClick={ () => $('.search-map-container').toggle() } className="material-icons">close</i>
-                  <SearchMap />
+                  {/* <SearchMap /> */}
                 </div>
               </div>
               <Modal menu={this. state.selectedMenu}/>

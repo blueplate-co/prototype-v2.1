@@ -31,8 +31,8 @@ export class SearchMap extends Component {
     }
   };
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.data !== this.props.data) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((nextProps.data !== this.props.data) || (nextState !== this.state)) {
       return true;
     }
     return false;
@@ -40,7 +40,7 @@ export class SearchMap extends Component {
 
   render() {
     return (
-      <Map google={this.props.google} onClick={this.onMapClicked} initialCenter={{ lat: 22.3183467, lng: 114.1369642 }} zoom={11}>
+      <Map google={this.props.google} onClick={this.onMapClicked} center={{ lat: 22.3183467, lng: 114.1369642 }} zoom={11}>
         {
           (this.props.data) ?
             this.props.data.map((item, index)=> {
