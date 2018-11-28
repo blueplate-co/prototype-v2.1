@@ -14,7 +14,9 @@ export default class ChefItem extends Component {
             return <li>No tag displayed</li>
         } else {
             return this.props.tags.map((item, index) => {
-                return <li key={index}>{item.tag}</li>
+                if (index < 3) {
+                    return <li key={index}>{item.tag}</li>
+                }
             });
         }
     }

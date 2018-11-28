@@ -28,6 +28,10 @@ Meteor.methods({
             return [];
         }
     },
+    'chef_categories.getTag'(tag) {
+        let result = Kitchen_details.find({ "kitchen_tags.tag": {'$regex': tag, '$options': 'i'} }).fetch();
+        return result;
+    },
     'chef_categories.getInfo'(categories_name) {
         let categories = Chef_Categories.findOne({ categories_name: categories_name });
         if (categories) {

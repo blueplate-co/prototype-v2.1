@@ -1,10 +1,12 @@
 import React from 'react';
+import BouncingLoader from '../bouncing_loader/bouncing_loader';
 
 export default class ChefMinPrice extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            price: 0
+            price: 0,
+            loading: true
         }
     }
 
@@ -13,7 +15,8 @@ export default class ChefMinPrice extends React.Component {
             Meteor.call('getMinPriceRange', this.props.chefId, (err, res) => {
                 if (!err) {
                     this.setState({
-                        price: res
+                        price: res,
+                        loading: false
                     })
                 }
             });
@@ -22,7 +25,11 @@ export default class ChefMinPrice extends React.Component {
 
     render() {
         return (
-            <span className="dish-price">From: ${this.state.price}</span>
+            <span className="dish-price">
+            {
+                (this.state.loading) ? (<BouncingLoader />) : (<span>From: ${this.state.price}</span>)
+            }
+            </span>
         )
     }
 }

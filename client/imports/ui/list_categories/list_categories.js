@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BouncingLoader from '../bouncing_loader/bouncing_loader';
 import './list_categories.css';
 
 
@@ -6,7 +7,8 @@ class CategoryItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: {},
+      loading: true
     }
   }
 
@@ -14,7 +16,8 @@ class CategoryItem extends Component {
     Meteor.call('chef_categories.getInfo', this.props.name,(err, res) => {
       if (!err) {
         this.setState({
-          data: res
+          data: res,
+          loading: false
         })
       }
     });
@@ -22,15 +25,19 @@ class CategoryItem extends Component {
 
   render() {
     return (
-      <div className="category-item">
-        <a href={"/category/"+this.state.data._id}>
-          <div className="category-banner" style={{ backgroundImage: "url(" + this.state.data.banner + ")" }}>
-          </div>
-          <div className="category-info">
-            <p className="category-heading">{this.state.data.categories_name}</p>
-            <p className="category-description">{this.state.data.description}</p>
-          </div>
-        </a>
+      <div className="category-item" style={{ backgroundImage: "url(" + this.state.data.banner + ")" }}>
+        <div className="shadow-mask"></div>
+        {
+          (this.state.loading) ? (
+            <BouncingLoader />
+          ) : (
+            <a href={"/category/"+this.state.data._id+"/"+this.state.data.categories_name.toLowerCase()}>
+              <div className="category-info">
+                <p className="category-heading">{this.state.data.categories_name}</p>
+              </div>
+            </a>
+          )
+        }
       </div>
     )
   }
@@ -46,17 +53,23 @@ export default class ListCategories extends Component {
   }
 
   componentDidMount() {
-    Meteor.call('chef_categories.create', 'Bake', () => {});
     Meteor.call('chef_categories.create', 'Meal', () => {});
-    Meteor.call('chef_categories.create', 'Marketplace', () => {});
+    Meteor.call('chef_categories.create', 'Beverage', () => {});
+    Meteor.call('chef_categories.create', 'Condiments', () => {});
+    Meteor.call('chef_categories.create', 'Cake', () => {});
+    Meteor.call('chef_categories.create', 'Noodle', () => {});
+    Meteor.call('chef_categories.create', 'Snack', () => {});
   }
 
   renderListCategories() {
     return (
       <div className="category-list">
-        <CategoryItem name="Bake" />
         <CategoryItem name="Meal" />
-        <CategoryItem name="Marketplace" />
+        <CategoryItem name="Beverage" />
+        <CategoryItem name="Condiments" />
+        <CategoryItem name="Cake" />
+        <CategoryItem name="Noodle" />
+        <CategoryItem name="Snack" />
       </div>
     )
   }

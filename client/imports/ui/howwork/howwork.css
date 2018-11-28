@@ -13,6 +13,14 @@
     position: relative;
 }
 
+.how-it-work-container .work-step .work-thumbnail {
+    width: 100%;
+    height: 165px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .how-it-work-container .work-step .work-step-description {
     text-align: center;
     margin: 10px 0px;
@@ -24,5 +32,5 @@
     bottom: 0px;
     width: 95%;
     margin-left: 2.5%;
-    font-size: 0.7em;
+    font-size: 14px;
 }
