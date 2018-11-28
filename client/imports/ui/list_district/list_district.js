@@ -96,7 +96,10 @@ export default class ListDistrict extends Component {
           offsetX: 0
         })
       } else {
-        let containerWidth = document.getElementsByClassName('list-district-scrollable')[0].offsetWidth;
+        var containerWidth = 0;
+        if (document.getElementsByClassName('list-district-scrollable')[0]) {
+          containerWidth = document.getElementsByClassName('list-district-scrollable')[0].offsetWidth;
+        }
         let itemWidth = (containerWidth - 60) / 4;
         let itemHeight = itemWidth / 3 * 4;
         this.setState({

@@ -53,7 +53,7 @@ export default class Category_detail extends Component {
         } else {
             return this.state.chefs.map((item) => {
                 return (
-                    <LazyLoad once height={200}>
+                    <LazyLoad key={item._id} once height={200}>
                         <ChefItem key={item._id} id={item._id} name={item.kitchen_name} rating={item.average_rating} banner={item.bannerProfileImg} tags={item.kitchen_tags} location={item.kitchen_address_conversion} currentLat={this.state.lat} currentLng={this.state.lng} />
                     </LazyLoad>
                 )
