@@ -49,7 +49,7 @@ export default class SearchPageForm extends Component {
     render() {
         return (
             <div className="row col l12 m12 s12 search-page-form">
-                <div className="col s12 m4 l5">
+                <div className="col s12 m4 l3">
                     <label>I want to</label>
                     <select className="browser-default" id="servingOption" value={this.state.serving_option} onChange={(event) => this.handleChangeSelect(event)}>
                         <option value="all">All serving options</option>
@@ -71,7 +71,7 @@ export default class SearchPageForm extends Component {
                         }
                     </select>
                 </div>
-                <div className="col s12 m4 l2">
+                <div className="col s12 m4 l4">
                     <button className={(this.state.showMap) ? "btn toggle-search-map close" : "btn toggle-search-map open"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
                         {
                             (this.state.showMap) ?
