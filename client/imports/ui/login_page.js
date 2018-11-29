@@ -62,23 +62,23 @@ export default class LoginPage extends Component {
                     Bert.alert( error.reason, 'danger','growl-top-right');
                 } else if (Meteor.user().emails[0].verified === true) {
                     localStorage.setItem("loggedIn", true);
-                    if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
-                        util.hide_loading_progress();
-                        FlowRouter.go("/followup");
-                        // check if have already cookies, create a promotion balance for this user
-                        if (getCookie('promotion')) {
-                            Meteor.call('promotion.check_history', (err, res) => {
-                                let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
-                                if (Object.keys(res).length == 0) { // this user not already have promotion before
-                                    Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount ,(err, res) => {
-                                        if (!err) {
-                                            delete_cookies('promotion');
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    } else {
+                    // if (Meteor.user().profile.chef_signup === true && !Kitchen_details.findOne({user_id: Meteor.userId()})) {
+                    //     util.hide_loading_progress();
+                    //     FlowRouter.go("/followup");
+                    //     // check if have already cookies, create a promotion balance for this user
+                    //     if (getCookie('promotion')) {
+                    //         Meteor.call('promotion.check_history', (err, res) => {
+                    //             let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
+                    //             if (Object.keys(res).length == 0) { // this user not already have promotion before
+                    //                 Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount ,(err, res) => {
+                    //                     if (!err) {
+                    //                         delete_cookies('promotion');
+                    //                     }
+                    //                 });
+                    //             }
+                    //         });
+                    //     }
+                    // } else {
                         Bert.alert('Login successfully!' , 'success', 'fixed-top');
         
                         path_access != null && path_access.length > 0 ?
@@ -102,7 +102,7 @@ export default class LoginPage extends Component {
                                 }
                             });
                         }
-                    }
+                    // }
                     util.hide_loading_progress()
                 } else {
                     //- logout
