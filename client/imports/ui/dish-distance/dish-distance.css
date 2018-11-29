@@ -1,0 +1,16 @@
+.distance-container {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    padding: 8px 20px;
+    background: white;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 12px;
+    color: #000;
+}
+
+.distance-day {
+    display: block;
+    font-weight: bold;
+}

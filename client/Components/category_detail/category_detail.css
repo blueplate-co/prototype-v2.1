@@ -1,0 +1,28 @@
+.category_banner {
+    width: 100%;
+    height: 30vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.shadow-mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0px;
+    z-index: 5;
+}
+
+.category_banner * {
+    color: white;
+    z-index: 10;
+    width: 100%;
+}

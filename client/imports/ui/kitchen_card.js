@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
-import Rating from './rating';
+import Rating from './rating/rating';
 import ProgressiveImages from './progressive_image';
 import KitchenBanner from './kitchen_banner';
 

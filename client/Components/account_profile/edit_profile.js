@@ -7,9 +7,6 @@ import {
 import {
   address_geocode
 } from '/imports/functions/address_geocode.js'
-import {
-  get_checkboxes_value
-} from '/imports/functions/get_checkboxes_value.js';
 
 import { getCookie } from '/imports/functions/common/promotion_common';
 import { check_admin } from '/imports/functions/common/admin_common';

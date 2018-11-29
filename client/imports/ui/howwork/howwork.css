@@ -1,0 +1,36 @@
+.how-it-work-container {
+    padding: 20px 0px;
+}
+
+.how-it-work-container h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.how-it-work-container .work-step {
+    text-align: center;
+    height: 220px;
+    position: relative;
+}
+
+.how-it-work-container .work-step .work-thumbnail {
+    width: 100%;
+    height: 165px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.how-it-work-container .work-step .work-step-description {
+    text-align: center;
+    margin: 10px 0px;
+    background-color: #f7f7f7;
+    display: block;
+    padding: 10px 0px;
+    border-radius: 3px;
+    position: absolute;
+    bottom: 0px;
+    width: 95%;
+    margin-left: 2.5%;
+    font-size: 14px;
+}
