@@ -72,17 +72,17 @@ export default class SearchPageForm extends Component {
                     </select>
                 </div>
                 <div className="col s12 m4 l2">
-                    <button className={(this.state.showMap) ? "btn toggle-search-map open" : "btn toggle-search-map close"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
+                    <button className={(this.state.showMap) ? "btn toggle-search-map close" : "btn toggle-search-map open"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
                         {
                             (this.state.showMap) ?
                                 (
-                                    <span>
-                                        Hide Map <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon.svg"/>
+                                    <span style={{ display: 'inline-flex' }}>
+                                        Close Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_black.svg"/>
                                     </span>
                                 )
                             :   (
-                                <span>
-                                    Show Map <img src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon.svg"/>
+                                <span style={{ display: 'inline-flex' }}>
+                                    Show Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_white.svg"/>
                                 </span>
                             )
                         }

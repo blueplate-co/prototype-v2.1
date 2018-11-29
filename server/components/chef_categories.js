@@ -47,5 +47,38 @@ Meteor.methods({
         } else {
             return [];
         }
+    },
+    'chef_categories.bestSelling'() {
+        var pipeline = [
+            {
+              $group : {
+                _id : "$seller_id",
+                count: { $sum: 1 }
+              }
+            },
+            {
+              $sort : {
+                count: -1
+              }
+            },
+            {
+              $limit : 4
+            },
+            {
+              $lookup: {
+                 from: "kitchen_details",
+                 localField: "_id",
+                 foreignField: "user_id",
+                 as: "kitchen_details"
+              }
+            }
+        ];
+        var queryResult = Order_record.aggregate(pipeline);
+        console.log(queryResult);
+        var result = [];
+        queryResult.map((item, index) => {
+            result.push(item.kitchen_details[0]);
+        });
+        return result;
     }
 })

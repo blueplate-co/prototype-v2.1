@@ -7,3 +7,8 @@
     float: right;
     margin-top: 25px;
 }
+
+.toggle-search-map.close {
+    background: #fff!important;
+    color: #000;
+}

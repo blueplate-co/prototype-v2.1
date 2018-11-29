@@ -80,7 +80,21 @@ export default class SearchPageFormMobile extends Component {
                                 </select>
                             </div>
                             <div className="col s12 m4 l4">
-                                <button className="btn toggle-search-map" onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >{(this.state.showMap) ? 'Hide Map' : 'Open Map'}</button>
+                            <button className={(this.state.showMap) ? "btn toggle-search-map close" : "btn toggle-search-map open"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
+                                {
+                                    (this.state.showMap) ?
+                                        (
+                                            <span style={{ display: 'inline-flex' }}>
+                                                Close Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_black.svg"/>
+                                            </span>
+                                        )
+                                    :   (
+                                        <span style={{ display: 'inline-flex' }}>
+                                            Show Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_white.svg"/>
+                                        </span>
+                                    )
+                                }
+                            </button>
                             </div>
                         </div>
                     ) : (
@@ -89,7 +103,21 @@ export default class SearchPageFormMobile extends Component {
                                 <span onClick={() => this.setState({show: !this.state.show })} className="filter-btn">Filter</span>
                             </div>
                             <div className="col s5 m4 l4">
-                                <button className="btn toggle-search-map" onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >{(this.state.showMap) ? 'Hide Map' : 'Open Map'}</button>
+                            <button className={(this.state.showMap) ? "btn toggle-search-map close" : "btn toggle-search-map open"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
+                                {
+                                    (this.state.showMap) ?
+                                        (
+                                            <span style={{ display: 'inline-flex' }}>
+                                                Close Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_black.svg"/>
+                                            </span>
+                                        )
+                                    :   (
+                                        <span style={{ display: 'inline-flex' }}>
+                                            Show Map <img style={{ marginLeft: '10px' }} src="https://s3-ap-southeast-1.amazonaws.com/blueplate-images/images/map_search_icon_white.svg"/>
+                                        </span>
+                                    )
+                                }
+                            </button>
                             </div>
                         </div>
                     )

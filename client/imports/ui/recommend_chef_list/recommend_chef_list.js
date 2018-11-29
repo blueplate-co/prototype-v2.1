@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ChefItem from '../chef_card_item/chef_card_item';
 import '../recommend_chef_list/recommend_chef_list.css';
+import BouncingLoader from '../bouncing_loader/bouncing_loader';
 
 // App component - represents the whole app
 export default class RecommendChefList extends Component {
@@ -11,7 +12,8 @@ export default class RecommendChefList extends Component {
     this.state = {
       data: [],
       lat: null,
-      lng: null
+      lng: null,
+      loading: true
     }
   }
 
@@ -30,19 +32,24 @@ export default class RecommendChefList extends Component {
     } else {
       Materialize.toast("Sorry, your browser does not support geolocation services.", 4000, 'rounded bp-red');
     }
-    Meteor.call('chef_categories.get', 'recommend',(err, res) => {
+    Meteor.call('chef_categories.bestSelling', (err, res) => {
       if (!err) {
         this.setState({
-          data: res
+          data: res,
+          loading: false
         })
       }
     })
   }
 
   renderListDish() {
+    if (this.state.loading) {
+      return <BouncingLoader />
+    } else {
       return this.state.data.map((item, index) => {
         return <ChefItem key={item._id} id={item._id} name={item.kitchen_name} rating={item.average_rating} banner={item.bannerProfileImg} tags={item.kitchen_tags} location={item.kitchen_address_conversion} currentLat={this.state.lat} currentLng={this.state.lng} />
       });
+    }
   }
 
   render() {
