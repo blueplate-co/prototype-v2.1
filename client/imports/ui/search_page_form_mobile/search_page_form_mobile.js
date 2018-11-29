@@ -99,10 +99,10 @@ export default class SearchPageFormMobile extends Component {
                         </div>
                     ) : (
                         <div>
-                            <div className="col s7 m4 l4">
+                            <div className="col s6 m4 l4">
                                 <span onClick={() => this.setState({show: !this.state.show })} className="filter-btn">Filter</span>
                             </div>
-                            <div className="col s5 m4 l4">
+                            <div className="col s6 m4 l4">
                             <button className={(this.state.showMap) ? "btn toggle-search-map close" : "btn toggle-search-map open"} onClick={() => { this.props.toggleMap(); this.setState({ showMap: !this.state.showMap }) }} >
                                 {
                                     (this.state.showMap) ?

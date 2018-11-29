@@ -74,7 +74,6 @@ Meteor.methods({
             }
         ];
         var queryResult = Order_record.aggregate(pipeline);
-        console.log(queryResult);
         var result = [];
         queryResult.map((item, index) => {
             result.push(item.kitchen_details[0]);
