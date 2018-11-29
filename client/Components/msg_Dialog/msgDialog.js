@@ -1,9 +1,5 @@
 import { Template } from 'meteor/templating';
-import { Accounts } from 'meteor/accounts-base';
-import { Mongo } from 'meteor/mongo';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Blaze } from 'meteor/blaze';
-
+Meteor.subscribe('userEmail');
 
 Template.screen.onRendered(function(){
   if(Meteor.userId()){

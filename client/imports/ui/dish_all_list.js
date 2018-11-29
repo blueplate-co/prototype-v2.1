@@ -22,6 +22,7 @@ class DishAllList extends Component {
   }
 
   handleOnViewDish(item) {
+    Meteor.call('dish.view', item._id, item.user_id);
     BlazeLayout.reset();
     FlowRouter.go("/dish/" + item._id);
   }

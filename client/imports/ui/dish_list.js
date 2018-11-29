@@ -17,9 +17,10 @@ export default class DishList extends Component {
     }
   }
 
-  handleOnViewDish = (dishId) => {
+  handleOnViewDish = (dish) => {
+    Meteor.call('dish.view', dish._id, dish.user_id);
     BlazeLayout.reset();
-    FlowRouter.go("/dish/" + dishId);
+    FlowRouter.go("/dish/" + dish._id);
   }
 
   componentDidMount = () => {
@@ -54,7 +55,7 @@ export default class DishList extends Component {
         hasThumbnail = false;
       }
       return (
-        <div key={index} className="col xl3 l4 m6 s12 dish-wrapper" onClick={() => this.handleOnViewDish(item._id)}>
+        <div key={index} className="col xl3 l4 m6 s12 dish-wrapper" onClick={() => this.handleOnViewDish(item)}>
           <div className="images-thumbnail" style =  {{ background: '#ccc' }}>
             <Like type="dish" id={item._id} />
             {

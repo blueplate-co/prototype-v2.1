@@ -174,6 +174,9 @@ Meteor.methods({
     } else {
       return Menu.find({ deleted: false }, { sort: { online_status: -1, createdAt: -1 }, limit: 8 }).fetch();
     }
+  },
+  'menu.get_menu_detail'(menu_id) {
+    return Menu.findOne({ _id: menu_id });
   }
 });
 

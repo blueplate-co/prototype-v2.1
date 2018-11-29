@@ -46,7 +46,7 @@ Meteor.methods({
             var current = new Date();
             var lastExcute = new Date(notification.createdAt);
             if ((current - lastExcute) / 60e3 > 0.1) { // must timeout greater than 10 secs
-                DishesLikes.insert({ user_id: Meteor.userId(), dish_id: dishId },function() {
+                DishesLikes.insert({ user_id: Meteor.userId(), dish_id: dishId, createdAt: new Date() },function() {
                     Notifications.insert({
                         item_id: dishId,
                         receiver_id: seller_id,
@@ -92,7 +92,7 @@ Meteor.methods({
         if (!notification) {
             //- no notification excute before that
             //- callback for make sure the notification will be displayed when like action run successful on database
-            MenusLikes.insert({ user_id: Meteor.userId(), menu_id: menuId }, function() {
+            MenusLikes.insert({ user_id: Meteor.userId(), menu_id: menuId, createdAt: new Date() }, function() {
                 Notifications.insert({
                     item_id: menuId, // must check the document has item_id field
                     receiver_id: seller_id,
@@ -130,4 +130,10 @@ Meteor.methods({
     'menu.unlike' (menuId) {
         MenusLikes.remove({ user_id: Meteor.userId(), menu_id: menuId })
     },
+    'dish.count_like'(date) {
+        return DishesLikes.find({createdAt:{ $gt: date}}).fetch();
+    },
+    'menu.count_like'(date) {
+        return MenusLikes.find({createdAt:{ $gt: date}}).fetch();
+    }
 });

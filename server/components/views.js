@@ -33,6 +33,12 @@ Meteor.methods({
   },
   'total.views' () {
     return DishesViews.find({seller_id: Meteor.userId()}).count() + MenusViews.find({seller_id: Meteor.userId()}).count() + KitchenViews.find({seller_id: Meteor.userId()}).count();
+  },
+  'dish.total_view'(date) {
+    return DishesViews.find({createdAt:{ $gt: date}}).fetch();
+  },
+  'menu.total_view'(date, seller_id) {
+    return MenusViews.find({createdAt:{ $gt: date}}).fetch();
   }
 })
 
