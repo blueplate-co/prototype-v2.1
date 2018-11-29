@@ -4,6 +4,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Accounts } from 'meteor/accounts-base';
 import { getCookie, delete_cookies } from '/imports/functions/common/promotion_common';
 import LoginWithSocialNetwork from './login_with_social_network.js';
+import districts from '/imports/functions/common/districts_common.json';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class SignUp extends Component {
     this.state = {
       accnSignup: {
         fullName: '',
+        district: '',
         email: '',
         password: ''
       },
@@ -29,9 +31,12 @@ export default class SignUp extends Component {
     this.setState({ accnSignup: accnSignup });
   };
 
-  validationSignUpAccn(full_name, email, password) {
+  validationSignUpAccn(full_name, district, email, password) {
     if (!util.isEmpty(full_name)) {
       Bert.alert("Name's field cannot be blank", "danger", "growl-top-right");
+      return false;
+    } else if (!util.isEmpty(district)) {
+      Bert.alert("Select your district, please!", "danger", "growl-top-right");
       return false;
     } else if (!util.isEmpty(email)) {
       Bert.alert("Email's field cannot be blank", "danger", "growl-top-right");
@@ -57,16 +62,17 @@ export default class SignUp extends Component {
 
     var email = trimInput(this.state.accnSignup.email),
     password = trimInput(this.state.accnSignup.password),
-    full_name = trimInput(this.state.accnSignup.fullName);
+    full_name = trimInput(this.state.accnSignup.fullName),
+    district = this.state.accnSignup.district;
     
-    if(this.validationSignUpAccn(full_name, email, password)) {
+    if(this.validationSignUpAccn(full_name, district, email, password)) {
       that.setState({signUpLoading: true});
       util.show_loading_progress();
       var profile = {
         name: full_name,
         chef_signup: false,
         foodie_signup: true,
-        district: '',
+        district: district,
       };
 
       Accounts.createUser({email: email, password: password, profile: profile}, function(err){
@@ -88,6 +94,7 @@ export default class SignUp extends Component {
                     let amount = parseInt(getCookie('promotion').replace( /^\D+/g, ''));
                     Meteor.call('promotion.insert_history', Meteor.userId(), getCookie('promotion'), amount, (err, res) => {
                         if (!err) {
+                            util.hide_loading_progress();
                             delete_cookies('promotion');
                             that.sendEmailVerification();
                         }
@@ -149,6 +156,20 @@ export default class SignUp extends Component {
               <div className="input-field">
                 <input id="signup_full_name" name="fullName" type="text" className="validate" onChange={(event) => this.handleOnChangeField('fullName', event)} />
                 <label htmlFor="signup_full_name">Full Name</label>
+              </div>
+
+              <div className="input-field" id="signup-district">
+                  <select ref="dropdown" className="browser-default" id="signup-district-option" value={this.state.accnSignup.district} 
+                      onChange={(event) => this.handleOnChangeField('district', event)}>
+                      <option value="" disabled>Choose your district</option>
+                      {
+                          districts.map((item, index) => {
+                              return (
+                                    <option key={index} value={item.districtName}>{item.districtName}</option>
+                                  )
+                              })
+                      }
+                  </select>
               </div>
 
               <div className="input-field">

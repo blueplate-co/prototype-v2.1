@@ -55,6 +55,16 @@ padding: 0px;
   cursor: pointer;
 }
 
+#signup-district-option {
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+}
+
+#signup-district {
+  margin-bottom: 23px;
+  margin-top: -3px;
+}
+
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
 }

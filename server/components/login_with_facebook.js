@@ -41,6 +41,7 @@ Accounts.onCreateUser(function(options, user) {
             }];
             options.profile.first_name = user.services.facebook.first_name;
             options.profile.last_name = user.services.facebook.last_name;
+            options.profile.district = '';
         } else {// If user signup
             options.emails = [{
                 address: options.email,
@@ -50,7 +51,6 @@ Accounts.onCreateUser(function(options, user) {
         
         options.profile.chef_signup = false;
         options.profile.foodie_signup = true;
-        options.profile.district = '';
         user.emails = options.emails;
         user.profile = options.profile;
     }
