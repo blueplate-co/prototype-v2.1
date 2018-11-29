@@ -24,6 +24,114 @@ Meteor.methods({
         console.log(dishIndex.search(keyword).mongoCursor);
         return keyword;
     },
+    'searchingKitchenByDistrict'(district, option) {
+        if (option == 'all') {
+            var pipeline = [
+                {
+                  $match: {
+                    'profile.district': district
+                  }
+                },
+                {
+                   "$lookup":
+                   {
+                      from: "kitchen_details",
+                      localField: "_id",
+                      foreignField: "user_id",
+                      as: "kitchen_details"
+                   }
+                },
+                {
+                   "$lookup":
+                   {
+                      from: "dishes",
+                      localField: "_id",
+                      foreignField: "user_id",
+                      as: "dishes"
+                   }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                },
+                {
+                  	$addFields: {
+                  	  	numberOfDishes: { $size: "$dishes" }
+                  	}
+                },
+                {
+                    $match: {
+                        'numberOfDishes': {
+                            $gte: 1
+                        }
+                    }
+                }    
+            ];
+        } else {
+            var pipeline = [{
+                    $match: {
+                        'profile.district': district
+                    }
+                },
+                {
+                    "$lookup": {
+                        from: "kitchen_details",
+                        localField: "_id",
+                        foreignField: "user_id",
+                        as: "kitchen_details"
+                    }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                },
+                {
+                    "$lookup":
+                    {
+                        from: "dishes",
+                        localField: "_id",
+                        foreignField: "user_id",
+                        as: "dishes"
+                    }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $ne: []
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                            numberOfDishes: { $size: "$dishes" }
+                    }
+                },
+                {
+                     $match: {
+                         'numberOfDishes': {
+                             $gte: 1
+                         }
+                     }
+                },
+                {
+                    $match: {
+                        'kitchen_details': {
+                            $elemMatch: {
+                                serving_option: option
+                            }
+                        }
+                    }
+                }
+            ];
+        }
+        return Meteor.users.aggregate(pipeline);
+    },
     'searchingDishAndMenuByDistrict'(district) {
         const pipeline = [{
                 $match: {

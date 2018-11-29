@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
 
-import Rating from './rating';
+import Rating from './rating/rating';
 import Like from './like_button';
 
 // App component - represents the whole app

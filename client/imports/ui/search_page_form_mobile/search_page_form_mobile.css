@@ -1,0 +1,29 @@
+.search-page-form {
+    width: 100%;
+}
+
+.toggle-search-map {
+    width: 100%;
+    float: right;
+    margin-top: 0px;
+    font-size: 0.9em;
+}
+
+.filter-btn {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    padding: 7px;
+    display: block;
+}
+
+.search-page-form-mobile {
+    position: fixed;
+    z-index: 100;
+    padding-left: 0px!important;
+    background: white;
+    left: 0px!important;
+    padding: 10px!important;
+}

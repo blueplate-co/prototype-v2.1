@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
-import Rating from './rating';
+import Rating from '../ui/rating/rating';
 import ProgressiveImages from './progressive_image';
 import DishStatus from './dish_status';
 import BouncingLoader from './bouncing_loader/bouncing_loader.js';

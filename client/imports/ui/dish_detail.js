@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Rating from './rating.js';
+import Rating from './rating/rating.js';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { withTracker } from 'meteor/react-meteor-data';

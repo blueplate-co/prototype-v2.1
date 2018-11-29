@@ -1,0 +1,14 @@
+.search-page-form {
+    width: 100%;
+}
+
+.toggle-search-map {
+    width: 250px;
+    float: right;
+    margin-top: 25px;
+}
+
+.toggle-search-map.close {
+    background: #fff!important;
+    color: #000;
+}

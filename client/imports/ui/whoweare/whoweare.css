@@ -1,0 +1,13 @@
+.who-we-are-container {
+    padding: 20px 0px;
+    background-color: #F7F7F7;
+}
+
+.who-we-are-container h2 {
+    font-size: 2em;
+}
+
+.who-we-are-container img {
+    width: 100%;
+    margin-top: 20px;
+}

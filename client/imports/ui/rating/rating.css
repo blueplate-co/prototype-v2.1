@@ -1,0 +1,7 @@
+.dish-preview-navigation .rating-container {
+    width: 150px;
+}
+
+.dish-preview-navigation .rating-container .fa-star {
+    font-size: 20px;
+}

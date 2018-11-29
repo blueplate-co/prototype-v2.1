@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Rating from './rating';
+import Rating from './rating/rating';
 import ProgressiveImages from './progressive_image';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import BouncingLoader from './bouncing_loader/bouncing_loader.js';

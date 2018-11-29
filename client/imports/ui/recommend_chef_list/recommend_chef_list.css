@@ -1,0 +1,17 @@
+.list-chef-container h2 {
+    font-size: 2rem;
+}
+
+.list-chef-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    grid-gap: 20px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .list-chef-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap: 20px;
+    }
+}

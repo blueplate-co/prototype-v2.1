@@ -116,7 +116,7 @@ class TopNavigation extends Component {
     Session.set('search_nearby', false);
     $('#searchQuery').val('');
     Session.set()
-    FlowRouter.go("/main");
+    FlowRouter.go("/");
   }
 
   checkKitchenProfileExists = () => {
@@ -146,7 +146,7 @@ class TopNavigation extends Component {
         localStorage.setItem('globalCart', JSON.stringify(null));
         localStorage.removeItem("globalCart");
         this.setState({ isLogin: false })
-        FlowRouter.go("/main");
+        FlowRouter.go("/");
       })
     } else {
       // util.loginAccession("");
@@ -313,7 +313,7 @@ class TopNavigation extends Component {
             setTimeout(() => {
               this.setState({ sidebarOpen: true });
             }, 500);
-            FlowRouter.go("/main");
+            FlowRouter.go("/");
           }}
         >
           <span>Switch to foodie</span>
@@ -573,14 +573,14 @@ class TopNavigation extends Component {
             <div className="navbar-fixed z-depth-0">
               <nav className="z-depth-0">
                 <div className="nav-wrapper white z-depth-0">
-                  <ul className="left">
+                  {/* <ul className="left">
                     <li>
                       <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
                     </li>
                     <li className="nearby waves-effect waves-light white" title="Nearby you" onClick={() => this.nearby()}>
                       <i className="material-icons bp-blue-text center-align">location_on</i>
                     </li>
-                  </ul>
+                  </ul> */}
                   <ul className="right hide-on-small-only">
                     {
                       Meteor.userId() ?

@@ -1,0 +1,115 @@
+#list-district h2 {
+    font-size: 2em;
+}
+
+#list-district .list-district-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+#list-district .list-district-scrollable {
+    position: relative;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.25s;
+}
+
+#list-district .list-district-wrapper ul {
+    display: inline-flex;
+}
+
+#list-district .list-district-wrapper .district-item {
+    color: #fff;
+    margin-right: 20px;
+    border-radius: 10px;
+    border: none;
+    width: 240px;
+    height: 322px;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    font-size: 2em;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+    text-align: center;
+    transition: cubic-bezier(0.215, 0.610, 0.355, 1) 0.2s all;
+    cursor: pointer;
+}
+
+#list-district .list-district-wrapper .district-item img {
+    object-fit: cover;
+    position: absolute;
+    object-position: center;
+    height: 100%;
+}
+
+#list-district .list-district-wrapper .district-item .shadow-mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    left: 0px;
+    z-index: 5;
+}
+
+#list-district .list-district-wrapper .district-item span {
+    z-index: 10;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+#list-district .list-district-wrapper .list-navigator {
+    position: absolute;
+    z-index: 100;
+    color: #32acd1;
+    font-size: 30px;
+    top: 162px;
+    cursor: pointer;
+}
+
+#list-district .list-district-wrapper .district-item .district-meta {
+    z-index: 10;
+}
+
+#list-district .list-district-wrapper .district-item .kitchen_number {
+    display: block;
+    width: 100%;
+    font-size: 13px;
+}
+
+#list-district .list-district-wrapper .list-navigator#left-navigator {
+    left: 15px;
+}
+
+#list-district .list-district-wrapper .list-navigator#right-navigator {
+    right: 15px;
+}
+
+@media only screen and (max-width: 992px) {
+    #list-district .list-district-scrollable {
+        overflow-x: scroll;
+        position: relative;
+    }
+    #list-district .list-district-wrapper .list-navigator {
+        display: none;
+    }
+    #list-district .list-district-wrapper .district-item {
+        width: 18vw;
+        height: 265px;
+    }
+}
+
+@media only screen and (max-width: 991px) and (min-width: 601px) {
+    #list-district .list-district-wrapper .district-item {
+        width: 30vw;
+        height: 280px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #list-district .list-district-wrapper .district-item {
+        width: 40vw;
+        height: 265px;
+    }
+}

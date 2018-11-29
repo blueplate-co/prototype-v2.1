@@ -79,12 +79,15 @@ Meteor.methods({
         }
         if (Meteor.userId() == ownerId) {
             var ownerName = Kitchen_details.findOne({user_id: Meteor.userId()}).chef_name;
+        } else {
+            var ownerName = Profile_details.findOne({user_id: Meteor.userId()}).foodie_name;
         }
 
 
         //- GET ALL USERS HAS COMMENTED ON THIS POST
         var all_comments = Comment.find({ article_id: article_id }).fetch();
         var participants = [];
+        participants.push(ownerId);
         //- push userid not owner and not already in participants list
         for (var i = 0; i < all_comments.length; i++) {
             if (all_comments[i].user_id !== Meteor.userId() && participants.indexOf(all_comments[i].user_id) == -1) {
@@ -129,10 +132,12 @@ Meteor.methods({
                 }
             }
         }
+
         //- remove all null item in array
         var participants = participants.filter(function (element) {
             return element != null;
         });
+
         console.log(participants);
         var reply_comment_url = `${Meteor.absoluteUrl()}/${article_type}/${article_id}`;
         for (var i = 0; i < participants.length; i++) {
@@ -140,6 +145,7 @@ Meteor.methods({
             // console.log('User id: ' + participants[i]);
             // console.log('User of id: ' + Meteor.users.findOne({ _id: participants[i] }));
             let emails = Meteor.users.findOne({ _id: participants[i] }).emails[0].address;
+            console.log(emails);
             if (ownerId == Meteor.userId()) {
                 //- commenter is owner
                 Meteor.call(
@@ -147,25 +153,26 @@ Meteor.methods({
                     ownerName + " <" + emails + ">",
                     '',
                     ownerName + ' has commented on ' + product_name,
-                    `${ownerName} has commented on ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                    `Hi chef,\n${ownerName} has commented on ${product_name} with message: " ${content} ". To reply this comment, just visit the following link: ${reply_comment_url}\nBest regards, Blueplate team.`
                 );    
             } else {
                 //- commeter is not owner
+                let commenter_name = Profile_details.findOne({ email: emails }).foodie_name;
                 if (emails !== ownerEmail) {
                     Meteor.call(
                         'requestdish.sendEmail',
                         ownerName + " <" + emails + ">",
                         '',
                         ownerName + ' has commented on ' + product_name,
-                        `${ownerName} has commented on ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                        `Hi ${commenter_name},\n${ownerName} has commented on ${product_name} with message: " ${content} ". To reply this comment, just visit the following link: ${reply_comment_url}\nBest regards, Blueplate team.`
                     ); 
                 } else {
                     Meteor.call(
                         'requestdish.sendEmail',
-                        ownerName + " <" + emails + ">",
+                        ownerName + " <" + ownerEmail + ">",
                         '',
                         ownerName + ' has commented on your ' + product_name,
-                        `${ownerName} has commented on your ${product_name}. " ${content} "To reply this comment, just visit the following link:\n\n${reply_comment_url}`
+                        `Hi chef,\n${ownerName} has commented on your ${product_name} with message: " ${content} ". To reply this comment, just visit the following link: ${reply_comment_url}\nBest regards, Blueplate team.`
                     ); 
                 }
             }

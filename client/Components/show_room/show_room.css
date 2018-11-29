@@ -23,9 +23,6 @@
 }
 
 @media (max-width: 869px) {
-  .show_room_wrapper {
-    padding: 0 12px 0 12px;
-  }
   #show_room {
     width: 290px;
     display: inline-block;
@@ -38,11 +35,6 @@
 }
 /** Pinterest way to display card **/
 @media(min-width: 870px) {
-  .show_room_wrapper {
-    /* width: 100vw; */
-    height: auto;
-    padding: 0 64px 0 64px;
-  }
   #show_room {
     width: 592px;
     z-index: 1;
@@ -56,11 +48,6 @@
 }
 
 @media(min-width:1220px) {
-  .show_room_wrapper {
-    /* width: 100vw; */
-    height: auto;
-    padding: 0 64px 0 64px;
-  }
   #show_room {
     width: 930px;
     display: inline-block;
@@ -75,11 +62,6 @@
 }
 
 @media(min-width:1522px) {
-  .show_room_wrapper {
-    /* width: 100vw; */
-    height: auto;
-    padding: 0 64px 0 64px;
-  }
   #show_room {
     width: 1232px;
     display: inline-block;
@@ -92,11 +74,6 @@
 }
 
 @media(min-width:1824px) {
-  .show_room_wrapper {
-    /* width: 100vw; */
-    height: auto;
-    padding: 0 64px 0 64px;
-  }
   #show_room {
     width: 1534px;
     display: inline-block;
@@ -238,11 +215,6 @@
   display: inline-flex;
   margin: 0px;
   width: 100%;
-}
-
-.dish-price {
-  color: #56AACD;
-  font-size: 15px;
 }
 
 .dish-old-price {
