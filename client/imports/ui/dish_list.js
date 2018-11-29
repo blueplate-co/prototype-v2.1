@@ -13,18 +13,29 @@ export default class DishList extends Component {
     super(props);
     this.state = {
       loading: true,
-      dishes: []
+      dishes: [],
+      excludeEmail: false
     }
   }
 
   handleOnViewDish = (dish) => {
-    Meteor.call('dish.view', dish._id, dish.user_id);
+    if (!this.state.excludeEmail) {
+      Meteor.call('dish.view', dish._id, dish.user_id);
+    }
+
     BlazeLayout.reset();
     FlowRouter.go("/dish/" + dish._id);
   }
 
   componentDidMount = () => {
     var kitchen_id = '';
+    if (Meteor.userId()) {
+      var user_email = Meteor.user().emails[0].address;
+      if (user_email.indexOf('@blueplate.co') > -1) {
+        this.setState({ excludeEmail: true})
+      }
+    }
+
     if (FlowRouter.getParam('homecook_id')) {
       kitchen_id = FlowRouter.getParam('homecook_id');
       Meteor.call('dish.getDishListShowroom', kitchen_id, (err, res) => {
