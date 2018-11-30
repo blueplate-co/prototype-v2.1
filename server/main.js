@@ -33,6 +33,10 @@ Meteor.publish('theIngredients', function(){
   return Ingredients.find();
 });
 
+Meteor.publish('theKitchens', function(){
+  return Kitchen_details.find();
+});
+
 Meteor.publish('getUserShoppingCart', function(){
   return Shopping_cart.find({ buyer_id: Meteor.userId() })
 });

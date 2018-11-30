@@ -351,68 +351,7 @@ class TopNavigation extends Component {
       }
       // excute searching when keyword longer than 2 characters
       if (queryString.length >= 2) {
-        // create index search for dish_name
-        const dishIndex = new Index({
-            collection: Dishes,
-            fields: ['dish_name'],
-            name: 'dishIndex',
-            engine: new MinimongoEngine({
-                sort: () => { score: 1 }, // sort by score
-            }),
-        });
-        // create index search for menu_name
-        const menuIndex = new Index({
-            collection: Menu,
-            fields: ['menu_name'],
-            name: 'menuIndex',
-            engine: new MinimongoEngine({
-                sort: () => { score: 1 }, // sort by score
-            }),
-        });
-        // create index search for kitchen_name
-        const kitchenIndex = new Index({
-            collection: Kitchen_details,
-            fields: ['kitchen_name'],
-            name: 'kitchenIndex',
-            engine: new MinimongoEngine({
-                sort: () => { score: 1 }, // sort by score
-            }),
-        });
-        // forming the result object
-        var result = {
-          dish: [],
-          menu: [],
-          kitchen: []
-        }
-        // filter again to remove all deleted item in array with search in minimongodb
-        result.dish = this.removeDeletedItem(dishIndex.search(queryString).mongoCursor.fetch());
-        result.menu = this.removeDeletedItem(menuIndex.search(queryString).mongoCursor.fetch());
-        result.kitchen = this.removeDeletedItem(kitchenIndex.search(queryString).mongoCursor.fetch());
-        Session.set('search_result', result);
-        // get location of kitchens for map markers
-        //- get unique kitchen id of 3 lists.
-        let uniqueDishKitchen = [...new Set(result.dish.map(item => item.kitchen_id))];
-        let uniqueMenuKitchen = [...new Set(result.menu.map(item => item.kitchen_id))];
-        let uniqueKitchen = [...new Set(result.kitchen.map(item => item._id))];
-        let kitchen_id_list = [...uniqueDishKitchen, ...uniqueMenuKitchen, ...uniqueKitchen];
-        // MUST SUBSCRIBE HERE
-        // concat 3 arrays and remove duplicated items
-        for (var i = 0; i < kitchen_id_list.length; ++i) {
-          for (var j = i + 1; j < kitchen_id_list.length; ++j) {
-            if (kitchen_id_list[i] === kitchen_id_list[j])
-              kitchen_id_list.splice(j--, 1);
-          }
-        }
-        //- get location of item in array
-        var listkitchens = [];
-        for (var i = 0; i < kitchen_id_list.length; i++) {
-          let selected_kitchen = Kitchen_details.findOne({ _id: kitchen_id_list[i] });
-          listkitchens.push(selected_kitchen);
-        }
-        Session.set('list_kitchen_for_map', listkitchens);
-        Session.set('search_result_origin', result);
-        Session.set('search_nearby', false);
-        FlowRouter.go('/search#all');
+        FlowRouter.go('finding?keyword=' + queryString);
       } else {
         Materialize.toast('Your keyword must longer than 1 characters',4000,"rounded bp-green");
       }
@@ -573,14 +512,11 @@ class TopNavigation extends Component {
             <div className="navbar-fixed z-depth-0">
               <nav className="z-depth-0">
                 <div className="nav-wrapper white z-depth-0">
-                  {/* <ul className="left">
+                  <ul className="left">
                     <li>
                       <input className="searchinput" placeholder="Try 'Muffin'" type="text" id="searchQuery" onKeyDown={(e) => this.searching(e)}/>
                     </li>
-                    <li className="nearby waves-effect waves-light white" title="Nearby you" onClick={() => this.nearby()}>
-                      <i className="material-icons bp-blue-text center-align">location_on</i>
-                    </li>
-                  </ul> */}
+                  </ul>
                   <ul className="right hide-on-small-only">
                     {
                       Meteor.userId() ?
